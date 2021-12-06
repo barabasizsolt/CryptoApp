@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#212121"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="10dp">
+
+        <ImageView
+            android:id="@+id/crypto_logo"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/crypto_name"
+            android:layout_width="wrap_content"
+            android:layout_height="16dp"
+            android:layout_marginStart="4dp"
+            android:text="Bitcoin"
+            android:textAlignment="center"
+            android:textColor="#DDDDDD"
+            android:textSize="13sp"
+            app:layout_constraintBottom_toBottomOf="@+id/crypto_logo"
+            app:layout_constraintStart_toEndOf="@+id/crypto_logo" />
+
+        <TextView
+            android:id="@+id/crypto_symbol"
+            android:layout_width="wrap_content"
+            android:layout_height="15dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="9dp"
+            android:text="BTC"
+            android:textAlignment="center"
+            android:textColor="#DDDDDD"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/crypto_logo"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.anychart.anychart.AnyChartView
+            android:id="@+id/any_chart_view"
+            android:layout_width="match_parent"
+            android:layout_height="290dp"
+            android:layout_marginTop="25dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/crypto_name" />
+
+        <View
+            android:id="@+id/divider1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/any_chart_view" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chip_group"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            app:chipSpacingHorizontal="25dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider1"
+            app:selectionRequired="true"
+            app:singleSelection="true">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_24h"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="24 Hours"
+                app:chipCornerRadius="3dp" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_7d"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="7 Days"
+                app:chipCornerRadius="3dp" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_1y"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1 Year"
+                app:chipCornerRadius="3dp" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_6y"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="6 Year"
+                app:chipCornerRadius="3dp" />
+        </com.google.android.material.chip.ChipGroup>
+
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/chip_group" />
+
+        <TextView
+            android:id="@+id/crypto_price"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:text="$494044.00"
+            android:textColor="#DDDDDD"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider2" />
+
+        <TextView
+            android:id="@+id/percent_change_24h"
+            android:layout_width="wrap_content"
+            android:layout_height="17dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="3dp"
+            android:text="+0.53%"
+            android:textColor="#DDDDDD"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toStartOf="@+id/daily_change_text"
+            app:layout_constraintTop_toBottomOf="@id/chip_group" />
+
+        <TextView
+            android:id="@+id/market_cap"
+            android:layout_width="wrap_content"
+            android:layout_height="17dp"
+            android:layout_marginEnd="4dp"
+            android:text="+0.53%"
+            android:textColor="#DDDDDD"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toStartOf="@+id/market_cap_text"
+            app:layout_constraintTop_toBottomOf="@+id/percent_change_24h" />
+
+        <TextView
+            android:id="@+id/volume"
+            android:layout_width="wrap_content"
+            android:layout_height="17dp"
+            android:layout_marginEnd="4dp"
+            android:text="+12.19%"
+            android:textColor="#DDDDDD"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toStartOf="@+id/volume_text"
+            app:layout_constraintTop_toBottomOf="@+id/market_cap" />
+
+        <TextView
+            android:id="@+id/daily_change_text"
+            android:layout_width="wrap_content"
+            android:layout_height="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="11dp"
+            android:text="24H"
+            android:textColor="#DDDDDD"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/chip_group" />
+
+        <TextView
+            android:id="@+id/market_cap_text"
+            android:layout_width="wrap_content"
+            android:layout_height="16dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginEnd="11dp"
+            android:text="Cap"
+            android:textColor="#DDDDDD"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/daily_change_text" />
+
+        <TextView
+            android:id="@+id/volume_text"
+            android:layout_width="wrap_content"
+            android:layout_height="16dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginEnd="14dp"
+            android:text="Vol"
+            android:textColor="#DDDDDD"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/market_cap_text" />
+
+        <TextView
+            android:id="@+id/crypto_value_symbol"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="5dp"
+            android:text="BTC/USD"
+            android:textColor="#DDDDDD"
+            android:textSize="13sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/crypto_price" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/crypto_value_symbol"
+            app:tabMode="fixed">
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:icon="@drawable/ic_info" />
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:icon="@drawable/ic_exchange" />
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:icon="@drawable/ic_news" />
+        </com.google.android.material.tabs.TabLayout>
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/crypto_details_fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tab_layout">
+
+        </androidx.fragment.app.FragmentContainerView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

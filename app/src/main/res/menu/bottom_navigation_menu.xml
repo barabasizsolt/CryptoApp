@@ -1,0 +1,22 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/currencies"
+        android:enabled="true"
+        android:icon="@drawable/ic_bitcoin"
+        android:title="Currencies"/>
+    <item
+        android:id="@+id/exchanges"
+        android:enabled="true"
+        android:icon="@drawable/ic_exchanges"
+        android:title="Exchanges"/>
+    <item
+        android:id="@+id/favorites"
+        android:enabled="true"
+        android:icon="@drawable/ic_favourites_star"
+        android:title="WatchLists"/>
+    <item
+        android:id="@+id/events"
+        android:enabled="true"
+        android:icon="@drawable/ic_news"
+        android:title="Events"/>
+</menu>
