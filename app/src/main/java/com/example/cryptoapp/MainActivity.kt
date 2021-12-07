@@ -23,6 +23,7 @@ import com.example.cryptoapp.fragment.exchanges.ExchangeFragment
 import com.example.cryptoapp.fragment.login.LoginFragment
 import com.example.cryptoapp.fragment.profile.ProfileFragment
 import com.example.cryptoapp.model.allcryptocurrencies.AllCryptoCurrencies
+import com.example.cryptoapp.model.allcryptocurrencies.CryptoCurrency
 import com.example.cryptoapp.model.allcryptocurrencies.CryptoCurrencyUIModel
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Response
@@ -71,12 +72,7 @@ class MainActivity : AppCompatActivity() {
     private val mainObserver = androidx.lifecycle.Observer<Response<AllCryptoCurrencies>> { response ->
         if (response.isSuccessful) {
             Log.d("Observed", response.body()?.data.toString())
-
-            val cryptoCurrencyUIModels = response.body()?.data?.coins?.map {
-                    currency -> currency.toCryptoCurrencyUIModel(DEFAULT_VOLUME)
-            } as MutableList
-
-            Cache.setCryptoCurrencies(cryptoCurrencyUIModels)
+            Cache.setCryptoCurrencies(response.body()?.data?.coins as MutableList<CryptoCurrency>)
             initBottomNavigation()
 
             if(mAuth.currentUser == null){

@@ -27,7 +27,7 @@ import com.example.cryptoapp.constant.cryptocurrencies.CryptoConstant.toCryptoCu
 import com.example.cryptoapp.interfaces.OnItemClickListener
 import com.example.cryptoapp.interfaces.OnItemLongClickListener
 import com.example.cryptoapp.model.allcryptocurrencies.AllCryptoCurrencies
-import com.example.cryptoapp.model.allcryptocurrencies.CryptoCurrencyUIModel
+import com.example.cryptoapp.model.allcryptocurrencies.CryptoCurrency
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -106,7 +106,9 @@ class CryptoCurrencyFragment : Fragment(), OnItemClickListener, OnItemLongClickL
         recyclerView.layoutManager = linearLayoutManager
         cryptoCurrencyAdapter = CryptoCurrencyAdapter(this, this)
         recyclerView.adapter = cryptoCurrencyAdapter
-        cryptoCurrencyAdapter.submitList(Cache.getCryptoCurrencies())
+        cryptoCurrencyAdapter.submitList(Cache.getCryptoCurrencies().map {
+                currency -> currency.toCryptoCurrencyUIModel(CryptoConstant.DEFAULT_VOLUME)
+        })
 
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -198,18 +200,18 @@ class CryptoCurrencyFragment : Fragment(), OnItemClickListener, OnItemLongClickL
     private val currenciesObserver = androidx.lifecycle.Observer<Response<AllCryptoCurrencies>> { response ->
         if (response.isSuccessful) {
             Log.d("Observed", response.body()?.data?.coins.toString())
-            val currentCryptoCurrencies = response.body()?.data?.coins?.map { currency ->
-                currency.toCryptoCurrencyUIModel(timePeriod)
-            } as MutableList
+            val currentCryptoCurrencies = response.body()?.data?.coins as MutableList
 
             if(currentOffset == OFFSET) {
                 Cache.setCryptoCurrencies(currentCryptoCurrencies)
             }
             else{
-                Cache.setCryptoCurrencies(Cache.getCryptoCurrencies().plus(currentCryptoCurrencies) as MutableList<CryptoCurrencyUIModel>)
+                Cache.setCryptoCurrencies(Cache.getCryptoCurrencies().plus(currentCryptoCurrencies) as MutableList<CryptoCurrency>)
                 isLoading = true
             }
-            cryptoCurrencyAdapter.submitList(Cache.getCryptoCurrencies())
+            cryptoCurrencyAdapter.submitList(Cache.getCryptoCurrencies().map {
+                    currency -> currency.toCryptoCurrencyUIModel(timePeriod)
+            })
         }
     }
 }
