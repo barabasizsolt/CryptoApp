@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:gravity="center"
-    tools:context=".fragment.login.LoginFragment">
+    tools:context=".feature.user.LoginFragment">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/email_layout"
