@@ -142,7 +142,7 @@ object CryptoConstant {
         val month = time.month.name.lowercase().replaceFirstChar { it.uppercase() }.substring(0,3)
         return month + " " + time.dayOfMonth.toString() + ", " + time.year.toString()
     }
-    
+
     fun setValue(inputNumber: Double) : String {
         return format.format(inputNumber)
     }

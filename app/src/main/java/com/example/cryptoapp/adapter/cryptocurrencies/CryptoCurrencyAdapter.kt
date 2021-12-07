@@ -13,11 +13,9 @@ import com.example.cryptoapp.constant.cryptocurrencies.CryptoConstant.setCompact
 import com.example.cryptoapp.constant.cryptocurrencies.CryptoConstant.loadSvg
 import com.example.cryptoapp.constant.cryptocurrencies.CryptoConstant.setPercentage
 import com.example.cryptoapp.constant.cryptocurrencies.CryptoConstant.setPrice
-import com.example.cryptoapp.constant.cryptocurrencies.CryptoConstant.timePeriods
 import com.example.cryptoapp.interfaces.OnItemClickListener
 import com.example.cryptoapp.interfaces.OnItemLongClickListener
 import com.example.cryptoapp.model.allcryptocurrencies.CryptoCurrencyUIModel
-import java.util.*
 
 class CryptoCurrencyAdapter (
     private val onItemClickListener: OnItemClickListener,
@@ -30,8 +28,6 @@ class CryptoCurrencyAdapter (
             override fun areContentsTheSame(oldItem: CryptoCurrencyUIModel, newItem: CryptoCurrencyUIModel) = oldItem == newItem
         }
     ) {
-
-    private var timePeriod = timePeriods[1]
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CryptoCurrencyViewHolder = CryptoCurrencyViewHolder(
         itemView = LayoutInflater.from(parent.context).inflate(R.layout.crypto_element, parent, false),
