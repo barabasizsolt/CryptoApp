@@ -23,10 +23,11 @@ import com.example.cryptoapp.constant.cryptocurrencies.CryptoConstant.filterTags
 import com.example.cryptoapp.constant.cryptocurrencies.CryptoConstant.sortingParams
 import com.example.cryptoapp.constant.cryptocurrencies.CryptoConstant.sortingTags
 import com.example.cryptoapp.constant.cryptocurrencies.CryptoConstant.timePeriods
+import com.example.cryptoapp.constant.cryptocurrencies.CryptoConstant.toCryptoCurrencyUIModel
 import com.example.cryptoapp.interfaces.OnItemClickListener
 import com.example.cryptoapp.interfaces.OnItemLongClickListener
 import com.example.cryptoapp.model.allcryptocurrencies.AllCryptoCurrencies
-import com.example.cryptoapp.model.allcryptocurrencies.CryptoCurrency
+import com.example.cryptoapp.model.allcryptocurrencies.CryptoCurrencyUIModel
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -103,8 +104,9 @@ class CryptoCurrencyFragment : Fragment(), OnItemClickListener, OnItemLongClickL
         viewModel.allCryptoCurrenciesResponse.observe(requireActivity(), currenciesObserver)
         linearLayoutManager = LinearLayoutManager(requireContext())
         recyclerView.layoutManager = linearLayoutManager
-        cryptoCurrencyAdapter = CryptoCurrencyAdapter(Cache.getCryptoCurrencies(), this, this)
+        cryptoCurrencyAdapter = CryptoCurrencyAdapter(this, this)
         recyclerView.adapter = cryptoCurrencyAdapter
+        cryptoCurrencyAdapter.submitList(Cache.getCryptoCurrencies())
 
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -196,16 +198,18 @@ class CryptoCurrencyFragment : Fragment(), OnItemClickListener, OnItemLongClickL
     private val currenciesObserver = androidx.lifecycle.Observer<Response<AllCryptoCurrencies>> { response ->
         if (response.isSuccessful) {
             Log.d("Observed", response.body()?.data?.coins.toString())
-            val currencies = response.body()?.data?.coins as MutableList<CryptoCurrency>
+            val currentCryptoCurrencies = response.body()?.data?.coins?.map { currency ->
+                currency.toCryptoCurrencyUIModel(timePeriod)
+            } as MutableList
+
             if(currentOffset == OFFSET) {
-                Cache.setCryptoCurrencies(currencies)
-                cryptoCurrencyAdapter.resetData(currencies, timePeriod)
+                Cache.setCryptoCurrencies(currentCryptoCurrencies)
             }
             else{
-                Cache.setCryptoCurrencies(Cache.getCryptoCurrencies().plus(currencies) as MutableList<CryptoCurrency>)
-                cryptoCurrencyAdapter.addData(currencies)
+                Cache.setCryptoCurrencies(Cache.getCryptoCurrencies().plus(currentCryptoCurrencies) as MutableList<CryptoCurrencyUIModel>)
                 isLoading = true
             }
+            cryptoCurrencyAdapter.submitList(Cache.getCryptoCurrencies())
         }
     }
 }

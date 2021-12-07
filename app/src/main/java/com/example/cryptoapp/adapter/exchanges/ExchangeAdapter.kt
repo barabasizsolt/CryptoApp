@@ -5,6 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cryptoapp.R
 import com.example.cryptoapp.constant.cryptocurrencies.CryptoConstant.setCompactPrice
@@ -13,21 +15,26 @@ import com.example.cryptoapp.interfaces.OnItemClickListener
 import com.example.cryptoapp.interfaces.OnItemLongClickListener
 import com.example.cryptoapp.model.exchanges.Exchange
 
-class ExchangeAdapter (private val mList: MutableList<Exchange>, onItemClickListener: OnItemClickListener, onItemLongClickListener: OnItemLongClickListener)
-    : RecyclerView.Adapter<ExchangeAdapter.ViewHolder>() {
+class ExchangeAdapter (
+    private val onItemClickListener: OnItemClickListener,
+    private val onItemLongClickListener: OnItemLongClickListener)
 
-    private val mOnItemClickListener: OnItemClickListener = onItemClickListener
-    private val mOnItemLongClickListener: OnItemLongClickListener = onItemLongClickListener
+    : ListAdapter<Exchange, ExchangeAdapter.ExchangeViewHolder>(
+        object: DiffUtil.ItemCallback<Exchange>() {
+            override fun areItemsTheSame(oldItem: Exchange, newItem: Exchange) = oldItem.id == newItem.id
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.exchange_element, parent, false)
+            override fun areContentsTheSame(oldItem: Exchange, newItem: Exchange) = oldItem == newItem
+        }
+    )
+{
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExchangeViewHolder = ExchangeViewHolder(
+        itemView = LayoutInflater.from(parent.context).inflate(R.layout.exchange_element, parent, false),
+        onItemClickListener = onItemClickListener,
+        onItemLongClickListener = onItemLongClickListener
+    )
 
-        return ViewHolder(view, mOnItemClickListener, mOnItemLongClickListener)
-    }
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val itemsViewModel = mList[position]
+    override fun onBindViewHolder(holder: ExchangeViewHolder, position: Int) {
+        val itemsViewModel = getItem(position)
 
         if(!itemsViewModel.image.isNullOrEmpty()){
             holder.exchangeLogo.loadPng(itemsViewModel.image)
@@ -43,31 +50,23 @@ class ExchangeAdapter (private val mList: MutableList<Exchange>, onItemClickList
         }
     }
 
-    override fun getItemCount(): Int = mList.size
-
-    fun addData(data : MutableList<Exchange>){
-        val insertIndex = mList.size
-        mList.addAll(insertIndex, data)
-        notifyItemRangeInserted(insertIndex, data.size)
-    }
-
-    class ViewHolder(itemView: View, onItemClickListener: OnItemClickListener, onItemLongClickListener: OnItemLongClickListener)
-        : RecyclerView.ViewHolder(itemView), View.OnClickListener, View.OnLongClickListener{
-
-        private val mOnItemClickListener: OnItemClickListener = onItemClickListener
-        private val mOnItemLongClickListener: OnItemLongClickListener = onItemLongClickListener
-
+    class ExchangeViewHolder(
+        itemView: View,
+        private val onItemClickListener: OnItemClickListener,
+        private val onItemLongClickListener: OnItemLongClickListener)
+        : RecyclerView.ViewHolder(itemView), View.OnClickListener, View.OnLongClickListener
+    {
         val exchangeLogo: ImageView = itemView.findViewById(R.id.exchange_logo)
         val exchangeName: TextView = itemView.findViewById(R.id.exchange_name)
         val exchangeTrustScore: TextView = itemView.findViewById(R.id.exchange_trust_score)
         val volume: TextView = itemView.findViewById(R.id.volume)
 
         override fun onClick(view: View) {
-            mOnItemClickListener.onItemClick(bindingAdapterPosition)
+            onItemClickListener.onItemClick(bindingAdapterPosition)
         }
 
         override fun onLongClick(view: View): Boolean {
-            mOnItemLongClickListener.onItemLongClick(bindingAdapterPosition)
+            onItemLongClickListener.onItemLongClick(bindingAdapterPosition)
             return true
         }
 

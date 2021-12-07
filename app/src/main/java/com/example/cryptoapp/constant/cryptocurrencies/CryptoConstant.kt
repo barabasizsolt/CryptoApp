@@ -17,6 +17,8 @@ import java.util.*
 import android.icu.util.CurrencyAmount
 import android.icu.text.CompactDecimalFormat.CompactStyle
 import android.icu.text.CompactDecimalFormat
+import com.example.cryptoapp.model.allcryptocurrencies.CryptoCurrency
+import com.example.cryptoapp.model.allcryptocurrencies.CryptoCurrencyUIModel
 
 object CryptoConstant {
     private const val COUNTRY = "US"
@@ -34,9 +36,13 @@ object CryptoConstant {
         format.maximumFractionDigits = 2
     }
 
+    private const val EMPTY_STR = "null"
+
     const val CURRENCY_FIRE_STORE_PATH = "currencies"
 
     const val COIN_ID : String = "coin_id"
+
+    const val DEFAULT_VOLUME = "24H"
 
     const val HOUR24 = "24h"
     const val DAY7 = "7d"
@@ -100,7 +106,9 @@ object CryptoConstant {
         imageLoader.enqueue(request)
     }
 
-    fun setPercentage(percentage : Double, textView: TextView){
+    fun setPercentage(percentageStr : String, textView: TextView){
+        if(percentageStr == EMPTY_STR) return
+        val percentage = percentageStr.toDouble()
         when{
             percentage < 0 -> {
                 val percentageText = String.format("%.2f", percentage) + "%"
@@ -115,6 +123,18 @@ object CryptoConstant {
         }
     }
 
+    fun CryptoCurrency.toCryptoCurrencyUIModel(timePeriod: String) = CryptoCurrencyUIModel(
+        uuid = uuid,
+        symbol = symbol.toString(),
+        name = name.toString(),
+        iconUrl = iconUrl.toString(),
+        marketCap = marketCap.toString(),
+        price = price.toString(),
+        change = change.toString(),
+        volume = volume.toString(),
+        timePeriod = timePeriod.uppercase(Locale.getDefault())
+    )
+
     fun getTime(timeStamp : Long): LocalDateTime = Instant.ofEpochSecond(timeStamp).atZone(ZoneId.systemDefault()).toLocalDateTime()
 
     fun getFormattedTime(timeStamp : Long) : String{
@@ -122,11 +142,7 @@ object CryptoConstant {
         val month = time.month.name.lowercase().replaceFirstChar { it.uppercase() }.substring(0,3)
         return month + " " + time.dayOfMonth.toString() + ", " + time.year.toString()
     }
-
-    fun ChipGroup.setChildrenEnabled(enable: Boolean) {
-        children.forEach { it.isEnabled = enable }
-    }
-
+    
     fun setValue(inputNumber: Double) : String {
         return format.format(inputNumber)
     }

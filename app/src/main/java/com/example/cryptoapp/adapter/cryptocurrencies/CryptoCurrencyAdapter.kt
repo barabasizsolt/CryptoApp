@@ -1,11 +1,12 @@
 package com.example.cryptoapp.adapter.cryptocurrencies
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cryptoapp.R
 import com.example.cryptoapp.constant.cryptocurrencies.CryptoConstant.setCompactPrice
@@ -15,68 +16,49 @@ import com.example.cryptoapp.constant.cryptocurrencies.CryptoConstant.setPrice
 import com.example.cryptoapp.constant.cryptocurrencies.CryptoConstant.timePeriods
 import com.example.cryptoapp.interfaces.OnItemClickListener
 import com.example.cryptoapp.interfaces.OnItemLongClickListener
-import com.example.cryptoapp.model.allcryptocurrencies.CryptoCurrency
+import com.example.cryptoapp.model.allcryptocurrencies.CryptoCurrencyUIModel
 import java.util.*
 
-class CryptoCurrencyAdapter (private val mList: MutableList<CryptoCurrency>, onItemClickListener: OnItemClickListener, onItemLongClickListener: OnItemLongClickListener)
-    : RecyclerView.Adapter<CryptoCurrencyAdapter.ViewHolder>() {
+class CryptoCurrencyAdapter (
+    private val onItemClickListener: OnItemClickListener,
+    private val onItemLongClickListener: OnItemLongClickListener)
 
-    private val mOnItemClickListener: OnItemClickListener = onItemClickListener
-    private val mOnItemLongClickListener: OnItemLongClickListener = onItemLongClickListener
+    : ListAdapter<CryptoCurrencyUIModel, CryptoCurrencyAdapter.CryptoCurrencyViewHolder>(
+        object : DiffUtil.ItemCallback<CryptoCurrencyUIModel>(){
+            override fun areItemsTheSame(oldItem: CryptoCurrencyUIModel, newItem: CryptoCurrencyUIModel) = oldItem.uuid == newItem.uuid
+
+            override fun areContentsTheSame(oldItem: CryptoCurrencyUIModel, newItem: CryptoCurrencyUIModel) = oldItem == newItem
+        }
+    ) {
+
     private var timePeriod = timePeriods[1]
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.crypto_element, parent, false)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CryptoCurrencyViewHolder = CryptoCurrencyViewHolder(
+        itemView = LayoutInflater.from(parent.context).inflate(R.layout.crypto_element, parent, false),
+        onItemClickListener = onItemClickListener,
+        onItemLongClickListener = onItemLongClickListener
+    )
 
-        return ViewHolder(view, mOnItemClickListener, mOnItemLongClickListener)
+    override fun onBindViewHolder(holder: CryptoCurrencyViewHolder, position: Int) {
+        val uiCryptoCurrencyModel = getItem(position)
+
+        holder.percentageChangeText.text = uiCryptoCurrencyModel.timePeriod
+        holder.currencyName.text = uiCryptoCurrencyModel.name
+        holder.currencySymbol.text = uiCryptoCurrencyModel.symbol
+        holder.currencyLogo.loadSvg(uiCryptoCurrencyModel.iconUrl)
+        holder.currencyValue.text = setPrice(uiCryptoCurrencyModel.price.toDouble())
+        setPercentage(uiCryptoCurrencyModel.change, holder.percentChange)
+        holder.volume.text = setCompactPrice(uiCryptoCurrencyModel.volume.toDouble())
+        holder.marketCap.text = setCompactPrice(uiCryptoCurrencyModel.marketCap.toDouble())
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val itemsViewModel = mList[position]
+    class CryptoCurrencyViewHolder(
+        itemView: View,
+        private val onItemClickListener: OnItemClickListener,
+        private val onItemLongClickListener: OnItemLongClickListener)
 
-        holder.percentageChangeText.text = timePeriod.uppercase(Locale.getDefault())
-        holder.currencyName.text = itemsViewModel.name
-        holder.currencySymbol.text = itemsViewModel.symbol
-        if(!itemsViewModel.iconUrl.isNullOrEmpty()){
-            holder.currencyLogo.loadSvg(itemsViewModel.iconUrl)
-        }
-        if(!itemsViewModel.price.isNullOrEmpty()){
-            holder.currencyValue.text = setPrice(itemsViewModel.price.toDouble())
-        }
-        if(!itemsViewModel.change.isNullOrEmpty()){
-            setPercentage(itemsViewModel.change.toDouble(), holder.percentChange)
-        }
-        if(!itemsViewModel.volume.isNullOrEmpty()){
-            holder.volume.text = setCompactPrice(itemsViewModel.volume.toDouble())
-        }
-        if(!itemsViewModel.marketCap.isNullOrEmpty()){
-            holder.marketCap.text = setCompactPrice(itemsViewModel.marketCap.toDouble())
-        }
-    }
-
-    override fun getItemCount(): Int = mList.size
-
-    @SuppressLint("NotifyDataSetChanged")
-    fun resetData(data : MutableList<CryptoCurrency>, timePeriod : String = this.timePeriod) {
-        mList.clear()
-        mList.addAll(data)
-        this.timePeriod = timePeriod
-        notifyDataSetChanged()
-    }
-
-    fun addData(data : MutableList<CryptoCurrency>){
-        val insertIndex = mList.size
-        mList.addAll(insertIndex, data)
-        notifyItemRangeInserted(insertIndex, data.size)
-    }
-
-    class ViewHolder(itemView: View, onItemClickListener: OnItemClickListener, onItemLongClickListener: OnItemLongClickListener)
-        : RecyclerView.ViewHolder(itemView), View.OnClickListener, View.OnLongClickListener{
-
-        private val mOnItemClickListener: OnItemClickListener = onItemClickListener
-        private val mOnItemLongClickListener: OnItemLongClickListener = onItemLongClickListener
-
+        : RecyclerView.ViewHolder(itemView), View.OnClickListener, View.OnLongClickListener
+    {
         val currencyLogo: ImageView = itemView.findViewById(R.id.crypto_logo)
         val currencyName: TextView = itemView.findViewById(R.id.crypto_name)
         val currencySymbol: TextView = itemView.findViewById(R.id.crypto_symbol)
@@ -87,11 +69,11 @@ class CryptoCurrencyAdapter (private val mList: MutableList<CryptoCurrency>, onI
         val marketCap: TextView = itemView.findViewById(R.id.market_cap)
 
         override fun onClick(view: View) {
-            mOnItemClickListener.onItemClick(bindingAdapterPosition)
+            onItemClickListener.onItemClick(bindingAdapterPosition)
         }
 
         override fun onLongClick(view: View): Boolean {
-            mOnItemLongClickListener.onItemLongClick(bindingAdapterPosition)
+            onItemLongClickListener.onItemLongClick(bindingAdapterPosition)
             return true
         }
 

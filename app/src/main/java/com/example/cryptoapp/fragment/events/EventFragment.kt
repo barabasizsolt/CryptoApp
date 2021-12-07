@@ -32,14 +32,15 @@ class EventFragment : Fragment(), OnItemClickListener, OnItemLongClickListener {
     private var visibleItemCount = 0
     private var totalItemCount = 0
 
+    private val events = mutableListOf<Event>()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_event, container, false)
-
         bindUI(view)
-
+        initUI()
         return view
     }
 
@@ -55,11 +56,12 @@ class EventFragment : Fragment(), OnItemClickListener, OnItemLongClickListener {
         viewModel.allEventsResponse.observe(requireActivity(), eventsObserver)
     }
 
-    private fun initUI(events: MutableList<Event>){
+    private fun initUI(){
         linearLayoutManager = LinearLayoutManager(requireContext())
         recyclerView.layoutManager = linearLayoutManager
-        eventAdapter = EventAdapter(events, this, this)
+        eventAdapter = EventAdapter(this, this)
         recyclerView.adapter = eventAdapter
+        viewModel.getAllEvents(currentPage.toString())
 
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -83,14 +85,14 @@ class EventFragment : Fragment(), OnItemClickListener, OnItemLongClickListener {
     private val eventsObserver = androidx.lifecycle.Observer<Response<AllEvents>> { response ->
         if(response.isSuccessful){
             Log.d("Exchanges", response.body().toString())
-            val events = response.body()?.data as MutableList<Event>
             if(currentPage.toString() == ExchangeConstant.PAGE) {
-                initUI(events)
+                events.clear()
             }
             else{
-                eventAdapter.addData(events)
                 isLoading = true
             }
+            events.addAll(response.body()?.data as MutableList<Event>)
+            eventAdapter.submitList(events)
         }
     }
 

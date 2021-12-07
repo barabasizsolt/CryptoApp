@@ -15,13 +15,15 @@ import com.example.cryptoapp.api.cryptocurrencies.CryptoApiRepository
 import com.example.cryptoapp.api.cryptocurrencies.CryptoApiViewModel
 import com.example.cryptoapp.cache.Cache
 import com.example.cryptoapp.constant.cryptocurrencies.CryptoConstant
+import com.example.cryptoapp.constant.cryptocurrencies.CryptoConstant.DEFAULT_VOLUME
+import com.example.cryptoapp.constant.cryptocurrencies.CryptoConstant.toCryptoCurrencyUIModel
 import com.example.cryptoapp.fragment.cryptocurrencies.CryptoCurrencyFragment
 import com.example.cryptoapp.fragment.events.EventFragment
 import com.example.cryptoapp.fragment.exchanges.ExchangeFragment
 import com.example.cryptoapp.fragment.login.LoginFragment
 import com.example.cryptoapp.fragment.profile.ProfileFragment
 import com.example.cryptoapp.model.allcryptocurrencies.AllCryptoCurrencies
-import com.example.cryptoapp.model.allcryptocurrencies.CryptoCurrency
+import com.example.cryptoapp.model.allcryptocurrencies.CryptoCurrencyUIModel
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Response
 import com.google.firebase.auth.FirebaseAuth
@@ -69,7 +71,12 @@ class MainActivity : AppCompatActivity() {
     private val mainObserver = androidx.lifecycle.Observer<Response<AllCryptoCurrencies>> { response ->
         if (response.isSuccessful) {
             Log.d("Observed", response.body()?.data.toString())
-            response.body()?.data?.let { Cache.setCryptoCurrencies(it.coins as MutableList<CryptoCurrency>) }
+
+            val cryptoCurrencyUIModels = response.body()?.data?.coins?.map {
+                    currency -> currency.toCryptoCurrencyUIModel(DEFAULT_VOLUME)
+            } as MutableList
+
+            Cache.setCryptoCurrencies(cryptoCurrencyUIModels)
             initBottomNavigation()
 
             if(mAuth.currentUser == null){

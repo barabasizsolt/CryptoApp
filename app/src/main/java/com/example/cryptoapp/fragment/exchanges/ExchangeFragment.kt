@@ -37,9 +37,8 @@ class ExchangeFragment : Fragment(), OnItemClickListener, OnItemLongClickListene
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_exchange, container, false)
-
         bindUI(view)
-
+        initUI()
         return view
     }
 
@@ -55,11 +54,12 @@ class ExchangeFragment : Fragment(), OnItemClickListener, OnItemLongClickListene
         viewModel.allExchangeResponse.observe(requireActivity(), exchangesObserver)
     }
 
-    private fun initUI(exchanges : MutableList<Exchange>){
+    private fun initUI(){
         linearLayoutManager = LinearLayoutManager(requireContext())
         recyclerView.layoutManager = linearLayoutManager
-        exchangeAdapter = ExchangeAdapter(exchanges, this, this)
+        exchangeAdapter = ExchangeAdapter(this, this)
         recyclerView.adapter = exchangeAdapter
+        viewModel.getAllExchanges(perPage = PER_PAGE, currentPage.toString())
 
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -86,13 +86,12 @@ class ExchangeFragment : Fragment(), OnItemClickListener, OnItemLongClickListene
             val exchanges = response.body() as MutableList<Exchange>
             if(currentPage.toString() == PAGE) {
                 Cache.setExchanges(exchanges)
-                initUI(exchanges)
             }
             else{
                 Cache.setExchanges(Cache.getExchanges().plus(exchanges) as MutableList<Exchange>)
-                exchangeAdapter.addData(exchanges)
                 isLoading = true
             }
+            exchangeAdapter.submitList(Cache.getExchanges())
         }
     }
 

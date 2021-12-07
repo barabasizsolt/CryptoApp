@@ -170,7 +170,7 @@ class CryptoCurrencyDetailsFragment : Fragment() {
             cryptoPrice.text = setPrice(coin.price.toDouble())
         }
         if(!coin.change.isNullOrEmpty()) {
-            setPercentage(coin.change.toDouble(), percentageChange24H)
+            setPercentage(coin.change, percentageChange24H)
         }
         if(!coin.volume.isNullOrEmpty()){
             volume.text = setCompactPrice(coin.volume.toDouble())

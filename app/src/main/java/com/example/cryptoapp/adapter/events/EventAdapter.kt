@@ -1,71 +1,67 @@
 package com.example.cryptoapp.adapter.events
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.cryptoapp.R
-import com.example.cryptoapp.constant.cryptocurrencies.CryptoConstant
-import com.example.cryptoapp.constant.cryptocurrencies.CryptoConstant.loadSvg
 import com.example.cryptoapp.interfaces.OnItemClickListener
 import com.example.cryptoapp.interfaces.OnItemLongClickListener
 import com.example.cryptoapp.model.events.Event
-import java.util.*
 
-class EventAdapter (private val mList: MutableList<Event>, onItemClickListener: OnItemClickListener, onItemLongClickListener: OnItemLongClickListener)
-    : RecyclerView.Adapter<EventAdapter.ViewHolder>() {
+class EventAdapter (
+    private val onItemClickListener: OnItemClickListener,
+    private val onItemLongClickListener: OnItemLongClickListener)
 
-    private val mOnItemClickListener: OnItemClickListener = onItemClickListener
-    private val mOnItemLongClickListener: OnItemLongClickListener = onItemLongClickListener
+    : ListAdapter<Event, EventAdapter.EventViewHolder>(
+        object: DiffUtil.ItemCallback<Event>() {
+            override fun areItemsTheSame(oldItem: Event, newItem: Event) = oldItem.title == newItem.title
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.event_element, parent, false)
-
-        return ViewHolder(view, mOnItemClickListener, mOnItemLongClickListener)
-    }
-
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val itemsViewModel = mList[position]
-
-        if(!itemsViewModel.screenshot.isNullOrEmpty()){
-            Glide.with(holder.itemView).load(itemsViewModel.screenshot).into(holder.eventLogo)
+            override fun areContentsTheSame(oldItem: Event, newItem: Event) = oldItem == newItem
         }
-        if(!itemsViewModel.title.isNullOrEmpty()){
-            holder.eventName.text = itemsViewModel.title
+    )
+{
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder = EventViewHolder(
+        itemView = LayoutInflater.from(parent.context).inflate(R.layout.event_element, parent, false),
+        onItemClickListener = onItemClickListener,
+        onItemLongClickListener = onItemLongClickListener
+    )
+
+    override fun onBindViewHolder(holder: EventViewHolder, position: Int) {
+        val uiEventModel = getItem(position)
+
+        if(!uiEventModel.screenshot.isNullOrEmpty()){
+            Glide.with(holder.itemView).load(uiEventModel.screenshot).into(holder.eventLogo)
         }
-        if(!itemsViewModel.organizer.isNullOrEmpty()){
-            val text = "Organizer: " + itemsViewModel.organizer
+        if(!uiEventModel.title.isNullOrEmpty()){
+            holder.eventName.text = uiEventModel.title
+        }
+        if(!uiEventModel.organizer.isNullOrEmpty()){
+            val text = "Organizer: " + uiEventModel.organizer
             holder.eventOrganizer.text = text
         }
-        if(!itemsViewModel.startDate.isNullOrEmpty()){
-            val text = "Starts: " + itemsViewModel.startDate
+        if(!uiEventModel.startDate.isNullOrEmpty()){
+            val text = "Starts: " + uiEventModel.startDate
             holder.eventStartDate.text = text
         }
-        if(!itemsViewModel.endDate.isNullOrEmpty()){
-            val text = "Ends: " + itemsViewModel.endDate
+        if(!uiEventModel.endDate.isNullOrEmpty()){
+            val text = "Ends: " + uiEventModel.endDate
             holder.eventEndDate.text = text
         }
     }
 
-    override fun getItemCount(): Int = mList.size
+    class EventViewHolder(
+        itemView: View,
+        private val onItemClickListener: OnItemClickListener,
+        private val onItemLongClickListener: OnItemLongClickListener)
 
-    fun addData(data : MutableList<Event>){
-        val insertIndex = mList.size
-        mList.addAll(insertIndex, data)
-        notifyItemRangeInserted(insertIndex, data.size)
-    }
-
-    class ViewHolder(itemView: View, onItemClickListener: OnItemClickListener, onItemLongClickListener: OnItemLongClickListener)
-        : RecyclerView.ViewHolder(itemView), View.OnClickListener, View.OnLongClickListener{
-
-        private val mOnItemClickListener: OnItemClickListener = onItemClickListener
-        private val mOnItemLongClickListener: OnItemLongClickListener = onItemLongClickListener
-
+        : RecyclerView.ViewHolder(itemView), View.OnClickListener, View.OnLongClickListener
+    {
         val eventLogo: ImageView = itemView.findViewById(R.id.event_logo)
         val eventName: TextView = itemView.findViewById(R.id.event_name)
         val eventOrganizer: TextView = itemView.findViewById(R.id.event_organizer)
@@ -73,11 +69,11 @@ class EventAdapter (private val mList: MutableList<Event>, onItemClickListener: 
         val eventEndDate: TextView = itemView.findViewById(R.id.event_end_date)
 
         override fun onClick(view: View) {
-            mOnItemClickListener.onItemClick(bindingAdapterPosition)
+            onItemClickListener.onItemClick(bindingAdapterPosition)
         }
 
         override fun onLongClick(view: View): Boolean {
-            mOnItemLongClickListener.onItemLongClick(bindingAdapterPosition)
+            onItemLongClickListener.onItemLongClick(bindingAdapterPosition)
             return true
         }
 

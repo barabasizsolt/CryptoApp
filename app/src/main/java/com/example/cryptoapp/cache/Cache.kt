@@ -1,16 +1,17 @@
 package com.example.cryptoapp.cache
 
 import com.example.cryptoapp.model.allcryptocurrencies.CryptoCurrency
+import com.example.cryptoapp.model.allcryptocurrencies.CryptoCurrencyUIModel
 import com.example.cryptoapp.model.cryptocurrencydetail.CoinDetails
 import com.example.cryptoapp.model.exchanges.Exchange
 
 object Cache {
-    private lateinit var cryptoCurrencies : MutableList<CryptoCurrency>
+    private lateinit var cryptoCurrencies : MutableList<CryptoCurrencyUIModel>
     private lateinit var cryptoCurrency : CoinDetails
     private lateinit var exchanges : MutableList<Exchange>
     private val userWatchLists: MutableList<String> = mutableListOf()
 
-    fun setCryptoCurrencies(data : MutableList<CryptoCurrency>) {
+    fun setCryptoCurrencies(data : MutableList<CryptoCurrencyUIModel>) {
         cryptoCurrencies = data
     }
 
