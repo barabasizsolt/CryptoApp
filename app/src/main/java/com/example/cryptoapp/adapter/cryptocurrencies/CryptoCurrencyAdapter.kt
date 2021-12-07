@@ -9,31 +9,40 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cryptoapp.R
-import com.example.cryptoapp.constant.cryptocurrencies.CryptoConstant.setCompactPrice
 import com.example.cryptoapp.constant.cryptocurrencies.CryptoConstant.loadSvg
+import com.example.cryptoapp.constant.cryptocurrencies.CryptoConstant.setCompactPrice
 import com.example.cryptoapp.constant.cryptocurrencies.CryptoConstant.setPercentage
 import com.example.cryptoapp.constant.cryptocurrencies.CryptoConstant.setPrice
 import com.example.cryptoapp.interfaces.OnItemClickListener
 import com.example.cryptoapp.interfaces.OnItemLongClickListener
 import com.example.cryptoapp.model.allcryptocurrencies.CryptoCurrencyUIModel
 
-class CryptoCurrencyAdapter (
+class CryptoCurrencyAdapter(
     private val onItemClickListener: OnItemClickListener,
-    private val onItemLongClickListener: OnItemLongClickListener)
+    private val onItemLongClickListener: OnItemLongClickListener
+)
 
     : ListAdapter<CryptoCurrencyUIModel, CryptoCurrencyAdapter.CryptoCurrencyViewHolder>(
-        object : DiffUtil.ItemCallback<CryptoCurrencyUIModel>(){
-            override fun areItemsTheSame(oldItem: CryptoCurrencyUIModel, newItem: CryptoCurrencyUIModel) = oldItem.uuid == newItem.uuid
+    object : DiffUtil.ItemCallback<CryptoCurrencyUIModel>() {
+        override fun areItemsTheSame(
+            oldItem: CryptoCurrencyUIModel,
+            newItem: CryptoCurrencyUIModel
+        ) = oldItem.uuid == newItem.uuid
 
-            override fun areContentsTheSame(oldItem: CryptoCurrencyUIModel, newItem: CryptoCurrencyUIModel) = oldItem == newItem
-        }
-    ) {
+        override fun areContentsTheSame(
+            oldItem: CryptoCurrencyUIModel,
+            newItem: CryptoCurrencyUIModel
+        ) = oldItem == newItem
+    }
+) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CryptoCurrencyViewHolder = CryptoCurrencyViewHolder(
-        itemView = LayoutInflater.from(parent.context).inflate(R.layout.crypto_element, parent, false),
-        onItemClickListener = onItemClickListener,
-        onItemLongClickListener = onItemLongClickListener
-    )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CryptoCurrencyViewHolder =
+        CryptoCurrencyViewHolder(
+            itemView = LayoutInflater.from(parent.context)
+                .inflate(R.layout.crypto_element, parent, false),
+            onItemClickListener = onItemClickListener,
+            onItemLongClickListener = onItemLongClickListener
+        )
 
     override fun onBindViewHolder(holder: CryptoCurrencyViewHolder, position: Int) {
         val uiCryptoCurrencyModel = getItem(position)
@@ -51,10 +60,10 @@ class CryptoCurrencyAdapter (
     class CryptoCurrencyViewHolder(
         itemView: View,
         private val onItemClickListener: OnItemClickListener,
-        private val onItemLongClickListener: OnItemLongClickListener)
+        private val onItemLongClickListener: OnItemLongClickListener
+    )
 
-        : RecyclerView.ViewHolder(itemView), View.OnClickListener, View.OnLongClickListener
-    {
+        : RecyclerView.ViewHolder(itemView), View.OnClickListener, View.OnLongClickListener {
         val currencyLogo: ImageView = itemView.findViewById(R.id.crypto_logo)
         val currencyName: TextView = itemView.findViewById(R.id.crypto_name)
         val currencySymbol: TextView = itemView.findViewById(R.id.crypto_symbol)

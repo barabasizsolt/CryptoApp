@@ -2,10 +2,10 @@ package com.example.cryptoapp.fragment.events
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cryptoapp.R
@@ -26,8 +26,8 @@ class EventFragment : Fragment(), OnItemClickListener, OnItemLongClickListener {
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var eventAdapter: EventAdapter
 
-    private var isLoading : Boolean = true
-    private var currentPage : Long = ExchangeConstant.PAGE.toLong()
+    private var isLoading: Boolean = true
+    private var currentPage: Long = ExchangeConstant.PAGE.toLong()
     private var pastVisibleItems = 0
     private var visibleItemCount = 0
     private var totalItemCount = 0
@@ -49,14 +49,14 @@ class EventFragment : Fragment(), OnItemClickListener, OnItemLongClickListener {
         viewModel.allEventsResponse.removeObserver(eventsObserver)
     }
 
-    private fun bindUI(view: View){
+    private fun bindUI(view: View) {
         recyclerView = view.findViewById(R.id.recyclerview)
         viewModel = CoinGekkoApiViewModel(CoinGekkoApiRepository())
         viewModel.getAllEvents(currentPage.toString())
         viewModel.allEventsResponse.observe(requireActivity(), eventsObserver)
     }
 
-    private fun initUI(){
+    private fun initUI() {
         linearLayoutManager = LinearLayoutManager(requireContext())
         recyclerView.layoutManager = linearLayoutManager
         eventAdapter = EventAdapter(this, this)
@@ -83,12 +83,11 @@ class EventFragment : Fragment(), OnItemClickListener, OnItemLongClickListener {
     }
 
     private val eventsObserver = androidx.lifecycle.Observer<Response<AllEvents>> { response ->
-        if(response.isSuccessful){
+        if (response.isSuccessful) {
             Log.d("Exchanges", response.body().toString())
-            if(currentPage.toString() == ExchangeConstant.PAGE) {
+            if (currentPage.toString() == ExchangeConstant.PAGE) {
                 events.clear()
-            }
-            else{
+            } else {
                 isLoading = true
             }
             events.addAll(response.body()?.data as MutableList<Event>)
