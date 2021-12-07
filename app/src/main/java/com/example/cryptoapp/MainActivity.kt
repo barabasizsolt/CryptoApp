@@ -1,12 +1,12 @@
 package com.example.cryptoapp
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
@@ -22,12 +22,12 @@ import com.example.cryptoapp.fragment.login.LoginFragment
 import com.example.cryptoapp.fragment.profile.ProfileFragment
 import com.example.cryptoapp.model.allcryptocurrencies.AllCryptoCurrencies
 import com.example.cryptoapp.model.allcryptocurrencies.CryptoCurrency
-import kotlinx.android.synthetic.main.activity_main.*
-import retrofit2.Response
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.activity_main.*
+import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: CryptoApiViewModel
@@ -66,37 +66,38 @@ class MainActivity : AppCompatActivity() {
         viewModel.allCryptoCurrenciesResponse.removeObserver(mainObserver)
     }
 
-    private val mainObserver = androidx.lifecycle.Observer<Response<AllCryptoCurrencies>> { response ->
-        if (response.isSuccessful) {
-            Log.d("Observed", response.body()?.data.toString())
-            response.body()?.data?.let { Cache.setCryptoCurrencies(it.coins as MutableList<CryptoCurrency>) }
-            initBottomNavigation()
+    private val mainObserver =
+        androidx.lifecycle.Observer<Response<AllCryptoCurrencies>> { response ->
+            if (response.isSuccessful) {
+                Log.d("Observed", response.body()?.data.toString())
+                Cache.setCryptoCurrencies(response.body()?.data?.coins as MutableList<CryptoCurrency>)
+                initBottomNavigation()
 
-            if(mAuth.currentUser == null){
-                replaceFragment(LoginFragment(), R.id.activity_fragment_container)
-            }else{
-                initModalNavigationDrawer()
-                getUserWatchLists()
-                replaceFragment(CryptoCurrencyFragment(), R.id.activity_fragment_container)
+                if (mAuth.currentUser == null) {
+                    replaceFragment(LoginFragment(), R.id.activity_fragment_container)
+                } else {
+                    initModalNavigationDrawer()
+                    getUserWatchLists()
+                    replaceFragment(CryptoCurrencyFragment(), R.id.activity_fragment_container)
+                }
             }
         }
-    }
 
-    fun getUserWatchLists(){
+    fun getUserWatchLists() {
         firestore.collection(CryptoConstant.CURRENCY_FIRE_STORE_PATH)
             .get()
             .addOnSuccessListener { result ->
                 for (document in result) {
-                    if(document.data["userid"].toString() == mAuth.currentUser?.uid){
+                    if (document.data["userid"].toString() == mAuth.currentUser?.uid) {
                         Cache.addUserWatchList(document.data["uuid"].toString())
                     }
                 }
             }
     }
 
-    private fun initBottomNavigation(){
-        bottomNavigation.setOnItemSelectedListener {item ->
-            when(item.itemId) {
+    private fun initBottomNavigation() {
+        bottomNavigation.setOnItemSelectedListener { item ->
+            when (item.itemId) {
                 R.id.currencies -> {
                     replaceFragment(CryptoCurrencyFragment(), R.id.activity_fragment_container)
                     true
@@ -118,14 +119,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun initModalNavigationDrawer(){
+    fun initModalNavigationDrawer() {
         topAppBar.setNavigationOnClickListener {
             drawerLayout.open()
         }
 
         navigationView.setNavigationItemSelectedListener { menuItem ->
             menuItem.isChecked = true
-            when(menuItem.itemId){
+            when (menuItem.itemId) {
                 R.id.profile -> {
                     replaceFragment(ProfileFragment(), R.id.activity_fragment_container)
                 }
@@ -147,19 +148,30 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
-        Glide.with(this).load(mAuth.currentUser?.photoUrl).placeholder(R.drawable.ic_avataaars).circleCrop().into(userLogo)
+        Glide.with(this).load(mAuth.currentUser?.photoUrl).placeholder(R.drawable.ic_avataaars)
+            .circleCrop().into(userLogo)
         userEmail.text = mAuth.currentUser?.email.toString()
     }
 
-    fun replaceFragment(fragment: Fragment, containerId: Int, addToBackStack:Boolean = false, withAnimation:Boolean = false){
+    fun replaceFragment(
+        fragment: Fragment,
+        containerId: Int,
+        addToBackStack: Boolean = false,
+        withAnimation: Boolean = false
+    ) {
         val transaction = supportFragmentManager.beginTransaction()
-        when(withAnimation){
+        when (withAnimation) {
             true -> {
-                transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out, R.anim.fade_in, R.anim.fade_out)
+                transaction.setCustomAnimations(
+                    R.anim.fade_in,
+                    R.anim.fade_out,
+                    R.anim.fade_in,
+                    R.anim.fade_out
+                )
             }
         }
         transaction.replace(containerId, fragment)
-        when(addToBackStack){
+        when (addToBackStack) {
             true -> {
                 transaction.addToBackStack(null)
             }
