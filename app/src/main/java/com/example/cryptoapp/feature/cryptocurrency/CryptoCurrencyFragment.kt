@@ -10,9 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cryptoapp.MainActivity
 import com.example.cryptoapp.R
-import com.example.cryptoapp.data.repository.CryptoApiRepository
-import com.example.cryptoapp.feature.viewModel.CryptoApiViewModel
-import com.example.cryptoapp.data.repository.Cache
 import com.example.cryptoapp.data.constant.CryptoConstant
 import com.example.cryptoapp.data.constant.CryptoConstant.CHECKED_SORTING_ITEM_INDEX
 import com.example.cryptoapp.data.constant.CryptoConstant.CHECKED_TIME_PERIOD_ITEM_INDEX
@@ -23,14 +20,17 @@ import com.example.cryptoapp.data.constant.CryptoConstant.sortingParams
 import com.example.cryptoapp.data.constant.CryptoConstant.sortingTags
 import com.example.cryptoapp.data.constant.CryptoConstant.timePeriods
 import com.example.cryptoapp.data.constant.CryptoConstant.toCryptoCurrencyUIModel
-import com.example.cryptoapp.feature.shared.OnItemClickListener
-import com.example.cryptoapp.feature.shared.OnItemLongClickListener
 import com.example.cryptoapp.data.model.cryptoCurrency.AllCryptoCurrencies
 import com.example.cryptoapp.data.model.cryptoCurrency.CryptoCurrency
+import com.example.cryptoapp.data.repository.Cache
+import com.example.cryptoapp.data.repository.CryptoApiRepository
+import com.example.cryptoapp.databinding.FragmentCryptoCurrencyBinding
+import com.example.cryptoapp.feature.shared.OnItemClickListener
+import com.example.cryptoapp.feature.shared.OnItemLongClickListener
+import com.example.cryptoapp.feature.viewModel.CryptoApiViewModel
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Response
 
 class CryptoCurrencyFragment : Fragment(), OnItemClickListener, OnItemLongClickListener {
@@ -54,11 +54,15 @@ class CryptoCurrencyFragment : Fragment(), OnItemClickListener, OnItemLongClickL
     private var currentOffset = OFFSET
     private val tags: MutableSet<String> = mutableSetOf()
 
+    private lateinit var binding: FragmentCryptoCurrencyBinding
+
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_crypto_currency, container, false)
+        binding = FragmentCryptoCurrencyBinding.inflate(inflater, container, false)
+        val view = binding.root
 
         bindUI(view)
         initUI()
@@ -100,7 +104,7 @@ class CryptoCurrencyFragment : Fragment(), OnItemClickListener, OnItemLongClickL
     }
 
     private fun initUI() {
-        (activity as MainActivity).bottomNavigation.visibility = View.VISIBLE
+        (activity as MainActivity).bottomNavigationView.visibility = View.VISIBLE
         (activity as MainActivity).topAppBar.visibility = View.VISIBLE
 
         viewModel = CryptoApiViewModel(CryptoApiRepository())
@@ -109,9 +113,11 @@ class CryptoCurrencyFragment : Fragment(), OnItemClickListener, OnItemLongClickL
         recyclerView.layoutManager = linearLayoutManager
         cryptoCurrencyAdapter = CryptoCurrencyAdapter(this, this)
         recyclerView.adapter = cryptoCurrencyAdapter
-        cryptoCurrencyAdapter.submitList(Cache.getCryptoCurrencies().map { currency ->
-            currency.toCryptoCurrencyUIModel(CryptoConstant.DEFAULT_VOLUME)
-        })
+        cryptoCurrencyAdapter.submitList(
+            Cache.getCryptoCurrencies().map { currency ->
+                currency.toCryptoCurrencyUIModel(CryptoConstant.DEFAULT_VOLUME)
+            }
+        )
 
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -237,9 +243,11 @@ class CryptoCurrencyFragment : Fragment(), OnItemClickListener, OnItemLongClickL
                     )
                     isLoading = true
                 }
-                cryptoCurrencyAdapter.submitList(Cache.getCryptoCurrencies().map { currency ->
-                    currency.toCryptoCurrencyUIModel(timePeriod)
-                })
+                cryptoCurrencyAdapter.submitList(
+                    Cache.getCryptoCurrencies().map { currency ->
+                        currency.toCryptoCurrencyUIModel(timePeriod)
+                    }
+                )
             }
         }
 }

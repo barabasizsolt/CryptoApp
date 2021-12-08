@@ -1,6 +1,6 @@
 package com.example.cryptoapp.data.model.cryptoCurrency
 
-data class Data (
+data class Data(
     val stats: Stats,
-    val coins : List<CryptoCurrency>
-    )
+    val coins: List<CryptoCurrency>
+)

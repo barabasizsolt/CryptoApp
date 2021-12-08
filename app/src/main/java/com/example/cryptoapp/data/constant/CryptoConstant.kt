@@ -3,12 +3,15 @@ package com.example.cryptoapp.data.constant
 import android.icu.text.CompactDecimalFormat
 import android.icu.text.CompactDecimalFormat.CompactStyle
 import android.icu.util.CurrencyAmount
+import android.net.Uri
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import coil.ImageLoader
 import coil.decode.SvgDecoder
+import coil.load
 import coil.request.ImageRequest
+import coil.transform.CircleCropTransformation
 import com.example.cryptoapp.R
 import com.example.cryptoapp.data.model.cryptoCurrency.CryptoCurrency
 import com.example.cryptoapp.data.model.cryptoCurrency.CryptoCurrencyUIModel
@@ -16,7 +19,9 @@ import java.text.NumberFormat
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
-import java.util.*
+import java.util.Calendar
+import java.util.Currency
+import java.util.Locale
 
 object CryptoConstant {
     private const val COUNTRY = "US"
@@ -104,6 +109,26 @@ object CryptoConstant {
             .target(this)
             .build()
         imageLoader.enqueue(request)
+    }
+
+    fun ImageView.loadImage(image: Uri, placeholder: Int) {
+        this.load(image) {
+            placeholder(placeholder)
+            transformations(CircleCropTransformation())
+        }
+    }
+
+    fun ImageView.loadImage(image: String, placeholder: Int) {
+        this.load(image) {
+            placeholder(placeholder)
+            transformations(CircleCropTransformation())
+        }
+    }
+
+    fun ImageView.loadImage(image: Int) {
+        this.load(image) {
+            transformations(CircleCropTransformation())
+        }
     }
 
     fun setPercentage(percentageStr: String, textView: TextView) {

@@ -1,16 +1,25 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
+    ext{
+        kotlin_version = '1.6.0'
+        detekt_version = '1.19.0'
+        ktlint_version = '10.2.0'
+        kotlinter_version = '3.7.0'
+    }
     repositories {
         google()
         mavenCentral()
+
+        maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:7.0.1"
-        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.31'
-        classpath 'com.google.gms:google-services:4.3.3'
+        classpath "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:$detekt_version"
+        classpath "org.jlleitschuh.gradle:ktlint-gradle:$ktlint_version"
+        classpath "org.jmailen.gradle:kotlinter-gradle:$kotlinter_version"
 
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
+        classpath "com.android.tools.build:gradle:7.0.3"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.google.gms:google-services:4.3.10'
     }
 }
 

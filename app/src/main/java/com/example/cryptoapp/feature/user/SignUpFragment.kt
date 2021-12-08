@@ -1,7 +1,6 @@
 package com.example.cryptoapp.feature.user
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +8,7 @@ import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.example.cryptoapp.MainActivity
 import com.example.cryptoapp.R
 import com.example.cryptoapp.feature.cryptocurrency.CryptoCurrencyFragment
@@ -16,16 +16,17 @@ import com.google.android.material.textfield.TextInputLayout
 
 class SignUpFragment : Fragment() {
     private lateinit var progressBar: ProgressBar
-    private lateinit var signUpButton : Button
-    private lateinit var email : TextView
-    private lateinit var password : TextView
-    private lateinit var confirmPassword : TextView
-    private lateinit var emailLayout : TextInputLayout
-    private lateinit var passwordLayout : TextInputLayout
-    private lateinit var confirmPasswordLayout : TextInputLayout
+    private lateinit var signUpButton: Button
+    private lateinit var email: TextView
+    private lateinit var password: TextView
+    private lateinit var confirmPassword: TextView
+    private lateinit var emailLayout: TextInputLayout
+    private lateinit var passwordLayout: TextInputLayout
+    private lateinit var confirmPasswordLayout: TextInputLayout
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_sign_up, container, false)
@@ -34,7 +35,7 @@ class SignUpFragment : Fragment() {
         return view
     }
 
-    private fun bindUI(view: View){
+    private fun bindUI(view: View) {
         progressBar = view.findViewById(R.id.progress_bar)
         signUpButton = view.findViewById(R.id.sign_up_button)
         email = view.findViewById(R.id.email)
@@ -45,13 +46,13 @@ class SignUpFragment : Fragment() {
         confirmPasswordLayout = view.findViewById(R.id.confirm_password_layout)
     }
 
-    private fun initUI(){
+    private fun initUI() {
         signUpButton.setOnClickListener {
             if (validateInput()) {
                 progressBar.visibility = View.VISIBLE
-
                 (activity as MainActivity).mAuth.createUserWithEmailAndPassword(email.text.toString(), password.text.toString())
-                    .addOnCompleteListener(requireActivity()
+                    .addOnCompleteListener(
+                        requireActivity()
                     ) { task ->
                         if (task.isSuccessful) {
                             Toast.makeText(
@@ -75,7 +76,6 @@ class SignUpFragment : Fragment() {
                                 Toast.LENGTH_LONG
                             ).show()
                         }
-
                         progressBar.visibility = View.INVISIBLE
                     }
             }
@@ -87,7 +87,7 @@ class SignUpFragment : Fragment() {
         passwordLayout.error = null
         confirmPasswordLayout.error = null
 
-        when{
+        when {
             email.text.toString().isEmpty() -> {
                 emailLayout.error = getString(R.string.error)
                 return false

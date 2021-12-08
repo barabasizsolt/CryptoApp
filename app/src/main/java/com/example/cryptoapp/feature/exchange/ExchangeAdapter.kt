@@ -9,25 +9,25 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cryptoapp.R
-import com.example.cryptoapp.data.constant.ExchangeConstant.loadPng
+import com.example.cryptoapp.data.constant.CryptoConstant.loadImage
 import com.example.cryptoapp.data.constant.CryptoConstant.setCompactPrice
+import com.example.cryptoapp.data.model.exchange.Exchange
 import com.example.cryptoapp.feature.shared.OnItemClickListener
 import com.example.cryptoapp.feature.shared.OnItemLongClickListener
-import com.example.cryptoapp.data.model.exchange.Exchange
 
 class ExchangeAdapter(
     private val onItemClickListener: OnItemClickListener,
     private val onItemLongClickListener: OnItemLongClickListener
-)
+) :
 
-    : ListAdapter<Exchange, ExchangeAdapter.ExchangeViewHolder>(
-    object : DiffUtil.ItemCallback<Exchange>() {
-        override fun areItemsTheSame(oldItem: Exchange, newItem: Exchange) =
-            oldItem.id == newItem.id
+    ListAdapter<Exchange, ExchangeAdapter.ExchangeViewHolder>(
+        object : DiffUtil.ItemCallback<Exchange>() {
+            override fun areItemsTheSame(oldItem: Exchange, newItem: Exchange) =
+                oldItem.id == newItem.id
 
-        override fun areContentsTheSame(oldItem: Exchange, newItem: Exchange) = oldItem == newItem
-    }
-) {
+            override fun areContentsTheSame(oldItem: Exchange, newItem: Exchange) = oldItem == newItem
+        }
+    ) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExchangeViewHolder =
         ExchangeViewHolder(
             itemView = LayoutInflater.from(parent.context)
@@ -40,7 +40,7 @@ class ExchangeAdapter(
         val itemsViewModel = getItem(position)
 
         if (!itemsViewModel.image.isNullOrEmpty()) {
-            holder.exchangeLogo.loadPng(itemsViewModel.image)
+            holder.exchangeLogo.loadImage(itemsViewModel.image, R.drawable.ic_bitcoin)
         }
         if (!itemsViewModel.name.isNullOrEmpty()) {
             holder.exchangeName.text = itemsViewModel.name

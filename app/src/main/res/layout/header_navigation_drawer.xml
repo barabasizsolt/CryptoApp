@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:fitsSystemWindows="true"
@@ -14,7 +13,7 @@
         android:layout_marginTop="24dp"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
-        tools:src="@drawable/ic_avataaars"
+        tools:src="@drawable/ic_avatar"
         android:scaleType="centerCrop"/>
 
     <TextView
@@ -26,6 +25,5 @@
         android:layout_marginTop="14dp"
         android:textAppearance="?attr/textAppearanceBody2"
         android:textColor="@color/material_on_surface_emphasis_medium"
-        android:layout_marginBottom="14dp"
-        android:text="Header title" />
+        android:layout_marginBottom="14dp" />
 </LinearLayout>
