@@ -45,11 +45,11 @@ class ExchangeAdapter(
         if (!itemsViewModel.name.isNullOrEmpty()) {
             holder.exchangeName.text = itemsViewModel.name
         }
-        if (itemsViewModel.trust_score != null) {
-            holder.exchangeTrustScore.text = itemsViewModel.trust_score.toString()
+        if (itemsViewModel.trustScore != null) {
+            holder.exchangeTrustScore.text = itemsViewModel.trustScore.toString()
         }
-        if (itemsViewModel.trade_volume_24h_btc != null) {
-            holder.volume.text = setCompactPrice(itemsViewModel.trade_volume_24h_btc)
+        if (itemsViewModel.tradeVolume24HBtc != null) {
+            holder.volume.text = setCompactPrice(itemsViewModel.tradeVolume24HBtc)
         }
     }
 
