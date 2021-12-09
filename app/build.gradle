@@ -21,11 +21,28 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        internal {
+            keyAlias "androiddebugkey"
+            keyPassword "android"
+            storeFile file("internal.keystore")
+            storePassword "android"
+        }
+    }
+
     buildTypes {
+        debug {
+            minifyEnabled false
+            shrinkResources false
+            zipAlignEnabled false
+            signingConfig signingConfigs.internal
+        }
         release {
             minifyEnabled true
             shrinkResources true
+            zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.internal
         }
     }
 
