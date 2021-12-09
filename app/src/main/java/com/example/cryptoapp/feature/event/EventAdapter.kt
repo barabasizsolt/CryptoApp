@@ -8,25 +8,25 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.cryptoapp.R
+import com.example.cryptoapp.data.constant.CryptoConstant.loadImage
+import com.example.cryptoapp.data.model.event.Event
 import com.example.cryptoapp.feature.shared.OnItemClickListener
 import com.example.cryptoapp.feature.shared.OnItemLongClickListener
-import com.example.cryptoapp.data.model.event.Event
 
 class EventAdapter(
     private val onItemClickListener: OnItemClickListener,
     private val onItemLongClickListener: OnItemLongClickListener
-)
+) :
 
-    : ListAdapter<Event, EventAdapter.EventViewHolder>(
-    object : DiffUtil.ItemCallback<Event>() {
-        override fun areItemsTheSame(oldItem: Event, newItem: Event) =
-            oldItem.title == newItem.title
+    ListAdapter<Event, EventAdapter.EventViewHolder>(
+        object : DiffUtil.ItemCallback<Event>() {
+            override fun areItemsTheSame(oldItem: Event, newItem: Event) =
+                oldItem.title == newItem.title
 
-        override fun areContentsTheSame(oldItem: Event, newItem: Event) = oldItem == newItem
-    }
-) {
+            override fun areContentsTheSame(oldItem: Event, newItem: Event) = oldItem == newItem
+        }
+    ) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder =
         EventViewHolder(
             itemView = LayoutInflater.from(parent.context)
@@ -39,7 +39,7 @@ class EventAdapter(
         val uiEventModel = getItem(position)
 
         if (!uiEventModel.screenshot.isNullOrEmpty()) {
-            Glide.with(holder.itemView).load(uiEventModel.screenshot).into(holder.eventLogo)
+            holder.eventLogo.loadImage(uiEventModel.screenshot, R.drawable.ic_exchange)
         }
         if (!uiEventModel.title.isNullOrEmpty()) {
             holder.eventName.text = uiEventModel.title
@@ -62,9 +62,9 @@ class EventAdapter(
         itemView: View,
         private val onItemClickListener: OnItemClickListener,
         private val onItemLongClickListener: OnItemLongClickListener
-    )
+    ) :
 
-        : RecyclerView.ViewHolder(itemView), View.OnClickListener, View.OnLongClickListener {
+        RecyclerView.ViewHolder(itemView), View.OnClickListener, View.OnLongClickListener {
         val eventLogo: ImageView = itemView.findViewById(R.id.event_logo)
         val eventName: TextView = itemView.findViewById(R.id.event_name)
         val eventOrganizer: TextView = itemView.findViewById(R.id.event_organizer)

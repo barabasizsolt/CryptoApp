@@ -9,7 +9,7 @@ object CoinGekkoRetrofitInstance {
         Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create()).build()
     }
 
-    val CoinGekkoApi : CoinGekkoAPI by lazy {
+    val CoinGekkoApi: CoinGekkoAPI by lazy {
         retrofit.create(CoinGekkoAPI::class.java)
     }
 }

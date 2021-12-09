@@ -2,45 +2,57 @@ package com.example.cryptoapp.feature.cryptocurrency
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import com.anychart.anychart.*
-import com.example.cryptoapp.R
-import com.example.cryptoapp.feature.viewModel.CryptoApiViewModel
-import com.example.cryptoapp.data.constant.CryptoConstant
-import com.example.cryptoapp.data.constant.CryptoConstant.DAY7
-import com.example.cryptoapp.data.constant.CryptoConstant.HOUR24
-import com.example.cryptoapp.data.constant.CryptoConstant.YEAR1
-import com.example.cryptoapp.data.constant.CryptoConstant.getTime
-import com.example.cryptoapp.data.constant.CryptoConstant.loadSvg
-import com.example.cryptoapp.data.constant.CryptoConstant.setPercentage
-import com.example.cryptoapp.data.model.cryptoCurrencyDetail.CryptoCurrencyDetails
-import com.example.cryptoapp.data.model.cryptoCurrencyDetail.CryptoHistory
-import com.google.android.material.chip.ChipGroup
-import kotlin.collections.ArrayList
+import androidx.fragment.app.Fragment
 import com.anychart.anychart.AnyChart.area
+import com.anychart.anychart.AnyChartView
+import com.anychart.anychart.Cartesian
+import com.anychart.anychart.Crosshair
+import com.anychart.anychart.DataEntry
+import com.anychart.anychart.HoverMode
+import com.anychart.anychart.MarkerType
+import com.anychart.anychart.ScaleStackMode
+import com.anychart.anychart.Stroke
+import com.anychart.anychart.StrokeLineCap
+import com.anychart.anychart.StrokeLineJoin
+import com.anychart.anychart.TooltipDisplayMode
+import com.anychart.anychart.ValueDataEntry
 import com.example.cryptoapp.MainActivity
-import com.example.cryptoapp.data.repository.Cache
+import com.example.cryptoapp.R
+import com.example.cryptoapp.data.constant.CryptoConstant
 import com.example.cryptoapp.data.constant.CryptoConstant.CALENDAR
 import com.example.cryptoapp.data.constant.CryptoConstant.CURRENCY_FIRE_STORE_PATH
+import com.example.cryptoapp.data.constant.CryptoConstant.DAY7
+import com.example.cryptoapp.data.constant.CryptoConstant.HOUR24
 import com.example.cryptoapp.data.constant.CryptoConstant.MAX_HOUR
 import com.example.cryptoapp.data.constant.CryptoConstant.MAX_MONTH
+import com.example.cryptoapp.data.constant.CryptoConstant.YEAR1
 import com.example.cryptoapp.data.constant.CryptoConstant.YEAR6
+import com.example.cryptoapp.data.constant.CryptoConstant.getTime
+import com.example.cryptoapp.data.constant.CryptoConstant.loadSvg
 import com.example.cryptoapp.data.constant.CryptoConstant.setCompactPrice
+import com.example.cryptoapp.data.constant.CryptoConstant.setPercentage
 import com.example.cryptoapp.data.constant.CryptoConstant.setPrice
+import com.example.cryptoapp.data.model.cryptoCurrencyDetail.CryptoCurrencyDetails
 import com.example.cryptoapp.data.model.cryptoCurrencyDetail.CryptoCurrencyHistory
+import com.example.cryptoapp.data.model.cryptoCurrencyDetail.CryptoHistory
+import com.example.cryptoapp.data.repository.Cache
+import com.example.cryptoapp.databinding.FragmentCryptoCurrencyDetailsBinding
+import com.example.cryptoapp.feature.viewModel.CryptoApiViewModel
+import com.google.android.material.chip.ChipGroup
 import com.google.android.material.tabs.TabLayout
-import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Response
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.Month
-import java.util.Calendar.*
+import java.util.Calendar.HOUR_OF_DAY
+import java.util.Calendar.MONTH
+import kotlin.collections.ArrayList
 
 class CryptoCurrencyDetailsFragment : Fragment() {
     private lateinit var areaChart: Cartesian
@@ -54,19 +66,24 @@ class CryptoCurrencyDetailsFragment : Fragment() {
     private lateinit var marketCap: TextView
     private lateinit var chipGroup: ChipGroup
     private lateinit var tabLayout: TabLayout
-    private lateinit var viewModel : CryptoApiViewModel
+    private lateinit var viewModel: CryptoApiViewModel
     private lateinit var cryptoCurrencyId: String
+
     private var currentTimeFrame = HOUR24
 
     private var isAddedToFavorite = false
 
-    //TODO: add progressbar to load every data
+    private lateinit var binding: FragmentCryptoCurrencyDetailsBinding
+
+    // TODO: add progressbar to load every data
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_crypto_currency_details, container, false)
+    ): View {
+        binding = FragmentCryptoCurrencyDetailsBinding.inflate(inflater, container, false)
+        val view = binding.root
 
         bindUI(view)
         cryptoCurrencyId = requireArguments().getString(CryptoConstant.COIN_ID)!!
@@ -97,7 +114,7 @@ class CryptoCurrencyDetailsFragment : Fragment() {
         viewModel.cryptoCurrencyDetails.removeObserver(cryptoDetailsObserver)
     }
 
-    private val cryptoDetailsObserver  = androidx.lifecycle.Observer<Response<CryptoCurrencyDetails>> { response ->
+    private val cryptoDetailsObserver = androidx.lifecycle.Observer<Response<CryptoCurrencyDetails>> { response ->
         if (response.isSuccessful) {
             response.body()?.let { cryptoDetails ->
                 Cache.setCryptoCurrency(cryptoDetails.data.coin)
@@ -110,7 +127,7 @@ class CryptoCurrencyDetailsFragment : Fragment() {
         }
     }
 
-    private val cryptoHistoryObserver  = androidx.lifecycle.Observer<Response<CryptoCurrencyHistory>> { response ->
+    private val cryptoHistoryObserver = androidx.lifecycle.Observer<Response<CryptoCurrencyHistory>> { response ->
         if (response.isSuccessful) {
             when (currentTimeFrame) {
                 HOUR24 -> {
@@ -133,7 +150,7 @@ class CryptoCurrencyDetailsFragment : Fragment() {
         }
     }
 
-    private fun bindUI(view: View){
+    private fun bindUI(view: View) {
         viewModel = (activity as MainActivity).getViewModel()
         initializeChart(view)
         tabLayout = view.findViewById(R.id.tab_layout)
@@ -148,61 +165,63 @@ class CryptoCurrencyDetailsFragment : Fragment() {
         chipGroup = view.findViewById(R.id.chip_group)
     }
 
-    private fun initUI(cryptoCurrencyDetails: CryptoCurrencyDetails){
+    private fun initUI(cryptoCurrencyDetails: CryptoCurrencyDetails) {
         val coin = cryptoCurrencyDetails.data.coin
         val currentTime = getTime(System.currentTimeMillis())
         var currentHour = currentTime.hour.toString()
         var currentMinute = currentTime.minute.toString()
-        if(currentHour.toInt() < 10){
+        if (currentHour.toInt() < 10) {
             currentHour = "0$currentHour"
         }
-        if(currentMinute.toInt() < 10){
+        if (currentMinute.toInt() < 10) {
             currentMinute = "0$currentMinute"
         }
         val coinValueSymbol = coin.symbol + "/" + "USD" + " - AVG - " + currentHour + ":" + currentMinute
-        if(!coin.iconUrl.isNullOrEmpty()){
+        if (!coin.iconUrl.isNullOrEmpty()) {
             cryptoLogo.loadSvg(coin.iconUrl)
         }
         cryptoName.text = coin.name
         cryptoSymbol.text = coin.symbol
         cryptoValueSymbol.text = coinValueSymbol
-        if(!coin.price.isNullOrEmpty()){
+        if (!coin.price.isNullOrEmpty()) {
             cryptoPrice.text = setPrice(coin.price.toDouble())
         }
-        if(!coin.change.isNullOrEmpty()) {
+        if (!coin.change.isNullOrEmpty()) {
             setPercentage(coin.change, percentageChange24H)
         }
-        if(!coin.volume.isNullOrEmpty()){
+        if (!coin.volume.isNullOrEmpty()) {
             volume.text = setCompactPrice(coin.volume.toDouble())
         }
-        if(!coin.marketCap.isNullOrEmpty()){
+        if (!coin.marketCap.isNullOrEmpty()) {
             marketCap.text = setCompactPrice(coin.marketCap.toDouble())
         }
     }
 
-    private fun isFavourite(){
-        if(Cache.getUserWatchList().contains(cryptoCurrencyId)) {
+    private fun isFavourite() {
+        if (Cache.getUserWatchList().contains(cryptoCurrencyId)) {
             (activity as MainActivity).favoriteMenuItem.setIcon(R.drawable.ic_watchlist_gold)
             isAddedToFavorite = true
         }
     }
 
-    private fun initTobBarListener(){
+    private fun initTobBarListener() {
         (activity as MainActivity).topAppBar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.favorite -> {
-                    //TODO: check if exist
-                    if(!isAddedToFavorite) {
-                        (activity as MainActivity).firestore.collection(CURRENCY_FIRE_STORE_PATH)
-                            .add(hashMapOf(
-                                "uuid" to cryptoCurrencyId,
-                                "userid" to (activity as MainActivity).mAuth.currentUser?.uid
-                            ))
+                    // TODO: check if exist
+                    if (!isAddedToFavorite) {
+                        (activity as MainActivity).fireStore.collection(CURRENCY_FIRE_STORE_PATH)
+                            .add(
+                                hashMapOf(
+                                    "uuid" to cryptoCurrencyId,
+                                    "userid" to (activity as MainActivity).mAuth.currentUser?.uid
+                                )
+                            )
                             .addOnSuccessListener {
                                 (activity as MainActivity).favoriteMenuItem.setIcon(R.drawable.ic_watchlist_gold)
                                 isAddedToFavorite = true
                                 Cache.addUserWatchList(cryptoCurrencyId)
-                                Toast.makeText(requireContext(),"Added to watchlist", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(requireContext(), "Added to watchlist", Toast.LENGTH_SHORT).show()
                             }
                             .addOnFailureListener { e ->
                                 Log.w("fireStore", "Error adding document", e)
@@ -215,9 +234,9 @@ class CryptoCurrencyDetailsFragment : Fragment() {
         }
     }
 
-    private fun initializeChipGroup(cryptoCurrencyId : String){
+    private fun initializeChipGroup(cryptoCurrencyId: String) {
         chipGroup.setOnCheckedChangeListener { _, checkedId ->
-            when(checkedId){
+            when (checkedId) {
                 R.id.chip_24h -> {
                     Log.d("CH24", "Chipped")
                     viewModel.getCryptoCurrencyHistory(uuid = cryptoCurrencyId, timePeriod = HOUR24)
@@ -242,16 +261,16 @@ class CryptoCurrencyDetailsFragment : Fragment() {
         }
     }
 
-    private fun initializeTabLayout(){
+    private fun initializeTabLayout() {
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                when(tab!!.position){
+                when (tab!!.position) {
                     0 -> (activity as MainActivity).replaceFragment(CryptoDetailsInfoFragment(), R.id.crypto_details_fragment_container)
                     1 -> {
-                        //TODO:Implement it
+                        // TODO:Implement it
                     }
                     2 -> {
-                        //TODO:Implement it
+                        // TODO:Implement it
                     }
                 }
             }
@@ -261,32 +280,32 @@ class CryptoCurrencyDetailsFragment : Fragment() {
         })
     }
 
-    private fun createDataForAreaChart(history: MutableList<CryptoHistory>, timeFrame : String) : MutableList<DataEntry>{
-        val currencyHistory : MutableList<DataEntry> = ArrayList()
+    private fun createDataForAreaChart(history: MutableList<CryptoHistory>, timeFrame: String): MutableList<DataEntry> {
+        val currencyHistory: MutableList<DataEntry> = ArrayList()
 
-        //TODO:refactor it
-        when(timeFrame){
+        // TODO:refactor it
+        when (timeFrame) {
             HOUR24 -> {
                 val groupedHistory = sortedMapOf<Int, MutableList<Double>>()
-                val tmpHistory : MutableList<Pair<Int, Double?>> = mutableListOf()
+                val tmpHistory: MutableList<Pair<Int, Double?>> = mutableListOf()
 
                 val currentHour: Int = CALENDAR.get(HOUR_OF_DAY)
 
                 history.forEach { curr ->
                     val time = getTime(curr.timestamp).hour
-                    if(!groupedHistory.containsKey(time)){
+                    if (!groupedHistory.containsKey(time)) {
                         groupedHistory[time] = mutableListOf()
                     }
-                    if(!curr.price.isNullOrBlank()){groupedHistory[time]?.add(curr.price.toDouble())}
+                    if (!curr.price.isNullOrBlank()) { groupedHistory[time]?.add(curr.price.toDouble()) }
                 }
 
                 groupedHistory.forEach { elem ->
                     tmpHistory.add(Pair(elem.key, elem.value.maxOfOrNull { it }))
                 }
 
-                for(i in (currentHour - 12)..(currentHour + 12)){
+                for (i in (currentHour - 12)..(currentHour + 12)) {
                     val idx = i.mod(MAX_HOUR)
-                    if(idx < tmpHistory.size){
+                    if (idx < tmpHistory.size) {
                         val elem = tmpHistory[idx]
                         currencyHistory.add(ValueDataEntry(elem.first.toString() + ":00", elem.second))
                     }
@@ -294,26 +313,26 @@ class CryptoCurrencyDetailsFragment : Fragment() {
             }
             DAY7 -> {
                 val groupedHistory = mutableMapOf<DayOfWeek, MutableList<Double>>()
-                val tmpHistory : MutableList<Pair<DayOfWeek, Double?>> = mutableListOf()
+                val tmpHistory: MutableList<Pair<DayOfWeek, Double?>> = mutableListOf()
 
-                val currentDay: Int = LocalDate.now().dayOfWeek.value -1
+                val currentDay: Int = LocalDate.now().dayOfWeek.value - 1
 
                 history.sortWith(compareBy { getTime(it.timestamp).dayOfWeek.ordinal })
                 history.forEach { curr ->
                     val dayOfWeek = getTime(curr.timestamp).dayOfWeek
-                    if(!groupedHistory.containsKey(dayOfWeek)){
+                    if (!groupedHistory.containsKey(dayOfWeek)) {
                         groupedHistory[dayOfWeek] = mutableListOf()
                     }
-                    if(!curr.price.isNullOrBlank()){groupedHistory[dayOfWeek]?.add(curr.price.toDouble())}
+                    if (!curr.price.isNullOrBlank()) { groupedHistory[dayOfWeek]?.add(curr.price.toDouble()) }
                 }
 
                 groupedHistory.forEach { elem ->
                     tmpHistory.add(Pair(elem.key, elem.value.maxOfOrNull { it }))
                 }
 
-                for(i in (currentDay - 3)..(currentDay + 3)){
+                for (i in (currentDay - 3)..(currentDay + 3)) {
                     val idx = i.mod(MAX_HOUR)
-                    if(idx < tmpHistory.size){
+                    if (idx < tmpHistory.size) {
                         val elem = tmpHistory[idx]
                         currencyHistory.add(ValueDataEntry(elem.first.name.substring(0, 3), elem.second))
                     }
@@ -321,26 +340,26 @@ class CryptoCurrencyDetailsFragment : Fragment() {
             }
             YEAR1 -> {
                 val groupedHistory = mutableMapOf<Month, MutableList<Double>>()
-                val tmpHistory : MutableList<Pair<Month, Double?>> = mutableListOf()
+                val tmpHistory: MutableList<Pair<Month, Double?>> = mutableListOf()
 
                 val currentMonth: Int = CALENDAR.get(MONTH)
 
                 history.sortWith(compareBy { getTime(it.timestamp).month.ordinal })
                 history.forEach { curr ->
                     val month = getTime(curr.timestamp).month
-                    if(!groupedHistory.containsKey(month)){
+                    if (!groupedHistory.containsKey(month)) {
                         groupedHistory[month] = mutableListOf()
                     }
-                    if(!curr.price.isNullOrBlank()){groupedHistory[month]?.add(curr.price.toDouble())}
+                    if (!curr.price.isNullOrBlank()) { groupedHistory[month]?.add(curr.price.toDouble()) }
                 }
 
                 groupedHistory.forEach { elem ->
                     tmpHistory.add(Pair(elem.key, elem.value.maxOfOrNull { it }))
                 }
 
-                for(i in (currentMonth - 6)..(currentMonth + 6)){
+                for (i in (currentMonth - 6)..(currentMonth + 6)) {
                     val idx = i.mod(MAX_MONTH)
-                    if(idx < tmpHistory.size){
+                    if (idx < tmpHistory.size) {
                         val elem = tmpHistory[idx]
                         currencyHistory.add(ValueDataEntry(elem.first.name.substring(0, 3), elem.second))
                     }
@@ -352,10 +371,10 @@ class CryptoCurrencyDetailsFragment : Fragment() {
                 history.sortWith(compareBy { getTime(it.timestamp).year })
                 history.forEach { curr ->
                     val year = getTime(curr.timestamp).year.toString()
-                    if(!groupedHistory.containsKey(year)){
+                    if (!groupedHistory.containsKey(year)) {
                         groupedHistory[year] = mutableListOf()
                     }
-                    if(!curr.price.isNullOrBlank()){groupedHistory[year]?.add(curr.price.toDouble())}
+                    if (!curr.price.isNullOrBlank()) { groupedHistory[year]?.add(curr.price.toDouble()) }
                 }
 
                 groupedHistory.forEach { elem -> currencyHistory.add(ValueDataEntry(elem.key, elem.value.maxOfOrNull { it })) }
@@ -365,7 +384,7 @@ class CryptoCurrencyDetailsFragment : Fragment() {
         return currencyHistory
     }
 
-    private fun initializeChart(view: View){
+    private fun initializeChart(view: View) {
         val anyChartView: AnyChartView = view.findViewById(R.id.any_chart_view)
         anyChartView.setBackgroundColor("#212121")
 
@@ -403,7 +422,7 @@ class CryptoCurrencyDetailsFragment : Fragment() {
         anyChartView.setChart(areaChart)
     }
 
-    private fun refreshChart(data: MutableList<DataEntry>){
+    private fun refreshChart(data: MutableList<DataEntry>) {
         val series = areaChart.area(data)
         series.setName("Cryptocurrency History")
         series.setStroke("3 #fff")

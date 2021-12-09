@@ -10,50 +10,60 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
-import com.bumptech.glide.Glide
-import com.example.cryptoapp.data.repository.CryptoApiRepository
-import com.example.cryptoapp.feature.viewModel.CryptoApiViewModel
-import com.example.cryptoapp.data.repository.Cache
 import com.example.cryptoapp.data.constant.CryptoConstant
+import com.example.cryptoapp.data.constant.CryptoConstant.loadImage
+import com.example.cryptoapp.data.model.cryptoCurrency.AllCryptoCurrencies
+import com.example.cryptoapp.data.model.cryptoCurrency.CryptoCurrency
+import com.example.cryptoapp.data.repository.Cache
+import com.example.cryptoapp.data.repository.CryptoApiRepository
+import com.example.cryptoapp.databinding.ActivityMainBinding
 import com.example.cryptoapp.feature.cryptocurrency.CryptoCurrencyFragment
 import com.example.cryptoapp.feature.event.EventFragment
 import com.example.cryptoapp.feature.exchange.ExchangeFragment
 import com.example.cryptoapp.feature.user.LoginFragment
 import com.example.cryptoapp.feature.user.ProfileFragment
-import com.example.cryptoapp.data.model.cryptoCurrency.AllCryptoCurrencies
-import com.example.cryptoapp.data.model.cryptoCurrency.CryptoCurrency
+import com.example.cryptoapp.feature.viewModel.CryptoApiViewModel
+import com.google.android.material.appbar.MaterialToolbar
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
+    lateinit var topAppBar: MaterialToolbar
+    lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var viewModel: CryptoApiViewModel
     private lateinit var navHeader: View
     private lateinit var userLogo: ImageView
     private lateinit var userEmail: TextView
     lateinit var mAuth: FirebaseAuth
-    lateinit var firestore: FirebaseFirestore
+    lateinit var fireStore: FirebaseFirestore
     lateinit var favoriteMenuItem: MenuItem
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen()
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         mAuth = FirebaseAuth.getInstance()
-        firestore = Firebase.firestore
+        fireStore = Firebase.firestore
 
         supportActionBar?.hide()
+        topAppBar = binding.topAppBar
+        bottomNavigationView = binding.bottomNavigation
+
         topAppBar.visibility = View.GONE
-        bottomNavigation.visibility = View.GONE
-        favoriteMenuItem = topAppBar.menu[0]
+        bottomNavigationView.visibility = View.GONE
+        favoriteMenuItem = binding.topAppBar.menu[0]
         favoriteMenuItem.isVisible = false
 
-        navHeader = navigationView.getHeaderView(0)
+        navHeader = binding.navigationView.getHeaderView(0)
         userLogo = navHeader.findViewById(R.id.user_logo)
+        userLogo.loadImage(R.drawable.ic_avatar)
         userEmail = navHeader.findViewById(R.id.user_email)
 
         viewModel = CryptoApiViewModel(CryptoApiRepository())
@@ -84,7 +94,7 @@ class MainActivity : AppCompatActivity() {
         }
 
     fun getUserWatchLists() {
-        firestore.collection(CryptoConstant.CURRENCY_FIRE_STORE_PATH)
+        fireStore.collection(CryptoConstant.CURRENCY_FIRE_STORE_PATH)
             .get()
             .addOnSuccessListener { result ->
                 for (document in result) {
@@ -96,7 +106,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initBottomNavigation() {
-        bottomNavigation.setOnItemSelectedListener { item ->
+        binding.bottomNavigation.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.currencies -> {
                     replaceFragment(CryptoCurrencyFragment(), R.id.activity_fragment_container)
@@ -107,7 +117,7 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.favorites -> {
-                    //TODO: implement it
+                    // TODO: implement it
                     true
                 }
                 R.id.events -> {
@@ -120,36 +130,34 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun initModalNavigationDrawer() {
-        topAppBar.setNavigationOnClickListener {
-            drawerLayout.open()
+        binding.topAppBar.setNavigationOnClickListener {
+            binding.drawerLayout.open()
         }
 
-        navigationView.setNavigationItemSelectedListener { menuItem ->
+        binding.navigationView.setNavigationItemSelectedListener { menuItem ->
             menuItem.isChecked = true
             when (menuItem.itemId) {
                 R.id.profile -> {
                     replaceFragment(ProfileFragment(), R.id.activity_fragment_container)
                 }
                 R.id.wallet -> {
-                    //TODO: implement it
+                    // TODO: implement it
                 }
                 R.id.calculator -> {
-                    //TODO: implement it
+                    // TODO: implement it
                 }
                 R.id.logout -> {
                     mAuth.signOut()
                     Cache.deleteUserWatchList()
-                    topAppBar.visibility = View.GONE
-                    bottomNavigation.visibility = View.GONE
+                    binding.topAppBar.visibility = View.GONE
+                    binding.bottomNavigation.visibility = View.GONE
                     replaceFragment(LoginFragment(), R.id.activity_fragment_container)
                 }
             }
-            drawerLayout.close()
+            binding.drawerLayout.close()
             true
         }
-
-        Glide.with(this).load(mAuth.currentUser?.photoUrl).placeholder(R.drawable.ic_avataaars)
-            .circleCrop().into(userLogo)
+        mAuth.currentUser?.photoUrl?.let { userLogo.loadImage(it, R.drawable.ic_avatar) }
         userEmail.text = mAuth.currentUser?.email.toString()
     }
 
@@ -160,21 +168,17 @@ class MainActivity : AppCompatActivity() {
         withAnimation: Boolean = false
     ) {
         val transaction = supportFragmentManager.beginTransaction()
-        when (withAnimation) {
-            true -> {
-                transaction.setCustomAnimations(
-                    R.anim.fade_in,
-                    R.anim.fade_out,
-                    R.anim.fade_in,
-                    R.anim.fade_out
-                )
-            }
+        if (withAnimation) {
+            transaction.setCustomAnimations(
+                R.anim.fade_in,
+                R.anim.fade_out,
+                R.anim.fade_in,
+                R.anim.fade_out
+            )
         }
         transaction.replace(containerId, fragment)
-        when (addToBackStack) {
-            true -> {
-                transaction.addToBackStack(null)
-            }
+        if (addToBackStack) {
+            transaction.addToBackStack(null)
         }
         transaction.commit()
     }

@@ -13,28 +13,28 @@ import com.example.cryptoapp.data.constant.CryptoConstant.loadSvg
 import com.example.cryptoapp.data.constant.CryptoConstant.setCompactPrice
 import com.example.cryptoapp.data.constant.CryptoConstant.setPercentage
 import com.example.cryptoapp.data.constant.CryptoConstant.setPrice
+import com.example.cryptoapp.data.model.cryptoCurrency.CryptoCurrencyUIModel
 import com.example.cryptoapp.feature.shared.OnItemClickListener
 import com.example.cryptoapp.feature.shared.OnItemLongClickListener
-import com.example.cryptoapp.data.model.cryptoCurrency.CryptoCurrencyUIModel
 
 class CryptoCurrencyAdapter(
     private val onItemClickListener: OnItemClickListener,
     private val onItemLongClickListener: OnItemLongClickListener
-)
+) :
 
-    : ListAdapter<CryptoCurrencyUIModel, CryptoCurrencyAdapter.CryptoCurrencyViewHolder>(
-    object : DiffUtil.ItemCallback<CryptoCurrencyUIModel>() {
-        override fun areItemsTheSame(
-            oldItem: CryptoCurrencyUIModel,
-            newItem: CryptoCurrencyUIModel
-        ) = oldItem.uuid == newItem.uuid
+    ListAdapter<CryptoCurrencyUIModel, CryptoCurrencyAdapter.CryptoCurrencyViewHolder>(
+        object : DiffUtil.ItemCallback<CryptoCurrencyUIModel>() {
+            override fun areItemsTheSame(
+                oldItem: CryptoCurrencyUIModel,
+                newItem: CryptoCurrencyUIModel
+            ) = oldItem.uuid == newItem.uuid
 
-        override fun areContentsTheSame(
-            oldItem: CryptoCurrencyUIModel,
-            newItem: CryptoCurrencyUIModel
-        ) = oldItem == newItem
-    }
-) {
+            override fun areContentsTheSame(
+                oldItem: CryptoCurrencyUIModel,
+                newItem: CryptoCurrencyUIModel
+            ) = oldItem == newItem
+        }
+    ) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CryptoCurrencyViewHolder =
         CryptoCurrencyViewHolder(
@@ -61,9 +61,9 @@ class CryptoCurrencyAdapter(
         itemView: View,
         private val onItemClickListener: OnItemClickListener,
         private val onItemLongClickListener: OnItemLongClickListener
-    )
+    ) :
 
-        : RecyclerView.ViewHolder(itemView), View.OnClickListener, View.OnLongClickListener {
+        RecyclerView.ViewHolder(itemView), View.OnClickListener, View.OnLongClickListener {
         val currencyLogo: ImageView = itemView.findViewById(R.id.crypto_logo)
         val currencyName: TextView = itemView.findViewById(R.id.crypto_name)
         val currencySymbol: TextView = itemView.findViewById(R.id.crypto_symbol)

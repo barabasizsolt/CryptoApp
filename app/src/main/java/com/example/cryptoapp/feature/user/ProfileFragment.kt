@@ -2,7 +2,6 @@ package com.example.cryptoapp.feature.user
 
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,12 +9,13 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
-import com.bumptech.glide.Glide
+import androidx.fragment.app.Fragment
 import com.example.cryptoapp.MainActivity
 import com.example.cryptoapp.R
+import com.example.cryptoapp.data.constant.CryptoConstant.loadImage
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
-import java.util.*
+import java.util.Locale
 
 class ProfileFragment : Fragment() {
     private lateinit var progressBar: ProgressBar
@@ -28,7 +28,8 @@ class ProfileFragment : Fragment() {
     private lateinit var newPasswordLayout: TextInputLayout
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
@@ -40,7 +41,7 @@ class ProfileFragment : Fragment() {
         return view
     }
 
-    private fun bindUI(view: View){
+    private fun bindUI(view: View) {
         progressBar = view.findViewById(R.id.progress_bar)
         userLogo = view.findViewById(R.id.user_logo)
         userEmail = view.findViewById(R.id.email)
@@ -50,22 +51,22 @@ class ProfileFragment : Fragment() {
         newPasswordLayout = customDialogView.findViewById(R.id.reset_update_layout)
     }
 
-    private fun initUI(){
+    private fun initUI() {
         newPasswordLayout.hint = "New Password"
         val user = (activity as MainActivity).mAuth.currentUser
-        Glide.with(this).load(user?.photoUrl).placeholder(R.drawable.ic_avataaars).circleCrop().into(userLogo)
+        user?.photoUrl?.let { userLogo.loadImage(it, R.drawable.ic_avatar) }
         userEmail.text = user?.email
         registrationDate.text = user?.metadata?.creationTimestamp?.let { getDate(it) }
         updatePassword.setOnClickListener {
-            if(customDialogView.parent != null){
+            if (customDialogView.parent != null) {
                 (customDialogView.parent as ViewGroup).removeView(customDialogView)
             }
             MaterialAlertDialogBuilder(requireContext())
                 .setView(customDialogView)
                 .setTitle(R.string.update_password)
                 .setNeutralButton(resources.getString(R.string.cancel)) { _, _ -> }
-                .setPositiveButton(resources.getString(R.string.update)) { dialog, _ ->
-                    if(validateNewPassword()) {
+                .setPositiveButton(resources.getString(R.string.update)) { _, _ ->
+                    if (validateNewPassword()) {
                         progressBar.visibility = View.VISIBLE
 
                         user?.updatePassword(newPassword.text.toString())
@@ -84,10 +85,10 @@ class ProfileFragment : Fragment() {
         }
     }
 
-    private fun validateNewPassword(): Boolean{
+    private fun validateNewPassword(): Boolean {
         newPasswordLayout.error = null
 
-        when{
+        when {
             newPassword.text.toString().isEmpty() -> {
                 newPasswordLayout.error = getString(R.string.error)
                 return false

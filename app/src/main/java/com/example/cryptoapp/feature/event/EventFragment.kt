@@ -9,15 +9,14 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cryptoapp.R
-import com.example.cryptoapp.data.repository.CoinGekkoApiRepository
-import com.example.cryptoapp.feature.viewModel.CoinGekkoApiViewModel
 import com.example.cryptoapp.data.constant.ExchangeConstant
-import com.example.cryptoapp.feature.shared.OnItemClickListener
-import com.example.cryptoapp.feature.shared.OnItemLongClickListener
 import com.example.cryptoapp.data.model.event.AllEvents
 import com.example.cryptoapp.data.model.event.Event
+import com.example.cryptoapp.data.repository.CoinGekkoApiRepository
+import com.example.cryptoapp.feature.shared.OnItemClickListener
+import com.example.cryptoapp.feature.shared.OnItemLongClickListener
+import com.example.cryptoapp.feature.viewModel.CoinGekkoApiViewModel
 import retrofit2.Response
-
 
 class EventFragment : Fragment(), OnItemClickListener, OnItemLongClickListener {
     private lateinit var viewModel: CoinGekkoApiViewModel
@@ -34,7 +33,8 @@ class EventFragment : Fragment(), OnItemClickListener, OnItemLongClickListener {
     private val events = mutableListOf<Event>()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_event, container, false)
@@ -95,10 +95,10 @@ class EventFragment : Fragment(), OnItemClickListener, OnItemLongClickListener {
     }
 
     override fun onItemClick(position: Int) {
-        //TODO: implement it
+        // TODO: implement it
     }
 
     override fun onItemLongClick(position: Int) {
-        //TODO: implement it
+        // TODO: implement it
     }
 }

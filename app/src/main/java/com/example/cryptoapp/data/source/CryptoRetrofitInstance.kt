@@ -10,7 +10,7 @@ object CryptoRetrofitInstance {
         Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create()).build()
     }
 
-    val api : CryptoAPI by lazy {
+    val api: CryptoAPI by lazy {
         retrofit.create(CryptoAPI::class.java)
     }
 }

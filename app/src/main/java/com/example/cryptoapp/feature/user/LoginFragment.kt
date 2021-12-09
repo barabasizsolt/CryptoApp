@@ -1,7 +1,6 @@
 package com.example.cryptoapp.feature.user
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,31 +8,36 @@ import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.example.cryptoapp.MainActivity
 import com.example.cryptoapp.R
+import com.example.cryptoapp.databinding.FragmentLoginBinding
 import com.example.cryptoapp.feature.cryptocurrency.CryptoCurrencyFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
-import kotlinx.android.synthetic.main.activity_main.*
 
 class LoginFragment : Fragment() {
     private lateinit var progressBar: ProgressBar
-    private lateinit var loginButton : Button
-    private lateinit var signUp : TextView
-    private lateinit var forgotPassword : TextView
-    private lateinit var email : TextView
-    private lateinit var password : TextView
-    private lateinit var emailLayout : TextInputLayout
-    private lateinit var passwordLayout : TextInputLayout
+    private lateinit var loginButton: Button
+    private lateinit var signUp: TextView
+    private lateinit var forgotPassword: TextView
+    private lateinit var email: TextView
+    private lateinit var password: TextView
+    private lateinit var emailLayout: TextInputLayout
+    private lateinit var passwordLayout: TextInputLayout
     private lateinit var customDialogView: View
     private lateinit var resetEmail: TextView
     private lateinit var resetEmailLayout: TextInputLayout
 
+    private lateinit var binding: FragmentLoginBinding
+
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_login, container, false)
+        binding = FragmentLoginBinding.inflate(inflater, container, false)
+        val view = binding.root
         customDialogView = inflater.inflate(R.layout.reset_update_dialog_layout, null, false)
 
         bindUI(view)
@@ -42,7 +46,7 @@ class LoginFragment : Fragment() {
         return view
     }
 
-    private fun bindUI(view: View){
+    private fun bindUI(view: View) {
         progressBar = view.findViewById(R.id.progress_bar)
         loginButton = view.findViewById(R.id.login_button)
         signUp = view.findViewById(R.id.sign_up)
@@ -55,12 +59,11 @@ class LoginFragment : Fragment() {
         resetEmailLayout = customDialogView.findViewById(R.id.reset_update_layout)
     }
 
-    private fun initUI(){
+    private fun initUI() {
         resetEmailLayout.hint = "Email"
         loginButton.setOnClickListener {
-            if(validateInput()){
+            if (validateInput()) {
                 progressBar.visibility = View.VISIBLE
-
                 (activity as MainActivity).mAuth.signInWithEmailAndPassword(email.text.toString(), password.text.toString())
                     .addOnCompleteListener(
                         requireActivity()
@@ -71,7 +74,7 @@ class LoginFragment : Fragment() {
                                 "Successfully logged in",
                                 Toast.LENGTH_LONG
                             ).show()
-                            (activity as MainActivity).bottomNavigation.selectedItemId = R.id.currencies
+                            (activity as MainActivity).bottomNavigationView.selectedItemId = R.id.currencies
                             (activity as MainActivity).initModalNavigationDrawer()
                             (activity as MainActivity).getUserWatchLists()
                             (activity as MainActivity).replaceFragment(
@@ -85,13 +88,12 @@ class LoginFragment : Fragment() {
                                 Toast.LENGTH_LONG
                             ).show()
                         }
-
                         progressBar.visibility = View.INVISIBLE
                     }
             }
         }
         forgotPassword.setOnClickListener {
-            if(customDialogView.parent != null){
+            if (customDialogView.parent != null) {
                 (customDialogView.parent as ViewGroup).removeView(customDialogView)
             }
             MaterialAlertDialogBuilder(requireContext())
@@ -99,7 +101,7 @@ class LoginFragment : Fragment() {
                 .setTitle(R.string.reset_password)
                 .setNeutralButton(resources.getString(R.string.cancel)) { _, _ -> }
                 .setPositiveButton(resources.getString(R.string.reset)) { _, _ ->
-                    if(validateResetEmail()) {
+                    if (validateResetEmail()) {
                         progressBar.visibility = View.VISIBLE
 
                         (activity as MainActivity).mAuth.sendPasswordResetEmail(resetEmail.text.toString())
@@ -125,7 +127,7 @@ class LoginFragment : Fragment() {
         emailLayout.error = null
         passwordLayout.error = null
 
-        when{
+        when {
             email.text.toString().isEmpty() -> {
                 emailLayout.error = getString(R.string.error)
                 return false
@@ -138,8 +140,8 @@ class LoginFragment : Fragment() {
         return true
     }
 
-    private fun validateResetEmail(): Boolean{
-        when{
+    private fun validateResetEmail(): Boolean {
+        when {
             resetEmail.text.toString().isEmpty() -> {
                 return false
             }
