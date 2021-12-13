@@ -46,6 +46,7 @@ import com.example.cryptoapp.databinding.FragmentCryptoCurrencyDetailsBinding
 import com.example.cryptoapp.feature.viewModel.CryptoApiViewModel
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.tabs.TabLayout
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import retrofit2.Response
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -66,7 +67,6 @@ class CryptoCurrencyDetailsFragment : Fragment() {
     private lateinit var marketCap: TextView
     private lateinit var chipGroup: ChipGroup
     private lateinit var tabLayout: TabLayout
-    private lateinit var viewModel: CryptoApiViewModel
     private lateinit var cryptoCurrencyId: String
 
     private var currentTimeFrame = HOUR24
@@ -74,8 +74,7 @@ class CryptoCurrencyDetailsFragment : Fragment() {
     private var isAddedToFavorite = false
 
     private lateinit var binding: FragmentCryptoCurrencyDetailsBinding
-
-    // TODO: add progressbar to load every data
+    private val cryptoCurrencyViewModel by sharedViewModel<CryptoApiViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -89,11 +88,11 @@ class CryptoCurrencyDetailsFragment : Fragment() {
         cryptoCurrencyId = requireArguments().getString(CryptoConstant.COIN_ID)!!
         Log.d("ID", cryptoCurrencyId)
 
-        viewModel.getCryptoCurrencyDetails(cryptoCurrencyId)
-        viewModel.cryptoCurrencyDetails.observe(requireActivity(), cryptoDetailsObserver)
+        cryptoCurrencyViewModel.getCryptoCurrencyDetails(cryptoCurrencyId)
+        cryptoCurrencyViewModel.cryptoCurrencyDetails.observe(requireActivity(), cryptoDetailsObserver)
 
-        viewModel.getCryptoCurrencyHistory(uuid = cryptoCurrencyId, timePeriod = HOUR24)
-        viewModel.cryptoCurrencyHistory.observe(requireActivity(), cryptoHistoryObserver)
+        cryptoCurrencyViewModel.getCryptoCurrencyHistory(uuid = cryptoCurrencyId, timePeriod = HOUR24)
+        cryptoCurrencyViewModel.cryptoCurrencyHistory.observe(requireActivity(), cryptoHistoryObserver)
 
         initTobBarListener()
         initializeChipGroup(cryptoCurrencyId)
@@ -110,8 +109,8 @@ class CryptoCurrencyDetailsFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        viewModel.cryptoCurrencyHistory.removeObserver(cryptoHistoryObserver)
-        viewModel.cryptoCurrencyDetails.removeObserver(cryptoDetailsObserver)
+        cryptoCurrencyViewModel.cryptoCurrencyHistory.removeObserver(cryptoHistoryObserver)
+        cryptoCurrencyViewModel.cryptoCurrencyDetails.removeObserver(cryptoDetailsObserver)
     }
 
     private val cryptoDetailsObserver = androidx.lifecycle.Observer<Response<CryptoCurrencyDetails>> { response ->
@@ -151,7 +150,6 @@ class CryptoCurrencyDetailsFragment : Fragment() {
     }
 
     private fun bindUI(view: View) {
-        viewModel = (activity as MainActivity).getViewModel()
         initializeChart(view)
         tabLayout = view.findViewById(R.id.tab_layout)
         cryptoLogo = view.findViewById(R.id.crypto_logo)
@@ -239,22 +237,22 @@ class CryptoCurrencyDetailsFragment : Fragment() {
             when (checkedId) {
                 R.id.chip_24h -> {
                     Log.d("CH24", "Chipped")
-                    viewModel.getCryptoCurrencyHistory(uuid = cryptoCurrencyId, timePeriod = HOUR24)
+                    cryptoCurrencyViewModel.getCryptoCurrencyHistory(uuid = cryptoCurrencyId, timePeriod = HOUR24)
                     currentTimeFrame = HOUR24
                 }
                 R.id.chip_7d -> {
                     Log.d("CH7", "Chipped")
-                    viewModel.getCryptoCurrencyHistory(uuid = cryptoCurrencyId, timePeriod = DAY7)
+                    cryptoCurrencyViewModel.getCryptoCurrencyHistory(uuid = cryptoCurrencyId, timePeriod = DAY7)
                     currentTimeFrame = DAY7
                 }
                 R.id.chip_1y -> {
                     Log.d("CH1", "Chipped")
-                    viewModel.getCryptoCurrencyHistory(uuid = cryptoCurrencyId, timePeriod = YEAR1)
+                    cryptoCurrencyViewModel.getCryptoCurrencyHistory(uuid = cryptoCurrencyId, timePeriod = YEAR1)
                     currentTimeFrame = YEAR1
                 }
                 R.id.chip_6y -> {
                     Log.d("CH3", "Chipped")
-                    viewModel.getCryptoCurrencyHistory(uuid = cryptoCurrencyId, timePeriod = YEAR6)
+                    cryptoCurrencyViewModel.getCryptoCurrencyHistory(uuid = cryptoCurrencyId, timePeriod = YEAR6)
                     currentTimeFrame = YEAR6
                 }
             }

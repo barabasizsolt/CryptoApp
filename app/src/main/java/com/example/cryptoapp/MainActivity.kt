@@ -15,7 +15,6 @@ import com.example.cryptoapp.data.constant.CryptoConstant.loadImage
 import com.example.cryptoapp.data.model.cryptoCurrency.AllCryptoCurrencies
 import com.example.cryptoapp.data.model.cryptoCurrency.CryptoCurrency
 import com.example.cryptoapp.data.repository.Cache
-import com.example.cryptoapp.data.repository.CryptoApiRepository
 import com.example.cryptoapp.databinding.ActivityMainBinding
 import com.example.cryptoapp.feature.cryptocurrency.CryptoCurrencyFragment
 import com.example.cryptoapp.feature.event.EventFragment
@@ -29,12 +28,12 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
     lateinit var topAppBar: MaterialToolbar
     lateinit var bottomNavigationView: BottomNavigationView
-    private lateinit var viewModel: CryptoApiViewModel
     private lateinit var navHeader: View
     private lateinit var userLogo: ImageView
     private lateinit var userEmail: TextView
@@ -42,6 +41,8 @@ class MainActivity : AppCompatActivity() {
     lateinit var fireStore: FirebaseFirestore
     lateinit var favoriteMenuItem: MenuItem
     private lateinit var binding: ActivityMainBinding
+
+    private val cryptoCurrencyViewModel by viewModel<CryptoApiViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,14 +67,8 @@ class MainActivity : AppCompatActivity() {
         userLogo.loadImage(R.drawable.ic_avatar)
         userEmail = navHeader.findViewById(R.id.user_email)
 
-        viewModel = CryptoApiViewModel(CryptoApiRepository())
-        viewModel.getAllCryptoCurrencies()
-        viewModel.allCryptoCurrenciesResponse.observe(this, mainObserver)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        viewModel.allCryptoCurrenciesResponse.removeObserver(mainObserver)
+        cryptoCurrencyViewModel.getAllCryptoCurrencies()
+        cryptoCurrencyViewModel.allCryptoCurrenciesResponse.observe(this, mainObserver)
     }
 
     private val mainObserver =
@@ -182,6 +177,4 @@ class MainActivity : AppCompatActivity() {
         }
         transaction.commit()
     }
-
-    fun getViewModel() = viewModel
 }
