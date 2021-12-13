@@ -12,15 +12,12 @@ import com.example.cryptoapp.R
 import com.example.cryptoapp.data.constant.ExchangeConstant.PAGE
 import com.example.cryptoapp.data.constant.ExchangeConstant.PER_PAGE
 import com.example.cryptoapp.data.model.exchange.Exchange
-import com.example.cryptoapp.data.repository.Cache
-import com.example.cryptoapp.data.repository.CoinGekkoApiRepository
 import com.example.cryptoapp.feature.shared.OnItemClickListener
 import com.example.cryptoapp.feature.shared.OnItemLongClickListener
-import com.example.cryptoapp.feature.viewModel.CoinGekkoApiViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import retrofit2.Response
 
 class ExchangeFragment : Fragment(), OnItemClickListener, OnItemLongClickListener {
-    private lateinit var viewModel: CoinGekkoApiViewModel
     private lateinit var recyclerView: RecyclerView
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var exchangeAdapter: ExchangeAdapter
@@ -30,6 +27,8 @@ class ExchangeFragment : Fragment(), OnItemClickListener, OnItemLongClickListene
     private var pastVisibleItems = 0
     private var visibleItemCount = 0
     private var totalItemCount = 0
+
+    private val exchangeViewModel by viewModel<ExchangeViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,16 +41,8 @@ class ExchangeFragment : Fragment(), OnItemClickListener, OnItemLongClickListene
         return view
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        viewModel.allExchangeResponse.removeObserver(exchangesObserver)
-    }
-
     private fun bindUI(view: View) {
         recyclerView = view.findViewById(R.id.recyclerview)
-        viewModel = CoinGekkoApiViewModel(CoinGekkoApiRepository())
-        viewModel.getAllExchanges()
-        viewModel.allExchangeResponse.observe(requireActivity(), exchangesObserver)
     }
 
     private fun initUI() {
@@ -59,7 +50,8 @@ class ExchangeFragment : Fragment(), OnItemClickListener, OnItemLongClickListene
         recyclerView.layoutManager = linearLayoutManager
         exchangeAdapter = ExchangeAdapter(this, this)
         recyclerView.adapter = exchangeAdapter
-        viewModel.getAllExchanges(perPage = PER_PAGE, currentPage.toString())
+        exchangeViewModel.loadExchanges()
+        exchangeViewModel.getExchanges().observe(requireActivity(), exchangesObserver)
 
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -71,7 +63,7 @@ class ExchangeFragment : Fragment(), OnItemClickListener, OnItemLongClickListene
                         if (visibleItemCount + pastVisibleItems >= totalItemCount) {
                             isLoading = false
                             currentPage++
-                            viewModel.getAllExchanges(perPage = PER_PAGE, currentPage.toString())
+                            exchangeViewModel.loadExchanges(perPage = PER_PAGE, currentPage.toString())
                             Log.d("End", currentPage.toString())
                         }
                     }
@@ -83,17 +75,14 @@ class ExchangeFragment : Fragment(), OnItemClickListener, OnItemLongClickListene
     private val exchangesObserver =
         androidx.lifecycle.Observer<Response<List<Exchange>>> { response ->
             if (response.isSuccessful) {
-                Log.d("Exchanges", response.body().toString())
+                Log.d("Exchanges", response.body()?.size.toString())
                 val exchanges = response.body() as MutableList<Exchange>
                 if (currentPage.toString() == PAGE) {
-                    Cache.setExchanges(exchanges)
+                    exchangeAdapter.submitList(exchanges)
                 } else {
-                    Cache.setExchanges(
-                        Cache.getExchanges().plus(exchanges) as MutableList<Exchange>
-                    )
+                    exchangeAdapter.submitList(exchangeAdapter.currentList + exchanges)
                     isLoading = true
                 }
-                exchangeAdapter.submitList(Cache.getExchanges())
             }
         }
 

@@ -5,12 +5,12 @@ import com.example.cryptoapp.data.model.exchange.Exchange
 import com.example.cryptoapp.data.source.CoinGekkoRetrofitInstance
 import retrofit2.Response
 
-class CoinGekkoApiRepository {
+class CoinGekkoApiRepository(private val instance: CoinGekkoRetrofitInstance) {
     suspend fun getAllExchanges(perPage: Int, page: String): Response<List<Exchange>> {
-        return CoinGekkoRetrofitInstance.CoinGekkoApi.getExchanges(perPage = perPage, page = page)
+        return instance.coinGekkoApi.getExchanges(perPage = perPage, page = page)
     }
 
     suspend fun getAllEvents(page: String): Response<AllEvents> {
-        return CoinGekkoRetrofitInstance.CoinGekkoApi.getEvents(page = page)
+        return instance.coinGekkoApi.getEvents(page = page)
     }
 }

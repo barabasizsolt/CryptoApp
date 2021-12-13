@@ -11,7 +11,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.cryptoapp.MainActivity
 import com.example.cryptoapp.R
-import com.example.cryptoapp.feature.cryptocurrency.CryptoCurrencyFragment
+import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyList.CryptoCurrencyFragment
 import com.google.android.material.textfield.TextInputLayout
 
 class SignUpFragment : Fragment() {

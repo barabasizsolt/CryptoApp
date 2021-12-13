@@ -49,7 +49,7 @@ class ExchangeAdapter(
             holder.exchangeTrustScore.text = itemsViewModel.trustScore.toString()
         }
         if (itemsViewModel.tradeVolume24HBtc != null) {
-            holder.volume.text = setCompactPrice(itemsViewModel.tradeVolume24HBtc)
+            holder.volume.text = setCompactPrice(itemsViewModel.tradeVolume24HBtc.toString())
         }
     }
 

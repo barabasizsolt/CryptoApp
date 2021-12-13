@@ -1,4 +1,4 @@
-package com.example.cryptoapp.feature.cryptocurrency
+package com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyList
 
 import android.view.LayoutInflater
 import android.view.View
@@ -53,8 +53,8 @@ class CryptoCurrencyAdapter(
         holder.currencyLogo.loadSvg(uiCryptoCurrencyModel.iconUrl)
         holder.currencyValue.text = setPrice(uiCryptoCurrencyModel.price.toDouble())
         setPercentage(uiCryptoCurrencyModel.change, holder.percentChange)
-        holder.volume.text = setCompactPrice(uiCryptoCurrencyModel.volume.toDouble())
-        holder.marketCap.text = setCompactPrice(uiCryptoCurrencyModel.marketCap.toDouble())
+        holder.volume.text = setCompactPrice(uiCryptoCurrencyModel.volume)
+        holder.marketCap.text = setCompactPrice(uiCryptoCurrencyModel.marketCap)
     }
 
     class CryptoCurrencyViewHolder(

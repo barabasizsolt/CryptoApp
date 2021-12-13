@@ -1,7 +1,6 @@
 package com.example.cryptoapp
 
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
@@ -12,24 +11,19 @@ import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import com.example.cryptoapp.data.constant.CryptoConstant
 import com.example.cryptoapp.data.constant.CryptoConstant.loadImage
-import com.example.cryptoapp.data.model.cryptoCurrency.AllCryptoCurrencies
-import com.example.cryptoapp.data.model.cryptoCurrency.CryptoCurrency
 import com.example.cryptoapp.data.repository.Cache
 import com.example.cryptoapp.databinding.ActivityMainBinding
-import com.example.cryptoapp.feature.cryptocurrency.CryptoCurrencyFragment
+import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyList.CryptoCurrencyFragment
 import com.example.cryptoapp.feature.event.EventFragment
 import com.example.cryptoapp.feature.exchange.ExchangeFragment
 import com.example.cryptoapp.feature.user.LoginFragment
 import com.example.cryptoapp.feature.user.ProfileFragment
-import com.example.cryptoapp.feature.viewModel.CryptoApiViewModel
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import org.koin.androidx.viewmodel.ext.android.viewModel
-import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
     lateinit var topAppBar: MaterialToolbar
@@ -41,8 +35,6 @@ class MainActivity : AppCompatActivity() {
     lateinit var fireStore: FirebaseFirestore
     lateinit var favoriteMenuItem: MenuItem
     private lateinit var binding: ActivityMainBinding
-
-    private val cryptoCurrencyViewModel by viewModel<CryptoApiViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,26 +59,15 @@ class MainActivity : AppCompatActivity() {
         userLogo.loadImage(R.drawable.ic_avatar)
         userEmail = navHeader.findViewById(R.id.user_email)
 
-        cryptoCurrencyViewModel.getAllCryptoCurrencies()
-        cryptoCurrencyViewModel.allCryptoCurrenciesResponse.observe(this, mainObserver)
-    }
-
-    private val mainObserver =
-        androidx.lifecycle.Observer<Response<AllCryptoCurrencies>> { response ->
-            if (response.isSuccessful) {
-                Log.d("Observed", response.body()?.data.toString())
-                Cache.setCryptoCurrencies(response.body()?.data?.coins as MutableList<CryptoCurrency>)
-                initBottomNavigation()
-
-                if (mAuth.currentUser == null) {
-                    replaceFragment(LoginFragment(), R.id.activity_fragment_container)
-                } else {
-                    initModalNavigationDrawer()
-                    getUserWatchLists()
-                    replaceFragment(CryptoCurrencyFragment(), R.id.activity_fragment_container)
-                }
-            }
+        initBottomNavigation()
+        if (mAuth.currentUser == null) {
+            replaceFragment(LoginFragment(), R.id.activity_fragment_container)
+        } else {
+            initModalNavigationDrawer()
+            getUserWatchLists()
+            replaceFragment(CryptoCurrencyFragment(), R.id.activity_fragment_container)
         }
+    }
 
     fun getUserWatchLists() {
         fireStore.collection(CryptoConstant.CURRENCY_FIRE_STORE_PATH)

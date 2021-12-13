@@ -1,4 +1,4 @@
-package com.example.cryptoapp.feature.cryptocurrency
+package com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails
 
 import android.os.Bundle
 import android.util.Log
@@ -43,10 +43,9 @@ import com.example.cryptoapp.data.model.cryptoCurrencyDetail.CryptoCurrencyHisto
 import com.example.cryptoapp.data.model.cryptoCurrencyDetail.CryptoHistory
 import com.example.cryptoapp.data.repository.Cache
 import com.example.cryptoapp.databinding.FragmentCryptoCurrencyDetailsBinding
-import com.example.cryptoapp.feature.viewModel.CryptoApiViewModel
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.tabs.TabLayout
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import retrofit2.Response
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -74,7 +73,7 @@ class CryptoCurrencyDetailsFragment : Fragment() {
     private var isAddedToFavorite = false
 
     private lateinit var binding: FragmentCryptoCurrencyDetailsBinding
-    private val cryptoCurrencyViewModel by sharedViewModel<CryptoApiViewModel>()
+    private val cryptoCurrencyViewModel by viewModel<CryptoCurrencyDetailsViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -85,14 +84,16 @@ class CryptoCurrencyDetailsFragment : Fragment() {
         val view = binding.root
 
         bindUI(view)
-        cryptoCurrencyId = requireArguments().getString(CryptoConstant.COIN_ID)!!
+        cryptoCurrencyId = requireArguments().getString(CryptoConstant.COIN_ID).toString()
         Log.d("ID", cryptoCurrencyId)
 
-        cryptoCurrencyViewModel.getCryptoCurrencyDetails(cryptoCurrencyId)
-        cryptoCurrencyViewModel.cryptoCurrencyDetails.observe(requireActivity(), cryptoDetailsObserver)
+        cryptoCurrencyViewModel.loadCryptoCurrencyDetails(cryptoCurrencyId)
+        cryptoCurrencyViewModel.getCryptoCurrencyDetails()
+            .observe(requireActivity(), cryptoDetailsObserver)
 
-        cryptoCurrencyViewModel.getCryptoCurrencyHistory(uuid = cryptoCurrencyId, timePeriod = HOUR24)
-        cryptoCurrencyViewModel.cryptoCurrencyHistory.observe(requireActivity(), cryptoHistoryObserver)
+        cryptoCurrencyViewModel.loadCryptoCurrencyHistory(uuid = cryptoCurrencyId, timePeriod = HOUR24)
+        cryptoCurrencyViewModel.getCryptoCurrencyHistory()
+            .observe(requireActivity(), cryptoHistoryObserver)
 
         initTobBarListener()
         initializeChipGroup(cryptoCurrencyId)
@@ -107,16 +108,9 @@ class CryptoCurrencyDetailsFragment : Fragment() {
         (activity as MainActivity).favoriteMenuItem.setIcon(R.drawable.ic_watchlist)
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        cryptoCurrencyViewModel.cryptoCurrencyHistory.removeObserver(cryptoHistoryObserver)
-        cryptoCurrencyViewModel.cryptoCurrencyDetails.removeObserver(cryptoDetailsObserver)
-    }
-
     private val cryptoDetailsObserver = androidx.lifecycle.Observer<Response<CryptoCurrencyDetails>> { response ->
         if (response.isSuccessful) {
             response.body()?.let { cryptoDetails ->
-                Cache.setCryptoCurrency(cryptoDetails.data.coin)
                 initUI(cryptoDetails)
                 tabLayout.getTabAt(1)!!.select()
                 tabLayout.getTabAt(0)!!.select()
@@ -188,10 +182,10 @@ class CryptoCurrencyDetailsFragment : Fragment() {
             setPercentage(coin.change, percentageChange24H)
         }
         if (!coin.volume.isNullOrEmpty()) {
-            volume.text = setCompactPrice(coin.volume.toDouble())
+            volume.text = setCompactPrice(coin.volume)
         }
         if (!coin.marketCap.isNullOrEmpty()) {
-            marketCap.text = setCompactPrice(coin.marketCap.toDouble())
+            marketCap.text = setCompactPrice(coin.marketCap)
         }
     }
 
@@ -237,22 +231,22 @@ class CryptoCurrencyDetailsFragment : Fragment() {
             when (checkedId) {
                 R.id.chip_24h -> {
                     Log.d("CH24", "Chipped")
-                    cryptoCurrencyViewModel.getCryptoCurrencyHistory(uuid = cryptoCurrencyId, timePeriod = HOUR24)
+                    cryptoCurrencyViewModel.loadCryptoCurrencyHistory(uuid = cryptoCurrencyId, timePeriod = HOUR24)
                     currentTimeFrame = HOUR24
                 }
                 R.id.chip_7d -> {
                     Log.d("CH7", "Chipped")
-                    cryptoCurrencyViewModel.getCryptoCurrencyHistory(uuid = cryptoCurrencyId, timePeriod = DAY7)
+                    cryptoCurrencyViewModel.loadCryptoCurrencyHistory(uuid = cryptoCurrencyId, timePeriod = DAY7)
                     currentTimeFrame = DAY7
                 }
                 R.id.chip_1y -> {
                     Log.d("CH1", "Chipped")
-                    cryptoCurrencyViewModel.getCryptoCurrencyHistory(uuid = cryptoCurrencyId, timePeriod = YEAR1)
+                    cryptoCurrencyViewModel.loadCryptoCurrencyHistory(uuid = cryptoCurrencyId, timePeriod = YEAR1)
                     currentTimeFrame = YEAR1
                 }
                 R.id.chip_6y -> {
                     Log.d("CH3", "Chipped")
-                    cryptoCurrencyViewModel.getCryptoCurrencyHistory(uuid = cryptoCurrencyId, timePeriod = YEAR6)
+                    cryptoCurrencyViewModel.loadCryptoCurrencyHistory(uuid = cryptoCurrencyId, timePeriod = YEAR6)
                     currentTimeFrame = YEAR6
                 }
             }
@@ -263,7 +257,13 @@ class CryptoCurrencyDetailsFragment : Fragment() {
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 when (tab!!.position) {
-                    0 -> (activity as MainActivity).replaceFragment(CryptoDetailsInfoFragment(), R.id.crypto_details_fragment_container)
+                    0 -> {
+                        val fragment = CryptoDetailsInfoFragment()
+                        val bundle = Bundle()
+                        bundle.putString(CryptoConstant.COIN_ID, cryptoCurrencyId)
+                        fragment.arguments = bundle
+                        (activity as MainActivity).replaceFragment(fragment, R.id.crypto_details_fragment_container)
+                    }
                     1 -> {
                         // TODO:Implement it
                     }

@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment
 import com.example.cryptoapp.MainActivity
 import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.FragmentLoginBinding
-import com.example.cryptoapp.feature.cryptocurrency.CryptoCurrencyFragment
+import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyList.CryptoCurrencyFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 
