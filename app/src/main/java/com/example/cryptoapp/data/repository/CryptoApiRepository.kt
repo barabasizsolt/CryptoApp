@@ -6,16 +6,16 @@ import com.example.cryptoapp.data.model.cryptoCurrencyDetail.CryptoCurrencyHisto
 import com.example.cryptoapp.data.source.CryptoRetrofitInstance
 import retrofit2.Response
 
-class CryptoApiRepository {
+class CryptoApiRepository(private val instance: CryptoRetrofitInstance) {
     suspend fun getAllCryptoCurrencies(orderBy: String, orderDirection: String, offset: Int, tags: Set<String>, timePeriod: String): Response<AllCryptoCurrencies> {
-        return CryptoRetrofitInstance.api.getAllCryptoCurrencies(orderBy = orderBy, orderDirection = orderDirection, offset = offset, tags = tags, timePeriod = timePeriod)
+        return instance.api.getAllCryptoCurrencies(orderBy = orderBy, orderDirection = orderDirection, offset = offset, tags = tags, timePeriod = timePeriod)
     }
 
     suspend fun getCryptoCurrencyDetails(uuid: String): Response<CryptoCurrencyDetails> {
-        return CryptoRetrofitInstance.api.getCryptoCurrencyDetails(uuid = uuid)
+        return instance.api.getCryptoCurrencyDetails(uuid = uuid)
     }
 
     suspend fun getCryptoCurrencyHistory(uuid: String, timePeriod: String): Response<CryptoCurrencyHistory> {
-        return CryptoRetrofitInstance.api.getCryptoCurrencyHistory(uuid = uuid, timePeriod = timePeriod)
+        return instance.api.getCryptoCurrencyHistory(uuid = uuid, timePeriod = timePeriod)
     }
 }
