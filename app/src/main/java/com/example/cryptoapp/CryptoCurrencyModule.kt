@@ -8,6 +8,6 @@ import org.koin.dsl.module
 
 val cryptoCurrencyModule = module {
     single { CryptoRetrofitInstance() }
-    factory { CryptoApiRepository(get()) }
+    single { CryptoApiRepository(get()) }
     viewModel { CryptoApiViewModel(get()) }
 }
