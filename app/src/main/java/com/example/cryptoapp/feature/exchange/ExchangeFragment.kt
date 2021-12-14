@@ -6,62 +6,58 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.cryptoapp.R
 import com.example.cryptoapp.data.constant.ExchangeConstant.PAGE
 import com.example.cryptoapp.data.constant.ExchangeConstant.PER_PAGE
 import com.example.cryptoapp.data.model.exchange.Exchange
-import com.example.cryptoapp.data.repository.Cache
-import com.example.cryptoapp.data.repository.CoinGekkoApiRepository
+import com.example.cryptoapp.databinding.FragmentExchangeBinding
 import com.example.cryptoapp.feature.shared.OnItemClickListener
 import com.example.cryptoapp.feature.shared.OnItemLongClickListener
-import com.example.cryptoapp.feature.viewModel.CoinGekkoApiViewModel
-import retrofit2.Response
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ExchangeFragment : Fragment(), OnItemClickListener, OnItemLongClickListener {
-    private lateinit var viewModel: CoinGekkoApiViewModel
-    private lateinit var recyclerView: RecyclerView
     private lateinit var linearLayoutManager: LinearLayoutManager
-    private lateinit var exchangeAdapter: ExchangeAdapter
-
+    private val exchangeAdapter: ExchangeAdapter = ExchangeAdapter(this, this)
     private var isLoading: Boolean = true
     private var currentPage: Long = PAGE.toLong()
     private var pastVisibleItems = 0
     private var visibleItemCount = 0
     private var totalItemCount = 0
+    private lateinit var binding: FragmentExchangeBinding
+    private val viewModel by viewModel<ExchangeViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_exchange, container, false)
-        bindUI(view)
+    ): View {
+        binding = FragmentExchangeBinding.inflate(inflater, container, false)
         initUI()
-        return view
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        viewModel.allExchangeResponse.removeObserver(exchangesObserver)
-    }
-
-    private fun bindUI(view: View) {
-        recyclerView = view.findViewById(R.id.recyclerview)
-        viewModel = CoinGekkoApiViewModel(CoinGekkoApiRepository())
-        viewModel.getAllExchanges()
-        viewModel.allExchangeResponse.observe(requireActivity(), exchangesObserver)
+        return binding.root
     }
 
     private fun initUI() {
         linearLayoutManager = LinearLayoutManager(requireContext())
-        recyclerView.layoutManager = linearLayoutManager
-        exchangeAdapter = ExchangeAdapter(this, this)
-        recyclerView.adapter = exchangeAdapter
-        viewModel.getAllExchanges(perPage = PER_PAGE, currentPage.toString())
+        binding.recyclerview.layoutManager = linearLayoutManager
+        binding.recyclerview.adapter = exchangeAdapter
+        viewModel.exchanges.onEach { response ->
+            if (response != null && response.isSuccessful) {
+                Log.d("Exchanges", response.body()?.size.toString())
+                val exchanges = response.body() as MutableList<Exchange>
+                if (currentPage.toString() == PAGE) {
+                    exchangeAdapter.submitList(exchanges)
+                } else {
+                    exchangeAdapter.submitList(exchangeAdapter.currentList + exchanges)
+                    isLoading = true
+                }
+            }
+        }.launchIn(viewLifecycleOwner.lifecycleScope)
 
-        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        binding.recyclerview.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 if (dy > 0) {
                     visibleItemCount = linearLayoutManager.childCount
@@ -71,7 +67,7 @@ class ExchangeFragment : Fragment(), OnItemClickListener, OnItemLongClickListene
                         if (visibleItemCount + pastVisibleItems >= totalItemCount) {
                             isLoading = false
                             currentPage++
-                            viewModel.getAllExchanges(perPage = PER_PAGE, currentPage.toString())
+                            viewModel.loadExchanges(perPage = PER_PAGE, currentPage.toString())
                             Log.d("End", currentPage.toString())
                         }
                     }
@@ -79,23 +75,6 @@ class ExchangeFragment : Fragment(), OnItemClickListener, OnItemLongClickListene
             }
         })
     }
-
-    private val exchangesObserver =
-        androidx.lifecycle.Observer<Response<List<Exchange>>> { response ->
-            if (response.isSuccessful) {
-                Log.d("Exchanges", response.body().toString())
-                val exchanges = response.body() as MutableList<Exchange>
-                if (currentPage.toString() == PAGE) {
-                    Cache.setExchanges(exchanges)
-                } else {
-                    Cache.setExchanges(
-                        Cache.getExchanges().plus(exchanges) as MutableList<Exchange>
-                    )
-                    isLoading = true
-                }
-                exchangeAdapter.submitList(Cache.getExchanges())
-            }
-        }
 
     override fun onItemClick(position: Int) {
         // TODO:implement it

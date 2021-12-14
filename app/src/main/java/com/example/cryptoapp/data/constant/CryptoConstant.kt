@@ -177,8 +177,9 @@ object CryptoConstant {
         return numberFormat.format(inputNumber)
     }
 
-    fun setCompactPrice(inputNumber: Double): String {
-        val amount = CurrencyAmount(inputNumber, currency)
+    fun setCompactPrice(inputNumber: String): String {
+        if (inputNumber == "null") return "undefined"
+        val amount = CurrencyAmount(inputNumber.toDouble(), currency)
         return format.format(amount)
     }
 }

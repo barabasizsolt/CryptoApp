@@ -1,14 +1,13 @@
-package com.example.cryptoapp.feature.cryptocurrency
+package com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails
 
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.anychart.anychart.AnyChart.area
 import com.anychart.anychart.AnyChartView
 import com.anychart.anychart.Cartesian
@@ -39,15 +38,13 @@ import com.example.cryptoapp.data.constant.CryptoConstant.setCompactPrice
 import com.example.cryptoapp.data.constant.CryptoConstant.setPercentage
 import com.example.cryptoapp.data.constant.CryptoConstant.setPrice
 import com.example.cryptoapp.data.model.cryptoCurrencyDetail.CryptoCurrencyDetails
-import com.example.cryptoapp.data.model.cryptoCurrencyDetail.CryptoCurrencyHistory
 import com.example.cryptoapp.data.model.cryptoCurrencyDetail.CryptoHistory
 import com.example.cryptoapp.data.repository.Cache
 import com.example.cryptoapp.databinding.FragmentCryptoCurrencyDetailsBinding
-import com.example.cryptoapp.feature.viewModel.CryptoApiViewModel
-import com.google.android.material.chip.ChipGroup
 import com.google.android.material.tabs.TabLayout
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import retrofit2.Response
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.Month
@@ -56,25 +53,12 @@ import java.util.Calendar.MONTH
 import kotlin.collections.ArrayList
 
 class CryptoCurrencyDetailsFragment : Fragment() {
-    private lateinit var areaChart: Cartesian
-    private lateinit var cryptoLogo: ImageView
-    private lateinit var cryptoName: TextView
-    private lateinit var cryptoSymbol: TextView
-    private lateinit var cryptoPrice: TextView
-    private lateinit var cryptoValueSymbol: TextView
-    private lateinit var percentageChange24H: TextView
-    private lateinit var volume: TextView
-    private lateinit var marketCap: TextView
-    private lateinit var chipGroup: ChipGroup
-    private lateinit var tabLayout: TabLayout
+    private val areaChart: Cartesian = area()
     private lateinit var cryptoCurrencyId: String
-
     private var currentTimeFrame = HOUR24
-
     private var isAddedToFavorite = false
-
     private lateinit var binding: FragmentCryptoCurrencyDetailsBinding
-    private val cryptoCurrencyViewModel by sharedViewModel<CryptoApiViewModel>()
+    private val viewModel by viewModel<CryptoCurrencyDetailsViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -82,85 +66,61 @@ class CryptoCurrencyDetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentCryptoCurrencyDetailsBinding.inflate(inflater, container, false)
-        val view = binding.root
 
-        bindUI(view)
-        cryptoCurrencyId = requireArguments().getString(CryptoConstant.COIN_ID)!!
+        cryptoCurrencyId = requireArguments().getString(CryptoConstant.COIN_ID).toString()
         Log.d("ID", cryptoCurrencyId)
+        initializeChart(binding.root)
 
-        cryptoCurrencyViewModel.getCryptoCurrencyDetails(cryptoCurrencyId)
-        cryptoCurrencyViewModel.cryptoCurrencyDetails.observe(requireActivity(), cryptoDetailsObserver)
+        viewModel.loadCryptoCurrencyDetails(cryptoCurrencyId)
+        viewModel.cryptoCurrencyDetails
+            .onEach { response ->
+                if (response != null && response.isSuccessful) {
+                    response.body()?.let { cryptoDetails ->
+                        initUI(cryptoDetails)
+                        binding.tabLayout.getTabAt(1)!!.select()
+                        binding.tabLayout.getTabAt(0)!!.select()
+                        isFavourite()
+                        (activity as MainActivity).favoriteMenuItem.isVisible = true
+                    }
+                }
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
 
-        cryptoCurrencyViewModel.getCryptoCurrencyHistory(uuid = cryptoCurrencyId, timePeriod = HOUR24)
-        cryptoCurrencyViewModel.cryptoCurrencyHistory.observe(requireActivity(), cryptoHistoryObserver)
+        viewModel.cryptoCurrencyHistory
+            .onEach { response ->
+                if (response != null && response.isSuccessful) {
+                    when (currentTimeFrame) {
+                        HOUR24 -> {
+                            val currencyHistory = createDataForAreaChart(response.body()?.data?.history!! as MutableList, HOUR24)
+                            refreshChart(currencyHistory)
+                        }
+                        DAY7 -> {
+                            val currencyHistory = createDataForAreaChart(response.body()?.data?.history!! as MutableList, DAY7)
+                            refreshChart(currencyHistory)
+                        }
+                        YEAR1 -> {
+                            val currencyHistory = createDataForAreaChart(response.body()?.data?.history!! as MutableList, YEAR1)
+                            refreshChart(currencyHistory)
+                        }
+                        YEAR6 -> {
+                            val currencyHistory = createDataForAreaChart(response.body()?.data?.history!! as MutableList, YEAR6)
+                            refreshChart(currencyHistory)
+                        }
+                    }
+                }
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
+        viewModel.loadCryptoCurrencyHistory(uuid = cryptoCurrencyId, timePeriod = HOUR24)
 
         initTobBarListener()
         initializeChipGroup(cryptoCurrencyId)
         initializeTabLayout()
 
-        return view
+        return binding.root
     }
 
     override fun onPause() {
         super.onPause()
         (activity as MainActivity).favoriteMenuItem.isVisible = false
         (activity as MainActivity).favoriteMenuItem.setIcon(R.drawable.ic_watchlist)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        cryptoCurrencyViewModel.cryptoCurrencyHistory.removeObserver(cryptoHistoryObserver)
-        cryptoCurrencyViewModel.cryptoCurrencyDetails.removeObserver(cryptoDetailsObserver)
-    }
-
-    private val cryptoDetailsObserver = androidx.lifecycle.Observer<Response<CryptoCurrencyDetails>> { response ->
-        if (response.isSuccessful) {
-            response.body()?.let { cryptoDetails ->
-                Cache.setCryptoCurrency(cryptoDetails.data.coin)
-                initUI(cryptoDetails)
-                tabLayout.getTabAt(1)!!.select()
-                tabLayout.getTabAt(0)!!.select()
-                isFavourite()
-                (activity as MainActivity).favoriteMenuItem.isVisible = true
-            }
-        }
-    }
-
-    private val cryptoHistoryObserver = androidx.lifecycle.Observer<Response<CryptoCurrencyHistory>> { response ->
-        if (response.isSuccessful) {
-            when (currentTimeFrame) {
-                HOUR24 -> {
-                    val currencyHistory = createDataForAreaChart(response.body()?.data?.history!! as MutableList, HOUR24)
-                    refreshChart(currencyHistory)
-                }
-                DAY7 -> {
-                    val currencyHistory = createDataForAreaChart(response.body()?.data?.history!! as MutableList, DAY7)
-                    refreshChart(currencyHistory)
-                }
-                YEAR1 -> {
-                    val currencyHistory = createDataForAreaChart(response.body()?.data?.history!! as MutableList, YEAR1)
-                    refreshChart(currencyHistory)
-                }
-                YEAR6 -> {
-                    val currencyHistory = createDataForAreaChart(response.body()?.data?.history!! as MutableList, YEAR6)
-                    refreshChart(currencyHistory)
-                }
-            }
-        }
-    }
-
-    private fun bindUI(view: View) {
-        initializeChart(view)
-        tabLayout = view.findViewById(R.id.tab_layout)
-        cryptoLogo = view.findViewById(R.id.crypto_logo)
-        cryptoName = view.findViewById(R.id.crypto_name)
-        cryptoSymbol = view.findViewById(R.id.crypto_symbol)
-        cryptoPrice = view.findViewById(R.id.crypto_price)
-        cryptoValueSymbol = view.findViewById(R.id.crypto_value_symbol)
-        percentageChange24H = view.findViewById(R.id.percent_change_24h)
-        volume = view.findViewById(R.id.volume)
-        marketCap = view.findViewById(R.id.market_cap)
-        chipGroup = view.findViewById(R.id.chip_group)
     }
 
     private fun initUI(cryptoCurrencyDetails: CryptoCurrencyDetails) {
@@ -176,22 +136,22 @@ class CryptoCurrencyDetailsFragment : Fragment() {
         }
         val coinValueSymbol = coin.symbol + "/" + "USD" + " - AVG - " + currentHour + ":" + currentMinute
         if (!coin.iconUrl.isNullOrEmpty()) {
-            cryptoLogo.loadSvg(coin.iconUrl)
+            binding.cryptoLogo.loadSvg(coin.iconUrl)
         }
-        cryptoName.text = coin.name
-        cryptoSymbol.text = coin.symbol
-        cryptoValueSymbol.text = coinValueSymbol
+        binding.cryptoName.text = coin.name
+        binding.cryptoSymbol.text = coin.symbol
+        binding.cryptoValueSymbol.text = coinValueSymbol
         if (!coin.price.isNullOrEmpty()) {
-            cryptoPrice.text = setPrice(coin.price.toDouble())
+            binding.cryptoPrice.text = setPrice(coin.price.toDouble())
         }
         if (!coin.change.isNullOrEmpty()) {
-            setPercentage(coin.change, percentageChange24H)
+            setPercentage(coin.change, binding.percentChange24h)
         }
         if (!coin.volume.isNullOrEmpty()) {
-            volume.text = setCompactPrice(coin.volume.toDouble())
+            binding.volume.text = setCompactPrice(coin.volume)
         }
         if (!coin.marketCap.isNullOrEmpty()) {
-            marketCap.text = setCompactPrice(coin.marketCap.toDouble())
+            binding.marketCap.text = setCompactPrice(coin.marketCap)
         }
     }
 
@@ -233,26 +193,26 @@ class CryptoCurrencyDetailsFragment : Fragment() {
     }
 
     private fun initializeChipGroup(cryptoCurrencyId: String) {
-        chipGroup.setOnCheckedChangeListener { _, checkedId ->
+        binding.chipGroup.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 R.id.chip_24h -> {
                     Log.d("CH24", "Chipped")
-                    cryptoCurrencyViewModel.getCryptoCurrencyHistory(uuid = cryptoCurrencyId, timePeriod = HOUR24)
+                    viewModel.loadCryptoCurrencyHistory(uuid = cryptoCurrencyId, timePeriod = HOUR24)
                     currentTimeFrame = HOUR24
                 }
                 R.id.chip_7d -> {
                     Log.d("CH7", "Chipped")
-                    cryptoCurrencyViewModel.getCryptoCurrencyHistory(uuid = cryptoCurrencyId, timePeriod = DAY7)
+                    viewModel.loadCryptoCurrencyHistory(uuid = cryptoCurrencyId, timePeriod = DAY7)
                     currentTimeFrame = DAY7
                 }
                 R.id.chip_1y -> {
                     Log.d("CH1", "Chipped")
-                    cryptoCurrencyViewModel.getCryptoCurrencyHistory(uuid = cryptoCurrencyId, timePeriod = YEAR1)
+                    viewModel.loadCryptoCurrencyHistory(uuid = cryptoCurrencyId, timePeriod = YEAR1)
                     currentTimeFrame = YEAR1
                 }
                 R.id.chip_6y -> {
                     Log.d("CH3", "Chipped")
-                    cryptoCurrencyViewModel.getCryptoCurrencyHistory(uuid = cryptoCurrencyId, timePeriod = YEAR6)
+                    viewModel.loadCryptoCurrencyHistory(uuid = cryptoCurrencyId, timePeriod = YEAR6)
                     currentTimeFrame = YEAR6
                 }
             }
@@ -260,10 +220,16 @@ class CryptoCurrencyDetailsFragment : Fragment() {
     }
 
     private fun initializeTabLayout() {
-        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 when (tab!!.position) {
-                    0 -> (activity as MainActivity).replaceFragment(CryptoDetailsInfoFragment(), R.id.crypto_details_fragment_container)
+                    0 -> {
+                        val fragment = CryptoDetailsInfoFragment()
+                        val bundle = Bundle()
+                        bundle.putString(CryptoConstant.COIN_ID, cryptoCurrencyId)
+                        fragment.arguments = bundle
+                        (activity as MainActivity).replaceFragment(fragment, R.id.crypto_details_fragment_container)
+                    }
                     1 -> {
                         // TODO:Implement it
                     }
@@ -385,8 +351,6 @@ class CryptoCurrencyDetailsFragment : Fragment() {
     private fun initializeChart(view: View) {
         val anyChartView: AnyChartView = view.findViewById(R.id.any_chart_view)
         anyChartView.setBackgroundColor("#212121")
-
-        areaChart = area()
 
         val crossHair: Crosshair = areaChart.crosshair
         crossHair.setEnabled(true)
