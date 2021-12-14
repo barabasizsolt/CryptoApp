@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.anychart.anychart.AnyChart.area
 import com.anychart.anychart.AnyChartView
 import com.anychart.anychart.Cartesian
@@ -39,14 +40,14 @@ import com.example.cryptoapp.data.constant.CryptoConstant.setCompactPrice
 import com.example.cryptoapp.data.constant.CryptoConstant.setPercentage
 import com.example.cryptoapp.data.constant.CryptoConstant.setPrice
 import com.example.cryptoapp.data.model.cryptoCurrencyDetail.CryptoCurrencyDetails
-import com.example.cryptoapp.data.model.cryptoCurrencyDetail.CryptoCurrencyHistory
 import com.example.cryptoapp.data.model.cryptoCurrencyDetail.CryptoHistory
 import com.example.cryptoapp.data.repository.Cache
 import com.example.cryptoapp.databinding.FragmentCryptoCurrencyDetailsBinding
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.tabs.TabLayout
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import retrofit2.Response
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.Month
@@ -83,17 +84,58 @@ class CryptoCurrencyDetailsFragment : Fragment() {
         binding = FragmentCryptoCurrencyDetailsBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        bindUI(view)
         cryptoCurrencyId = requireArguments().getString(CryptoConstant.COIN_ID).toString()
         Log.d("ID", cryptoCurrencyId)
+        initializeChart(view)
+        tabLayout = view.findViewById(R.id.tab_layout)
+        cryptoLogo = view.findViewById(R.id.crypto_logo)
+        cryptoName = view.findViewById(R.id.crypto_name)
+        cryptoSymbol = view.findViewById(R.id.crypto_symbol)
+        cryptoPrice = view.findViewById(R.id.crypto_price)
+        cryptoValueSymbol = view.findViewById(R.id.crypto_value_symbol)
+        percentageChange24H = view.findViewById(R.id.percent_change_24h)
+        volume = view.findViewById(R.id.volume)
+        marketCap = view.findViewById(R.id.market_cap)
+        chipGroup = view.findViewById(R.id.chip_group)
 
         cryptoCurrencyViewModel.loadCryptoCurrencyDetails(cryptoCurrencyId)
-        cryptoCurrencyViewModel.getCryptoCurrencyDetails()
-            .observe(requireActivity(), cryptoDetailsObserver)
+        cryptoCurrencyViewModel.cryptoCurrencyDetails
+            .onEach { response ->
+                if (response != null && response.isSuccessful) {
+                    response.body()?.let { cryptoDetails ->
+                        initUI(cryptoDetails)
+                        tabLayout.getTabAt(1)!!.select()
+                        tabLayout.getTabAt(0)!!.select()
+                        isFavourite()
+                        (activity as MainActivity).favoriteMenuItem.isVisible = true
+                    }
+                }
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
 
         cryptoCurrencyViewModel.loadCryptoCurrencyHistory(uuid = cryptoCurrencyId, timePeriod = HOUR24)
-        cryptoCurrencyViewModel.getCryptoCurrencyHistory()
-            .observe(requireActivity(), cryptoHistoryObserver)
+        cryptoCurrencyViewModel.cryptoCurrencyHistory
+            .onEach { response ->
+                if (response != null && response.isSuccessful) {
+                    when (currentTimeFrame) {
+                        HOUR24 -> {
+                            val currencyHistory = createDataForAreaChart(response.body()?.data?.history!! as MutableList, HOUR24)
+                            refreshChart(currencyHistory)
+                        }
+                        DAY7 -> {
+                            val currencyHistory = createDataForAreaChart(response.body()?.data?.history!! as MutableList, DAY7)
+                            refreshChart(currencyHistory)
+                        }
+                        YEAR1 -> {
+                            val currencyHistory = createDataForAreaChart(response.body()?.data?.history!! as MutableList, YEAR1)
+                            refreshChart(currencyHistory)
+                        }
+                        YEAR6 -> {
+                            val currencyHistory = createDataForAreaChart(response.body()?.data?.history!! as MutableList, YEAR6)
+                            refreshChart(currencyHistory)
+                        }
+                    }
+                }
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
 
         initTobBarListener()
         initializeChipGroup(cryptoCurrencyId)
@@ -106,55 +148,6 @@ class CryptoCurrencyDetailsFragment : Fragment() {
         super.onPause()
         (activity as MainActivity).favoriteMenuItem.isVisible = false
         (activity as MainActivity).favoriteMenuItem.setIcon(R.drawable.ic_watchlist)
-    }
-
-    private val cryptoDetailsObserver = androidx.lifecycle.Observer<Response<CryptoCurrencyDetails>> { response ->
-        if (response.isSuccessful) {
-            response.body()?.let { cryptoDetails ->
-                initUI(cryptoDetails)
-                tabLayout.getTabAt(1)!!.select()
-                tabLayout.getTabAt(0)!!.select()
-                isFavourite()
-                (activity as MainActivity).favoriteMenuItem.isVisible = true
-            }
-        }
-    }
-
-    private val cryptoHistoryObserver = androidx.lifecycle.Observer<Response<CryptoCurrencyHistory>> { response ->
-        if (response.isSuccessful) {
-            when (currentTimeFrame) {
-                HOUR24 -> {
-                    val currencyHistory = createDataForAreaChart(response.body()?.data?.history!! as MutableList, HOUR24)
-                    refreshChart(currencyHistory)
-                }
-                DAY7 -> {
-                    val currencyHistory = createDataForAreaChart(response.body()?.data?.history!! as MutableList, DAY7)
-                    refreshChart(currencyHistory)
-                }
-                YEAR1 -> {
-                    val currencyHistory = createDataForAreaChart(response.body()?.data?.history!! as MutableList, YEAR1)
-                    refreshChart(currencyHistory)
-                }
-                YEAR6 -> {
-                    val currencyHistory = createDataForAreaChart(response.body()?.data?.history!! as MutableList, YEAR6)
-                    refreshChart(currencyHistory)
-                }
-            }
-        }
-    }
-
-    private fun bindUI(view: View) {
-        initializeChart(view)
-        tabLayout = view.findViewById(R.id.tab_layout)
-        cryptoLogo = view.findViewById(R.id.crypto_logo)
-        cryptoName = view.findViewById(R.id.crypto_name)
-        cryptoSymbol = view.findViewById(R.id.crypto_symbol)
-        cryptoPrice = view.findViewById(R.id.crypto_price)
-        cryptoValueSymbol = view.findViewById(R.id.crypto_value_symbol)
-        percentageChange24H = view.findViewById(R.id.percent_change_24h)
-        volume = view.findViewById(R.id.volume)
-        marketCap = view.findViewById(R.id.market_cap)
-        chipGroup = view.findViewById(R.id.chip_group)
     }
 
     private fun initUI(cryptoCurrencyDetails: CryptoCurrencyDetails) {

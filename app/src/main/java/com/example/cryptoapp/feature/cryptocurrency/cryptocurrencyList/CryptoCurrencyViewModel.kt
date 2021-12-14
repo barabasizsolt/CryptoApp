@@ -1,16 +1,16 @@
 package com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyList
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cryptoapp.data.constant.CryptoConstant
 import com.example.cryptoapp.data.model.cryptoCurrency.AllCryptoCurrencies
 import com.example.cryptoapp.data.repository.CryptoApiRepository
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
 class CryptoCurrencyViewModel(private val repository: CryptoApiRepository) : ViewModel() {
-    private val cryptoCurrencies: MutableLiveData<Response<AllCryptoCurrencies>> = MutableLiveData()
+    val cryptoCurrencies: MutableStateFlow<Response<AllCryptoCurrencies>?> = MutableStateFlow(null)
 
     fun loadCryptoCurrencies(orderBy: String = CryptoConstant.MARKET_CAP_FIELD, orderDirection: String = CryptoConstant.DESC, offset: Int = CryptoConstant.OFFSET, tags: Set<String> = setOf(), timePeriod: String = CryptoConstant.timePeriods[1]) {
         viewModelScope.launch {
@@ -18,6 +18,4 @@ class CryptoCurrencyViewModel(private val repository: CryptoApiRepository) : Vie
             cryptoCurrencies.value = response
         }
     }
-
-    fun getCryptoCurrencies() = cryptoCurrencies
 }

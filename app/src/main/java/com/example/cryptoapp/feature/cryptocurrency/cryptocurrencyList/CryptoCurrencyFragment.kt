@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cryptoapp.MainActivity
@@ -20,7 +21,6 @@ import com.example.cryptoapp.data.constant.CryptoConstant.sortingParams
 import com.example.cryptoapp.data.constant.CryptoConstant.sortingTags
 import com.example.cryptoapp.data.constant.CryptoConstant.timePeriods
 import com.example.cryptoapp.data.constant.CryptoConstant.toCryptoCurrencyUIModel
-import com.example.cryptoapp.data.model.cryptoCurrency.AllCryptoCurrencies
 import com.example.cryptoapp.databinding.FragmentCryptoCurrencyBinding
 import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails.CryptoCurrencyDetailsFragment
 import com.example.cryptoapp.feature.shared.OnItemClickListener
@@ -28,8 +28,9 @@ import com.example.cryptoapp.feature.shared.OnItemLongClickListener
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import retrofit2.Response
 
 class CryptoCurrencyFragment : Fragment(), OnItemClickListener, OnItemLongClickListener {
     private lateinit var recyclerView: RecyclerView
@@ -61,7 +62,11 @@ class CryptoCurrencyFragment : Fragment(), OnItemClickListener, OnItemLongClickL
         binding = FragmentCryptoCurrencyBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        bindUI(view)
+        recyclerView = view.findViewById(R.id.recyclerview)
+        chipGroup = view.findViewById(R.id.chip_group)
+        chipTags = view.findViewById(R.id.chip_tags)
+        chipTimePeriod = view.findViewById(R.id.chip_time_period)
+        chipSortBy = view.findViewById(R.id.chip_sort_by)
         initUI()
         initChipTags()
         initTimePeriod()
@@ -87,14 +92,6 @@ class CryptoCurrencyFragment : Fragment(), OnItemClickListener, OnItemLongClickL
         Log.d("OnLongClick", "Long Click")
     }
 
-    private fun bindUI(view: View) {
-        recyclerView = view.findViewById(R.id.recyclerview)
-        chipGroup = view.findViewById(R.id.chip_group)
-        chipTags = view.findViewById(R.id.chip_tags)
-        chipTimePeriod = view.findViewById(R.id.chip_time_period)
-        chipSortBy = view.findViewById(R.id.chip_sort_by)
-    }
-
     private fun initUI() {
         (activity as MainActivity).bottomNavigationView.visibility = View.VISIBLE
         (activity as MainActivity).topAppBar.visibility = View.VISIBLE
@@ -104,7 +101,23 @@ class CryptoCurrencyFragment : Fragment(), OnItemClickListener, OnItemLongClickL
         cryptoCurrencyAdapter = CryptoCurrencyAdapter(this, this)
         recyclerView.adapter = cryptoCurrencyAdapter
         cryptoCurrencyViewModel.loadCryptoCurrencies()
-        cryptoCurrencyViewModel.getCryptoCurrencies().observe(requireActivity(), currenciesObserver)
+        cryptoCurrencyViewModel.cryptoCurrencies
+            .onEach { response ->
+                if (response != null && response.isSuccessful) {
+                    Log.d("Observed", response.body()?.data?.coins?.size.toString())
+
+                    val currentCryptoCurrencies = response.body()?.data?.coins?.map { currency ->
+                        currency.toCryptoCurrencyUIModel(timePeriod)
+                    } as MutableList
+
+                    if (currentOffset == OFFSET) {
+                        cryptoCurrencyAdapter.submitList(currentCryptoCurrencies)
+                    } else {
+                        cryptoCurrencyAdapter.submitList(cryptoCurrencyAdapter.currentList + currentCryptoCurrencies)
+                        isLoading = true
+                    }
+                }
+            }.launchIn(viewLifecycleOwner.lifecycleScope)
 
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -214,22 +227,4 @@ class CryptoCurrencyFragment : Fragment(), OnItemClickListener, OnItemLongClickL
                 .show()
         }
     }
-
-    private val currenciesObserver =
-        androidx.lifecycle.Observer<Response<AllCryptoCurrencies>> { response ->
-            if (response.isSuccessful) {
-                Log.d("Observed", response.body()?.data?.coins?.size.toString())
-
-                val currentCryptoCurrencies = response.body()?.data?.coins?.map { currency ->
-                    currency.toCryptoCurrencyUIModel(timePeriod)
-                } as MutableList
-
-                if (currentOffset == OFFSET) {
-                    cryptoCurrencyAdapter.submitList(currentCryptoCurrencies)
-                } else {
-                    cryptoCurrencyAdapter.submitList(cryptoCurrencyAdapter.currentList + currentCryptoCurrencies)
-                    isLoading = true
-                }
-            }
-        }
 }

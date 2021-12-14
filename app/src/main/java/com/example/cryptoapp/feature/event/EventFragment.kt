@@ -6,15 +6,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cryptoapp.R
 import com.example.cryptoapp.data.constant.ExchangeConstant
-import com.example.cryptoapp.data.model.event.AllEvents
 import com.example.cryptoapp.feature.shared.OnItemClickListener
 import com.example.cryptoapp.feature.shared.OnItemLongClickListener
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import retrofit2.Response
 
 class EventFragment : Fragment(), OnItemClickListener, OnItemLongClickListener {
     private lateinit var recyclerView: RecyclerView
@@ -35,13 +36,9 @@ class EventFragment : Fragment(), OnItemClickListener, OnItemLongClickListener {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_event, container, false)
-        bindUI(view)
+        recyclerView = view.findViewById(R.id.recyclerview)
         initUI()
         return view
-    }
-
-    private fun bindUI(view: View) {
-        recyclerView = view.findViewById(R.id.recyclerview)
     }
 
     private fun initUI() {
@@ -50,7 +47,18 @@ class EventFragment : Fragment(), OnItemClickListener, OnItemLongClickListener {
         eventAdapter = EventAdapter(this, this)
         recyclerView.adapter = eventAdapter
         eventViewModel.loadAllEvents(currentPage.toString())
-        eventViewModel.getEvents().observe(requireActivity(), eventsObserver)
+        eventViewModel.events.onEach { response ->
+            if (response != null && response.isSuccessful) {
+                val events = response.body()?.data as MutableList
+                Log.d("Exchanges", events.toString())
+                if (currentPage.toString() == ExchangeConstant.PAGE) {
+                    eventAdapter.submitList(events)
+                } else {
+                    eventAdapter.submitList(eventAdapter.currentList + events)
+                    isLoading = true
+                }
+            }
+        }.launchIn(viewLifecycleOwner.lifecycleScope)
 
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -69,19 +77,6 @@ class EventFragment : Fragment(), OnItemClickListener, OnItemLongClickListener {
                 }
             }
         })
-    }
-
-    private val eventsObserver = androidx.lifecycle.Observer<Response<AllEvents>> { response ->
-        if (response.isSuccessful) {
-            val events = response.body()?.data as MutableList
-            Log.d("Exchanges", events.toString())
-            if (currentPage.toString() == ExchangeConstant.PAGE) {
-                eventAdapter.submitList(events)
-            } else {
-                eventAdapter.submitList(eventAdapter.currentList + events)
-                isLoading = true
-            }
-        }
     }
 
     override fun onItemClick(position: Int) {

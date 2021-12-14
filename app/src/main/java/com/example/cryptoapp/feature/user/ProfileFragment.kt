@@ -35,13 +35,6 @@ class ProfileFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
         customDialogView = inflater.inflate(R.layout.reset_update_dialog_layout, null, false)
 
-        bindUI(view)
-        initUI()
-
-        return view
-    }
-
-    private fun bindUI(view: View) {
         progressBar = view.findViewById(R.id.progress_bar)
         userLogo = view.findViewById(R.id.user_logo)
         userEmail = view.findViewById(R.id.email)
@@ -49,6 +42,9 @@ class ProfileFragment : Fragment() {
         updatePassword = view.findViewById(R.id.update_password)
         newPassword = customDialogView.findViewById(R.id.reset_update_field)
         newPasswordLayout = customDialogView.findViewById(R.id.reset_update_layout)
+        initUI()
+
+        return view
     }
 
     private fun initUI() {

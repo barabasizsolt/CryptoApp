@@ -35,18 +35,11 @@ class LoginFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentLoginBinding.inflate(inflater, container, false)
         val view = binding.root
         customDialogView = inflater.inflate(R.layout.reset_update_dialog_layout, null, false)
 
-        bindUI(view)
-        initUI()
-
-        return view
-    }
-
-    private fun bindUI(view: View) {
         progressBar = view.findViewById(R.id.progress_bar)
         loginButton = view.findViewById(R.id.login_button)
         signUp = view.findViewById(R.id.sign_up)
@@ -57,6 +50,9 @@ class LoginFragment : Fragment() {
         passwordLayout = view.findViewById(R.id.password_layout)
         resetEmail = customDialogView.findViewById(R.id.reset_update_field)
         resetEmailLayout = customDialogView.findViewById(R.id.reset_update_layout)
+        initUI()
+
+        return view
     }
 
     private fun initUI() {

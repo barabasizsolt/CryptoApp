@@ -30,12 +30,7 @@ class SignUpFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_sign_up, container, false)
-        bindUI(view)
-        initUI()
-        return view
-    }
 
-    private fun bindUI(view: View) {
         progressBar = view.findViewById(R.id.progress_bar)
         signUpButton = view.findViewById(R.id.sign_up_button)
         email = view.findViewById(R.id.email)
@@ -44,6 +39,9 @@ class SignUpFragment : Fragment() {
         emailLayout = view.findViewById(R.id.email_layout)
         passwordLayout = view.findViewById(R.id.password_layout)
         confirmPasswordLayout = view.findViewById(R.id.confirm_password_layout)
+        initUI()
+
+        return view
     }
 
     private fun initUI() {

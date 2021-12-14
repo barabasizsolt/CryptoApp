@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cryptoapp.R
@@ -14,8 +15,9 @@ import com.example.cryptoapp.data.constant.ExchangeConstant.PER_PAGE
 import com.example.cryptoapp.data.model.exchange.Exchange
 import com.example.cryptoapp.feature.shared.OnItemClickListener
 import com.example.cryptoapp.feature.shared.OnItemLongClickListener
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import retrofit2.Response
 
 class ExchangeFragment : Fragment(), OnItemClickListener, OnItemLongClickListener {
     private lateinit var recyclerView: RecyclerView
@@ -36,13 +38,9 @@ class ExchangeFragment : Fragment(), OnItemClickListener, OnItemLongClickListene
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_exchange, container, false)
-        bindUI(view)
+        recyclerView = view.findViewById(R.id.recyclerview)
         initUI()
         return view
-    }
-
-    private fun bindUI(view: View) {
-        recyclerView = view.findViewById(R.id.recyclerview)
     }
 
     private fun initUI() {
@@ -51,7 +49,18 @@ class ExchangeFragment : Fragment(), OnItemClickListener, OnItemLongClickListene
         exchangeAdapter = ExchangeAdapter(this, this)
         recyclerView.adapter = exchangeAdapter
         exchangeViewModel.loadExchanges()
-        exchangeViewModel.getExchanges().observe(requireActivity(), exchangesObserver)
+        exchangeViewModel.exchanges.onEach { response ->
+            if (response != null && response.isSuccessful) {
+                Log.d("Exchanges", response.body()?.size.toString())
+                val exchanges = response.body() as MutableList<Exchange>
+                if (currentPage.toString() == PAGE) {
+                    exchangeAdapter.submitList(exchanges)
+                } else {
+                    exchangeAdapter.submitList(exchangeAdapter.currentList + exchanges)
+                    isLoading = true
+                }
+            }
+        }.launchIn(viewLifecycleOwner.lifecycleScope)
 
         recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -71,20 +80,6 @@ class ExchangeFragment : Fragment(), OnItemClickListener, OnItemLongClickListene
             }
         })
     }
-
-    private val exchangesObserver =
-        androidx.lifecycle.Observer<Response<List<Exchange>>> { response ->
-            if (response.isSuccessful) {
-                Log.d("Exchanges", response.body()?.size.toString())
-                val exchanges = response.body() as MutableList<Exchange>
-                if (currentPage.toString() == PAGE) {
-                    exchangeAdapter.submitList(exchanges)
-                } else {
-                    exchangeAdapter.submitList(exchangeAdapter.currentList + exchanges)
-                    isLoading = true
-                }
-            }
-        }
 
     override fun onItemClick(position: Int) {
         // TODO:implement it

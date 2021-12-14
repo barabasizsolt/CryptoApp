@@ -1,16 +1,16 @@
 package com.example.cryptoapp.feature.exchange
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cryptoapp.data.constant.ExchangeConstant
 import com.example.cryptoapp.data.model.exchange.Exchange
 import com.example.cryptoapp.data.repository.CoinGekkoApiRepository
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
 class ExchangeViewModel(private val repository: CoinGekkoApiRepository) : ViewModel() {
-    private val exchanges: MutableLiveData<Response<List<Exchange>>> = MutableLiveData()
+    val exchanges: MutableStateFlow<Response<List<Exchange>>?> = MutableStateFlow(null)
 
     fun loadExchanges(perPage: Int = ExchangeConstant.PER_PAGE, page: String = ExchangeConstant.PAGE) {
         viewModelScope.launch {
@@ -18,6 +18,4 @@ class ExchangeViewModel(private val repository: CoinGekkoApiRepository) : ViewMo
             exchanges.value = response
         }
     }
-
-    fun getExchanges() = exchanges
 }
