@@ -101,7 +101,6 @@ class CryptoCurrencyFragment : Fragment(), OnItemClickListener, OnItemLongClickL
                     }
                 }
             }.launchIn(viewLifecycleOwner.lifecycleScope)
-        viewModel.loadCryptoCurrencies()
 
         binding.recyclerview.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {

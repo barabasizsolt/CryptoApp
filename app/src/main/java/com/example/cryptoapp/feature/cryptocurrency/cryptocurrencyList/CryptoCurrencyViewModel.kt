@@ -18,4 +18,8 @@ class CryptoCurrencyViewModel(private val repository: CryptoRepository) : ViewMo
             cryptoCurrencies.value = response
         }
     }
+
+    init {
+        loadCryptoCurrencies()
+    }
 }

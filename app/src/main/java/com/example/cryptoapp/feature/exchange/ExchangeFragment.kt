@@ -57,7 +57,6 @@ class ExchangeFragment : Fragment(), OnItemClickListener, OnItemLongClickListene
                 }
             }
         }.launchIn(viewLifecycleOwner.lifecycleScope)
-        viewModel.loadExchanges()
 
         binding.recyclerview.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {

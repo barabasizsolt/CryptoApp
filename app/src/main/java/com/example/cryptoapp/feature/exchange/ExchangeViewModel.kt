@@ -18,4 +18,8 @@ class ExchangeViewModel(private val repository: ExchangeRepository) : ViewModel(
             exchanges.value = response
         }
     }
+
+    init {
+        loadExchanges()
+    }
 }

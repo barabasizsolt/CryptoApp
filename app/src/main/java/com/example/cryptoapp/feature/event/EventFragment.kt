@@ -55,7 +55,6 @@ class EventFragment : Fragment(), OnItemClickListener, OnItemLongClickListener {
                 }
             }
         }.launchIn(viewLifecycleOwner.lifecycleScope)
-        viewModel.loadAllEvents(currentPage.toString())
 
         binding.recyclerview.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
