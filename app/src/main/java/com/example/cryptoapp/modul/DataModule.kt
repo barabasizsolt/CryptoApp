@@ -7,10 +7,10 @@ import com.example.cryptoapp.data.repository.ExchangeRepository
 import org.koin.dsl.module
 
 val dataModule = module {
-    //Networking
+    // Networking
     single { NetworkManager() }
 
-    //Repository
+    // Repository
     single { CryptoRepository(get()) }
     single { EventRepository(get()) }
     single { ExchangeRepository(get()) }

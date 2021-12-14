@@ -4,6 +4,6 @@ import com.example.cryptoapp.domain.GetCryptoCurrenciesUseCase
 import org.koin.dsl.module
 
 val domainModule = module {
-    //Use case
+    // Use case
     factory { GetCryptoCurrenciesUseCase(get()) }
 }
