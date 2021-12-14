@@ -6,7 +6,7 @@ import com.example.cryptoapp.data.model.cryptoCurrencyDetail.CryptoCurrencyDetai
 import com.example.cryptoapp.data.model.cryptoCurrencyDetail.CryptoCurrencyHistory
 import retrofit2.Response
 
-class CryptoRepository(private val manager: NetworkManager) : Throwable() {
+class CryptoRepository(private val manager: NetworkManager) {
     suspend fun getAllCryptoCurrencies(orderBy: String, orderDirection: String, offset: Int, tags: Set<String>, timePeriod: String): List<CryptoCurrency> {
         val response = manager.cryptoSource.getAllCryptoCurrencies(orderBy = orderBy, orderDirection = orderDirection, offset = offset, tags = tags, timePeriod = timePeriod)
         return response.body()?.data!!.coins
