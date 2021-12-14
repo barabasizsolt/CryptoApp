@@ -1,4 +1,4 @@
-package com.example.cryptoapp.utils
+package com.example.cryptoapp.util
 
 /**
  * Represents the result of simple API requests that either fail or succeed.

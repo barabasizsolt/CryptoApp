@@ -1,4 +1,4 @@
-package com.example.cryptoapp.utils
+package com.example.cryptoapp.util
 
 suspend inline fun <T> resultOf(function: suspend () -> T): Result<T> = try {
     Result.Success(function())

@@ -1,7 +1,7 @@
 package com.example.cryptoapp.domain
 
 import com.example.cryptoapp.data.repository.CryptoRepository
-import com.example.cryptoapp.utils.resultOf
+import com.example.cryptoapp.util.resultOf
 
 class GetCryptoCurrenciesUseCase(private val repository: CryptoRepository) {
 
@@ -13,7 +13,11 @@ class GetCryptoCurrenciesUseCase(private val repository: CryptoRepository) {
         timePeriod: String
     ) = resultOf {
         repository.getAllCryptoCurrencies(
-            orderBy = orderBy, orderDirection = orderDirection, offset = offset, tags = tags, timePeriod = timePeriod
+            orderBy = orderBy,
+            orderDirection = orderDirection,
+            offset = offset,
+            tags = tags,
+            timePeriod = timePeriod
         )
     }
 }

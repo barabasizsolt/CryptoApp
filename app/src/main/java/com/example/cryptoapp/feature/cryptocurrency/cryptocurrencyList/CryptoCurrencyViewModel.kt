@@ -6,7 +6,7 @@ import com.example.cryptoapp.data.constant.CryptoConstant
 import com.example.cryptoapp.data.constant.CryptoConstant.toCryptoCurrencyUIModel
 import com.example.cryptoapp.data.model.cryptoCurrency.CryptoCurrencyUIModel
 import com.example.cryptoapp.domain.GetCryptoCurrenciesUseCase
-import com.example.cryptoapp.utils.Result
+import com.example.cryptoapp.util.Result
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
@@ -15,9 +15,9 @@ class CryptoCurrencyViewModel(private val getCryptoCurrencies: GetCryptoCurrenci
 
     fun loadCryptoCurrencies(orderBy: String = CryptoConstant.MARKET_CAP_FIELD, orderDirection: String = CryptoConstant.DESC, offset: Int = CryptoConstant.OFFSET, tags: Set<String> = setOf(), timePeriod: String = CryptoConstant.timePeriods[1]) {
         viewModelScope.launch {
-            when (val response = getCryptoCurrencies(orderBy = orderBy, orderDirection = orderDirection, offset = offset, tags = tags, timePeriod = timePeriod)) {
+            when (val result = getCryptoCurrencies(orderBy = orderBy, orderDirection = orderDirection, offset = offset, tags = tags, timePeriod = timePeriod)) {
                 is Result.Success -> {
-                    cryptoCurrencies.value = response.data.map { currency ->
+                    cryptoCurrencies.value = result.data.map { currency ->
                         currency.toCryptoCurrencyUIModel(timePeriod)
                     }
                 }
