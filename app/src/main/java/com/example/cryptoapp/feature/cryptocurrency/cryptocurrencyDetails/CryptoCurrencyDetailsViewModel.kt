@@ -10,8 +10,8 @@ import kotlinx.coroutines.launch
 import retrofit2.Response
 
 class CryptoCurrencyDetailsViewModel(private val repository: CryptoRepository) : ViewModel() {
-    val cryptoCurrencyHistory: MutableStateFlow<Response<CryptoCurrencyHistory>?> = MutableStateFlow(null)
-    val cryptoCurrencyDetails: MutableStateFlow<Response<CryptoCurrencyDetails>?> = MutableStateFlow(null)
+    val cryptoCurrencyHistory = MutableStateFlow<Response<CryptoCurrencyHistory>?>(null)
+    val cryptoCurrencyDetails = MutableStateFlow<Response<CryptoCurrencyDetails>?>(null)
 
     fun loadCryptoCurrencyDetails(uuid: String) {
         viewModelScope.launch {

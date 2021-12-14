@@ -43,7 +43,6 @@ class EventFragment : Fragment(), OnItemClickListener, OnItemLongClickListener {
         binding.recyclerview.layoutManager = linearLayoutManager
         eventAdapter = EventAdapter(this, this)
         binding.recyclerview.adapter = eventAdapter
-        viewModel.loadAllEvents(currentPage.toString())
         viewModel.events.onEach { response ->
             if (response != null && response.isSuccessful) {
                 val events = response.body()?.data as MutableList
@@ -56,6 +55,7 @@ class EventFragment : Fragment(), OnItemClickListener, OnItemLongClickListener {
                 }
             }
         }.launchIn(viewLifecycleOwner.lifecycleScope)
+        viewModel.loadAllEvents(currentPage.toString())
 
         binding.recyclerview.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {

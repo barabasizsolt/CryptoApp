@@ -38,7 +38,6 @@ class CryptoDetailsInfoFragment : Fragment() {
     }
 
     private fun initUI() {
-        viewModel.loadCryptoCurrencyDetails(cryptoCurrencyId)
         viewModel.cryptoCurrencyDetails
             .onEach { response ->
                 if (response != null && response.isSuccessful) {
@@ -81,5 +80,6 @@ class CryptoDetailsInfoFragment : Fragment() {
                     }
                 }
             }.launchIn(viewLifecycleOwner.lifecycleScope)
+        viewModel.loadCryptoCurrencyDetails(cryptoCurrencyId)
     }
 }

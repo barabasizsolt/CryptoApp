@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 import retrofit2.Response
 
 class ExchangeViewModel(private val repository: ExchangeRepository) : ViewModel() {
-    val exchanges: MutableStateFlow<Response<List<Exchange>>?> = MutableStateFlow(null)
+    val exchanges = MutableStateFlow<Response<List<Exchange>>?>(null)
 
     fun loadExchanges(perPage: Int = ExchangeConstant.PER_PAGE, page: String = ExchangeConstant.PAGE) {
         viewModelScope.launch {

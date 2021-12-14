@@ -84,7 +84,6 @@ class CryptoCurrencyFragment : Fragment(), OnItemClickListener, OnItemLongClickL
         binding.recyclerview.layoutManager = linearLayoutManager
         cryptoCurrencyAdapter = CryptoCurrencyAdapter(this, this)
         binding.recyclerview.adapter = cryptoCurrencyAdapter
-        viewModel.loadCryptoCurrencies()
         viewModel.cryptoCurrencies
             .onEach { response ->
                 if (response != null && response.isSuccessful) {
@@ -102,6 +101,7 @@ class CryptoCurrencyFragment : Fragment(), OnItemClickListener, OnItemLongClickL
                     }
                 }
             }.launchIn(viewLifecycleOwner.lifecycleScope)
+        viewModel.loadCryptoCurrencies()
 
         binding.recyclerview.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {

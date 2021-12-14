@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 import retrofit2.Response
 
 class EventViewModel(private val repository: EventRepository) : ViewModel() {
-    val events: MutableStateFlow<Response<AllEvents>?> = MutableStateFlow(null)
+    val events = MutableStateFlow<Response<AllEvents>?>(null)
 
     fun loadAllEvents(page: String) {
         viewModelScope.launch {

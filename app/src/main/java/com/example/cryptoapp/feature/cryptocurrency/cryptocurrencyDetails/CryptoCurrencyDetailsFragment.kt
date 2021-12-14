@@ -85,7 +85,6 @@ class CryptoCurrencyDetailsFragment : Fragment() {
                 }
             }.launchIn(viewLifecycleOwner.lifecycleScope)
 
-        viewModel.loadCryptoCurrencyHistory(uuid = cryptoCurrencyId, timePeriod = HOUR24)
         viewModel.cryptoCurrencyHistory
             .onEach { response ->
                 if (response != null && response.isSuccessful) {
@@ -109,6 +108,7 @@ class CryptoCurrencyDetailsFragment : Fragment() {
                     }
                 }
             }.launchIn(viewLifecycleOwner.lifecycleScope)
+        viewModel.loadCryptoCurrencyHistory(uuid = cryptoCurrencyId, timePeriod = HOUR24)
 
         initTobBarListener()
         initializeChipGroup(cryptoCurrencyId)

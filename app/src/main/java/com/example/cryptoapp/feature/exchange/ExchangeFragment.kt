@@ -45,7 +45,6 @@ class ExchangeFragment : Fragment(), OnItemClickListener, OnItemLongClickListene
         binding.recyclerview.layoutManager = linearLayoutManager
         exchangeAdapter = ExchangeAdapter(this, this)
         binding.recyclerview.adapter = exchangeAdapter
-        viewModel.loadExchanges()
         viewModel.exchanges.onEach { response ->
             if (response != null && response.isSuccessful) {
                 Log.d("Exchanges", response.body()?.size.toString())
@@ -58,6 +57,7 @@ class ExchangeFragment : Fragment(), OnItemClickListener, OnItemLongClickListene
                 }
             }
         }.launchIn(viewLifecycleOwner.lifecycleScope)
+        viewModel.loadExchanges()
 
         binding.recyclerview.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {

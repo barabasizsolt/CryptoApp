@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 import retrofit2.Response
 
 class CryptoCurrencyViewModel(private val repository: CryptoRepository) : ViewModel() {
-    val cryptoCurrencies: MutableStateFlow<Response<AllCryptoCurrencies>?> = MutableStateFlow(null)
+    val cryptoCurrencies = MutableStateFlow<Response<AllCryptoCurrencies>?>(null)
 
     fun loadCryptoCurrencies(orderBy: String = CryptoConstant.MARKET_CAP_FIELD, orderDirection: String = CryptoConstant.DESC, offset: Int = CryptoConstant.OFFSET, tags: Set<String> = setOf(), timePeriod: String = CryptoConstant.timePeriods[1]) {
         viewModelScope.launch {
