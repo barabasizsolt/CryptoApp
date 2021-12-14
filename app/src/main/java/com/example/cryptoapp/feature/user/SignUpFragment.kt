@@ -11,44 +11,28 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.cryptoapp.MainActivity
 import com.example.cryptoapp.R
+import com.example.cryptoapp.databinding.FragmentSignUpBinding
 import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyList.CryptoCurrencyFragment
 import com.google.android.material.textfield.TextInputLayout
 
 class SignUpFragment : Fragment() {
-    private lateinit var progressBar: ProgressBar
-    private lateinit var signUpButton: Button
-    private lateinit var email: TextView
-    private lateinit var password: TextView
-    private lateinit var confirmPassword: TextView
-    private lateinit var emailLayout: TextInputLayout
-    private lateinit var passwordLayout: TextInputLayout
-    private lateinit var confirmPasswordLayout: TextInputLayout
+    private lateinit var binding: FragmentSignUpBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_sign_up, container, false)
-
-        progressBar = view.findViewById(R.id.progress_bar)
-        signUpButton = view.findViewById(R.id.sign_up_button)
-        email = view.findViewById(R.id.email)
-        password = view.findViewById(R.id.password)
-        confirmPassword = view.findViewById(R.id.confirm_password)
-        emailLayout = view.findViewById(R.id.email_layout)
-        passwordLayout = view.findViewById(R.id.password_layout)
-        confirmPasswordLayout = view.findViewById(R.id.confirm_password_layout)
+    ): View {
+        binding = FragmentSignUpBinding.inflate(inflater, container, false)
         initUI()
-
-        return view
+        return binding.root
     }
 
     private fun initUI() {
-        signUpButton.setOnClickListener {
+        binding.signUpButton.setOnClickListener {
             if (validateInput()) {
-                progressBar.visibility = View.VISIBLE
-                (activity as MainActivity).mAuth.createUserWithEmailAndPassword(email.text.toString(), password.text.toString())
+                binding.progressBar.visibility = View.VISIBLE
+                (activity as MainActivity).mAuth.createUserWithEmailAndPassword(binding.email.text.toString(), binding.password.text.toString())
                     .addOnCompleteListener(
                         requireActivity()
                     ) { task ->
@@ -74,28 +58,28 @@ class SignUpFragment : Fragment() {
                                 Toast.LENGTH_LONG
                             ).show()
                         }
-                        progressBar.visibility = View.INVISIBLE
+                        binding.progressBar.visibility = View.INVISIBLE
                     }
             }
         }
     }
 
     private fun validateInput(): Boolean {
-        emailLayout.error = null
-        passwordLayout.error = null
-        confirmPasswordLayout.error = null
+        binding.emailLayout.error = null
+        binding.passwordLayout.error = null
+        binding.confirmPasswordLayout.error = null
 
         when {
-            email.text.toString().isEmpty() -> {
-                emailLayout.error = getString(R.string.error)
+            binding.email.text.toString().isEmpty() -> {
+                binding.emailLayout.error = getString(R.string.error)
                 return false
             }
-            password.text.toString().isEmpty() -> {
-                passwordLayout.error = getString(R.string.error)
+            binding.password.text.toString().isEmpty() -> {
+                binding.passwordLayout.error = getString(R.string.error)
                 return false
             }
-            password.text.toString() != confirmPassword.text.toString() -> {
-                confirmPasswordLayout.error = getString(R.string.password_error)
+            binding.password.text.toString() != binding.confirmPassword.text.toString() -> {
+                binding.confirmPasswordLayout.error = getString(R.string.password_error)
                 return false
             }
         }

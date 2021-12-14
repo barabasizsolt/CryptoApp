@@ -5,8 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -43,7 +41,6 @@ import com.example.cryptoapp.data.model.cryptoCurrencyDetail.CryptoCurrencyDetai
 import com.example.cryptoapp.data.model.cryptoCurrencyDetail.CryptoHistory
 import com.example.cryptoapp.data.repository.Cache
 import com.example.cryptoapp.databinding.FragmentCryptoCurrencyDetailsBinding
-import com.google.android.material.chip.ChipGroup
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -57,24 +54,11 @@ import kotlin.collections.ArrayList
 
 class CryptoCurrencyDetailsFragment : Fragment() {
     private lateinit var areaChart: Cartesian
-    private lateinit var cryptoLogo: ImageView
-    private lateinit var cryptoName: TextView
-    private lateinit var cryptoSymbol: TextView
-    private lateinit var cryptoPrice: TextView
-    private lateinit var cryptoValueSymbol: TextView
-    private lateinit var percentageChange24H: TextView
-    private lateinit var volume: TextView
-    private lateinit var marketCap: TextView
-    private lateinit var chipGroup: ChipGroup
-    private lateinit var tabLayout: TabLayout
     private lateinit var cryptoCurrencyId: String
-
     private var currentTimeFrame = HOUR24
-
     private var isAddedToFavorite = false
-
     private lateinit var binding: FragmentCryptoCurrencyDetailsBinding
-    private val cryptoCurrencyViewModel by viewModel<CryptoCurrencyDetailsViewModel>()
+    private val viewModel by viewModel<CryptoCurrencyDetailsViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -82,38 +66,27 @@ class CryptoCurrencyDetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentCryptoCurrencyDetailsBinding.inflate(inflater, container, false)
-        val view = binding.root
 
         cryptoCurrencyId = requireArguments().getString(CryptoConstant.COIN_ID).toString()
         Log.d("ID", cryptoCurrencyId)
-        initializeChart(view)
-        tabLayout = view.findViewById(R.id.tab_layout)
-        cryptoLogo = view.findViewById(R.id.crypto_logo)
-        cryptoName = view.findViewById(R.id.crypto_name)
-        cryptoSymbol = view.findViewById(R.id.crypto_symbol)
-        cryptoPrice = view.findViewById(R.id.crypto_price)
-        cryptoValueSymbol = view.findViewById(R.id.crypto_value_symbol)
-        percentageChange24H = view.findViewById(R.id.percent_change_24h)
-        volume = view.findViewById(R.id.volume)
-        marketCap = view.findViewById(R.id.market_cap)
-        chipGroup = view.findViewById(R.id.chip_group)
+        initializeChart(binding.root)
 
-        cryptoCurrencyViewModel.loadCryptoCurrencyDetails(cryptoCurrencyId)
-        cryptoCurrencyViewModel.cryptoCurrencyDetails
+        viewModel.loadCryptoCurrencyDetails(cryptoCurrencyId)
+        viewModel.cryptoCurrencyDetails
             .onEach { response ->
                 if (response != null && response.isSuccessful) {
                     response.body()?.let { cryptoDetails ->
                         initUI(cryptoDetails)
-                        tabLayout.getTabAt(1)!!.select()
-                        tabLayout.getTabAt(0)!!.select()
+                        binding.tabLayout.getTabAt(1)!!.select()
+                        binding.tabLayout.getTabAt(0)!!.select()
                         isFavourite()
                         (activity as MainActivity).favoriteMenuItem.isVisible = true
                     }
                 }
             }.launchIn(viewLifecycleOwner.lifecycleScope)
 
-        cryptoCurrencyViewModel.loadCryptoCurrencyHistory(uuid = cryptoCurrencyId, timePeriod = HOUR24)
-        cryptoCurrencyViewModel.cryptoCurrencyHistory
+        viewModel.loadCryptoCurrencyHistory(uuid = cryptoCurrencyId, timePeriod = HOUR24)
+        viewModel.cryptoCurrencyHistory
             .onEach { response ->
                 if (response != null && response.isSuccessful) {
                     when (currentTimeFrame) {
@@ -141,7 +114,7 @@ class CryptoCurrencyDetailsFragment : Fragment() {
         initializeChipGroup(cryptoCurrencyId)
         initializeTabLayout()
 
-        return view
+        return binding.root
     }
 
     override fun onPause() {
@@ -163,22 +136,22 @@ class CryptoCurrencyDetailsFragment : Fragment() {
         }
         val coinValueSymbol = coin.symbol + "/" + "USD" + " - AVG - " + currentHour + ":" + currentMinute
         if (!coin.iconUrl.isNullOrEmpty()) {
-            cryptoLogo.loadSvg(coin.iconUrl)
+            binding.cryptoLogo.loadSvg(coin.iconUrl)
         }
-        cryptoName.text = coin.name
-        cryptoSymbol.text = coin.symbol
-        cryptoValueSymbol.text = coinValueSymbol
+        binding.cryptoName.text = coin.name
+        binding.cryptoSymbol.text = coin.symbol
+        binding.cryptoValueSymbol.text = coinValueSymbol
         if (!coin.price.isNullOrEmpty()) {
-            cryptoPrice.text = setPrice(coin.price.toDouble())
+            binding.cryptoPrice.text = setPrice(coin.price.toDouble())
         }
         if (!coin.change.isNullOrEmpty()) {
-            setPercentage(coin.change, percentageChange24H)
+            setPercentage(coin.change, binding.percentChange24h)
         }
         if (!coin.volume.isNullOrEmpty()) {
-            volume.text = setCompactPrice(coin.volume)
+            binding.volume.text = setCompactPrice(coin.volume)
         }
         if (!coin.marketCap.isNullOrEmpty()) {
-            marketCap.text = setCompactPrice(coin.marketCap)
+            binding.marketCap.text = setCompactPrice(coin.marketCap)
         }
     }
 
@@ -220,26 +193,26 @@ class CryptoCurrencyDetailsFragment : Fragment() {
     }
 
     private fun initializeChipGroup(cryptoCurrencyId: String) {
-        chipGroup.setOnCheckedChangeListener { _, checkedId ->
+        binding.chipGroup.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 R.id.chip_24h -> {
                     Log.d("CH24", "Chipped")
-                    cryptoCurrencyViewModel.loadCryptoCurrencyHistory(uuid = cryptoCurrencyId, timePeriod = HOUR24)
+                    viewModel.loadCryptoCurrencyHistory(uuid = cryptoCurrencyId, timePeriod = HOUR24)
                     currentTimeFrame = HOUR24
                 }
                 R.id.chip_7d -> {
                     Log.d("CH7", "Chipped")
-                    cryptoCurrencyViewModel.loadCryptoCurrencyHistory(uuid = cryptoCurrencyId, timePeriod = DAY7)
+                    viewModel.loadCryptoCurrencyHistory(uuid = cryptoCurrencyId, timePeriod = DAY7)
                     currentTimeFrame = DAY7
                 }
                 R.id.chip_1y -> {
                     Log.d("CH1", "Chipped")
-                    cryptoCurrencyViewModel.loadCryptoCurrencyHistory(uuid = cryptoCurrencyId, timePeriod = YEAR1)
+                    viewModel.loadCryptoCurrencyHistory(uuid = cryptoCurrencyId, timePeriod = YEAR1)
                     currentTimeFrame = YEAR1
                 }
                 R.id.chip_6y -> {
                     Log.d("CH3", "Chipped")
-                    cryptoCurrencyViewModel.loadCryptoCurrencyHistory(uuid = cryptoCurrencyId, timePeriod = YEAR6)
+                    viewModel.loadCryptoCurrencyHistory(uuid = cryptoCurrencyId, timePeriod = YEAR6)
                     currentTimeFrame = YEAR6
                 }
             }
@@ -247,7 +220,7 @@ class CryptoCurrencyDetailsFragment : Fragment() {
     }
 
     private fun initializeTabLayout() {
-        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 when (tab!!.position) {
                     0 -> {

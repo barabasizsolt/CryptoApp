@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -14,22 +12,11 @@ import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.FragmentLoginBinding
 import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyList.CryptoCurrencyFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.textfield.TextInputLayout
 
 class LoginFragment : Fragment() {
-    private lateinit var progressBar: ProgressBar
-    private lateinit var loginButton: Button
-    private lateinit var signUp: TextView
-    private lateinit var forgotPassword: TextView
-    private lateinit var email: TextView
-    private lateinit var password: TextView
-    private lateinit var emailLayout: TextInputLayout
-    private lateinit var passwordLayout: TextInputLayout
     private lateinit var customDialogView: View
-    private lateinit var resetEmail: TextView
-    private lateinit var resetEmailLayout: TextInputLayout
-
     private lateinit var binding: FragmentLoginBinding
+    private lateinit var resetEmail: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,30 +24,18 @@ class LoginFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentLoginBinding.inflate(inflater, container, false)
-        val view = binding.root
         customDialogView = inflater.inflate(R.layout.reset_update_dialog_layout, null, false)
-
-        progressBar = view.findViewById(R.id.progress_bar)
-        loginButton = view.findViewById(R.id.login_button)
-        signUp = view.findViewById(R.id.sign_up)
-        forgotPassword = view.findViewById(R.id.forgot_password)
-        email = view.findViewById(R.id.email)
-        password = view.findViewById(R.id.password)
-        emailLayout = view.findViewById(R.id.email_layout)
-        passwordLayout = view.findViewById(R.id.password_layout)
-        resetEmail = customDialogView.findViewById(R.id.reset_update_field)
-        resetEmailLayout = customDialogView.findViewById(R.id.reset_update_layout)
         initUI()
-
-        return view
+        return binding.root
     }
 
     private fun initUI() {
-        resetEmailLayout.hint = "Email"
-        loginButton.setOnClickListener {
+        resetEmail = customDialogView.findViewById(R.id.reset_update_field)
+        binding.emailLayout.hint = "Email"
+        binding.loginButton.setOnClickListener {
             if (validateInput()) {
-                progressBar.visibility = View.VISIBLE
-                (activity as MainActivity).mAuth.signInWithEmailAndPassword(email.text.toString(), password.text.toString())
+                binding.progressBar.visibility = View.VISIBLE
+                (activity as MainActivity).mAuth.signInWithEmailAndPassword(binding.email.text.toString(), binding.password.text.toString())
                     .addOnCompleteListener(
                         requireActivity()
                     ) { task ->
@@ -84,11 +59,11 @@ class LoginFragment : Fragment() {
                                 Toast.LENGTH_LONG
                             ).show()
                         }
-                        progressBar.visibility = View.INVISIBLE
+                        binding.progressBar.visibility = View.INVISIBLE
                     }
             }
         }
-        forgotPassword.setOnClickListener {
+        binding.forgotPassword.setOnClickListener {
             if (customDialogView.parent != null) {
                 (customDialogView.parent as ViewGroup).removeView(customDialogView)
             }
@@ -98,7 +73,7 @@ class LoginFragment : Fragment() {
                 .setNeutralButton(resources.getString(R.string.cancel)) { _, _ -> }
                 .setPositiveButton(resources.getString(R.string.reset)) { _, _ ->
                     if (validateResetEmail()) {
-                        progressBar.visibility = View.VISIBLE
+                        binding.progressBar.visibility = View.VISIBLE
 
                         (activity as MainActivity).mAuth.sendPasswordResetEmail(resetEmail.text.toString())
                             .addOnCompleteListener(requireActivity()) { task ->
@@ -108,28 +83,28 @@ class LoginFragment : Fragment() {
                                     Toast.makeText(requireContext(), "Unable to send reset mail", Toast.LENGTH_LONG).show()
                                 }
 
-                                progressBar.visibility = View.INVISIBLE
+                                binding.progressBar.visibility = View.INVISIBLE
                             }
                     }
                 }
                 .show()
         }
-        signUp.setOnClickListener {
+        binding.signUp.setOnClickListener {
             (activity as MainActivity).replaceFragment(SignUpFragment(), R.id.activity_fragment_container, addToBackStack = true)
         }
     }
 
     private fun validateInput(): Boolean {
-        emailLayout.error = null
-        passwordLayout.error = null
+        binding.emailLayout.error = null
+        binding.passwordLayout.error = null
 
         when {
-            email.text.toString().isEmpty() -> {
-                emailLayout.error = getString(R.string.error)
+            binding.email.text.toString().isEmpty() -> {
+                binding.emailLayout.error = getString(R.string.error)
                 return false
             }
-            password.text.toString().isEmpty() -> {
-                passwordLayout.error = getString(R.string.error)
+            binding.password.text.toString().isEmpty() -> {
+                binding.passwordLayout.error = getString(R.string.error)
                 return false
             }
         }

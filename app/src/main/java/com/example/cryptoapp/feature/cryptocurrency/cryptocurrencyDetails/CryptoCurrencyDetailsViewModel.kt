@@ -4,12 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cryptoapp.data.model.cryptoCurrencyDetail.CryptoCurrencyDetails
 import com.example.cryptoapp.data.model.cryptoCurrencyDetail.CryptoCurrencyHistory
-import com.example.cryptoapp.data.repository.CryptoApiRepository
+import com.example.cryptoapp.data.repository.CryptoRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
-class CryptoCurrencyDetailsViewModel(private val repository: CryptoApiRepository) : ViewModel() {
+class CryptoCurrencyDetailsViewModel(private val repository: CryptoRepository) : ViewModel() {
     val cryptoCurrencyHistory: MutableStateFlow<Response<CryptoCurrencyHistory>?> = MutableStateFlow(null)
     val cryptoCurrencyDetails: MutableStateFlow<Response<CryptoCurrencyDetails>?> = MutableStateFlow(null)
 

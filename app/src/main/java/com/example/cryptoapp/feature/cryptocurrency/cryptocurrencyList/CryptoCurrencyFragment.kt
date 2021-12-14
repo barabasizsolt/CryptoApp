@@ -25,21 +25,14 @@ import com.example.cryptoapp.databinding.FragmentCryptoCurrencyBinding
 import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails.CryptoCurrencyDetailsFragment
 import com.example.cryptoapp.feature.shared.OnItemClickListener
 import com.example.cryptoapp.feature.shared.OnItemLongClickListener
-import com.google.android.material.chip.Chip
-import com.google.android.material.chip.ChipGroup
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CryptoCurrencyFragment : Fragment(), OnItemClickListener, OnItemLongClickListener {
-    private lateinit var recyclerView: RecyclerView
     private lateinit var linearLayoutManager: LinearLayoutManager
     private lateinit var cryptoCurrencyAdapter: CryptoCurrencyAdapter
-    private lateinit var chipGroup: ChipGroup
-    private lateinit var chipTags: Chip
-    private lateinit var chipTimePeriod: Chip
-    private lateinit var chipSortBy: Chip
     private var isLoading: Boolean = true
     private var pastVisibleItems = 0
     private var visibleItemCount = 0
@@ -50,9 +43,8 @@ class CryptoCurrencyFragment : Fragment(), OnItemClickListener, OnItemLongClickL
     private var timePeriod = timePeriods[checkedTimePeriodItemIndex]
     private var currentOffset = OFFSET
     private val tags: MutableSet<String> = mutableSetOf()
-
     private lateinit var binding: FragmentCryptoCurrencyBinding
-    private val cryptoCurrencyViewModel by viewModel<CryptoCurrencyViewModel>()
+    private val viewModel by viewModel<CryptoCurrencyViewModel>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,19 +52,11 @@ class CryptoCurrencyFragment : Fragment(), OnItemClickListener, OnItemLongClickL
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentCryptoCurrencyBinding.inflate(inflater, container, false)
-        val view = binding.root
-
-        recyclerView = view.findViewById(R.id.recyclerview)
-        chipGroup = view.findViewById(R.id.chip_group)
-        chipTags = view.findViewById(R.id.chip_tags)
-        chipTimePeriod = view.findViewById(R.id.chip_time_period)
-        chipSortBy = view.findViewById(R.id.chip_sort_by)
         initUI()
         initChipTags()
         initTimePeriod()
         initChipSortBy()
-
-        return view
+        return binding.root
     }
 
     override fun onItemClick(position: Int) {
@@ -97,11 +81,11 @@ class CryptoCurrencyFragment : Fragment(), OnItemClickListener, OnItemLongClickL
         (activity as MainActivity).topAppBar.visibility = View.VISIBLE
 
         linearLayoutManager = LinearLayoutManager(requireContext())
-        recyclerView.layoutManager = linearLayoutManager
+        binding.recyclerview.layoutManager = linearLayoutManager
         cryptoCurrencyAdapter = CryptoCurrencyAdapter(this, this)
-        recyclerView.adapter = cryptoCurrencyAdapter
-        cryptoCurrencyViewModel.loadCryptoCurrencies()
-        cryptoCurrencyViewModel.cryptoCurrencies
+        binding.recyclerview.adapter = cryptoCurrencyAdapter
+        viewModel.loadCryptoCurrencies()
+        viewModel.cryptoCurrencies
             .onEach { response ->
                 if (response != null && response.isSuccessful) {
                     Log.d("Observed", response.body()?.data?.coins?.size.toString())
@@ -119,7 +103,7 @@ class CryptoCurrencyFragment : Fragment(), OnItemClickListener, OnItemLongClickL
                 }
             }.launchIn(viewLifecycleOwner.lifecycleScope)
 
-        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        binding.recyclerview.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 if (dy > 0) {
                     visibleItemCount = linearLayoutManager.childCount
@@ -129,7 +113,7 @@ class CryptoCurrencyFragment : Fragment(), OnItemClickListener, OnItemLongClickL
                         if (visibleItemCount + pastVisibleItems >= totalItemCount) {
                             isLoading = false
                             currentOffset += LIMIT
-                            cryptoCurrencyViewModel.loadCryptoCurrencies(
+                            viewModel.loadCryptoCurrencies(
                                 sortingParam.first,
                                 sortingParam.second,
                                 currentOffset
@@ -143,7 +127,7 @@ class CryptoCurrencyFragment : Fragment(), OnItemClickListener, OnItemLongClickL
     }
 
     private fun initChipTags() {
-        chipTags.setOnClickListener {
+        binding.chipTags.setOnClickListener {
             val checkedItems = BooleanArray(filterTags.size) { false }
             tags.forEach { tag ->
                 val index = filterTags.indexOf(tag)
@@ -162,7 +146,7 @@ class CryptoCurrencyFragment : Fragment(), OnItemClickListener, OnItemLongClickL
                     }
                     Log.d("checkedItems", tags.toString())
                     currentOffset = OFFSET
-                    cryptoCurrencyViewModel.loadCryptoCurrencies(
+                    viewModel.loadCryptoCurrencies(
                         sortingParam.first,
                         sortingParam.second,
                         OFFSET,
@@ -179,7 +163,7 @@ class CryptoCurrencyFragment : Fragment(), OnItemClickListener, OnItemLongClickL
     }
 
     private fun initTimePeriod() {
-        chipTimePeriod.setOnClickListener {
+        binding.chipTimePeriod.setOnClickListener {
             timePeriod = timePeriods[checkedTimePeriodItemIndex]
 
             MaterialAlertDialogBuilder(requireContext())
@@ -187,7 +171,7 @@ class CryptoCurrencyFragment : Fragment(), OnItemClickListener, OnItemLongClickL
                 .setNeutralButton(resources.getString(R.string.cancel)) { _, _ -> }
                 .setPositiveButton(resources.getString(R.string.ok)) { _, _ ->
                     currentOffset = OFFSET
-                    cryptoCurrencyViewModel.loadCryptoCurrencies(
+                    viewModel.loadCryptoCurrencies(
                         sortingParam.first,
                         sortingParam.second,
                         OFFSET,
@@ -204,7 +188,7 @@ class CryptoCurrencyFragment : Fragment(), OnItemClickListener, OnItemLongClickL
     }
 
     private fun initChipSortBy() {
-        chipSortBy.setOnClickListener {
+        binding.chipSortBy.setOnClickListener {
             sortingParam = sortingParams[checkedSortingItemIndex]
 
             MaterialAlertDialogBuilder(requireContext())
@@ -212,7 +196,7 @@ class CryptoCurrencyFragment : Fragment(), OnItemClickListener, OnItemLongClickL
                 .setNeutralButton(resources.getString(R.string.cancel)) { _, _ -> }
                 .setPositiveButton(resources.getString(R.string.ok)) { _, _ ->
                     currentOffset = OFFSET
-                    cryptoCurrencyViewModel.loadCryptoCurrencies(
+                    viewModel.loadCryptoCurrencies(
                         sortingParam.first,
                         sortingParam.second,
                         OFFSET,

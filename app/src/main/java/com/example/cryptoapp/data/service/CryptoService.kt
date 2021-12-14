@@ -1,4 +1,4 @@
-package com.example.cryptoapp.data.source
+package com.example.cryptoapp.data.service
 
 import com.example.cryptoapp.data.model.cryptoCurrency.AllCryptoCurrencies
 import com.example.cryptoapp.data.model.cryptoCurrencyDetail.CryptoCurrencyDetails
@@ -9,7 +9,7 @@ import retrofit2.http.Header
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface CryptoAPI {
+interface CryptoService {
     @GET("coins")
     suspend fun getAllCryptoCurrencies(
         @Header("x-access-token") key: String = "coinrankingd228a6852a6d7ca4c14c25076fdb42f54138843c128f440c",
