@@ -19,7 +19,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class EventFragment : Fragment(), OnItemClickListener, OnItemLongClickListener {
     private lateinit var linearLayoutManager: LinearLayoutManager
-    private lateinit var eventAdapter: EventAdapter
+    private val eventAdapter: EventAdapter = EventAdapter(this, this)
     private var isLoading: Boolean = true
     private var currentPage: Long = ExchangeConstant.PAGE.toLong()
     private var pastVisibleItems = 0
@@ -41,7 +41,6 @@ class EventFragment : Fragment(), OnItemClickListener, OnItemLongClickListener {
     private fun initUI() {
         linearLayoutManager = LinearLayoutManager(requireContext())
         binding.recyclerview.layoutManager = linearLayoutManager
-        eventAdapter = EventAdapter(this, this)
         binding.recyclerview.adapter = eventAdapter
         viewModel.events.onEach { response ->
             if (response != null && response.isSuccessful) {

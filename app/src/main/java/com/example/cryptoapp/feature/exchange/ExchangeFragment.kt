@@ -21,7 +21,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ExchangeFragment : Fragment(), OnItemClickListener, OnItemLongClickListener {
     private lateinit var linearLayoutManager: LinearLayoutManager
-    private lateinit var exchangeAdapter: ExchangeAdapter
+    private val exchangeAdapter: ExchangeAdapter = ExchangeAdapter(this, this)
     private var isLoading: Boolean = true
     private var currentPage: Long = PAGE.toLong()
     private var pastVisibleItems = 0
@@ -43,7 +43,6 @@ class ExchangeFragment : Fragment(), OnItemClickListener, OnItemLongClickListene
     private fun initUI() {
         linearLayoutManager = LinearLayoutManager(requireContext())
         binding.recyclerview.layoutManager = linearLayoutManager
-        exchangeAdapter = ExchangeAdapter(this, this)
         binding.recyclerview.adapter = exchangeAdapter
         viewModel.exchanges.onEach { response ->
             if (response != null && response.isSuccessful) {

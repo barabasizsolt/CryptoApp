@@ -53,7 +53,7 @@ import java.util.Calendar.MONTH
 import kotlin.collections.ArrayList
 
 class CryptoCurrencyDetailsFragment : Fragment() {
-    private lateinit var areaChart: Cartesian
+    private val areaChart: Cartesian = area()
     private lateinit var cryptoCurrencyId: String
     private var currentTimeFrame = HOUR24
     private var isAddedToFavorite = false
@@ -351,8 +351,6 @@ class CryptoCurrencyDetailsFragment : Fragment() {
     private fun initializeChart(view: View) {
         val anyChartView: AnyChartView = view.findViewById(R.id.any_chart_view)
         anyChartView.setBackgroundColor("#212121")
-
-        areaChart = area()
 
         val crossHair: Crosshair = areaChart.crosshair
         crossHair.setEnabled(true)

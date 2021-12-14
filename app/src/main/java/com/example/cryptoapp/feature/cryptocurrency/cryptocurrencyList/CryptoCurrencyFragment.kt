@@ -32,7 +32,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CryptoCurrencyFragment : Fragment(), OnItemClickListener, OnItemLongClickListener {
     private lateinit var linearLayoutManager: LinearLayoutManager
-    private lateinit var cryptoCurrencyAdapter: CryptoCurrencyAdapter
+    private val cryptoCurrencyAdapter: CryptoCurrencyAdapter = CryptoCurrencyAdapter(this, this)
     private var isLoading: Boolean = true
     private var pastVisibleItems = 0
     private var visibleItemCount = 0
@@ -82,7 +82,6 @@ class CryptoCurrencyFragment : Fragment(), OnItemClickListener, OnItemLongClickL
 
         linearLayoutManager = LinearLayoutManager(requireContext())
         binding.recyclerview.layoutManager = linearLayoutManager
-        cryptoCurrencyAdapter = CryptoCurrencyAdapter(this, this)
         binding.recyclerview.adapter = cryptoCurrencyAdapter
         viewModel.cryptoCurrencies
             .onEach { response ->
