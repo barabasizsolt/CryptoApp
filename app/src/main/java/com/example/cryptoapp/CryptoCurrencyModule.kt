@@ -4,6 +4,7 @@ import com.example.cryptoapp.data.NetworkManager
 import com.example.cryptoapp.data.repository.CryptoRepository
 import com.example.cryptoapp.data.repository.EventRepository
 import com.example.cryptoapp.data.repository.ExchangeRepository
+import com.example.cryptoapp.domain.GetCryptoCurrenciesUseCase
 import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails.CryptoCurrencyDetailsViewModel
 import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyList.CryptoCurrencyViewModel
 import com.example.cryptoapp.feature.event.EventViewModel
@@ -15,6 +16,7 @@ val cryptoCurrencyModule = module {
     single { NetworkManager() }
 
     single { CryptoRepository(get()) }
+    single { GetCryptoCurrenciesUseCase(get()) }
     viewModel { CryptoCurrencyViewModel(get()) }
     viewModel { CryptoCurrencyDetailsViewModel(get()) }
 

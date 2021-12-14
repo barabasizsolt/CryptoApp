@@ -20,7 +20,6 @@ import com.example.cryptoapp.data.constant.CryptoConstant.filterTags
 import com.example.cryptoapp.data.constant.CryptoConstant.sortingParams
 import com.example.cryptoapp.data.constant.CryptoConstant.sortingTags
 import com.example.cryptoapp.data.constant.CryptoConstant.timePeriods
-import com.example.cryptoapp.data.constant.CryptoConstant.toCryptoCurrencyUIModel
 import com.example.cryptoapp.databinding.FragmentCryptoCurrencyBinding
 import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails.CryptoCurrencyDetailsFragment
 import com.example.cryptoapp.feature.shared.OnItemClickListener
@@ -84,20 +83,13 @@ class CryptoCurrencyFragment : Fragment(), OnItemClickListener, OnItemLongClickL
         binding.recyclerview.layoutManager = linearLayoutManager
         binding.recyclerview.adapter = cryptoCurrencyAdapter
         viewModel.cryptoCurrencies
-            .onEach { response ->
-                if (response != null && response.isSuccessful) {
-                    Log.d("Observed", response.body()?.data?.coins?.size.toString())
-
-                    val currentCryptoCurrencies = response.body()?.data?.coins?.map { currency ->
-                        currency.toCryptoCurrencyUIModel(timePeriod)
-                    } as MutableList
-
-                    if (currentOffset == OFFSET) {
-                        cryptoCurrencyAdapter.submitList(currentCryptoCurrencies)
-                    } else {
-                        cryptoCurrencyAdapter.submitList(cryptoCurrencyAdapter.currentList + currentCryptoCurrencies)
-                        isLoading = true
-                    }
+            .onEach { currencies ->
+                Log.d("Observed", currencies.size.toString())
+                if (currentOffset == OFFSET) {
+                    cryptoCurrencyAdapter.submitList(currencies)
+                } else {
+                    cryptoCurrencyAdapter.submitList(cryptoCurrencyAdapter.currentList + currencies)
+                    isLoading = true
                 }
             }.launchIn(viewLifecycleOwner.lifecycleScope)
 
@@ -116,7 +108,6 @@ class CryptoCurrencyFragment : Fragment(), OnItemClickListener, OnItemLongClickL
                                 sortingParam.second,
                                 currentOffset
                             )
-                            Log.v("End", currentOffset.toString())
                         }
                     }
                 }
