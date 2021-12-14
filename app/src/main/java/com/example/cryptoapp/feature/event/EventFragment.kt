@@ -32,8 +32,7 @@ class EventFragment : Fragment(), OnItemClickListener, OnItemLongClickListener {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View
-    {
+    ): View {
         binding = FragmentEventBinding.inflate(inflater, container, false)
         initUI()
         return binding.root

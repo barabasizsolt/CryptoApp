@@ -1,9 +1,9 @@
 package com.example.cryptoapp.data.repository
 
+import com.example.cryptoapp.data.NetworkManager
 import com.example.cryptoapp.data.model.cryptoCurrency.AllCryptoCurrencies
 import com.example.cryptoapp.data.model.cryptoCurrencyDetail.CryptoCurrencyDetails
 import com.example.cryptoapp.data.model.cryptoCurrencyDetail.CryptoCurrencyHistory
-import com.example.cryptoapp.data.NetworkManager
 import retrofit2.Response
 
 class CryptoRepository(private val manager: NetworkManager) {
