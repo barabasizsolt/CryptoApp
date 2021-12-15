@@ -2,7 +2,7 @@ package com.example.cryptoapp.feature.event
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.cryptoapp.data.constant.EventConstant
+import com.example.cryptoapp.data.constant.EventConstant.DEFAULT_PAGE
 import com.example.cryptoapp.data.constant.EventConstant.toEventUIModel
 import com.example.cryptoapp.data.model.event.EventUIModel
 import com.example.cryptoapp.domain.event.GetEventsUseCase
@@ -11,18 +11,19 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 class EventViewModel(private val useCase: GetEventsUseCase) : ViewModel() {
-    val events = MutableStateFlow<List<EventUIModel>?>(listOf())
+    val events = MutableStateFlow<MutableList<EventUIModel>>(mutableListOf())
 
-    fun loadAllEvents(page: String = EventConstant.PAGE) {
+    fun loadAllEvents(page: String = DEFAULT_PAGE) {
         viewModelScope.launch {
             when (val result = useCase(page = page)) {
                 is Result.Success -> {
-                    events.value = result.data.map { event ->
+                    val eventResults = result.data.map { event ->
                         event.toEventUIModel()
-                    }
+                    } as MutableList
+                    events.value = (events.value + eventResults) as MutableList<EventUIModel>
                 }
                 is Result.Failure -> {
-                    events.value = listOf()
+                    events.value = mutableListOf()
                 }
             }
         }

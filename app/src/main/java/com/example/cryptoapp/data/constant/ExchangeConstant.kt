@@ -6,7 +6,7 @@ import com.example.cryptoapp.data.model.exchange.ExchangeUIModel
 
 object ExchangeConstant {
     const val PER_PAGE: Int = 50
-    const val PAGE: String = "1"
+    const val DEFAULT_PAGE: String = "1"
 
     fun ExchangeResponse.toExchange() = Exchange(
         exchange = this

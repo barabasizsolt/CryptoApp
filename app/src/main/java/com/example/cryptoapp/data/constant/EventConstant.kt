@@ -5,7 +5,7 @@ import com.example.cryptoapp.data.model.event.EventResponse
 import com.example.cryptoapp.data.model.event.EventUIModel
 
 object EventConstant {
-    const val PAGE = "1"
+    const val DEFAULT_PAGE = "1"
 
     fun EventResponse.toEvent() = Event(
         event = this

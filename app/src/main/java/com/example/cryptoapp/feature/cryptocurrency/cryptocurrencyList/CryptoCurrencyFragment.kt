@@ -14,8 +14,8 @@ import com.example.cryptoapp.R
 import com.example.cryptoapp.data.constant.CryptoConstant
 import com.example.cryptoapp.data.constant.CryptoConstant.CHECKED_SORTING_ITEM_INDEX
 import com.example.cryptoapp.data.constant.CryptoConstant.CHECKED_TIME_PERIOD_ITEM_INDEX
+import com.example.cryptoapp.data.constant.CryptoConstant.DEFAULT_OFFSET
 import com.example.cryptoapp.data.constant.CryptoConstant.LIMIT
-import com.example.cryptoapp.data.constant.CryptoConstant.OFFSET
 import com.example.cryptoapp.data.constant.CryptoConstant.filterTags
 import com.example.cryptoapp.data.constant.CryptoConstant.sortingParams
 import com.example.cryptoapp.data.constant.CryptoConstant.sortingTags
@@ -32,15 +32,11 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class CryptoCurrencyFragment : Fragment(), OnItemClickListener, OnItemLongClickListener {
     private lateinit var linearLayoutManager: LinearLayoutManager
     private val cryptoCurrencyAdapter: CryptoCurrencyAdapter = CryptoCurrencyAdapter(this, this)
-    private var isLoading: Boolean = true
-    private var pastVisibleItems = 0
-    private var visibleItemCount = 0
-    private var totalItemCount = 0
     private var checkedSortingItemIndex = CHECKED_SORTING_ITEM_INDEX
     private var sortingParam: Pair<String, String> = sortingParams[checkedSortingItemIndex]
     private var checkedTimePeriodItemIndex = CHECKED_TIME_PERIOD_ITEM_INDEX
     private var timePeriod = timePeriods[checkedTimePeriodItemIndex]
-    private var currentOffset = OFFSET
+    private var currentOffset = DEFAULT_OFFSET
     private val tags: MutableSet<String> = mutableSetOf()
     private lateinit var binding: FragmentCryptoCurrencyBinding
     private val viewModel by viewModel<CryptoCurrencyViewModel>()
@@ -85,31 +81,20 @@ class CryptoCurrencyFragment : Fragment(), OnItemClickListener, OnItemLongClickL
         viewModel.cryptoCurrencies
             .onEach { currencies ->
                 Log.d("Observed", currencies.size.toString())
-                if (currentOffset == OFFSET) {
-                    cryptoCurrencyAdapter.submitList(currencies)
-                } else {
-                    cryptoCurrencyAdapter.submitList(cryptoCurrencyAdapter.currentList + currencies)
-                    isLoading = true
-                }
+                cryptoCurrencyAdapter.submitList(currencies)
             }.launchIn(viewLifecycleOwner.lifecycleScope)
 
         binding.recyclerview.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if (dy > 0) {
-                    visibleItemCount = linearLayoutManager.childCount
-                    totalItemCount = linearLayoutManager.itemCount
-                    pastVisibleItems = linearLayoutManager.findFirstVisibleItemPosition()
-                    if (isLoading) {
-                        if (visibleItemCount + pastVisibleItems >= totalItemCount) {
-                            isLoading = false
-                            currentOffset += LIMIT
-                            viewModel.loadCryptoCurrencies(
-                                sortingParam.first,
-                                sortingParam.second,
-                                currentOffset
-                            )
-                        }
-                    }
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    currentOffset += LIMIT
+                    viewModel.loadCryptoCurrencies(
+                        sortingParam.first,
+                        sortingParam.second,
+                        currentOffset
+                    )
+                    Log.d("End", currentOffset.toString())
                 }
             }
         })
@@ -134,11 +119,11 @@ class CryptoCurrencyFragment : Fragment(), OnItemClickListener, OnItemLongClickL
                         }
                     }
                     Log.d("checkedItems", tags.toString())
-                    currentOffset = OFFSET
+                    currentOffset = DEFAULT_OFFSET
                     viewModel.loadCryptoCurrencies(
                         sortingParam.first,
                         sortingParam.second,
-                        OFFSET,
+                        DEFAULT_OFFSET,
                         tags,
                         timePeriod
                     )
@@ -159,11 +144,11 @@ class CryptoCurrencyFragment : Fragment(), OnItemClickListener, OnItemLongClickL
                 .setTitle(resources.getString(R.string.time_period_title))
                 .setNeutralButton(resources.getString(R.string.cancel)) { _, _ -> }
                 .setPositiveButton(resources.getString(R.string.ok)) { _, _ ->
-                    currentOffset = OFFSET
+                    currentOffset = DEFAULT_OFFSET
                     viewModel.loadCryptoCurrencies(
                         sortingParam.first,
                         sortingParam.second,
-                        OFFSET,
+                        DEFAULT_OFFSET,
                         tags,
                         timePeriod
                     )
@@ -184,11 +169,11 @@ class CryptoCurrencyFragment : Fragment(), OnItemClickListener, OnItemLongClickL
                 .setTitle(resources.getString(R.string.sorting_title))
                 .setNeutralButton(resources.getString(R.string.cancel)) { _, _ -> }
                 .setPositiveButton(resources.getString(R.string.ok)) { _, _ ->
-                    currentOffset = OFFSET
+                    currentOffset = DEFAULT_OFFSET
                     viewModel.loadCryptoCurrencies(
                         sortingParam.first,
                         sortingParam.second,
-                        OFFSET,
+                        DEFAULT_OFFSET,
                         tags,
                         timePeriod
                     )

@@ -68,7 +68,7 @@ object CryptoConstant {
     const val MARKET_CAP_FIELD = "marketCap"
     const val ASC = "asc"
     const val DESC = "desc"
-    const val OFFSET = 0
+    const val DEFAULT_OFFSET = 0
     const val LIMIT = 50
 
     const val CHECKED_SORTING_ITEM_INDEX = 4
