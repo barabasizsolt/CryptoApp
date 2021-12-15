@@ -6,9 +6,7 @@ import com.example.cryptoapp.data.constant.CryptoConstant.HOUR24
 import com.example.cryptoapp.data.constant.CryptoConstant.toCryptoCurrencyDetailsInfoUIModel
 import com.example.cryptoapp.data.constant.CryptoConstant.toCryptoCurrencyDetailsUIModel
 import com.example.cryptoapp.data.constant.CryptoConstant.toCryptoCurrencyHistoryUIModel
-import com.example.cryptoapp.data.model.cryptoCurrencyDetail.details.CryptoCurrencyDetailsInfoUIModel
 import com.example.cryptoapp.data.model.cryptoCurrencyDetail.details.CryptoCurrencyDetailsUIModel
-import com.example.cryptoapp.data.model.cryptoCurrencyDetail.history.CryptoCurrencyHistoryUIModel
 import com.example.cryptoapp.domain.cryptocurrency.GetCryptoCurrencyDetailsUseCase
 import com.example.cryptoapp.domain.cryptocurrency.GetCryptoCurrencyHistoryUseCase
 import com.example.cryptoapp.util.Result

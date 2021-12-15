@@ -13,7 +13,6 @@ import com.example.cryptoapp.data.constant.CryptoConstant.loadSvg
 import com.example.cryptoapp.data.constant.CryptoConstant.setCompactPrice
 import com.example.cryptoapp.data.constant.CryptoConstant.setPercentage
 import com.example.cryptoapp.data.constant.CryptoConstant.setPrice
-import com.example.cryptoapp.data.model.cryptoCurrency.CryptoCurrencyUIModel
 import com.example.cryptoapp.feature.shared.OnItemClickListener
 import com.example.cryptoapp.feature.shared.OnItemLongClickListener
 

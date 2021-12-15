@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.cryptoapp.data.constant.ExchangeConstant
 import com.example.cryptoapp.data.constant.ExchangeConstant.DEFAULT_PAGE
 import com.example.cryptoapp.data.constant.ExchangeConstant.toExchangeUIModel
-import com.example.cryptoapp.data.model.exchange.ExchangeUIModel
 import com.example.cryptoapp.domain.exchange.GetExchangesUseCase
 import com.example.cryptoapp.util.Result
 import kotlinx.coroutines.flow.Flow

@@ -2,7 +2,7 @@ package com.example.cryptoapp.data.constant
 
 import com.example.cryptoapp.data.model.exchange.Exchange
 import com.example.cryptoapp.data.model.exchange.ExchangeResponse
-import com.example.cryptoapp.data.model.exchange.ExchangeUIModel
+import com.example.cryptoapp.feature.exchange.ExchangeUIModel
 
 object ExchangeConstant {
     const val PER_PAGE: Int = 50

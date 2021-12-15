@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.cryptoapp.data.constant.CryptoConstant
 import com.example.cryptoapp.data.constant.CryptoConstant.DEFAULT_OFFSET
 import com.example.cryptoapp.data.constant.CryptoConstant.toCryptoCurrencyUIModel
-import com.example.cryptoapp.data.model.cryptoCurrency.CryptoCurrencyUIModel
 import com.example.cryptoapp.domain.cryptocurrency.GetCryptoCurrenciesUseCase
 import com.example.cryptoapp.util.Result
 import kotlinx.coroutines.flow.Flow

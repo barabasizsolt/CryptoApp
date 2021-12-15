@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cryptoapp.data.constant.EventConstant.DEFAULT_PAGE
 import com.example.cryptoapp.data.constant.EventConstant.toEventUIModel
-import com.example.cryptoapp.data.model.event.EventUIModel
 import com.example.cryptoapp.domain.event.GetEventsUseCase
 import com.example.cryptoapp.util.Result
 import kotlinx.coroutines.flow.Flow
