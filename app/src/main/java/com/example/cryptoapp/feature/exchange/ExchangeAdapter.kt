@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.cryptoapp.R
 import com.example.cryptoapp.data.constant.CryptoConstant.loadImage
 import com.example.cryptoapp.data.constant.CryptoConstant.setCompactPrice
-import com.example.cryptoapp.data.model.exchange.ExchangeUIModel
 import com.example.cryptoapp.feature.shared.OnItemClickListener
 import com.example.cryptoapp.feature.shared.OnItemLongClickListener
 

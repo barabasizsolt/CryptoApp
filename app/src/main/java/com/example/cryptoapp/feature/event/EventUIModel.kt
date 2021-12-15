@@ -1,4 +1,4 @@
-package com.example.cryptoapp.data.model.event
+package com.example.cryptoapp.feature.event
 
 data class EventUIModel(
     val title: String,

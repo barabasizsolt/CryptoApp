@@ -1,4 +1,4 @@
-package com.example.cryptoapp.data.model.exchange
+package com.example.cryptoapp.feature.exchange
 
 data class ExchangeUIModel(
     val id: String,
