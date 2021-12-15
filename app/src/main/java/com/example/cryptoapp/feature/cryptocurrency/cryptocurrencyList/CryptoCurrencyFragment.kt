@@ -62,7 +62,7 @@ class CryptoCurrencyFragment : Fragment(), OnItemClickListener, OnItemLongClickL
         val currentCryptoCurrency = cryptoCurrencyAdapter.currentList[position]
         val fragment = CryptoCurrencyDetailsFragment()
         val bundle = Bundle()
-        bundle.putString(CryptoConstant.COIN_ID, currentCryptoCurrency.uuid)
+        bundle.putString(CryptoConstant.COIN_ID, currentCryptoCurrency.cryptoCurrency.uuid)
         fragment.arguments = bundle
         (activity as MainActivity).replaceFragment(
             fragment,

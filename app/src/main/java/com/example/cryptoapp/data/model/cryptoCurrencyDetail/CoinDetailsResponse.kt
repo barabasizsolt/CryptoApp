@@ -1,11 +1,11 @@
 package com.example.cryptoapp.data.model.cryptoCurrencyDetail
 
-import com.example.cryptoapp.data.model.cryptoCurrency.AllTimeHigh
-import com.example.cryptoapp.data.model.cryptoCurrency.Social
-import com.example.cryptoapp.data.model.cryptoCurrency.Supply
+import com.example.cryptoapp.data.model.cryptoCurrency.AllTimeHighResponse
+import com.example.cryptoapp.data.model.cryptoCurrency.SocialResponse
+import com.example.cryptoapp.data.model.cryptoCurrency.SupplyResponse
 import com.google.gson.annotations.SerializedName
 
-data class CoinDetails(
+data class CoinDetailsResponse(
     @SerializedName("uuid")
     val uuid: String?,
     @SerializedName("symbol")
@@ -19,9 +19,9 @@ data class CoinDetails(
     @SerializedName("websiteUrl")
     val websiteUrl: String?,
     @SerializedName("links")
-    val links: List<Social>?,
+    val links: List<SocialResponse>?,
     @SerializedName("supply")
-    val supply: Supply,
+    val supply: SupplyResponse,
     @SerializedName("numberOfMarkets")
     val numberOfMarkets: Long?,
     @SerializedName("numberOfExchanges")
@@ -41,7 +41,7 @@ data class CoinDetails(
     @SerializedName("sparkline")
     val sparkline: List<String>?,
     @SerializedName("allTimeHigh")
-    val allTimeHigh: AllTimeHigh,
+    val allTimeHigh: AllTimeHighResponse,
     @SerializedName("coinrankingUrl")
     val coinRankingUrl: String?,
     @SerializedName("tier")

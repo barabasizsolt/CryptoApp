@@ -14,7 +14,13 @@ import coil.request.ImageRequest
 import coil.transform.CircleCropTransformation
 import com.example.cryptoapp.R
 import com.example.cryptoapp.data.model.cryptoCurrency.CryptoCurrency
+import com.example.cryptoapp.data.model.cryptoCurrency.CryptoCurrencyResponse
 import com.example.cryptoapp.data.model.cryptoCurrency.CryptoCurrencyUIModel
+import com.example.cryptoapp.data.model.cryptoCurrencyDetail.CoinDetailsResponse
+import com.example.cryptoapp.data.model.cryptoCurrencyDetail.details.CryptoCurrencyDetails
+import com.example.cryptoapp.data.model.cryptoCurrencyDetail.details.CryptoCurrencyDetailsInfoUIModel
+import com.example.cryptoapp.data.model.cryptoCurrencyDetail.details.CryptoCurrencyDetailsUIModel
+import com.example.cryptoapp.data.model.cryptoCurrencyDetail.history.*
 import java.text.NumberFormat
 import java.time.Instant
 import java.time.LocalDateTime
@@ -148,18 +154,6 @@ object CryptoConstant {
         }
     }
 
-    fun CryptoCurrency.toCryptoCurrencyUIModel(timePeriod: String) = CryptoCurrencyUIModel(
-        uuid = uuid,
-        symbol = symbol.toString(),
-        name = name.toString(),
-        iconUrl = iconUrl.toString(),
-        marketCap = marketCap.toString(),
-        price = price.toString(),
-        change = change.toString(),
-        volume = volume.toString(),
-        timePeriod = timePeriod.uppercase(Locale.getDefault())
-    )
-
     fun getTime(timeStamp: Long): LocalDateTime =
         Instant.ofEpochSecond(timeStamp).atZone(ZoneId.systemDefault()).toLocalDateTime()
 
@@ -169,12 +163,14 @@ object CryptoConstant {
         return month + " " + time.dayOfMonth.toString() + ", " + time.year.toString()
     }
 
-    fun setValue(inputNumber: Double): String {
-        return format.format(inputNumber)
+    fun setValue(inputNumber: String): String {
+        if(inputNumber == "null") return "undefined"
+        return format.format(inputNumber.toDouble())
     }
 
-    fun setPrice(inputNumber: Double): String {
-        return numberFormat.format(inputNumber)
+    fun setPrice(inputNumber: String): String {
+        if(inputNumber == "null") return "undefined"
+        return numberFormat.format(inputNumber.toDouble())
     }
 
     fun setCompactPrice(inputNumber: String): String {
@@ -182,4 +178,65 @@ object CryptoConstant {
         val amount = CurrencyAmount(inputNumber.toDouble(), currency)
         return format.format(amount)
     }
+
+    fun CryptoCurrencyResponse.toCryptoCurrency() = CryptoCurrency(
+        uuid = uuid,
+        symbol = symbol.toString(),
+        name = name.toString(),
+        iconUrl = iconUrl.toString(),
+        marketCap = marketCap.toString(),
+        price = price.toString(),
+        change = change.toString(),
+        volume = volume.toString(),
+    )
+
+    fun CryptoCurrency.toCryptoCurrencyUIModel(timePeriod: String) = CryptoCurrencyUIModel(
+        cryptoCurrency = this,
+        timePeriod = timePeriod.uppercase(Locale.getDefault())
+    )
+
+    fun CoinDetailsResponse.toCryptoCurrencyDetails() = CryptoCurrencyDetails(
+        uuid = uuid,
+        symbol = symbol,
+        name = name,
+        iconUrl = iconUrl,
+        marketCap = marketCap,
+        price = price,
+        change = change,
+        volume = volume,
+        rank = rank,
+        totalSupply = supply.total,
+        circulating = supply.circulating,
+        btcPrice = btcPrice,
+        allTimeHigh = allTimeHigh,
+        description = description
+    )
+
+    fun CryptoCurrencyDetails.toCryptoCurrencyDetailsUIModel() = CryptoCurrencyDetailsUIModel(
+        uuid = uuid.toString(),
+        symbol = symbol.toString(),
+        name = name.toString(),
+        iconUrl = iconUrl.toString(),
+        marketCap = marketCap.toString(),
+        price = price.toString(),
+        change = change.toString(),
+        volume = volume.toString()
+    )
+
+    fun CryptoCurrencyDetails.toCryptoCurrencyDetailsInfoUIModel() = CryptoCurrencyDetailsInfoUIModel(
+        rank = rank.toString(),
+        totalSupply = totalSupply.toString(),
+        circulating = circulating.toString(),
+        btcPrice = btcPrice.toString(),
+        allTimeHigh = allTimeHigh,
+        description = description.toString()
+    )
+
+    fun CryptoCurrencyHistoryResponse.toCryptoCurrencyHistory() = CryptoCurrencyHistory(
+        history = data.history
+    )
+
+    fun CryptoCurrencyHistory.toCryptoCurrencyHistoryUIModel() = CryptoCurrencyHistoryUIModel(
+        history = history as MutableList
+    )
 }

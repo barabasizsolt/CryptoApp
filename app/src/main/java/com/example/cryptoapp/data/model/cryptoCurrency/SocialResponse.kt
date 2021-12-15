@@ -2,7 +2,7 @@ package com.example.cryptoapp.data.model.cryptoCurrency
 
 import com.google.gson.annotations.SerializedName
 
-data class Social(
+data class SocialResponse(
     @SerializedName("name")
     val name: String,
     @SerializedName("url")

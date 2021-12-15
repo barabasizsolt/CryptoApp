@@ -2,9 +2,9 @@ package com.example.cryptoapp.data.model.cryptoCurrency
 
 import com.google.gson.annotations.SerializedName
 
-data class Data(
+data class DataResponse(
     @SerializedName("stats")
-    val stats: Stats,
+    val stats: StatsResponse,
     @SerializedName("coins")
-    val coins: List<CryptoCurrency>
+    val coins: List<CryptoCurrencyResponse>
 )

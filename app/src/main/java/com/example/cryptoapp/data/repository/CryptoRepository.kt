@@ -1,6 +1,11 @@
 package com.example.cryptoapp.data.repository
 
 import com.example.cryptoapp.data.NetworkManager
+import com.example.cryptoapp.data.constant.CryptoConstant.toCryptoCurrency
+import com.example.cryptoapp.data.constant.CryptoConstant.toCryptoCurrencyDetails
+import com.example.cryptoapp.data.constant.CryptoConstant.toCryptoCurrencyHistory
+import com.example.cryptoapp.data.constant.CryptoConstant.toCryptoCurrencyUIModel
+import com.example.cryptoapp.data.model.cryptoCurrencyDetail.history.CryptoCurrencyHistory
 import java.lang.IllegalStateException
 
 class CryptoRepository(private val manager: NetworkManager) {
@@ -16,13 +21,16 @@ class CryptoRepository(private val manager: NetworkManager) {
         offset = offset,
         tags = tags,
         timePeriod = timePeriod
-    ).body()?.data?.coins ?: throw IllegalStateException("Invalid data returned by the server")
+    ).body()?.data?.coins?.map {
+        currency ->
+        currency.toCryptoCurrency()
+    } ?: throw IllegalStateException("Invalid data returned by the server")
 
     suspend fun getCryptoCurrencyDetails(
         uuid: String
     ) = manager.cryptoSource.getCryptoCurrencyDetails(
         uuid = uuid
-    )
+    ).body()?.data?.coin?.toCryptoCurrencyDetails() ?: throw IllegalStateException("Invalid data returned by the server")
 
     suspend fun getCryptoCurrencyHistory(
         uuid: String,
@@ -30,5 +38,5 @@ class CryptoRepository(private val manager: NetworkManager) {
     ) = manager.cryptoSource.getCryptoCurrencyHistory(
         uuid = uuid,
         timePeriod = timePeriod
-    )
+    ).body()?.toCryptoCurrencyHistory() ?: throw IllegalStateException("Invalid data returned by the server")
 }

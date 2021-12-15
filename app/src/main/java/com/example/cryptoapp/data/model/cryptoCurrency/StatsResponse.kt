@@ -2,7 +2,7 @@ package com.example.cryptoapp.data.model.cryptoCurrency
 
 import com.google.gson.annotations.SerializedName
 
-data class Stats(
+data class StatsResponse(
     @SerializedName("total")
     val total: Long,
     @SerializedName("totalCoins")
