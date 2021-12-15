@@ -20,11 +20,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class EventFragment : Fragment(), OnItemClickListener, OnItemLongClickListener {
     private lateinit var linearLayoutManager: LinearLayoutManager
     private val eventAdapter: EventAdapter = EventAdapter(this, this)
-    private var isLoading: Boolean = true
-    private var currentPage: Long = ExchangeConstant.PAGE.toLong()
-    private var pastVisibleItems = 0
-    private var visibleItemCount = 0
-    private var totalItemCount = 0
+    private var currentPage: Long = ExchangeConstant.DEFAULT_PAGE.toLong()
     private lateinit var binding: FragmentEventBinding
     private val viewModel by viewModel<EventViewModel>()
 
@@ -42,33 +38,18 @@ class EventFragment : Fragment(), OnItemClickListener, OnItemLongClickListener {
         linearLayoutManager = LinearLayoutManager(requireContext())
         binding.recyclerview.layoutManager = linearLayoutManager
         binding.recyclerview.adapter = eventAdapter
-        viewModel.events.onEach { response ->
-            if (response != null && response.isSuccessful) {
-                val events = response.body()?.data as MutableList
-                Log.d("Exchanges", events.toString())
-                if (currentPage.toString() == ExchangeConstant.PAGE) {
-                    eventAdapter.submitList(events)
-                } else {
-                    eventAdapter.submitList(eventAdapter.currentList + events)
-                    isLoading = true
-                }
-            }
+        viewModel.events.onEach { events ->
+            Log.d("Events", events.toString())
+            eventAdapter.submitList(events)
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
         binding.recyclerview.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if (dy > 0) {
-                    visibleItemCount = linearLayoutManager.childCount
-                    totalItemCount = linearLayoutManager.itemCount
-                    pastVisibleItems = linearLayoutManager.findFirstVisibleItemPosition()
-                    if (isLoading) {
-                        if (visibleItemCount + pastVisibleItems >= totalItemCount) {
-                            isLoading = false
-                            currentPage++
-                            viewModel.loadAllEvents(currentPage.toString())
-                            Log.d("End", currentPage.toString())
-                        }
-                    }
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    currentPage++
+                    viewModel.loadAllEvents(page = currentPage.toString())
+                    Log.d("End", currentPage.toString())
                 }
             }
         })

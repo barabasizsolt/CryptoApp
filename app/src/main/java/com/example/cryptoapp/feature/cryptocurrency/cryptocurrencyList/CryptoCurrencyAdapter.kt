@@ -27,7 +27,7 @@ class CryptoCurrencyAdapter(
             override fun areItemsTheSame(
                 oldItem: CryptoCurrencyUIModel,
                 newItem: CryptoCurrencyUIModel
-            ) = oldItem.uuid == newItem.uuid
+            ) = oldItem.cryptoCurrency.uuid == newItem.cryptoCurrency.uuid
 
             override fun areContentsTheSame(
                 oldItem: CryptoCurrencyUIModel,
@@ -48,13 +48,13 @@ class CryptoCurrencyAdapter(
         val uiCryptoCurrencyModel = getItem(position)
 
         holder.percentageChangeText.text = uiCryptoCurrencyModel.timePeriod
-        holder.currencyName.text = uiCryptoCurrencyModel.name
-        holder.currencySymbol.text = uiCryptoCurrencyModel.symbol
-        holder.currencyLogo.loadSvg(uiCryptoCurrencyModel.iconUrl)
-        holder.currencyValue.text = setPrice(uiCryptoCurrencyModel.price.toDouble())
-        setPercentage(uiCryptoCurrencyModel.change, holder.percentChange)
-        holder.volume.text = setCompactPrice(uiCryptoCurrencyModel.volume)
-        holder.marketCap.text = setCompactPrice(uiCryptoCurrencyModel.marketCap)
+        holder.currencyName.text = uiCryptoCurrencyModel.cryptoCurrency.name
+        holder.currencySymbol.text = uiCryptoCurrencyModel.cryptoCurrency.symbol
+        holder.currencyLogo.loadSvg(uiCryptoCurrencyModel.cryptoCurrency.iconUrl)
+        holder.currencyValue.text = setPrice(uiCryptoCurrencyModel.cryptoCurrency.price)
+        setPercentage(uiCryptoCurrencyModel.cryptoCurrency.change, holder.percentChange)
+        holder.volume.text = setCompactPrice(uiCryptoCurrencyModel.cryptoCurrency.volume)
+        holder.marketCap.text = setCompactPrice(uiCryptoCurrencyModel.cryptoCurrency.marketCap)
     }
 
     class CryptoCurrencyViewHolder(

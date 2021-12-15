@@ -2,7 +2,7 @@ package com.example.cryptoapp.data.model.cryptoCurrency
 
 import com.google.gson.annotations.SerializedName
 
-data class Supply(
+data class SupplyResponse(
     @SerializedName("confirmed")
     val confirmed: Boolean?,
     @SerializedName("total")

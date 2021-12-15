@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.cryptoapp.R
 import com.example.cryptoapp.data.constant.CryptoConstant.loadImage
 import com.example.cryptoapp.data.constant.CryptoConstant.setCompactPrice
-import com.example.cryptoapp.data.model.exchange.Exchange
+import com.example.cryptoapp.data.model.exchange.ExchangeUIModel
 import com.example.cryptoapp.feature.shared.OnItemClickListener
 import com.example.cryptoapp.feature.shared.OnItemLongClickListener
 
@@ -19,13 +19,12 @@ class ExchangeAdapter(
     private val onItemClickListener: OnItemClickListener,
     private val onItemLongClickListener: OnItemLongClickListener
 ) :
-
-    ListAdapter<Exchange, ExchangeAdapter.ExchangeViewHolder>(
-        object : DiffUtil.ItemCallback<Exchange>() {
-            override fun areItemsTheSame(oldItem: Exchange, newItem: Exchange) =
+    ListAdapter<ExchangeUIModel, ExchangeAdapter.ExchangeViewHolder>(
+        object : DiffUtil.ItemCallback<ExchangeUIModel>() {
+            override fun areItemsTheSame(oldItem: ExchangeUIModel, newItem: ExchangeUIModel) =
                 oldItem.id == newItem.id
 
-            override fun areContentsTheSame(oldItem: Exchange, newItem: Exchange) = oldItem == newItem
+            override fun areContentsTheSame(oldItem: ExchangeUIModel, newItem: ExchangeUIModel) = oldItem == newItem
         }
     ) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExchangeViewHolder =
@@ -37,20 +36,11 @@ class ExchangeAdapter(
         )
 
     override fun onBindViewHolder(holder: ExchangeViewHolder, position: Int) {
-        val itemsViewModel = getItem(position)
-
-        if (!itemsViewModel.image.isNullOrEmpty()) {
-            holder.exchangeLogo.loadImage(itemsViewModel.image, R.drawable.ic_bitcoin)
-        }
-        if (!itemsViewModel.name.isNullOrEmpty()) {
-            holder.exchangeName.text = itemsViewModel.name
-        }
-        if (itemsViewModel.trustScore != null) {
-            holder.exchangeTrustScore.text = itemsViewModel.trustScore.toString()
-        }
-        if (itemsViewModel.tradeVolume24HBtc != null) {
-            holder.volume.text = setCompactPrice(itemsViewModel.tradeVolume24HBtc.toString())
-        }
+        val uiExchangeModel = getItem(position)
+        holder.exchangeLogo.loadImage(uiExchangeModel.logo, R.drawable.ic_bitcoin)
+        holder.exchangeName.text = uiExchangeModel.name
+        holder.exchangeTrustScore.text = uiExchangeModel.trustScore
+        holder.volume.text = setCompactPrice(uiExchangeModel.volume)
     }
 
     class ExchangeViewHolder(

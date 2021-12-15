@@ -9,7 +9,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.anychart.anychart.AnyChart.area
-import com.anychart.anychart.AnyChartView
 import com.anychart.anychart.Cartesian
 import com.anychart.anychart.Crosshair
 import com.anychart.anychart.DataEntry
@@ -37,14 +36,15 @@ import com.example.cryptoapp.data.constant.CryptoConstant.loadSvg
 import com.example.cryptoapp.data.constant.CryptoConstant.setCompactPrice
 import com.example.cryptoapp.data.constant.CryptoConstant.setPercentage
 import com.example.cryptoapp.data.constant.CryptoConstant.setPrice
-import com.example.cryptoapp.data.model.cryptoCurrencyDetail.CryptoCurrencyDetails
-import com.example.cryptoapp.data.model.cryptoCurrencyDetail.CryptoHistory
+import com.example.cryptoapp.data.model.cryptoCurrencyDetail.details.CryptoCurrencyDetailsUIModel
+import com.example.cryptoapp.data.model.cryptoCurrencyDetail.history.SingleCryptoCurrencyHistoryResponse
 import com.example.cryptoapp.data.repository.Cache
 import com.example.cryptoapp.databinding.FragmentCryptoCurrencyDetailsBinding
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.Month
@@ -58,7 +58,7 @@ class CryptoCurrencyDetailsFragment : Fragment() {
     private var currentTimeFrame = HOUR24
     private var isAddedToFavorite = false
     private lateinit var binding: FragmentCryptoCurrencyDetailsBinding
-    private val viewModel by viewModel<CryptoCurrencyDetailsViewModel>()
+    private val viewModel: CryptoCurrencyDetailsViewModel by viewModel { parametersOf(cryptoCurrencyId) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -67,48 +67,46 @@ class CryptoCurrencyDetailsFragment : Fragment() {
     ): View {
         binding = FragmentCryptoCurrencyDetailsBinding.inflate(inflater, container, false)
 
-        cryptoCurrencyId = requireArguments().getString(CryptoConstant.COIN_ID).toString()
+        initializeChart()
+        cryptoCurrencyId = arguments?.getString(CryptoConstant.COIN_ID).toString()
         Log.d("ID", cryptoCurrencyId)
-        initializeChart(binding.root)
 
-        viewModel.loadCryptoCurrencyDetails(cryptoCurrencyId)
         viewModel.cryptoCurrencyDetails
-            .onEach { response ->
-                if (response != null && response.isSuccessful) {
-                    response.body()?.let { cryptoDetails ->
-                        initUI(cryptoDetails)
-                        binding.tabLayout.getTabAt(1)!!.select()
-                        binding.tabLayout.getTabAt(0)!!.select()
-                        isFavourite()
-                        (activity as MainActivity).favoriteMenuItem.isVisible = true
-                    }
+            .onEach { cryptoDetails ->
+                if (cryptoDetails != null) {
+                    viewModel.loadCryptoCurrencyHistory(uuid = cryptoCurrencyId, timePeriod = HOUR24)
+                    initUI(cryptoDetails)
+                    binding.tabLayout.getTabAt(1)!!.select()
+                    binding.tabLayout.getTabAt(0)!!.select()
+                    isFavourite()
+                    (activity as MainActivity).favoriteMenuItem.isVisible = true
                 }
             }.launchIn(viewLifecycleOwner.lifecycleScope)
 
         viewModel.cryptoCurrencyHistory
-            .onEach { response ->
-                if (response != null && response.isSuccessful) {
+            .onEach { cryptoHistory ->
+                Log.d("History", cryptoHistory.toString())
+                if (cryptoHistory != null) {
                     when (currentTimeFrame) {
                         HOUR24 -> {
-                            val currencyHistory = createDataForAreaChart(response.body()?.data?.history!! as MutableList, HOUR24)
+                            val currencyHistory = createDataForAreaChart(cryptoHistory.history, HOUR24)
                             refreshChart(currencyHistory)
                         }
                         DAY7 -> {
-                            val currencyHistory = createDataForAreaChart(response.body()?.data?.history!! as MutableList, DAY7)
+                            val currencyHistory = createDataForAreaChart(cryptoHistory.history, DAY7)
                             refreshChart(currencyHistory)
                         }
                         YEAR1 -> {
-                            val currencyHistory = createDataForAreaChart(response.body()?.data?.history!! as MutableList, YEAR1)
+                            val currencyHistory = createDataForAreaChart(cryptoHistory.history, YEAR1)
                             refreshChart(currencyHistory)
                         }
                         YEAR6 -> {
-                            val currencyHistory = createDataForAreaChart(response.body()?.data?.history!! as MutableList, YEAR6)
+                            val currencyHistory = createDataForAreaChart(cryptoHistory.history, YEAR6)
                             refreshChart(currencyHistory)
                         }
                     }
                 }
             }.launchIn(viewLifecycleOwner.lifecycleScope)
-        viewModel.loadCryptoCurrencyHistory(uuid = cryptoCurrencyId, timePeriod = HOUR24)
 
         initTobBarListener()
         initializeChipGroup(cryptoCurrencyId)
@@ -123,8 +121,7 @@ class CryptoCurrencyDetailsFragment : Fragment() {
         (activity as MainActivity).favoriteMenuItem.setIcon(R.drawable.ic_watchlist)
     }
 
-    private fun initUI(cryptoCurrencyDetails: CryptoCurrencyDetails) {
-        val coin = cryptoCurrencyDetails.data.coin
+    private fun initUI(coin: CryptoCurrencyDetailsUIModel) {
         val currentTime = getTime(System.currentTimeMillis())
         var currentHour = currentTime.hour.toString()
         var currentMinute = currentTime.minute.toString()
@@ -135,24 +132,14 @@ class CryptoCurrencyDetailsFragment : Fragment() {
             currentMinute = "0$currentMinute"
         }
         val coinValueSymbol = coin.symbol + "/" + "USD" + " - AVG - " + currentHour + ":" + currentMinute
-        if (!coin.iconUrl.isNullOrEmpty()) {
-            binding.cryptoLogo.loadSvg(coin.iconUrl)
-        }
+        binding.cryptoLogo.loadSvg(coin.iconUrl)
         binding.cryptoName.text = coin.name
         binding.cryptoSymbol.text = coin.symbol
         binding.cryptoValueSymbol.text = coinValueSymbol
-        if (!coin.price.isNullOrEmpty()) {
-            binding.cryptoPrice.text = setPrice(coin.price.toDouble())
-        }
-        if (!coin.change.isNullOrEmpty()) {
-            setPercentage(coin.change, binding.percentChange24h)
-        }
-        if (!coin.volume.isNullOrEmpty()) {
-            binding.volume.text = setCompactPrice(coin.volume)
-        }
-        if (!coin.marketCap.isNullOrEmpty()) {
-            binding.marketCap.text = setCompactPrice(coin.marketCap)
-        }
+        binding.cryptoPrice.text = setPrice(coin.price)
+        setPercentage(coin.change, binding.percentChange24h)
+        binding.volume.text = setCompactPrice(coin.volume)
+        binding.marketCap.text = setCompactPrice(coin.marketCap)
     }
 
     private fun isFavourite() {
@@ -244,7 +231,7 @@ class CryptoCurrencyDetailsFragment : Fragment() {
         })
     }
 
-    private fun createDataForAreaChart(history: MutableList<CryptoHistory>, timeFrame: String): MutableList<DataEntry> {
+    private fun createDataForAreaChart(history: MutableList<SingleCryptoCurrencyHistoryResponse>, timeFrame: String): MutableList<DataEntry> {
         val currencyHistory: MutableList<DataEntry> = ArrayList()
 
         // TODO:refactor it
@@ -348,9 +335,8 @@ class CryptoCurrencyDetailsFragment : Fragment() {
         return currencyHistory
     }
 
-    private fun initializeChart(view: View) {
-        val anyChartView: AnyChartView = view.findViewById(R.id.any_chart_view)
-        anyChartView.setBackgroundColor("#212121")
+    private fun initializeChart() {
+        binding.anyChartView.setBackgroundColor("#212121")
 
         val crossHair: Crosshair = areaChart.crosshair
         crossHair.setEnabled(true)
@@ -381,7 +367,7 @@ class CryptoCurrencyDetailsFragment : Fragment() {
             .setValuePrefix("$")
             .setDisplayMode(TooltipDisplayMode.SINGLE)
 
-        anyChartView.setChart(areaChart)
+        binding.anyChartView.setChart(areaChart)
     }
 
     private fun refreshChart(data: MutableList<DataEntry>) {

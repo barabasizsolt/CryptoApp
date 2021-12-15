@@ -2,20 +2,32 @@ package com.example.cryptoapp.feature.event
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.cryptoapp.data.constant.EventConstant
-import com.example.cryptoapp.data.model.event.AllEvents
-import com.example.cryptoapp.data.repository.EventRepository
+import com.example.cryptoapp.data.constant.EventConstant.DEFAULT_PAGE
+import com.example.cryptoapp.data.constant.EventConstant.toEventUIModel
+import com.example.cryptoapp.data.model.event.EventUIModel
+import com.example.cryptoapp.domain.event.GetEventsUseCase
+import com.example.cryptoapp.util.Result
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import retrofit2.Response
 
-class EventViewModel(private val repository: EventRepository) : ViewModel() {
-    val events = MutableStateFlow<Response<AllEvents>?>(null)
+class EventViewModel(private val useCase: GetEventsUseCase) : ViewModel() {
+    private val _events = MutableStateFlow(emptyList<EventUIModel>())
+    val events: Flow<List<EventUIModel>> = _events
 
-    fun loadAllEvents(page: String = EventConstant.PAGE) {
+    fun loadAllEvents(page: String = DEFAULT_PAGE) {
         viewModelScope.launch {
-            val response = repository.getAllEvents(page = page)
-            events.value = response
+            when (val result = useCase(page = page)) {
+                is Result.Success -> {
+                    val eventResults = result.data.map { event ->
+                        event.toEventUIModel()
+                    } as MutableList
+                    _events.value = (_events.value + eventResults) as MutableList<EventUIModel>
+                }
+                is Result.Failure -> {
+                    _events.value = mutableListOf()
+                }
+            }
         }
     }
 

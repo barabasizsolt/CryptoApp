@@ -9,9 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.cryptoapp.data.constant.ExchangeConstant.PAGE
+import com.example.cryptoapp.data.constant.ExchangeConstant.DEFAULT_PAGE
 import com.example.cryptoapp.data.constant.ExchangeConstant.PER_PAGE
-import com.example.cryptoapp.data.model.exchange.Exchange
 import com.example.cryptoapp.databinding.FragmentExchangeBinding
 import com.example.cryptoapp.feature.shared.OnItemClickListener
 import com.example.cryptoapp.feature.shared.OnItemLongClickListener
@@ -22,11 +21,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class ExchangeFragment : Fragment(), OnItemClickListener, OnItemLongClickListener {
     private lateinit var linearLayoutManager: LinearLayoutManager
     private val exchangeAdapter: ExchangeAdapter = ExchangeAdapter(this, this)
-    private var isLoading: Boolean = true
-    private var currentPage: Long = PAGE.toLong()
-    private var pastVisibleItems = 0
-    private var visibleItemCount = 0
-    private var totalItemCount = 0
+    private var currentPage: Long = DEFAULT_PAGE.toLong()
     private lateinit var binding: FragmentExchangeBinding
     private val viewModel by viewModel<ExchangeViewModel>()
 
@@ -44,33 +39,18 @@ class ExchangeFragment : Fragment(), OnItemClickListener, OnItemLongClickListene
         linearLayoutManager = LinearLayoutManager(requireContext())
         binding.recyclerview.layoutManager = linearLayoutManager
         binding.recyclerview.adapter = exchangeAdapter
-        viewModel.exchanges.onEach { response ->
-            if (response != null && response.isSuccessful) {
-                Log.d("Exchanges", response.body()?.size.toString())
-                val exchanges = response.body() as MutableList<Exchange>
-                if (currentPage.toString() == PAGE) {
-                    exchangeAdapter.submitList(exchanges)
-                } else {
-                    exchangeAdapter.submitList(exchangeAdapter.currentList + exchanges)
-                    isLoading = true
-                }
-            }
+        viewModel.exchanges.onEach { exchanges ->
+            Log.d("Exchanges", exchanges.size.toString())
+            exchangeAdapter.submitList(exchanges)
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
         binding.recyclerview.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if (dy > 0) {
-                    visibleItemCount = linearLayoutManager.childCount
-                    totalItemCount = linearLayoutManager.itemCount
-                    pastVisibleItems = linearLayoutManager.findFirstVisibleItemPosition()
-                    if (isLoading) {
-                        if (visibleItemCount + pastVisibleItems >= totalItemCount) {
-                            isLoading = false
-                            currentPage++
-                            viewModel.loadExchanges(perPage = PER_PAGE, currentPage.toString())
-                            Log.d("End", currentPage.toString())
-                        }
-                    }
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
+                    currentPage++
+                    viewModel.loadExchanges(perPage = PER_PAGE, currentPage.toString())
+                    Log.d("End", currentPage.toString())
                 }
             }
         })

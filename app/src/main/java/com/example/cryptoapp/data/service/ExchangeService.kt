@@ -1,6 +1,6 @@
 package com.example.cryptoapp.data.service
 
-import com.example.cryptoapp.data.model.exchange.Exchange
+import com.example.cryptoapp.data.model.exchange.ExchangeResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -12,5 +12,5 @@ interface ExchangeService {
         @Header("accept") key: String = "application/json",
         @Query("per_page") perPage: Int,
         @Query("page") page: String,
-    ): Response<List<Exchange>>
+    ): Response<List<ExchangeResponse>>
 }
