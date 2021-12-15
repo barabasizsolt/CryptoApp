@@ -12,6 +12,7 @@ import com.example.cryptoapp.data.model.cryptoCurrencyDetail.history.CryptoCurre
 import com.example.cryptoapp.domain.cryptocurrency.GetCryptoCurrencyDetailsUseCase
 import com.example.cryptoapp.domain.cryptocurrency.GetCryptoCurrencyHistoryUseCase
 import com.example.cryptoapp.util.Result
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
@@ -21,16 +22,21 @@ class CryptoCurrencyDetailsViewModel(
     private val detailsUseCase: GetCryptoCurrencyDetailsUseCase,
     private val historyUseCase: GetCryptoCurrencyHistoryUseCase
 ) : ViewModel() {
-    val cryptoCurrencyDetails = MutableStateFlow<CryptoCurrencyDetailsUIModel?>(null)
-    val cryptoCurrencyDetailsInfo = MutableStateFlow<CryptoCurrencyDetailsInfoUIModel?>(null)
-    val cryptoCurrencyHistory = MutableStateFlow<CryptoCurrencyHistoryUIModel?>(null)
+    private val _cryptoCurrencyDetails = MutableStateFlow<CryptoCurrencyDetailsUIModel?>(null)
+    val cryptoCurrencyDetails: Flow<CryptoCurrencyDetailsUIModel?> = _cryptoCurrencyDetails
+
+    private val _cryptoCurrencyDetailsInfo = MutableStateFlow<CryptoCurrencyDetailsInfoUIModel?>(null)
+    val cryptoCurrencyDetailsInfo: Flow<CryptoCurrencyDetailsInfoUIModel?> = _cryptoCurrencyDetailsInfo
+
+    private val _cryptoCurrencyHistory = MutableStateFlow<CryptoCurrencyHistoryUIModel?>(null)
+    val cryptoCurrencyHistory: Flow<CryptoCurrencyHistoryUIModel?> = _cryptoCurrencyHistory
 
     private fun loadCryptoCurrencyDetails(uuid: String) {
         viewModelScope.launch {
             when (val result = detailsUseCase(uuid = uuid)) {
                 is Result.Success -> {
-                    cryptoCurrencyDetails.value = result.data.toCryptoCurrencyDetailsUIModel()
-                    cryptoCurrencyDetailsInfo.value = result.data.toCryptoCurrencyDetailsInfoUIModel()
+                    _cryptoCurrencyDetails.value = result.data.toCryptoCurrencyDetailsUIModel()
+                    _cryptoCurrencyDetailsInfo.value = result.data.toCryptoCurrencyDetailsInfoUIModel()
                 }
                 is Result.Failure -> {
                 }
@@ -42,7 +48,7 @@ class CryptoCurrencyDetailsViewModel(
         viewModelScope.launch {
             when (val result = historyUseCase(uuid = uuid, timePeriod = timePeriod)) {
                 is Result.Success -> {
-                    cryptoCurrencyHistory.value = result.data.toCryptoCurrencyHistoryUIModel()
+                    _cryptoCurrencyHistory.value = result.data.toCryptoCurrencyHistoryUIModel()
                 }
                 is Result.Failure -> {
                 }

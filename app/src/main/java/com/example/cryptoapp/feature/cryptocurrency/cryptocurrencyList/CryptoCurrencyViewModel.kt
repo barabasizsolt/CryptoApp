@@ -8,11 +8,13 @@ import com.example.cryptoapp.data.constant.CryptoConstant.toCryptoCurrencyUIMode
 import com.example.cryptoapp.data.model.cryptoCurrency.CryptoCurrencyUIModel
 import com.example.cryptoapp.domain.cryptocurrency.GetCryptoCurrenciesUseCase
 import com.example.cryptoapp.util.Result
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 class CryptoCurrencyViewModel(private val getCryptoCurrencies: GetCryptoCurrenciesUseCase) : ViewModel() {
-    val cryptoCurrencies = MutableStateFlow<MutableList<CryptoCurrencyUIModel>>(mutableListOf())
+    private val _cryptoCurrencies = MutableStateFlow(emptyList<CryptoCurrencyUIModel>())
+    val cryptoCurrencies: Flow<List<CryptoCurrencyUIModel>> = _cryptoCurrencies
 
     fun loadCryptoCurrencies(orderBy: String = CryptoConstant.MARKET_CAP_FIELD, orderDirection: String = CryptoConstant.DESC, offset: Int = CryptoConstant.DEFAULT_OFFSET, tags: Set<String> = setOf(), timePeriod: String = CryptoConstant.timePeriods[1]) {
         viewModelScope.launch {
@@ -22,13 +24,13 @@ class CryptoCurrencyViewModel(private val getCryptoCurrencies: GetCryptoCurrenci
                         currency.toCryptoCurrencyUIModel(timePeriod)
                     } as MutableList
                     if (offset == DEFAULT_OFFSET) {
-                        cryptoCurrencies.value = cryptoCurrencyResults
+                        _cryptoCurrencies.value = cryptoCurrencyResults
                     } else {
-                        cryptoCurrencies.value = (cryptoCurrencies.value + cryptoCurrencyResults) as MutableList<CryptoCurrencyUIModel>
+                        _cryptoCurrencies.value = (_cryptoCurrencies.value + cryptoCurrencyResults) as MutableList<CryptoCurrencyUIModel>
                     }
                 }
                 is Result.Failure -> {
-                    cryptoCurrencies.value = mutableListOf()
+                    _cryptoCurrencies.value = mutableListOf()
                 }
             }
         }

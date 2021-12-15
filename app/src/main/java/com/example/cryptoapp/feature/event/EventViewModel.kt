@@ -7,11 +7,13 @@ import com.example.cryptoapp.data.constant.EventConstant.toEventUIModel
 import com.example.cryptoapp.data.model.event.EventUIModel
 import com.example.cryptoapp.domain.event.GetEventsUseCase
 import com.example.cryptoapp.util.Result
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 class EventViewModel(private val useCase: GetEventsUseCase) : ViewModel() {
-    val events = MutableStateFlow<MutableList<EventUIModel>>(mutableListOf())
+    private val _events = MutableStateFlow(emptyList<EventUIModel>())
+    val events: Flow<List<EventUIModel>> = _events
 
     fun loadAllEvents(page: String = DEFAULT_PAGE) {
         viewModelScope.launch {
@@ -20,10 +22,10 @@ class EventViewModel(private val useCase: GetEventsUseCase) : ViewModel() {
                     val eventResults = result.data.map { event ->
                         event.toEventUIModel()
                     } as MutableList
-                    events.value = (events.value + eventResults) as MutableList<EventUIModel>
+                    _events.value = (_events.value + eventResults) as MutableList<EventUIModel>
                 }
                 is Result.Failure -> {
-                    events.value = mutableListOf()
+                    _events.value = mutableListOf()
                 }
             }
         }
