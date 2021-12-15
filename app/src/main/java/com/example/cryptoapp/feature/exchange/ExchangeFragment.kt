@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cryptoapp.data.constant.ExchangeConstant.PAGE
 import com.example.cryptoapp.data.constant.ExchangeConstant.PER_PAGE
-import com.example.cryptoapp.data.model.exchange.Exchange
 import com.example.cryptoapp.databinding.FragmentExchangeBinding
 import com.example.cryptoapp.feature.shared.OnItemClickListener
 import com.example.cryptoapp.feature.shared.OnItemLongClickListener
@@ -44,10 +43,9 @@ class ExchangeFragment : Fragment(), OnItemClickListener, OnItemLongClickListene
         linearLayoutManager = LinearLayoutManager(requireContext())
         binding.recyclerview.layoutManager = linearLayoutManager
         binding.recyclerview.adapter = exchangeAdapter
-        viewModel.exchanges.onEach { response ->
-            if (response != null && response.isSuccessful) {
-                Log.d("Exchanges", response.body()?.size.toString())
-                val exchanges = response.body() as MutableList<Exchange>
+        viewModel.exchanges.onEach { exchanges ->
+            if (exchanges != null) {
+                Log.d("Exchanges", exchanges.size.toString())
                 if (currentPage.toString() == PAGE) {
                     exchangeAdapter.submitList(exchanges)
                 } else {

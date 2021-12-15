@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cryptoapp.R
 import com.example.cryptoapp.data.constant.CryptoConstant.loadImage
-import com.example.cryptoapp.data.model.event.Event
+import com.example.cryptoapp.data.model.event.EventUIModel
 import com.example.cryptoapp.feature.shared.OnItemClickListener
 import com.example.cryptoapp.feature.shared.OnItemLongClickListener
 
@@ -19,12 +19,12 @@ class EventAdapter(
     private val onItemLongClickListener: OnItemLongClickListener
 ) :
 
-    ListAdapter<Event, EventAdapter.EventViewHolder>(
-        object : DiffUtil.ItemCallback<Event>() {
-            override fun areItemsTheSame(oldItem: Event, newItem: Event) =
+    ListAdapter<EventUIModel, EventAdapter.EventViewHolder>(
+        object : DiffUtil.ItemCallback<EventUIModel>() {
+            override fun areItemsTheSame(oldItem: EventUIModel, newItem: EventUIModel) =
                 oldItem.title == newItem.title
 
-            override fun areContentsTheSame(oldItem: Event, newItem: Event) = oldItem == newItem
+            override fun areContentsTheSame(oldItem: EventUIModel, newItem: EventUIModel) = oldItem == newItem
         }
     ) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder =
@@ -37,25 +37,14 @@ class EventAdapter(
 
     override fun onBindViewHolder(holder: EventViewHolder, position: Int) {
         val uiEventModel = getItem(position)
-
-        if (!uiEventModel.screenshot.isNullOrEmpty()) {
-            holder.eventLogo.loadImage(uiEventModel.screenshot, R.drawable.ic_exchange)
-        }
-        if (!uiEventModel.title.isNullOrEmpty()) {
-            holder.eventName.text = uiEventModel.title
-        }
-        if (!uiEventModel.organizer.isNullOrEmpty()) {
-            val text = "Organizer: " + uiEventModel.organizer
-            holder.eventOrganizer.text = text
-        }
-        if (!uiEventModel.startDate.isNullOrEmpty()) {
-            val text = "Starts: " + uiEventModel.startDate
-            holder.eventStartDate.text = text
-        }
-        if (!uiEventModel.endDate.isNullOrEmpty()) {
-            val text = "Ends: " + uiEventModel.endDate
-            holder.eventEndDate.text = text
-        }
+        val eventOrganizer = "Organizer: " + uiEventModel.organizer
+        val startDate = "Starts: " + uiEventModel.startDate
+        val endDate = "Ends: " + uiEventModel.endDate
+        holder.eventLogo.loadImage(uiEventModel.logo, R.drawable.ic_exchange)
+        holder.eventName.text = uiEventModel.title
+        holder.eventOrganizer.text = eventOrganizer
+        holder.eventStartDate.text = startDate
+        holder.eventEndDate.text = endDate
     }
 
     class EventViewHolder(
@@ -63,7 +52,6 @@ class EventAdapter(
         private val onItemClickListener: OnItemClickListener,
         private val onItemLongClickListener: OnItemLongClickListener
     ) :
-
         RecyclerView.ViewHolder(itemView), View.OnClickListener, View.OnLongClickListener {
         val eventLogo: ImageView = itemView.findViewById(R.id.event_logo)
         val eventName: TextView = itemView.findViewById(R.id.event_name)

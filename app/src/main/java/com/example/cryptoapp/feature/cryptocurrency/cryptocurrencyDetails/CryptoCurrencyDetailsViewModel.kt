@@ -9,8 +9,8 @@ import com.example.cryptoapp.data.constant.CryptoConstant.toCryptoCurrencyHistor
 import com.example.cryptoapp.data.model.cryptoCurrencyDetail.details.CryptoCurrencyDetailsInfoUIModel
 import com.example.cryptoapp.data.model.cryptoCurrencyDetail.details.CryptoCurrencyDetailsUIModel
 import com.example.cryptoapp.data.model.cryptoCurrencyDetail.history.CryptoCurrencyHistoryUIModel
-import com.example.cryptoapp.domain.GetCryptoCurrencyDetailsUseCase
-import com.example.cryptoapp.domain.GetCryptoCurrencyHistoryUseCase
+import com.example.cryptoapp.domain.cryptocurrency.GetCryptoCurrencyDetailsUseCase
+import com.example.cryptoapp.domain.cryptocurrency.GetCryptoCurrencyHistoryUseCase
 import com.example.cryptoapp.util.Result
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch

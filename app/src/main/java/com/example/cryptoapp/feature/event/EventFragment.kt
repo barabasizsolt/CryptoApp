@@ -42,10 +42,9 @@ class EventFragment : Fragment(), OnItemClickListener, OnItemLongClickListener {
         linearLayoutManager = LinearLayoutManager(requireContext())
         binding.recyclerview.layoutManager = linearLayoutManager
         binding.recyclerview.adapter = eventAdapter
-        viewModel.events.onEach { response ->
-            if (response != null && response.isSuccessful) {
-                val events = response.body()?.data as MutableList
-                Log.d("Exchanges", events.toString())
+        viewModel.events.onEach { events ->
+            if (events != null) {
+                Log.d("Events", events.toString())
                 if (currentPage.toString() == ExchangeConstant.PAGE) {
                     eventAdapter.submitList(events)
                 } else {

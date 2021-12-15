@@ -20,7 +20,10 @@ import com.example.cryptoapp.data.model.cryptoCurrencyDetail.CoinDetailsResponse
 import com.example.cryptoapp.data.model.cryptoCurrencyDetail.details.CryptoCurrencyDetails
 import com.example.cryptoapp.data.model.cryptoCurrencyDetail.details.CryptoCurrencyDetailsInfoUIModel
 import com.example.cryptoapp.data.model.cryptoCurrencyDetail.details.CryptoCurrencyDetailsUIModel
-import com.example.cryptoapp.data.model.cryptoCurrencyDetail.history.*
+import com.example.cryptoapp.data.model.cryptoCurrencyDetail.history.CryptoCurrencyHistory
+import com.example.cryptoapp.data.model.cryptoCurrencyDetail.history.CryptoCurrencyHistoryResponse
+import com.example.cryptoapp.data.model.cryptoCurrencyDetail.history.CryptoCurrencyHistoryUIModel
+import com.example.cryptoapp.data.model.cryptoCurrencyDetail.history.SingleCryptoCurrencyHistoryResponse
 import java.text.NumberFormat
 import java.time.Instant
 import java.time.LocalDateTime
@@ -237,6 +240,6 @@ object CryptoConstant {
     )
 
     fun CryptoCurrencyHistory.toCryptoCurrencyHistoryUIModel() = CryptoCurrencyHistoryUIModel(
-        history = history as MutableList
+        history = history as MutableList<SingleCryptoCurrencyHistoryResponse>
     )
 }
