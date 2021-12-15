@@ -164,12 +164,12 @@ object CryptoConstant {
     }
 
     fun setValue(inputNumber: String): String {
-        if(inputNumber == "null") return "undefined"
+        if (inputNumber == "null") return "undefined"
         return format.format(inputNumber.toDouble())
     }
 
     fun setPrice(inputNumber: String): String {
-        if(inputNumber == "null") return "undefined"
+        if (inputNumber == "null") return "undefined"
         return numberFormat.format(inputNumber.toDouble())
     }
 

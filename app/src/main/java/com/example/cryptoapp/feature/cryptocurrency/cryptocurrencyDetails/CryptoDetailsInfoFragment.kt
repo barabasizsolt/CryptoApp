@@ -24,7 +24,7 @@ class CryptoDetailsInfoFragment : Fragment() {
     private lateinit var cryptoCurrencyId: String
     private var isDescriptionVisible: Boolean = false
     private lateinit var binding: FragmentCryptoDetailsInfoBinding
-    private val viewModel: CryptoCurrencyDetailsViewModel by viewModel{ parametersOf(cryptoCurrencyId) }
+    private val viewModel: CryptoCurrencyDetailsViewModel by viewModel { parametersOf(cryptoCurrencyId) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -66,6 +66,6 @@ class CryptoDetailsInfoFragment : Fragment() {
                     }
                 }
             }.launchIn(viewLifecycleOwner.lifecycleScope)
-        //viewModel.loadCryptoCurrencyDetails(cryptoCurrencyId)
+        // viewModel.loadCryptoCurrencyDetails(cryptoCurrencyId)
     }
 }

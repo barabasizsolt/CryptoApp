@@ -20,20 +20,19 @@ class CryptoCurrencyDetailsViewModel(
     timePeriod: String = HOUR24,
     private val detailsUseCase: GetCryptoCurrencyDetailsUseCase,
     private val historyUseCase: GetCryptoCurrencyHistoryUseCase
-    ) : ViewModel() {
+) : ViewModel() {
     val cryptoCurrencyDetails = MutableStateFlow<CryptoCurrencyDetailsUIModel?>(null)
     val cryptoCurrencyDetailsInfo = MutableStateFlow<CryptoCurrencyDetailsInfoUIModel?>(null)
     val cryptoCurrencyHistory = MutableStateFlow<CryptoCurrencyHistoryUIModel?>(null)
 
     private fun loadCryptoCurrencyDetails(uuid: String) {
         viewModelScope.launch {
-            when(val result = detailsUseCase(uuid = uuid)){
+            when (val result = detailsUseCase(uuid = uuid)) {
                 is Result.Success -> {
                     cryptoCurrencyDetails.value = result.data.toCryptoCurrencyDetailsUIModel()
                     cryptoCurrencyDetailsInfo.value = result.data.toCryptoCurrencyDetailsInfoUIModel()
                 }
                 is Result.Failure -> {
-
                 }
             }
         }
@@ -41,19 +40,18 @@ class CryptoCurrencyDetailsViewModel(
 
     fun loadCryptoCurrencyHistory(uuid: String, timePeriod: String) {
         viewModelScope.launch {
-            when(val result = historyUseCase(uuid = uuid, timePeriod = timePeriod)){
+            when (val result = historyUseCase(uuid = uuid, timePeriod = timePeriod)) {
                 is Result.Success -> {
                     cryptoCurrencyHistory.value = result.data.toCryptoCurrencyHistoryUIModel()
                 }
                 is Result.Failure -> {
-
                 }
             }
         }
     }
 
     init {
-        //loadCryptoCurrencyHistory(uuid = uuid, timePeriod = timePeriod)
+        // loadCryptoCurrencyHistory(uuid = uuid, timePeriod = timePeriod)
         loadCryptoCurrencyDetails(uuid = uuid)
     }
 }

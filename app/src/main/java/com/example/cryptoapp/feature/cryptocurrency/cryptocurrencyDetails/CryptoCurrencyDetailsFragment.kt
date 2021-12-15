@@ -58,7 +58,7 @@ class CryptoCurrencyDetailsFragment : Fragment() {
     private var currentTimeFrame = HOUR24
     private var isAddedToFavorite = false
     private lateinit var binding: FragmentCryptoCurrencyDetailsBinding
-    private val viewModel: CryptoCurrencyDetailsViewModel by viewModel{ parametersOf(cryptoCurrencyId)}
+    private val viewModel: CryptoCurrencyDetailsViewModel by viewModel { parametersOf(cryptoCurrencyId) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -70,7 +70,6 @@ class CryptoCurrencyDetailsFragment : Fragment() {
         initializeChart()
         cryptoCurrencyId = arguments?.getString(CryptoConstant.COIN_ID).toString()
         Log.d("ID", cryptoCurrencyId)
-
 
         viewModel.cryptoCurrencyDetails
             .onEach { cryptoDetails ->

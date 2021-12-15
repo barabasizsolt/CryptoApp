@@ -4,8 +4,6 @@ import com.example.cryptoapp.data.NetworkManager
 import com.example.cryptoapp.data.constant.CryptoConstant.toCryptoCurrency
 import com.example.cryptoapp.data.constant.CryptoConstant.toCryptoCurrencyDetails
 import com.example.cryptoapp.data.constant.CryptoConstant.toCryptoCurrencyHistory
-import com.example.cryptoapp.data.constant.CryptoConstant.toCryptoCurrencyUIModel
-import com.example.cryptoapp.data.model.cryptoCurrencyDetail.history.CryptoCurrencyHistory
 import java.lang.IllegalStateException
 
 class CryptoRepository(private val manager: NetworkManager) {
