@@ -25,9 +25,7 @@ class CryptoCurrencyAdapter(
         onItemLongClickListener = onItemLongClickListener
     )
 
-    override fun onBindViewHolder(holder: CryptoCurrencyViewHolder, position: Int) {
-        holder.bind(getItem(position))
-    }
+    override fun onBindViewHolder(holder: CryptoCurrencyViewHolder, position: Int) = holder.bind(getItem(position))
 
     class CryptoCurrencyViewHolder private constructor(
         private val binding: ItemCryptocurrencyCryptoBinding,

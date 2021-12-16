@@ -1,69 +1,63 @@
 package com.example.cryptoapp.feature.exchange
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.cryptoapp.R
+import com.example.cryptoapp.databinding.ItemExchangeExchangeBinding
 import com.example.cryptoapp.feature.shared.OnItemClickListener
 import com.example.cryptoapp.feature.shared.OnItemLongClickListener
-import com.example.cryptoapp.feature.shared.convertToCompactPrice
-import com.example.cryptoapp.feature.shared.loadImage
 
 class ExchangeAdapter(
     private val onItemClickListener: OnItemClickListener,
     private val onItemLongClickListener: OnItemLongClickListener
-) :
-    ListAdapter<ExchangeUIModel, ExchangeAdapter.ExchangeViewHolder>(
-        object : DiffUtil.ItemCallback<ExchangeUIModel>() {
-            override fun areItemsTheSame(oldItem: ExchangeUIModel, newItem: ExchangeUIModel) =
-                oldItem.id == newItem.id
+) : ListAdapter<ExchangeUIModel, ExchangeAdapter.ExchangeViewHolder>(
+    object : DiffUtil.ItemCallback<ExchangeUIModel>() {
+        override fun areItemsTheSame(oldItem: ExchangeUIModel, newItem: ExchangeUIModel) =
+            oldItem.id == newItem.id
 
-            override fun areContentsTheSame(oldItem: ExchangeUIModel, newItem: ExchangeUIModel) = oldItem == newItem
-        }
-    ) {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExchangeViewHolder =
-        ExchangeViewHolder(
-            itemView = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_exchange_exchange, parent, false),
-            onItemClickListener = onItemClickListener,
-            onItemLongClickListener = onItemLongClickListener
-        )
-
-    override fun onBindViewHolder(holder: ExchangeViewHolder, position: Int) {
-        val uiExchangeModel = getItem(position)
-        holder.exchangeLogo.loadImage(uiExchangeModel.logo, R.drawable.ic_bitcoin)
-        holder.exchangeName.text = uiExchangeModel.name
-        holder.exchangeTrustScore.text = uiExchangeModel.trustScore
-        holder.volume.text = uiExchangeModel.volume.convertToCompactPrice()
+        override fun areContentsTheSame(oldItem: ExchangeUIModel, newItem: ExchangeUIModel) = oldItem == newItem
     }
+) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExchangeViewHolder = ExchangeViewHolder.create(
+        parent = parent,
+        onItemClickListener = onItemClickListener,
+        onItemLongClickListener = onItemLongClickListener
+    )
 
-    class ExchangeViewHolder(
-        itemView: View,
+    override fun onBindViewHolder(holder: ExchangeViewHolder, position: Int) = holder.bind(getItem(position))
+
+    class ExchangeViewHolder private constructor(
+        private val binding: ItemExchangeExchangeBinding,
         private val onItemClickListener: OnItemClickListener,
         private val onItemLongClickListener: OnItemLongClickListener
-    ) : RecyclerView.ViewHolder(itemView), View.OnClickListener, View.OnLongClickListener {
-        val exchangeLogo: ImageView = itemView.findViewById(R.id.exchange_logo)
-        val exchangeName: TextView = itemView.findViewById(R.id.exchange_name)
-        val exchangeTrustScore: TextView = itemView.findViewById(R.id.exchange_trust_score)
-        val volume: TextView = itemView.findViewById(R.id.volume)
-
-        override fun onClick(view: View) {
-            onItemClickListener.onItemClick(bindingAdapterPosition)
-        }
-
-        override fun onLongClick(view: View): Boolean {
-            onItemLongClickListener.onItemLongClick(bindingAdapterPosition)
-            return true
-        }
+    ) : RecyclerView.ViewHolder(binding.root) {
 
         init {
-            itemView.setOnClickListener(this)
-            itemView.setOnLongClickListener(this)
+            itemView.setOnClickListener {
+                onItemClickListener.onItemClick(bindingAdapterPosition)
+            }
+            itemView.setOnLongClickListener {
+                onItemLongClickListener.onItemLongClick(bindingAdapterPosition)
+                true
+            }
+        }
+
+        fun bind(uiModel: ExchangeUIModel) {
+            binding.uiModel = uiModel
+        }
+
+        companion object {
+            fun create(
+                parent: ViewGroup,
+                onItemClickListener: OnItemClickListener,
+                onItemLongClickListener: OnItemLongClickListener
+            ) = ExchangeViewHolder(
+                binding = ItemExchangeExchangeBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+                onItemClickListener = onItemClickListener,
+                onItemLongClickListener = onItemLongClickListener
+            )
         }
     }
 }
