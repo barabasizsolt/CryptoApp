@@ -2,7 +2,7 @@
 
     <!-- Application theme. -->
     <style name="CryptoApp" parent="CryptoAppBase">
-        <item name="colorPrimary">@color/purple_200</item>
+        <item name="android:textColor">@color/dark_mode_text_color</item>
     </style>
 
 </resources>

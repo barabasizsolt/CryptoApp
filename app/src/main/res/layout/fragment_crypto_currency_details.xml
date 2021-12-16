@@ -4,7 +4,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#212121"
     android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -29,9 +28,8 @@
             android:layout_width="wrap_content"
             android:layout_height="16dp"
             android:layout_marginStart="4dp"
-            android:text="Bitcoin"
+            tools:text="Bitcoin"
             android:textAlignment="center"
-            android:textColor="#DDDDDD"
             android:textSize="13sp"
             app:layout_constraintBottom_toBottomOf="@+id/crypto_logo"
             app:layout_constraintStart_toEndOf="@+id/crypto_logo" />
@@ -42,9 +40,8 @@
             android:layout_height="15dp"
             android:layout_marginStart="4dp"
             android:layout_marginTop="9dp"
-            android:text="BTC"
+            tools:text="BTC"
             android:textAlignment="center"
-            android:textColor="#DDDDDD"
             android:textSize="13sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/crypto_logo"
@@ -85,7 +82,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
-                android:text="24 Hours"
+                android:text="@string/chip_24hr"
                 app:chipCornerRadius="3dp" />
 
             <com.google.android.material.chip.Chip
@@ -93,7 +90,7 @@
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="7 Days"
+                android:text="@string/chip_7d"
                 app:chipCornerRadius="3dp" />
 
             <com.google.android.material.chip.Chip
@@ -101,7 +98,7 @@
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1 Year"
+                android:text="@string/chip_1y"
                 app:chipCornerRadius="3dp" />
 
             <com.google.android.material.chip.Chip
@@ -109,7 +106,7 @@
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="6 Year"
+                android:text="@string/chip_6y"
                 app:chipCornerRadius="3dp" />
         </com.google.android.material.chip.ChipGroup>
 
@@ -128,8 +125,7 @@
             android:layout_height="30dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
-            android:text="$494044.00"
-            android:textColor="#DDDDDD"
+            tools:text="$494044.00"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
@@ -141,8 +137,7 @@
             android:layout_height="17dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="3dp"
-            android:text="+0.53%"
-            android:textColor="#DDDDDD"
+            tools:text="+0.53%"
             android:textSize="12sp"
             app:layout_constraintEnd_toStartOf="@+id/daily_change_text"
             app:layout_constraintTop_toBottomOf="@id/chip_group" />
@@ -152,8 +147,7 @@
             android:layout_width="wrap_content"
             android:layout_height="17dp"
             android:layout_marginEnd="4dp"
-            android:text="+0.53%"
-            android:textColor="#DDDDDD"
+            tools:text="+0.53%"
             android:textSize="12sp"
             app:layout_constraintEnd_toStartOf="@+id/market_cap_text"
             app:layout_constraintTop_toBottomOf="@+id/percent_change_24h" />
@@ -163,8 +157,7 @@
             android:layout_width="wrap_content"
             android:layout_height="17dp"
             android:layout_marginEnd="4dp"
-            android:text="+12.19%"
-            android:textColor="#DDDDDD"
+            tools:text="+12.19%"
             android:textSize="12sp"
             app:layout_constraintEnd_toStartOf="@+id/volume_text"
             app:layout_constraintTop_toBottomOf="@+id/market_cap" />
@@ -175,8 +168,7 @@
             android:layout_height="16dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="11dp"
-            android:text="24H"
-            android:textColor="#DDDDDD"
+            tools:text="24H"
             android:textSize="12sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -188,8 +180,7 @@
             android:layout_height="16dp"
             android:layout_marginTop="1dp"
             android:layout_marginEnd="11dp"
-            android:text="Cap"
-            android:textColor="#DDDDDD"
+            android:text="@string/market_cap"
             android:textSize="12sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -201,8 +192,7 @@
             android:layout_height="16dp"
             android:layout_marginTop="1dp"
             android:layout_marginEnd="14dp"
-            android:text="Vol"
-            android:textColor="#DDDDDD"
+            android:text="@string/market_volume"
             android:textSize="12sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -214,8 +204,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="5dp"
-            android:text="BTC/USD"
-            android:textColor="#DDDDDD"
+            android:text="@string/crypto_default_currency"
             android:textSize="13sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/crypto_price" />

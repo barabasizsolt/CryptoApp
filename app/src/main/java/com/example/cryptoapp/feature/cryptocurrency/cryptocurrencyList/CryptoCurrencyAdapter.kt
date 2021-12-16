@@ -1,12 +1,10 @@
 package com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyList
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.cryptoapp.data.constant.CryptoConstant.convertToCompactPrice
 import com.example.cryptoapp.databinding.ItemCryptocurrencyCryptoBinding
 import com.example.cryptoapp.feature.shared.OnItemClickListener
 import com.example.cryptoapp.feature.shared.OnItemLongClickListener

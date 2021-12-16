@@ -1,7 +1,7 @@
 package com.example.cryptoapp.data.repository
 
 import com.example.cryptoapp.data.NetworkManager
-import com.example.cryptoapp.data.constant.EventConstant.toEvent
+import com.example.cryptoapp.data.shared.toEvent
 import java.lang.IllegalStateException
 
 class EventRepository(private val manager: NetworkManager) {

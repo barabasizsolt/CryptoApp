@@ -3,7 +3,7 @@ package com.example.cryptoapp.feature.event
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cryptoapp.data.constant.EventConstant.DEFAULT_PAGE
-import com.example.cryptoapp.data.constant.EventConstant.toEventUIModel
+import com.example.cryptoapp.data.model.event.Event
 import com.example.cryptoapp.domain.event.GetEventsUseCase
 import com.example.cryptoapp.util.Result
 import kotlinx.coroutines.flow.Flow
@@ -13,6 +13,10 @@ import kotlinx.coroutines.launch
 class EventViewModel(private val useCase: GetEventsUseCase) : ViewModel() {
     private val _events = MutableStateFlow(emptyList<EventUIModel>())
     val events: Flow<List<EventUIModel>> = _events
+
+    init {
+        loadAllEvents()
+    }
 
     fun loadAllEvents(page: String = DEFAULT_PAGE) {
         viewModelScope.launch {
@@ -30,7 +34,11 @@ class EventViewModel(private val useCase: GetEventsUseCase) : ViewModel() {
         }
     }
 
-    init {
-        loadAllEvents()
-    }
+    private fun Event.toEventUIModel() = EventUIModel(
+        title = event.title.toString(),
+        organizer = event.organizer.toString(),
+        startDate = event.startDate.toString(),
+        endDate = event.endDate.toString(),
+        logo = event.screenshot.toString()
+    )
 }

@@ -14,6 +14,6 @@
         android:paddingBottom="40dp"
         tools:itemCount="7"
         tools:layout_editor_absoluteX="-40dp"
-        tools:listitem="@layout/event_element" />
+        tools:listitem="@layout/item_event_event" />
 
 </LinearLayout>

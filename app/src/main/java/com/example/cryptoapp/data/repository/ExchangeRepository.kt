@@ -1,7 +1,7 @@
 package com.example.cryptoapp.data.repository
 
 import com.example.cryptoapp.data.NetworkManager
-import com.example.cryptoapp.data.constant.ExchangeConstant.toExchange
+import com.example.cryptoapp.data.shared.toExchange
 import java.lang.IllegalStateException
 
 class ExchangeRepository(private val manager: NetworkManager) {

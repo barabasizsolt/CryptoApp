@@ -9,9 +9,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cryptoapp.R
-import com.example.cryptoapp.data.constant.CryptoConstant.loadImage
 import com.example.cryptoapp.feature.shared.OnItemClickListener
 import com.example.cryptoapp.feature.shared.OnItemLongClickListener
+import com.example.cryptoapp.feature.shared.loadImage
 
 class EventAdapter(
     private val onItemClickListener: OnItemClickListener,
@@ -29,7 +29,7 @@ class EventAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder =
         EventViewHolder(
             itemView = LayoutInflater.from(parent.context)
-                .inflate(R.layout.event_element, parent, false),
+                .inflate(R.layout.item_event_event, parent, false),
             onItemClickListener = onItemClickListener,
             onItemLongClickListener = onItemLongClickListener
         )

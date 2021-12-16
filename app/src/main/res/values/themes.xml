@@ -10,7 +10,7 @@
 
     <!-- Base application theme. -->
     <style name="CryptoAppBase" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="colorPrimary">#64ffda</item>
+        <item name="colorPrimary">@color/orange</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
         <item name="colorOnPrimary">@color/white</item>
         <item name="colorSecondary">@color/teal_200</item>
@@ -18,7 +18,7 @@
         <item name="colorOnSecondary">@color/black</item>
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <item name="android:windowTranslucentStatus">true</item>
-        <item name="cardElevation">@dimen/card_elevation</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
     <!-- Application theme. -->

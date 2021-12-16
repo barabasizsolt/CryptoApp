@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.anychart.anychart.AnyChart.area
@@ -31,13 +32,13 @@ import com.example.cryptoapp.data.constant.CryptoConstant.MAX_HOUR
 import com.example.cryptoapp.data.constant.CryptoConstant.MAX_MONTH
 import com.example.cryptoapp.data.constant.CryptoConstant.YEAR1
 import com.example.cryptoapp.data.constant.CryptoConstant.YEAR6
-import com.example.cryptoapp.data.constant.CryptoConstant.getTime
-import com.example.cryptoapp.data.constant.CryptoConstant.convertToCompactPrice
-import com.example.cryptoapp.data.constant.CryptoConstant.convertToPrice
 import com.example.cryptoapp.data.model.cryptoCurrencyDetail.details.CryptoCurrencyDetailsUIModel
 import com.example.cryptoapp.data.model.cryptoCurrencyDetail.history.SingleCryptoCurrencyHistoryResponse
 import com.example.cryptoapp.data.repository.Cache
 import com.example.cryptoapp.databinding.FragmentCryptoCurrencyDetailsBinding
+import com.example.cryptoapp.feature.shared.convertToCompactPrice
+import com.example.cryptoapp.feature.shared.convertToPrice
+import com.example.cryptoapp.feature.shared.getTime
 import com.example.cryptoapp.feature.shared.loadImage
 import com.example.cryptoapp.feature.shared.setPercentage
 import com.google.android.material.tabs.TabLayout
@@ -58,6 +59,8 @@ class CryptoCurrencyDetailsFragment : Fragment() {
     private var isAddedToFavorite = false
     private lateinit var binding: FragmentCryptoCurrencyDetailsBinding
     private val viewModel: CryptoCurrencyDetailsViewModel by viewModel { parametersOf(cryptoCurrencyId) }
+    private val white: String by lazy { R.color.white.toString() }
+    private val black: String by lazy { R.color.black.toString() }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -121,7 +124,7 @@ class CryptoCurrencyDetailsFragment : Fragment() {
     }
 
     private fun initUI(coin: CryptoCurrencyDetailsUIModel) {
-        val currentTime = getTime(System.currentTimeMillis())
+        val currentTime = System.currentTimeMillis().getTime()
         var currentHour = currentTime.hour.toString()
         var currentMinute = currentTime.minute.toString()
         if (currentHour.toInt() < 10) {
@@ -135,10 +138,10 @@ class CryptoCurrencyDetailsFragment : Fragment() {
         binding.cryptoName.text = coin.name
         binding.cryptoSymbol.text = coin.symbol
         binding.cryptoValueSymbol.text = coinValueSymbol
-        binding.cryptoPrice.text = convertToPrice(coin.price)
+        binding.cryptoPrice.text = coin.price.convertToPrice()
         binding.percentChange24h.setPercentage(coin.change)
-        binding.volume.text = convertToCompactPrice(coin.volume)
-        binding.marketCap.text = convertToCompactPrice(coin.marketCap)
+        binding.volume.text = coin.volume.convertToCompactPrice()
+        binding.marketCap.text = coin.marketCap.convertToCompactPrice()
     }
 
     private fun isFavourite() {
@@ -242,7 +245,7 @@ class CryptoCurrencyDetailsFragment : Fragment() {
                 val currentHour: Int = CALENDAR.get(HOUR_OF_DAY)
 
                 history.forEach { curr ->
-                    val time = getTime(curr.timestamp).hour
+                    val time = curr.timestamp.getTime().hour
                     if (!groupedHistory.containsKey(time)) {
                         groupedHistory[time] = mutableListOf()
                     }
@@ -269,9 +272,9 @@ class CryptoCurrencyDetailsFragment : Fragment() {
 
                 val currentDay: Int = LocalDate.now().dayOfWeek.value - 1
 
-                history.sortWith(compareBy { getTime(it.timestamp).dayOfWeek.ordinal })
+                history.sortWith(compareBy { it.timestamp.getTime().dayOfWeek.ordinal })
                 history.forEach { curr ->
-                    val dayOfWeek = getTime(curr.timestamp).dayOfWeek
+                    val dayOfWeek = curr.timestamp.getTime().dayOfWeek
                     if (!groupedHistory.containsKey(dayOfWeek)) {
                         groupedHistory[dayOfWeek] = mutableListOf()
                     }
@@ -298,9 +301,9 @@ class CryptoCurrencyDetailsFragment : Fragment() {
 
                 val currentMonth: Int = CALENDAR.get(MONTH)
 
-                history.sortWith(compareBy { getTime(it.timestamp).month.ordinal })
+                history.sortWith(compareBy { it.timestamp.getTime().month.ordinal })
                 history.forEach { curr ->
-                    val month = getTime(curr.timestamp).month
+                    val month = curr.timestamp.getTime().month
                     if (!groupedHistory.containsKey(month)) {
                         groupedHistory[month] = mutableListOf()
                     }
@@ -324,9 +327,9 @@ class CryptoCurrencyDetailsFragment : Fragment() {
             YEAR6 -> {
                 val groupedHistory = mutableMapOf<String, MutableList<Double>>()
 
-                history.sortWith(compareBy { getTime(it.timestamp).year })
+                history.sortWith(compareBy { it.timestamp.getTime().year })
                 history.forEach { curr ->
-                    val year = getTime(curr.timestamp).year.toString()
+                    val year = curr.timestamp.getTime().year.toString()
                     if (!groupedHistory.containsKey(year)) {
                         groupedHistory[year] = mutableListOf()
                     }
@@ -343,30 +346,30 @@ class CryptoCurrencyDetailsFragment : Fragment() {
     }
 
     private fun initializeChart() {
-        binding.anyChartView.setBackgroundColor("#212121")
+        binding.anyChartView.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
 
         val crossHair: Crosshair = areaChart.crosshair
         crossHair.setEnabled(true)
 
         crossHair.setYStroke(null as Stroke?, null as Number?, null as String?, null as StrokeLineJoin?, null as StrokeLineCap?)
-            .setXStroke("#fff", 1.0, null, null as StrokeLineJoin?, null as StrokeLineCap?)
+            .setXStroke(black, 1.0, null, null as StrokeLineJoin?, null as StrokeLineCap?)
             .setZIndex(39.0)
         crossHair.getYLabel(0).setEnabled(true)
 
         areaChart.yScale.setStackMode(ScaleStackMode.VALUE)
         areaChart.yGrid.setEnabled(true)
-        areaChart.background.fill("#212121", 0)
+        areaChart.background.fill(white, 0)
 
         areaChart.legend.setEnabled(true)
         areaChart.legend.setFontSize(13.0)
         areaChart.legend.setPadding(0.0, 0.0, 20.0, 0.0)
 
         areaChart.getXAxis(0).setTitle(false)
-        areaChart.getXAxis(0).labels.setFontColor("#fff")
+        areaChart.getXAxis(0).labels.setFontColor(black)
 
-        areaChart.getYAxis(0).labels.setFontColor("#fff")
+        areaChart.getYAxis(0).labels.setFontColor(black)
         areaChart.getYAxis(0).labels.setFormat("\${%value}")
-        areaChart.getYAxis(0).title.setFontColor("#fff")
+        areaChart.getYAxis(0).title.setFontColor(black)
         areaChart.getYAxis(0).setTitle("Value (in US Dollars)")
 
         areaChart.interactivity.setHoverMode(HoverMode.BY_X)
@@ -380,15 +383,15 @@ class CryptoCurrencyDetailsFragment : Fragment() {
     private fun refreshChart(data: MutableList<DataEntry>) {
         val series = areaChart.area(data)
         series.setName("Cryptocurrency History")
-        series.setStroke("3 #fff")
-        series.hovered.setStroke("3 #fff")
+        series.setStroke("3 $black")
+        series.hovered.setStroke("3 $black")
         series.hovered.markers.setEnabled(true)
         series.hovered.markers
             .setType(MarkerType.CIRCLE)
             .setSize(4.0)
-            .setStroke("1.5 #fff")
+            .setStroke("1.5 $black")
         series.markers.setZIndex(100.0)
-        series.fill("#64ffda", 5)
+        series.fill("#FF9800", 5)
         areaChart.setData(data)
     }
 }

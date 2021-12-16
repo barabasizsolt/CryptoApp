@@ -1,9 +1,9 @@
 package com.example.cryptoapp.data.repository
 
 import com.example.cryptoapp.data.NetworkManager
-import com.example.cryptoapp.data.constant.CryptoConstant.toCryptoCurrency
-import com.example.cryptoapp.data.constant.CryptoConstant.toCryptoCurrencyDetails
-import com.example.cryptoapp.data.constant.CryptoConstant.toCryptoCurrencyHistory
+import com.example.cryptoapp.data.shared.toCryptoCurrency
+import com.example.cryptoapp.data.shared.toCryptoCurrencyDetails
+import com.example.cryptoapp.data.shared.toCryptoCurrencyHistory
 import java.lang.IllegalStateException
 
 class CryptoRepository(private val manager: NetworkManager) {

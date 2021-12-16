@@ -5,10 +5,46 @@
     <dimen name="content_padding_half">4dp</dimen>
     <dimen name="content_padding">8dp</dimen>
 
-    <!-- Elevations -->
-    <dimen name="card_elevation">6dp</dimen>
+    <!-- CryptoCurrency RecyclerView -->
+    <!-- TextSizes -->
+    <dimen name="small">13sp</dimen>
+    <dimen name="medium">14sp</dimen>
+    <dimen name="large">24sp</dimen>
 
-    <!-- Crypto currency -->
+    <!-- CryptoCurrency ImageView -->
     <dimen name="crypto_currency_card_height">80dp</dimen>
+    <dimen name="crypto_currency_image_view_size">50dp</dimen>
+    <dimen name="crypto_currency_image_view_margin_start">5dp</dimen>
+    <dimen name="crypto_currency_image_view_margin_bottom">10dp</dimen>
+
+    <!-- CryptoCurrencyName TextView -->
+    <dimen name="crypto_currency_name_text_view_margin_start">5dp</dimen>
+
+    <!-- CryptoCurrencySymbol TextView -->
+    <dimen name="crypto_currency_symbol_text_view_margin_start">5dp</dimen>
+    <dimen name="crypto_currency_symbol_text_view_margin_top">5dp</dimen>
+
+    <!-- CryptoCurrencyValue TextView -->
+    <dimen name="crypto_currency_value_text_view_margin_start">90dp</dimen>
+
+    <!-- Percentage TextView -->
+    <dimen name="percentage_text_view_margin_top">8dp</dimen>
+    <dimen name="percentage_text_view_margin_end">4dp</dimen>
+
+    <!-- Volume TextView -->
+    <dimen name="volume_text_view_margin_end">4dp</dimen>
+
+    <!-- MarketCap TextView -->
+    <dimen name="market_cap_text_view_margin_end">4dp</dimen>
+
+    <!-- PercentageText TextView -->
+    <dimen name="percentage_text_text_view_margin_top">8dp</dimen>
+    <dimen name="percentage_text_text_view_width">28dp</dimen>
+
+    <!-- VolumeText TextView -->
+    <dimen name="volume_text_text_view_margin_end">7dp</dimen>
+
+    <!-- MarketCapText TextView -->
+    <dimen name="market_cap_text_text_view_margin_end">3dp</dimen>
 
 </resources>

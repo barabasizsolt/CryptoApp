@@ -3,11 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="uiModel"
             type="com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyList.CryptoCurrencyUIModel" />
-
     </data>
 
     <androidx.cardview.widget.CardView
@@ -22,9 +20,10 @@
 
             <ImageView
                 android:id="@+id/crypto_logo"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginStart="5dp"
+                android:layout_width="@dimen/crypto_currency_image_view_size"
+                android:layout_height="@dimen/crypto_currency_image_view_size"
+                android:layout_marginStart="@dimen/crypto_currency_image_view_margin_start"
+                android:layout_marginBottom="@dimen/crypto_currency_image_view_margin_bottom"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -34,27 +33,26 @@
             <TextView
                 android:id="@+id/crypto_name"
                 android:layout_width="wrap_content"
-                android:layout_height="16dp"
-                android:layout_marginStart="5dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/crypto_currency_name_text_view_margin_start"
                 android:text="@{uiModel.cryptoCurrency.name}"
                 android:textAlignment="center"
-                android:textColor="#DDDDDD"
-                android:textSize="13sp"
+                android:textSize="@dimen/small"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/crypto_logo" />
+                app:layout_constraintTop_toBottomOf="@+id/crypto_logo"
+                tools:text="crypto"/>
 
             <TextView
                 android:id="@+id/crypto_symbol"
                 android:layout_width="wrap_content"
-                android:layout_height="15dp"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="4dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/crypto_currency_symbol_text_view_margin_start"
+                android:layout_marginTop="@dimen/crypto_currency_symbol_text_view_margin_top"
                 android:text="@{uiModel.cryptoCurrency.symbol}"
                 android:textAlignment="center"
-                android:textColor="#DDDDDD"
-                android:textSize="13sp"
+                android:textSize="@dimen/small"
                 app:layout_constraintStart_toEndOf="@+id/crypto_logo"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Symbol" />
@@ -62,11 +60,10 @@
             <TextView
                 android:id="@+id/crypto_value"
                 android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:layout_marginStart="80dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/crypto_currency_value_text_view_margin_start"
                 android:text="@{uiModel.formattedPrice}"
-                android:textColor="#DDDDDD"
-                android:textSize="24sp"
+                android:textSize="@dimen/large"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/crypto_logo"
@@ -76,11 +73,10 @@
             <TextView
                 android:id="@+id/percent_change"
                 android:layout_width="wrap_content"
-                android:layout_height="17dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="4dp"
-                android:textColor="#DDDDDD"
-                android:textSize="14sp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/percentage_text_view_margin_top"
+                android:layout_marginEnd="@dimen/percentage_text_view_margin_end"
+                android:textSize="@dimen/medium"
                 app:layout_constraintEnd_toStartOf="@+id/percentage_change_text"
                 app:layout_constraintTop_toTopOf="parent"
                 app:percentage="@{uiModel.cryptoCurrency.change}"
@@ -89,47 +85,44 @@
             <TextView
                 android:id="@+id/volume"
                 android:layout_width="wrap_content"
-                android:layout_height="17dp"
-                android:layout_marginEnd="4dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/volume_text_view_margin_end"
                 android:text="@{uiModel.formattedVolume}"
-                android:textColor="#DDDDDD"
-                android:textSize="14sp"
+                android:textSize="@dimen/medium"
                 app:layout_constraintEnd_toStartOf="@+id/volume_change"
-                app:layout_constraintTop_toBottomOf="@+id/percent_change" />
+                app:layout_constraintTop_toBottomOf="@+id/percent_change"
+                tools:text="Volume"/>
 
             <TextView
                 android:id="@+id/market_cap"
                 android:layout_width="wrap_content"
-                android:layout_height="17dp"
-                android:layout_marginEnd="4dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/market_cap_text_view_margin_end"
                 android:text="@{uiModel.formattedMarketCap}"
-                android:textColor="#DDDDDD"
-                android:textSize="14sp"
+                android:textSize="@dimen/medium"
                 app:layout_constraintEnd_toStartOf="@+id/cap"
-                app:layout_constraintTop_toBottomOf="@+id/volume" />
+                app:layout_constraintTop_toBottomOf="@+id/volume"
+                tools:text="Market Cap"/>
 
             <TextView
                 android:id="@+id/percentage_change_text"
-                android:layout_width="28dp"
-                android:layout_height="16dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="-1dp"
+                android:layout_width="@dimen/percentage_text_text_view_width"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/percentage_text_text_view_margin_top"
                 android:text="@{uiModel.timePeriod}"
-                android:textColor="#DDDDDD"
-                android:textSize="14sp"
+                android:textSize="@dimen/medium"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="24h"/>
 
             <TextView
                 android:id="@+id/volume_change"
                 android:layout_width="wrap_content"
-                android:layout_height="16dp"
-                android:layout_marginTop="1dp"
-                android:layout_marginEnd="6dp"
-                android:text="Vol"
-                android:textColor="#DDDDDD"
-                android:textSize="14sp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/volume_text_text_view_margin_end"
+                android:text="@string/market_volume"
+                android:textSize="@dimen/medium"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/percentage_change_text" />
@@ -137,12 +130,10 @@
             <TextView
                 android:id="@+id/cap"
                 android:layout_width="wrap_content"
-                android:layout_height="16dp"
-                android:layout_marginTop="1dp"
-                android:layout_marginEnd="2dp"
-                android:text="Cap"
-                android:textColor="#DDDDDD"
-                android:textSize="14sp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/market_cap_text_text_view_margin_end"
+                android:text="@string/market_cap"
+                android:textSize="@dimen/medium"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/volume_change" />

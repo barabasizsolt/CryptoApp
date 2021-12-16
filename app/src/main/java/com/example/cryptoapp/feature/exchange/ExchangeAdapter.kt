@@ -9,10 +9,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cryptoapp.R
-import com.example.cryptoapp.data.constant.CryptoConstant.loadImage
-import com.example.cryptoapp.data.constant.CryptoConstant.convertToCompactPrice
 import com.example.cryptoapp.feature.shared.OnItemClickListener
 import com.example.cryptoapp.feature.shared.OnItemLongClickListener
+import com.example.cryptoapp.feature.shared.convertToCompactPrice
+import com.example.cryptoapp.feature.shared.loadImage
 
 class ExchangeAdapter(
     private val onItemClickListener: OnItemClickListener,
@@ -29,7 +29,7 @@ class ExchangeAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExchangeViewHolder =
         ExchangeViewHolder(
             itemView = LayoutInflater.from(parent.context)
-                .inflate(R.layout.exchange_element, parent, false),
+                .inflate(R.layout.item_exchange_exchange, parent, false),
             onItemClickListener = onItemClickListener,
             onItemLongClickListener = onItemLongClickListener
         )
@@ -39,7 +39,7 @@ class ExchangeAdapter(
         holder.exchangeLogo.loadImage(uiExchangeModel.logo, R.drawable.ic_bitcoin)
         holder.exchangeName.text = uiExchangeModel.name
         holder.exchangeTrustScore.text = uiExchangeModel.trustScore
-        holder.volume.text = convertToCompactPrice(uiExchangeModel.volume)
+        holder.volume.text = uiExchangeModel.volume.convertToCompactPrice()
     }
 
     class ExchangeViewHolder(
