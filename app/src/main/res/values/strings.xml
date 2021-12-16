@@ -29,4 +29,5 @@
     <string name="coin_description">Description</string>
     <string name="undefined">undefined</string>
     <string name="description_not_found">Description not found.</string>
+    <string name="exchange_volume">Vol</string>
 </resources>

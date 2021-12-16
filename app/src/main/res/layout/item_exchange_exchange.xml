@@ -3,38 +3,32 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
-    android:layout_margin="5dp"
-    android:backgroundTint="#444444"
-    app:cardElevation="6dp">
+    android:layout_height="@dimen/exchange_item_height"
+    android:layout_margin="@dimen/exchange_item_margin">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="5dp">
+        android:layout_height="match_parent">
 
         <ImageView
             android:id="@+id/exchange_logo"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="12dp"
-
+            android:layout_width="@dimen/exchange_image_view_size"
+            android:layout_height="@dimen/exchange_image_view_size"
+            android:layout_marginStart="@dimen/exchange_image_view_margin_start"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.681"
             tools:srcCompat="@tools:sample/avatars" />
 
         <TextView
             android:id="@+id/exchange_name"
             android:layout_width="wrap_content"
-            android:layout_height="22dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="5dp"
-            android:text="undefined"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/exchange_name_text_view_margin_start"
+            android:layout_marginTop="@dimen/exchange_name_text_view_margin_top"
+            tools:text="undefined"
             android:textAlignment="center"
-            android:textColor="#DDDDDD"
-            android:textSize="14sp"
+            android:textSize="@dimen/medium_exchange_item_text"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/exchange_logo"
             app:layout_constraintTop_toTopOf="parent" />
@@ -42,24 +36,22 @@
         <TextView
             android:id="@+id/exchange_trust_score"
             android:layout_width="wrap_content"
-            android:layout_height="15dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="2dp"
-            android:text="undefined"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/exchange_trust_score_text_view_margin_start"
+            android:layout_marginTop="@dimen/exchange_trust_score_text_view_margin_start"
+            tools:text="undefined"
             android:textAlignment="center"
-            android:textColor="#DDDDDD"
-            android:textSize="12sp"
+            android:textSize="@dimen/small_exchange_item_text"
             app:layout_constraintStart_toEndOf="@+id/exchange_logo"
             app:layout_constraintTop_toBottomOf="@+id/exchange_name" />
 
         <TextView
             android:id="@+id/volume"
             android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:layout_marginEnd="4dp"
-            android:text="undefined"
-            android:textColor="#DDDDDD"
-            android:textSize="15sp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/exchange_volume_text_view_margin_end"
+            tools:text="undefined"
+            android:textSize="@dimen/large_exchange_item_text"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/volume_change"
             app:layout_constraintTop_toTopOf="parent" />
@@ -67,17 +59,14 @@
         <TextView
             android:id="@+id/volume_change"
             android:layout_width="wrap_content"
-            android:layout_height="19dp"
-            android:layout_marginTop="1dp"
-            android:layout_marginEnd="16dp"
-            android:text="Vol"
-            android:textColor="#DDDDDD"
-            android:textSize="15sp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/exchange_volume_change_text_view_margin_end"
+            android:text="@string/exchange_volume"
+            android:textSize="@dimen/large_exchange_item_text"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.492" />
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>
