@@ -1,17 +1,27 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
+
+    <!-- Splash Screen Theme -->
+    <style name="CryptoCurrencySplashScreenTheme" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/orange</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/img_app_logo</item>
+        <item name="windowSplashScreenAnimationDuration">1000</item>
+        <item name="postSplashScreenTheme">@style/CryptoApp</item>
+    </style>
+
     <!-- Base application theme. -->
-    <style name="Theme.CryptoApp" parent="Theme.MaterialComponents.NoActionBar">
-        <!-- Primary brand color. -->
+    <style name="CryptoAppBase" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">#64ffda</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
         <item name="colorOnPrimary">@color/white</item>
-        <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <item name="android:windowTranslucentStatus">true</item>
+        <item name="cardElevation">@dimen/card_elevation</item>
     </style>
+
+    <!-- Application theme. -->
+    <style name="CryptoApp" parent="CryptoAppBase" />
+
 </resources>

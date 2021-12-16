@@ -14,5 +14,5 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:itemCount="7"
         tools:layout_editor_absoluteX="-40dp"
-        tools:listitem="@layout/crypto_element" />
+        tools:listitem="@layout/item_cryptocurrency_crypto" />
 </androidx.constraintlayout.widget.ConstraintLayout>

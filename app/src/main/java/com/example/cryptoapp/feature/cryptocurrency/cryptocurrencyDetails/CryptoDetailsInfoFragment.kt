@@ -12,7 +12,7 @@ import com.example.cryptoapp.data.constant.CryptoConstant
 import com.example.cryptoapp.data.constant.CryptoConstant.ROTATE_180
 import com.example.cryptoapp.data.constant.CryptoConstant.ROTATE_360
 import com.example.cryptoapp.data.constant.CryptoConstant.getFormattedTime
-import com.example.cryptoapp.data.constant.CryptoConstant.setPrice
+import com.example.cryptoapp.data.constant.CryptoConstant.convertToPrice
 import com.example.cryptoapp.data.constant.CryptoConstant.setValue
 import com.example.cryptoapp.databinding.FragmentCryptoDetailsInfoBinding
 import kotlinx.coroutines.flow.launchIn
@@ -41,7 +41,7 @@ class CryptoDetailsInfoFragment : Fragment() {
         viewModel.cryptoCurrencyDetailsInfo
             .onEach { coin ->
                 if (coin != null) {
-                    val allTimeHighText = setPrice(coin.allTimeHigh.price)
+                    val allTimeHighText = convertToPrice(coin.allTimeHigh.price)
                     val allTimeHighDateText = getFormattedTime(coin.allTimeHigh.timestamp)
                     val btcPrice = String.format("%.7f", coin.btcPrice.toDouble()) + " Btc"
                     binding.cryptoRankValue.text = coin.rank

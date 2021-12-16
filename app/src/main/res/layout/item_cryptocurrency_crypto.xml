@@ -1,0 +1,154 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="uiModel"
+            type="com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyList.CryptoCurrencyUIModel" />
+
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/crypto_currency_card_height"
+        android:layout_margin="@dimen/content_padding_half">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/content_padding_half">
+
+            <ImageView
+                android:id="@+id/crypto_logo"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="5dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:url="@{uiModel.cryptoCurrency.iconUrl}"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <TextView
+                android:id="@+id/crypto_name"
+                android:layout_width="wrap_content"
+                android:layout_height="16dp"
+                android:layout_marginStart="5dp"
+                android:text="@{uiModel.cryptoCurrency.name}"
+                android:textAlignment="center"
+                android:textColor="#DDDDDD"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/crypto_logo" />
+
+            <TextView
+                android:id="@+id/crypto_symbol"
+                android:layout_width="wrap_content"
+                android:layout_height="15dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="4dp"
+                android:text="@{uiModel.cryptoCurrency.symbol}"
+                android:textAlignment="center"
+                android:textColor="#DDDDDD"
+                android:textSize="13sp"
+                app:layout_constraintStart_toEndOf="@+id/crypto_logo"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Symbol" />
+
+            <TextView
+                android:id="@+id/crypto_value"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginStart="80dp"
+                android:text="@{uiModel.formattedPrice}"
+                android:textColor="#DDDDDD"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/crypto_logo"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Value" />
+
+            <TextView
+                android:id="@+id/percent_change"
+                android:layout_width="wrap_content"
+                android:layout_height="17dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="4dp"
+                android:textColor="#DDDDDD"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toStartOf="@+id/percentage_change_text"
+                app:layout_constraintTop_toTopOf="parent"
+                app:percentage="@{uiModel.cryptoCurrency.change}"
+                tools:text="Percentage" />
+
+            <TextView
+                android:id="@+id/volume"
+                android:layout_width="wrap_content"
+                android:layout_height="17dp"
+                android:layout_marginEnd="4dp"
+                android:text="@{uiModel.formattedVolume}"
+                android:textColor="#DDDDDD"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toStartOf="@+id/volume_change"
+                app:layout_constraintTop_toBottomOf="@+id/percent_change" />
+
+            <TextView
+                android:id="@+id/market_cap"
+                android:layout_width="wrap_content"
+                android:layout_height="17dp"
+                android:layout_marginEnd="4dp"
+                android:text="@{uiModel.formattedMarketCap}"
+                android:textColor="#DDDDDD"
+                android:textSize="14sp"
+                app:layout_constraintEnd_toStartOf="@+id/cap"
+                app:layout_constraintTop_toBottomOf="@+id/volume" />
+
+            <TextView
+                android:id="@+id/percentage_change_text"
+                android:layout_width="28dp"
+                android:layout_height="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="-1dp"
+                android:text="@{uiModel.timePeriod}"
+                android:textColor="#DDDDDD"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/volume_change"
+                android:layout_width="wrap_content"
+                android:layout_height="16dp"
+                android:layout_marginTop="1dp"
+                android:layout_marginEnd="6dp"
+                android:text="Vol"
+                android:textColor="#DDDDDD"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/percentage_change_text" />
+
+            <TextView
+                android:id="@+id/cap"
+                android:layout_width="wrap_content"
+                android:layout_height="16dp"
+                android:layout_marginTop="1dp"
+                android:layout_marginEnd="2dp"
+                android:text="Cap"
+                android:textColor="#DDDDDD"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/volume_change" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</layout>

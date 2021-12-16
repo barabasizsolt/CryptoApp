@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Keylines / dimensions -->
+    <dimen name="content_padding_half">4dp</dimen>
+    <dimen name="content_padding">8dp</dimen>
+
+    <!-- Elevations -->
+    <dimen name="card_elevation">6dp</dimen>
+
+    <!-- Crypto currency -->
+    <dimen name="crypto_currency_card_height">80dp</dimen>
+
+</resources>

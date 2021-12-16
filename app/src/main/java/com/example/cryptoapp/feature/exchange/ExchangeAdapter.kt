@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cryptoapp.R
 import com.example.cryptoapp.data.constant.CryptoConstant.loadImage
-import com.example.cryptoapp.data.constant.CryptoConstant.setCompactPrice
+import com.example.cryptoapp.data.constant.CryptoConstant.convertToCompactPrice
 import com.example.cryptoapp.feature.shared.OnItemClickListener
 import com.example.cryptoapp.feature.shared.OnItemLongClickListener
 
@@ -39,7 +39,7 @@ class ExchangeAdapter(
         holder.exchangeLogo.loadImage(uiExchangeModel.logo, R.drawable.ic_bitcoin)
         holder.exchangeName.text = uiExchangeModel.name
         holder.exchangeTrustScore.text = uiExchangeModel.trustScore
-        holder.volume.text = setCompactPrice(uiExchangeModel.volume)
+        holder.volume.text = convertToCompactPrice(uiExchangeModel.volume)
     }
 
     class ExchangeViewHolder(

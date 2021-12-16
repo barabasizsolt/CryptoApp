@@ -7,6 +7,7 @@ import android.net.Uri
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.databinding.BindingAdapter
 import coil.ImageLoader
 import coil.decode.SvgDecoder
 import coil.load
@@ -50,7 +51,7 @@ object CryptoConstant {
         format.maximumFractionDigits = 2
     }
 
-    private const val EMPTY_STR = "null"
+    const val EMPTY_STR = "null"
 
     const val CURRENCY_FIRE_STORE_PATH = "currencies"
 
@@ -109,17 +110,6 @@ object CryptoConstant {
         Pair(MARKET_CAP_FIELD, ASC),
     )
 
-    fun ImageView.loadSvg(url: String) {
-        val imageLoader = ImageLoader.Builder(this.context)
-            .componentRegistry { add(SvgDecoder(this@loadSvg.context)) }
-            .build()
-        val request = ImageRequest.Builder(this.context)
-            .data(url)
-            .target(this)
-            .build()
-        imageLoader.enqueue(request)
-    }
-
     fun ImageView.loadImage(image: Uri, placeholder: Int) {
         this.load(image) {
             placeholder(placeholder)
@@ -140,23 +130,6 @@ object CryptoConstant {
         }
     }
 
-    fun setPercentage(percentageStr: String, textView: TextView) {
-        if (percentageStr == EMPTY_STR) return
-        val percentage = percentageStr.toDouble()
-        when {
-            percentage < 0 -> {
-                val percentageText = String.format("%.2f", percentage) + "%"
-                textView.text = percentageText
-                textView.setTextColor(ContextCompat.getColor(textView.context, R.color.red))
-            }
-            percentage > 0 -> {
-                val percentageText = "+" + String.format("%.2f", percentage) + "%"
-                textView.text = percentageText
-                textView.setTextColor(ContextCompat.getColor(textView.context, R.color.green))
-            }
-        }
-    }
-
     fun getTime(timeStamp: Long): LocalDateTime =
         Instant.ofEpochSecond(timeStamp).atZone(ZoneId.systemDefault()).toLocalDateTime()
 
@@ -171,12 +144,12 @@ object CryptoConstant {
         return format.format(inputNumber.toDouble())
     }
 
-    fun setPrice(inputNumber: String): String {
+    fun convertToPrice(inputNumber: String): String {
         if (inputNumber == "null") return "undefined"
         return numberFormat.format(inputNumber.toDouble())
     }
 
-    fun setCompactPrice(inputNumber: String): String {
+    fun convertToCompactPrice(inputNumber: String): String {
         if (inputNumber == "null") return "undefined"
         val amount = CurrencyAmount(inputNumber.toDouble(), currency)
         return format.format(amount)

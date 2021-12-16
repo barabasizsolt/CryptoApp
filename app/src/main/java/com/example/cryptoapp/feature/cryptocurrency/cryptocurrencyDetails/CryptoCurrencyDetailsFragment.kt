@@ -32,14 +32,14 @@ import com.example.cryptoapp.data.constant.CryptoConstant.MAX_MONTH
 import com.example.cryptoapp.data.constant.CryptoConstant.YEAR1
 import com.example.cryptoapp.data.constant.CryptoConstant.YEAR6
 import com.example.cryptoapp.data.constant.CryptoConstant.getTime
-import com.example.cryptoapp.data.constant.CryptoConstant.loadSvg
-import com.example.cryptoapp.data.constant.CryptoConstant.setCompactPrice
-import com.example.cryptoapp.data.constant.CryptoConstant.setPercentage
-import com.example.cryptoapp.data.constant.CryptoConstant.setPrice
+import com.example.cryptoapp.data.constant.CryptoConstant.convertToCompactPrice
+import com.example.cryptoapp.data.constant.CryptoConstant.convertToPrice
 import com.example.cryptoapp.data.model.cryptoCurrencyDetail.details.CryptoCurrencyDetailsUIModel
 import com.example.cryptoapp.data.model.cryptoCurrencyDetail.history.SingleCryptoCurrencyHistoryResponse
 import com.example.cryptoapp.data.repository.Cache
 import com.example.cryptoapp.databinding.FragmentCryptoCurrencyDetailsBinding
+import com.example.cryptoapp.feature.shared.loadImage
+import com.example.cryptoapp.feature.shared.setPercentage
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -50,7 +50,6 @@ import java.time.LocalDate
 import java.time.Month
 import java.util.Calendar.HOUR_OF_DAY
 import java.util.Calendar.MONTH
-import kotlin.collections.ArrayList
 
 class CryptoCurrencyDetailsFragment : Fragment() {
     private val areaChart: Cartesian = area()
@@ -132,14 +131,14 @@ class CryptoCurrencyDetailsFragment : Fragment() {
             currentMinute = "0$currentMinute"
         }
         val coinValueSymbol = coin.symbol + "/" + "USD" + " - AVG - " + currentHour + ":" + currentMinute
-        binding.cryptoLogo.loadSvg(coin.iconUrl)
+        binding.cryptoLogo.loadImage(coin.iconUrl)
         binding.cryptoName.text = coin.name
         binding.cryptoSymbol.text = coin.symbol
         binding.cryptoValueSymbol.text = coinValueSymbol
-        binding.cryptoPrice.text = setPrice(coin.price)
-        setPercentage(coin.change, binding.percentChange24h)
-        binding.volume.text = setCompactPrice(coin.volume)
-        binding.marketCap.text = setCompactPrice(coin.marketCap)
+        binding.cryptoPrice.text = convertToPrice(coin.price)
+        binding.percentChange24h.setPercentage(coin.change)
+        binding.volume.text = convertToCompactPrice(coin.volume)
+        binding.marketCap.text = convertToCompactPrice(coin.marketCap)
     }
 
     private fun isFavourite() {
@@ -247,7 +246,9 @@ class CryptoCurrencyDetailsFragment : Fragment() {
                     if (!groupedHistory.containsKey(time)) {
                         groupedHistory[time] = mutableListOf()
                     }
-                    if (!curr.price.isNullOrBlank()) { groupedHistory[time]?.add(curr.price.toDouble()) }
+                    if (!curr.price.isNullOrBlank()) {
+                        groupedHistory[time]?.add(curr.price.toDouble())
+                    }
                 }
 
                 groupedHistory.forEach { elem ->
@@ -274,7 +275,9 @@ class CryptoCurrencyDetailsFragment : Fragment() {
                     if (!groupedHistory.containsKey(dayOfWeek)) {
                         groupedHistory[dayOfWeek] = mutableListOf()
                     }
-                    if (!curr.price.isNullOrBlank()) { groupedHistory[dayOfWeek]?.add(curr.price.toDouble()) }
+                    if (!curr.price.isNullOrBlank()) {
+                        groupedHistory[dayOfWeek]?.add(curr.price.toDouble())
+                    }
                 }
 
                 groupedHistory.forEach { elem ->
@@ -301,7 +304,9 @@ class CryptoCurrencyDetailsFragment : Fragment() {
                     if (!groupedHistory.containsKey(month)) {
                         groupedHistory[month] = mutableListOf()
                     }
-                    if (!curr.price.isNullOrBlank()) { groupedHistory[month]?.add(curr.price.toDouble()) }
+                    if (!curr.price.isNullOrBlank()) {
+                        groupedHistory[month]?.add(curr.price.toDouble())
+                    }
                 }
 
                 groupedHistory.forEach { elem ->
@@ -325,7 +330,9 @@ class CryptoCurrencyDetailsFragment : Fragment() {
                     if (!groupedHistory.containsKey(year)) {
                         groupedHistory[year] = mutableListOf()
                     }
-                    if (!curr.price.isNullOrBlank()) { groupedHistory[year]?.add(curr.price.toDouble()) }
+                    if (!curr.price.isNullOrBlank()) {
+                        groupedHistory[year]?.add(curr.price.toDouble())
+                    }
                 }
 
                 groupedHistory.forEach { elem -> currencyHistory.add(ValueDataEntry(elem.key, elem.value.maxOfOrNull { it })) }
