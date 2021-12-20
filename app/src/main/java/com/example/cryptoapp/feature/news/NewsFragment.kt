@@ -39,9 +39,17 @@ class NewsFragment : Fragment(), OnItemClickListener, OnItemLongClickListener {
         binding.recyclerview.layoutManager = linearLayoutManager
         binding.recyclerview.adapter = newsAdapter
         viewModel.news.onEach { events ->
-            Log.d("News", events.toString())
+            Log.d("News", events.size.toString())
+            if (binding.swipeRefreshLayout.isRefreshing) {
+                binding.swipeRefreshLayout.isRefreshing = false
+            }
             newsAdapter.submitList(events)
         }.launchIn(viewLifecycleOwner.lifecycleScope)
+
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            currentPage = NewsConstant.DEFAULT_PAGE.toLong()
+            viewModel.loadAllNews(page = currentPage.toString())
+        }
 
         binding.recyclerview.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {

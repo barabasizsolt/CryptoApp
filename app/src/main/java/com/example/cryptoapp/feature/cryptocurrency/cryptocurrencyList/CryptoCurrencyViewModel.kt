@@ -28,6 +28,7 @@ class CryptoCurrencyViewModel(private val getCryptoCurrencies: GetCryptoCurrenci
                         currency.toCryptoCurrencyUIModel(timePeriod)
                     } as MutableList
                     if (offset == DEFAULT_OFFSET) {
+                        _cryptoCurrencies.value = mutableListOf()
                         _cryptoCurrencies.value = cryptoCurrencyResults
                     } else {
                         _cryptoCurrencies.value = (_cryptoCurrencies.value + cryptoCurrencyResults) as MutableList<CryptoCurrencyUIModel>

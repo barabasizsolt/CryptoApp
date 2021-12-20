@@ -81,7 +81,9 @@ class CryptoCurrencyFragment : Fragment(), OnItemClickListener, OnItemLongClickL
         viewModel.cryptoCurrencies
             .onEach { currencies ->
                 Log.d("Observed", currencies.size.toString())
-                binding.swipeRefreshLayout.isRefreshing = false
+                if (binding.swipeRefreshLayout.isRefreshing) {
+                    binding.swipeRefreshLayout.isRefreshing = false
+                }
                 cryptoCurrencyAdapter.submitList(currencies)
             }.launchIn(viewLifecycleOwner.lifecycleScope)
 
@@ -90,10 +92,11 @@ class CryptoCurrencyFragment : Fragment(), OnItemClickListener, OnItemLongClickL
             viewModel.loadCryptoCurrencies(
                 sortingParam.first,
                 sortingParam.second,
-                DEFAULT_OFFSET,
+                currentOffset,
                 tags,
                 timePeriod
             )
+            Log.d("refresh", "here")
         }
 
         binding.recyclerview.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -135,7 +138,7 @@ class CryptoCurrencyFragment : Fragment(), OnItemClickListener, OnItemLongClickL
                     viewModel.loadCryptoCurrencies(
                         sortingParam.first,
                         sortingParam.second,
-                        DEFAULT_OFFSET,
+                        currentOffset,
                         tags,
                         timePeriod
                     )
@@ -160,7 +163,7 @@ class CryptoCurrencyFragment : Fragment(), OnItemClickListener, OnItemLongClickL
                     viewModel.loadCryptoCurrencies(
                         sortingParam.first,
                         sortingParam.second,
-                        DEFAULT_OFFSET,
+                        currentOffset,
                         tags,
                         timePeriod
                     )
@@ -185,7 +188,7 @@ class CryptoCurrencyFragment : Fragment(), OnItemClickListener, OnItemLongClickL
                     viewModel.loadCryptoCurrencies(
                         sortingParam.first,
                         sortingParam.second,
-                        DEFAULT_OFFSET,
+                        currentOffset,
                         tags,
                         timePeriod
                     )

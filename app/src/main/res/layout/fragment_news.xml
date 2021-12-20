@@ -6,11 +6,17 @@
     tools:context=".feature.news.NewsFragment"
     android:orientation="vertical">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerview"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:itemCount="7"
-        tools:listitem="@layout/item_news_news" />
+        android:paddingBottom="@dimen/crypto_recycler_view_padding_bottom">
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:itemCount="@integer/news_recycler_view_item"
+            tools:listitem="@layout/item_news_news" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </LinearLayout>

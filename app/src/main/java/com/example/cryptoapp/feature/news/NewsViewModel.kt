@@ -23,9 +23,14 @@ class NewsViewModel(private val useCase: GetNewsUseCase) : ViewModel() {
             when (val result = useCase(page = page)) {
                 is Result.Success -> {
                     val newsResults = result.data.map { event ->
-                        event.toEventUIModel()
+                        event.toNewsUIModel()
                     } as MutableList
-                    _news.value = (_news.value + newsResults) as MutableList<NewsUIModel>
+                    if (page == DEFAULT_PAGE) {
+                        _news.value = mutableListOf()
+                        _news.value = newsResults
+                    } else {
+                        _news.value = (_news.value + newsResults) as MutableList<NewsUIModel>
+                    }
                 }
                 is Result.Failure -> {
                     _news.value = mutableListOf()
@@ -34,7 +39,7 @@ class NewsViewModel(private val useCase: GetNewsUseCase) : ViewModel() {
         }
     }
 
-    private fun News.toEventUIModel() = NewsUIModel(
+    private fun News.toNewsUIModel() = NewsUIModel(
         title = title,
         site = site,
         updated = updated,
