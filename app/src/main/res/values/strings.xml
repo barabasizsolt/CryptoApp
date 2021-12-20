@@ -30,4 +30,8 @@
     <string name="undefined">undefined</string>
     <string name="description_not_found">Description not found.</string>
     <string name="exchange_volume">Vol</string>
+    <string name="bottom_nav_currencies">Currencies</string>
+    <string name="bottom_nav_exchanges">Exchanges</string>
+    <string name="bottom_nav_watchlists">WatchLists</string>
+    <string name="bottom_nav_news">News</string>
 </resources>

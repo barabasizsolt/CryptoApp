@@ -13,8 +13,8 @@ import com.example.cryptoapp.data.constant.CryptoConstant
 import com.example.cryptoapp.data.repository.Cache
 import com.example.cryptoapp.databinding.ActivityMainBinding
 import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyList.CryptoCurrencyFragment
-import com.example.cryptoapp.feature.event.EventFragment
 import com.example.cryptoapp.feature.exchange.ExchangeFragment
+import com.example.cryptoapp.feature.news.NewsFragment
 import com.example.cryptoapp.feature.shared.loadImage
 import com.example.cryptoapp.feature.user.LoginFragment
 import com.example.cryptoapp.feature.user.ProfileFragment
@@ -97,7 +97,7 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.events -> {
-                    replaceFragment(EventFragment(), R.id.activity_fragment_container)
+                    replaceFragment(NewsFragment(), R.id.activity_fragment_container)
                     true
                 }
                 else -> false

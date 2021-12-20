@@ -6,10 +6,10 @@ import com.example.cryptoapp.data.model.cryptoCurrencyDetail.CoinDetailsResponse
 import com.example.cryptoapp.data.model.cryptoCurrencyDetail.details.CryptoCurrencyDetails
 import com.example.cryptoapp.data.model.cryptoCurrencyDetail.history.CryptoCurrencyHistory
 import com.example.cryptoapp.data.model.cryptoCurrencyDetail.history.CryptoCurrencyHistoryResponse
-import com.example.cryptoapp.data.model.event.Event
-import com.example.cryptoapp.data.model.event.EventResponse
 import com.example.cryptoapp.data.model.exchange.Exchange
 import com.example.cryptoapp.data.model.exchange.ExchangeResponse
+import com.example.cryptoapp.data.model.news.News
+import com.example.cryptoapp.data.model.news.NewsResponse
 
 fun CryptoCurrencyResponse.toCryptoCurrency() = when {
     symbol == null ||
@@ -91,34 +91,20 @@ fun ExchangeResponse.toExchange() = when {
     )
 }
 
-// Event Mappers
-fun EventResponse.toEvent() = when {
-    type == null ||
-        title == null ||
+// News Mappers
+fun NewsResponse.toNews() = when {
+    title == null ||
         description == null ||
-        organizer == null ||
-        startDate == null ||
-        endDate == null ||
-        website == null ||
-        email == null ||
-        venue == null ||
-        address == null ||
-        city == null ||
-        country == null ||
-        screenshot == null -> null
-    else -> Event(
-        type = type,
+        url == null ||
+        updated == null ||
+        site == null ||
+        logo == null -> null
+    else -> News(
         title = title,
         description = description,
-        organizer = organizer,
-        startDate = startDate,
-        endDate = endDate,
-        website = website,
-        email = email,
-        venue = venue,
-        address = address,
-        city = city,
-        country = country,
-        screenshot = screenshot
+        url = url,
+        updated = updated,
+        site = site,
+        logo = logo
     )
 }

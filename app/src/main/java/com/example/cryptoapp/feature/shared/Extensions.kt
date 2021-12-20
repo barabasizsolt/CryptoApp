@@ -68,20 +68,23 @@ fun ImageView.loadImage(image: Int) = load(image) {
 fun Long.getTime(): LocalDateTime =
     Instant.ofEpochSecond(this).atZone(ZoneId.systemDefault()).toLocalDateTime()
 
-fun Long.getFormattedTime(): String {
+fun Long.getFormattedTime(withHours: Boolean = false): String {
     val time = this.getTime()
     val month = time.month.name.lowercase().replaceFirstChar { it.uppercase() }.substring(0, 3)
-    return month + " " + time.dayOfMonth.toString() + ", " + time.year.toString()
+    val hour = if (time.hour < 10) "0${time.hour}" else time.hour
+    val minute = if (time.minute < 10) "0${time.minute}" else time.minute
+
+    return when (withHours) {
+        true -> month + " " + time.dayOfMonth.toString() + ", " + time.year.toString() + " at " + hour + ":" + minute
+        else -> month + " " + time.dayOfMonth.toString() + ", " + time.year.toString()
+    }
 }
 
-fun String.formatInput(): String =
-    if (this == "null") "undefined" else formatter.format(this.toDouble())
+fun String.formatInput(): String = formatter.format(this.toDouble())
 
-fun String.convertToPrice(): String =
-    if (this == "null") "undefined" else numberFormatter.format(this.toDouble())
+fun String.convertToPrice(): String = numberFormatter.format(this.toDouble())
 
-fun String.convertToCompactPrice(): String =
-    if (this == "null") "undefined" else formatter.format(CurrencyAmount(this.toDouble(), currency))
+fun String.convertToCompactPrice(): String = formatter.format(CurrencyAmount(this.toDouble(), currency))
 
 fun Int.getColorFromAttr(context: Context, defaultColor: Int): Int = MaterialColors.getColor(context, this, defaultColor)
 

@@ -75,4 +75,18 @@
     <!-- ExchangeVolumeChange TextView -->
     <dimen name="exchange_volume_change_text_view_margin_end">16dp</dimen>
 
+    <!-- Event RecyclerView -->
+    <dimen name="event_item_margin">5dp</dimen>
+
+    <!-- TextSizes -->
+    <dimen name="small_event_item_text">14sp</dimen>
+    <dimen name="medium_event_item_text">15sp</dimen>
+    <dimen name="large_event_item_text">16sp</dimen>
+
+    <!-- Event ImageView -->
+    <dimen name="event_image_view_margin">5dp</dimen>
+
+    <!-- Event TextView -->
+    <dimen name="event_text_view_margin">5dp</dimen>
+
 </resources>

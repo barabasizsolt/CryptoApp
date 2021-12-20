@@ -1,5 +1,5 @@
 package com.example.cryptoapp.data.constant
 
-object EventConstant {
+object NewsConstant {
     const val DEFAULT_PAGE = "1"
 }
