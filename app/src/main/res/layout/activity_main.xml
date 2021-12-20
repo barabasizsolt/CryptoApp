@@ -42,8 +42,8 @@
                 android:id="@+id/activity_fragment_container"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
+                android:background="?attr/app_background_color"
                 app:layout_constraintBottom_toTopOf="@+id/bottomNavigation"
-                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent">

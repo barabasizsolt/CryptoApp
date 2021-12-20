@@ -1,17 +1,16 @@
 package com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.anychart.anychart.AnyChart.area
 import com.anychart.anychart.Cartesian
-import com.anychart.anychart.Crosshair
 import com.anychart.anychart.DataEntry
 import com.anychart.anychart.HoverMode
 import com.anychart.anychart.MarkerType
@@ -38,9 +37,11 @@ import com.example.cryptoapp.data.repository.Cache
 import com.example.cryptoapp.databinding.FragmentCryptoCurrencyDetailsBinding
 import com.example.cryptoapp.feature.shared.convertToCompactPrice
 import com.example.cryptoapp.feature.shared.convertToPrice
+import com.example.cryptoapp.feature.shared.getColorFromAttr
 import com.example.cryptoapp.feature.shared.getTime
 import com.example.cryptoapp.feature.shared.loadImage
 import com.example.cryptoapp.feature.shared.setPercentage
+import com.example.cryptoapp.feature.shared.toHexStringColor
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -57,10 +58,11 @@ class CryptoCurrencyDetailsFragment : Fragment() {
     private lateinit var cryptoCurrencyId: String
     private var currentTimeFrame = HOUR24
     private var isAddedToFavorite = false
+    private lateinit var chartBackgroundColor: String
+    private lateinit var chartTextColor: String
+    private lateinit var chartColor: String
     private lateinit var binding: FragmentCryptoCurrencyDetailsBinding
     private val viewModel: CryptoCurrencyDetailsViewModel by viewModel { parametersOf(cryptoCurrencyId) }
-    private val white: String by lazy { R.color.white.toString() }
-    private val black: String by lazy { R.color.black.toString() }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -69,6 +71,7 @@ class CryptoCurrencyDetailsFragment : Fragment() {
     ): View {
         binding = FragmentCryptoCurrencyDetailsBinding.inflate(inflater, container, false)
 
+        initChartColors()
         initializeChart()
         cryptoCurrencyId = arguments?.getString(CryptoConstant.COIN_ID).toString()
         Log.d("ID", cryptoCurrencyId)
@@ -121,6 +124,26 @@ class CryptoCurrencyDetailsFragment : Fragment() {
         super.onPause()
         (activity as MainActivity).favoriteMenuItem.isVisible = false
         (activity as MainActivity).favoriteMenuItem.setIcon(R.drawable.ic_watchlist)
+    }
+
+    private fun initChartColors() {
+        val intBgColor =
+            context?.let { R.attr.app_background_color.getColorFromAttr(context = it, defaultColor = Color.WHITE) }
+        if (intBgColor != null) {
+            chartBackgroundColor = intBgColor.toHexStringColor()
+        }
+
+        val intTxtColor =
+            context?.let { R.attr.app_text_color.getColorFromAttr(context = it, defaultColor = Color.BLACK) }
+        if (intTxtColor != null) {
+            chartTextColor = intTxtColor.toHexStringColor()
+        }
+
+        val intChartColor =
+            context?.let { R.attr.crypto_chart_color.getColorFromAttr(context = it, defaultColor = Color.YELLOW) }
+        if (intChartColor != null) {
+            chartColor = intChartColor.toHexStringColor()
+        }
     }
 
     private fun initUI(coin: CryptoCurrencyDetailsUIModel) {
@@ -346,52 +369,58 @@ class CryptoCurrencyDetailsFragment : Fragment() {
     }
 
     private fun initializeChart() {
-        binding.anyChartView.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.white))
+        binding.anyChartView.setBackgroundColor(chartBackgroundColor)
 
-        val crossHair: Crosshair = areaChart.crosshair
-        crossHair.setEnabled(true)
-
-        crossHair.setYStroke(null as Stroke?, null as Number?, null as String?, null as StrokeLineJoin?, null as StrokeLineCap?)
-            .setXStroke(black, 1.0, null, null as StrokeLineJoin?, null as StrokeLineCap?)
-            .setZIndex(39.0)
-        crossHair.getYLabel(0).setEnabled(true)
-
-        areaChart.yScale.setStackMode(ScaleStackMode.VALUE)
-        areaChart.yGrid.setEnabled(true)
-        areaChart.background.fill(white, 0)
-
-        areaChart.legend.setEnabled(true)
-        areaChart.legend.setFontSize(13.0)
-        areaChart.legend.setPadding(0.0, 0.0, 20.0, 0.0)
-
-        areaChart.getXAxis(0).setTitle(false)
-        areaChart.getXAxis(0).labels.setFontColor(black)
-
-        areaChart.getYAxis(0).labels.setFontColor(black)
-        areaChart.getYAxis(0).labels.setFormat("\${%value}")
-        areaChart.getYAxis(0).title.setFontColor(black)
-        areaChart.getYAxis(0).setTitle("Value (in US Dollars)")
-
-        areaChart.interactivity.setHoverMode(HoverMode.BY_X)
-        areaChart.tooltip
-            .setValuePrefix("$")
-            .setDisplayMode(TooltipDisplayMode.SINGLE)
-
+        with(areaChart) {
+            yScale.setStackMode(ScaleStackMode.VALUE)
+            yGrid.setEnabled(true)
+            background.fill(chartBackgroundColor, 0)
+            interactivity.setHoverMode(HoverMode.BY_X)
+        }
+        with(areaChart.crosshair) {
+            setEnabled(true)
+            setYStroke(null as Stroke?, null as Number?, null as String?, null as StrokeLineJoin?, null as StrokeLineCap?)
+            setXStroke(chartTextColor, 1.0, null, null as StrokeLineJoin?, null as StrokeLineCap?)
+            setZIndex(39.0)
+            getYLabel(0).setEnabled(true)
+        }
+        with(areaChart.tooltip) {
+            setValuePrefix("$")
+            setDisplayMode(TooltipDisplayMode.SINGLE)
+        }
+        with(areaChart.legend) {
+            setEnabled(true)
+            setFontSize(13.0)
+            setPadding(0.0, 0.0, 20.0, 0.0)
+        }
+        with(areaChart.getXAxis(0)) {
+            setTitle(false)
+            labels.setFontColor(chartTextColor)
+        }
+        with(areaChart.getYAxis(0)) {
+            setTitle("Value (in US Dollars)")
+            title.setFontColor(chartTextColor)
+            labels.setFormat("\${%value}")
+            labels.setFontColor(chartTextColor)
+        }
         binding.anyChartView.setChart(areaChart)
     }
 
     private fun refreshChart(data: MutableList<DataEntry>) {
         val series = areaChart.area(data)
-        series.setName("Cryptocurrency History")
-        series.setStroke("3 $black")
-        series.hovered.setStroke("3 $black")
-        series.hovered.markers.setEnabled(true)
-        series.hovered.markers
-            .setType(MarkerType.CIRCLE)
-            .setSize(4.0)
-            .setStroke("1.5 $black")
-        series.markers.setZIndex(100.0)
-        series.fill("#FF9800", 5)
+        with(series) {
+            setName("Cryptocurrency History")
+            setStroke("1 $chartTextColor")
+            hovered.markers.setEnabled(true)
+            series.markers.setZIndex(100.0)
+            hovered.setStroke("3 $chartTextColor")
+            fill(chartColor, 5)
+        }
+        with(series.hovered.markers) {
+            setType(MarkerType.CIRCLE)
+            setSize(4.0)
+            setStroke("1.5 $chartTextColor")
+        }
         areaChart.setData(data)
     }
 }

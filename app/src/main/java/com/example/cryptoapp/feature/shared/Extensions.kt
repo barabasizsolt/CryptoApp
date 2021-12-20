@@ -1,5 +1,6 @@
 package com.example.cryptoapp.feature.shared
 
+import android.content.Context
 import android.icu.util.CurrencyAmount
 import android.net.Uri
 import android.widget.ImageView
@@ -16,6 +17,7 @@ import com.example.cryptoapp.data.constant.CryptoConstant
 import com.example.cryptoapp.feature.shared.Constant.currency
 import com.example.cryptoapp.feature.shared.Constant.formatter
 import com.example.cryptoapp.feature.shared.Constant.numberFormatter
+import com.google.android.material.color.MaterialColors
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -80,3 +82,7 @@ fun String.convertToPrice(): String =
 
 fun String.convertToCompactPrice(): String =
     if (this == "null") "undefined" else formatter.format(CurrencyAmount(this.toDouble(), currency))
+
+fun Int.getColorFromAttr(context: Context, defaultColor: Int): Int = MaterialColors.getColor(context, this, defaultColor)
+
+fun Int.toHexStringColor(): String = "#" + Integer.toHexString(this).substring(2)
