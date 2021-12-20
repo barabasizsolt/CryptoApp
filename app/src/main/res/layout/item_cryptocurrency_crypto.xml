@@ -1,0 +1,145 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="uiModel"
+            type="com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyList.CryptoCurrencyUIModel" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/crypto_currency_card_height"
+        android:layout_margin="@dimen/content_padding_half">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/content_padding_half">
+
+            <ImageView
+                android:id="@+id/crypto_logo"
+                android:layout_width="@dimen/crypto_currency_image_view_size"
+                android:layout_height="@dimen/crypto_currency_image_view_size"
+                android:layout_marginStart="@dimen/crypto_currency_image_view_margin_start"
+                android:layout_marginBottom="@dimen/crypto_currency_image_view_margin_bottom"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:url="@{uiModel.cryptoCurrency.iconUrl}"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <TextView
+                android:id="@+id/crypto_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/crypto_currency_name_text_view_margin_start"
+                android:text="@{uiModel.cryptoCurrency.name}"
+                android:textAlignment="center"
+                android:textSize="@dimen/small_crypto_item_text"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/crypto_logo"
+                tools:text="crypto"/>
+
+            <TextView
+                android:id="@+id/crypto_symbol"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/crypto_currency_symbol_text_view_margin_start"
+                android:layout_marginTop="@dimen/crypto_currency_symbol_text_view_margin_top"
+                android:text="@{uiModel.cryptoCurrency.symbol}"
+                android:textAlignment="center"
+                android:textSize="@dimen/small_crypto_item_text"
+                app:layout_constraintStart_toEndOf="@+id/crypto_logo"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Symbol" />
+
+            <TextView
+                android:id="@+id/crypto_value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/crypto_currency_value_text_view_margin_start"
+                android:text="@{uiModel.formattedPrice}"
+                android:textSize="@dimen/large_crypto_item_text"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/crypto_logo"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Value" />
+
+            <TextView
+                android:id="@+id/percent_change"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/percentage_text_view_margin_top"
+                android:layout_marginEnd="@dimen/percentage_text_view_margin_end"
+                android:textSize="@dimen/medium_crypto_item_text"
+                app:layout_constraintEnd_toStartOf="@+id/percentage_change_text"
+                app:layout_constraintTop_toTopOf="parent"
+                app:percentage="@{uiModel.cryptoCurrency.change}"
+                tools:text="Percentage" />
+
+            <TextView
+                android:id="@+id/volume"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/volume_text_view_margin_end"
+                android:text="@{uiModel.formattedVolume}"
+                android:textSize="@dimen/medium_crypto_item_text"
+                app:layout_constraintEnd_toStartOf="@+id/volume_change"
+                app:layout_constraintTop_toBottomOf="@+id/percent_change"
+                tools:text="Volume"/>
+
+            <TextView
+                android:id="@+id/market_cap"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/market_cap_text_view_margin_end"
+                android:text="@{uiModel.formattedMarketCap}"
+                android:textSize="@dimen/medium_crypto_item_text"
+                app:layout_constraintEnd_toStartOf="@+id/cap"
+                app:layout_constraintTop_toBottomOf="@+id/volume"
+                tools:text="Market Cap"/>
+
+            <TextView
+                android:id="@+id/percentage_change_text"
+                android:layout_width="@dimen/percentage_text_text_view_width"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/percentage_text_text_view_margin_top"
+                android:text="@{uiModel.timePeriod}"
+                android:textSize="@dimen/medium_crypto_item_text"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="24h"/>
+
+            <TextView
+                android:id="@+id/volume_change"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/volume_text_text_view_margin_end"
+                android:text="@string/market_volume"
+                android:textSize="@dimen/medium_crypto_item_text"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/percentage_change_text" />
+
+            <TextView
+                android:id="@+id/cap"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/market_cap_text_text_view_margin_end"
+                android:text="@string/market_cap"
+                android:textSize="@dimen/medium_crypto_item_text"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/volume_change" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</layout>

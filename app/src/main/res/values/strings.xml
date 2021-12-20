@@ -13,4 +13,25 @@
     <string name="update_password">Update Password</string>
     <string name="error">Field is required</string>
     <string name="password_error">Passwords doesn\'t match</string>
+    <string name="market_cap">Cap</string>
+    <string name="market_volume">Vol</string>
+    <string name="crypto_default_currency">BTC/USD</string>
+    <string name="chip_24hr">24 Hours</string>
+    <string name="chip_7d">7 Days</string>
+    <string name="chip_1y">1 Year</string>
+    <string name="chip_6y">6 Year</string>
+    <string name="coin_rank">Rank</string>
+    <string name="coin_supply">Supply</string>
+    <string name="coin_circulating">circulating</string>
+    <string name="coin_btc_price">BTC Price</string>
+    <string name="coin_all_time_high">All time high</string>
+    <string name="coin_ath_date">date</string>
+    <string name="coin_description">Description</string>
+    <string name="undefined">undefined</string>
+    <string name="description_not_found">Description not found.</string>
+    <string name="exchange_volume">Vol</string>
+    <string name="bottom_nav_currencies">Currencies</string>
+    <string name="bottom_nav_exchanges">Exchanges</string>
+    <string name="bottom_nav_watchlists">WatchLists</string>
+    <string name="bottom_nav_news">News</string>
 </resources>

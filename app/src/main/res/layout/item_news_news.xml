@@ -1,0 +1,58 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="uiModel"
+            type="com.example.cryptoapp.feature.news.NewsUIModel" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/event_item_margin">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/news_logo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="@dimen/event_image_view_margin"
+                app:url="@{uiModel.logo}"
+                />
+
+            <TextView
+                android:id="@+id/news_title"
+                android:layout_marginTop="@dimen/event_text_view_margin"
+                android:layout_marginStart="@dimen/event_text_view_margin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="UK Advertising watchdog announces greater scrutiny of crypto adverts in the new year"
+                android:text="@{uiModel.title}"
+                android:textAlignment="textStart"
+                android:textSize="@dimen/large_event_item_text"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:id="@+id/news_source"
+                android:layout_marginTop="@dimen/event_text_view_margin"
+                android:layout_marginStart="@dimen/event_text_view_margin"
+                android:layout_marginBottom="@dimen/event_text_view_margin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="CoinGape (1 hours ago)"
+                android:text="@{uiModel.source}"
+                android:textAlignment="textStart"
+                android:textSize="@dimen/small_event_item_text"
+                />
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>

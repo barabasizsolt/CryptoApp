@@ -1,38 +1,40 @@
-package com.example.cryptoapp.feature.exchange
+package com.example.cryptoapp.feature.news
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.cryptoapp.databinding.ItemExchangeExchangeBinding
+import com.example.cryptoapp.databinding.ItemNewsNewsBinding
 import com.example.cryptoapp.feature.shared.OnItemClickListener
 import com.example.cryptoapp.feature.shared.OnItemLongClickListener
 
-class ExchangeAdapter(
+class NewsAdapter(
     private val onItemClickListener: OnItemClickListener,
     private val onItemLongClickListener: OnItemLongClickListener
-) : ListAdapter<ExchangeUIModel, ExchangeAdapter.ExchangeViewHolder>(
-    object : DiffUtil.ItemCallback<ExchangeUIModel>() {
-        override fun areItemsTheSame(oldItem: ExchangeUIModel, newItem: ExchangeUIModel) =
-            oldItem.id == newItem.id
+) :
+    ListAdapter<NewsUIModel, NewsAdapter.NewsViewHolder>(
+        object : DiffUtil.ItemCallback<NewsUIModel>() {
+            override fun areItemsTheSame(oldItem: NewsUIModel, newItem: NewsUIModel) =
+                oldItem.title == newItem.title
 
-        override fun areContentsTheSame(oldItem: ExchangeUIModel, newItem: ExchangeUIModel) = oldItem == newItem
-    }
-) {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExchangeViewHolder = ExchangeViewHolder.create(
+            override fun areContentsTheSame(oldItem: NewsUIModel, newItem: NewsUIModel) = oldItem == newItem
+        }
+    ) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder = NewsViewHolder.create(
         parent = parent,
         onItemClickListener = onItemClickListener,
         onItemLongClickListener = onItemLongClickListener
     )
 
-    override fun onBindViewHolder(holder: ExchangeViewHolder, position: Int) = holder.bind(getItem(position))
+    override fun onBindViewHolder(holder: NewsViewHolder, position: Int) = holder.bind(getItem(position))
 
-    class ExchangeViewHolder private constructor(
-        private val binding: ItemExchangeExchangeBinding,
+    class NewsViewHolder private constructor(
+        private val binding: ItemNewsNewsBinding,
         private val onItemClickListener: OnItemClickListener,
         private val onItemLongClickListener: OnItemLongClickListener
-    ) : RecyclerView.ViewHolder(binding.root) {
+    ) :
+        RecyclerView.ViewHolder(binding.root) {
 
         init {
             itemView.setOnClickListener {
@@ -44,7 +46,7 @@ class ExchangeAdapter(
             }
         }
 
-        fun bind(uiModel: ExchangeUIModel) {
+        fun bind(uiModel: NewsUIModel) {
             binding.uiModel = uiModel
         }
 
@@ -53,8 +55,12 @@ class ExchangeAdapter(
                 parent: ViewGroup,
                 onItemClickListener: OnItemClickListener,
                 onItemLongClickListener: OnItemLongClickListener
-            ) = ExchangeViewHolder(
-                binding = ItemExchangeExchangeBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+            ) = NewsAdapter.NewsViewHolder(
+                binding = ItemNewsNewsBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                ),
                 onItemClickListener = onItemClickListener,
                 onItemLongClickListener = onItemLongClickListener
             )

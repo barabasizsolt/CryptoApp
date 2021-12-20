@@ -11,10 +11,10 @@ import androidx.lifecycle.lifecycleScope
 import com.example.cryptoapp.data.constant.CryptoConstant
 import com.example.cryptoapp.data.constant.CryptoConstant.ROTATE_180
 import com.example.cryptoapp.data.constant.CryptoConstant.ROTATE_360
-import com.example.cryptoapp.data.constant.CryptoConstant.getFormattedTime
-import com.example.cryptoapp.data.constant.CryptoConstant.setPrice
-import com.example.cryptoapp.data.constant.CryptoConstant.setValue
 import com.example.cryptoapp.databinding.FragmentCryptoDetailsInfoBinding
+import com.example.cryptoapp.feature.shared.convertToPrice
+import com.example.cryptoapp.feature.shared.formatInput
+import com.example.cryptoapp.feature.shared.getFormattedTime
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -41,12 +41,12 @@ class CryptoDetailsInfoFragment : Fragment() {
         viewModel.cryptoCurrencyDetailsInfo
             .onEach { coin ->
                 if (coin != null) {
-                    val allTimeHighText = setPrice(coin.allTimeHigh.price)
-                    val allTimeHighDateText = getFormattedTime(coin.allTimeHigh.timestamp)
+                    val allTimeHighText = coin.allTimeHigh.price.convertToPrice()
+                    val allTimeHighDateText = coin.allTimeHigh.timestamp.getFormattedTime()
                     val btcPrice = String.format("%.7f", coin.btcPrice.toDouble()) + " Btc"
                     binding.cryptoRankValue.text = coin.rank
-                    binding.cryptoSupplyValue.text = setValue(coin.totalSupply)
-                    binding.cryptoCirculatingValue.text = setValue(coin.circulating)
+                    binding.cryptoSupplyValue.text = coin.totalSupply.formatInput()
+                    binding.cryptoCirculatingValue.text = coin.circulating.formatInput()
                     binding.cryptoBtcRiceValue.text = btcPrice
                     binding.cryptoDescriptionText.text = Html.fromHtml(coin.description, HtmlCompat.FROM_HTML_MODE_LEGACY)
                     binding.cryptoAllTimeHighValue.text = allTimeHighText
@@ -66,6 +66,5 @@ class CryptoDetailsInfoFragment : Fragment() {
                     }
                 }
             }.launchIn(viewLifecycleOwner.lifecycleScope)
-        // viewModel.loadCryptoCurrencyDetails(cryptoCurrencyId)
     }
 }

@@ -1,90 +1,62 @@
 package com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyList
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.cryptoapp.R
-import com.example.cryptoapp.data.constant.CryptoConstant.loadSvg
-import com.example.cryptoapp.data.constant.CryptoConstant.setCompactPrice
-import com.example.cryptoapp.data.constant.CryptoConstant.setPercentage
-import com.example.cryptoapp.data.constant.CryptoConstant.setPrice
-import com.example.cryptoapp.data.model.cryptoCurrency.CryptoCurrencyUIModel
+import com.example.cryptoapp.databinding.ItemCryptocurrencyCryptoBinding
 import com.example.cryptoapp.feature.shared.OnItemClickListener
 import com.example.cryptoapp.feature.shared.OnItemLongClickListener
 
 class CryptoCurrencyAdapter(
     private val onItemClickListener: OnItemClickListener,
     private val onItemLongClickListener: OnItemLongClickListener
-) :
+) : ListAdapter<CryptoCurrencyUIModel, CryptoCurrencyAdapter.CryptoCurrencyViewHolder>(
+    object : DiffUtil.ItemCallback<CryptoCurrencyUIModel>() {
+        override fun areItemsTheSame(oldItem: CryptoCurrencyUIModel, newItem: CryptoCurrencyUIModel) = oldItem.cryptoCurrency.uuid == newItem.cryptoCurrency.uuid
 
-    ListAdapter<CryptoCurrencyUIModel, CryptoCurrencyAdapter.CryptoCurrencyViewHolder>(
-        object : DiffUtil.ItemCallback<CryptoCurrencyUIModel>() {
-            override fun areItemsTheSame(
-                oldItem: CryptoCurrencyUIModel,
-                newItem: CryptoCurrencyUIModel
-            ) = oldItem.cryptoCurrency.uuid == newItem.cryptoCurrency.uuid
-
-            override fun areContentsTheSame(
-                oldItem: CryptoCurrencyUIModel,
-                newItem: CryptoCurrencyUIModel
-            ) = oldItem == newItem
-        }
-    ) {
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CryptoCurrencyViewHolder =
-        CryptoCurrencyViewHolder(
-            itemView = LayoutInflater.from(parent.context)
-                .inflate(R.layout.crypto_element, parent, false),
-            onItemClickListener = onItemClickListener,
-            onItemLongClickListener = onItemLongClickListener
-        )
-
-    override fun onBindViewHolder(holder: CryptoCurrencyViewHolder, position: Int) {
-        val uiCryptoCurrencyModel = getItem(position)
-
-        holder.percentageChangeText.text = uiCryptoCurrencyModel.timePeriod
-        holder.currencyName.text = uiCryptoCurrencyModel.cryptoCurrency.name
-        holder.currencySymbol.text = uiCryptoCurrencyModel.cryptoCurrency.symbol
-        holder.currencyLogo.loadSvg(uiCryptoCurrencyModel.cryptoCurrency.iconUrl)
-        holder.currencyValue.text = setPrice(uiCryptoCurrencyModel.cryptoCurrency.price)
-        setPercentage(uiCryptoCurrencyModel.cryptoCurrency.change, holder.percentChange)
-        holder.volume.text = setCompactPrice(uiCryptoCurrencyModel.cryptoCurrency.volume)
-        holder.marketCap.text = setCompactPrice(uiCryptoCurrencyModel.cryptoCurrency.marketCap)
+        override fun areContentsTheSame(oldItem: CryptoCurrencyUIModel, newItem: CryptoCurrencyUIModel) = oldItem == newItem
     }
+) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = CryptoCurrencyViewHolder.create(
+        parent = parent,
+        onItemClickListener = onItemClickListener,
+        onItemLongClickListener = onItemLongClickListener
+    )
 
-    class CryptoCurrencyViewHolder(
-        itemView: View,
+    override fun onBindViewHolder(holder: CryptoCurrencyViewHolder, position: Int) = holder.bind(getItem(position))
+
+    class CryptoCurrencyViewHolder private constructor(
+        private val binding: ItemCryptocurrencyCryptoBinding,
         private val onItemClickListener: OnItemClickListener,
         private val onItemLongClickListener: OnItemLongClickListener
-    ) :
-
-        RecyclerView.ViewHolder(itemView), View.OnClickListener, View.OnLongClickListener {
-        val currencyLogo: ImageView = itemView.findViewById(R.id.crypto_logo)
-        val currencyName: TextView = itemView.findViewById(R.id.crypto_name)
-        val currencySymbol: TextView = itemView.findViewById(R.id.crypto_symbol)
-        val currencyValue: TextView = itemView.findViewById(R.id.crypto_value)
-        val percentageChangeText: TextView = itemView.findViewById(R.id.percentage_change_text)
-        val percentChange: TextView = itemView.findViewById(R.id.percent_change)
-        val volume: TextView = itemView.findViewById(R.id.volume)
-        val marketCap: TextView = itemView.findViewById(R.id.market_cap)
-
-        override fun onClick(view: View) {
-            onItemClickListener.onItemClick(bindingAdapterPosition)
-        }
-
-        override fun onLongClick(view: View): Boolean {
-            onItemLongClickListener.onItemLongClick(bindingAdapterPosition)
-            return true
-        }
+    ) : RecyclerView.ViewHolder(binding.root) {
 
         init {
-            itemView.setOnClickListener(this)
-            itemView.setOnLongClickListener(this)
+            itemView.setOnClickListener {
+                onItemClickListener.onItemClick(bindingAdapterPosition)
+            }
+            itemView.setOnLongClickListener {
+                onItemLongClickListener.onItemLongClick(bindingAdapterPosition)
+                true
+            }
+        }
+
+        fun bind(uiModel: CryptoCurrencyUIModel) {
+            binding.uiModel = uiModel
+        }
+
+        companion object {
+            fun create(
+                parent: ViewGroup,
+                onItemClickListener: OnItemClickListener,
+                onItemLongClickListener: OnItemLongClickListener
+            ) = CryptoCurrencyViewHolder(
+                binding = ItemCryptocurrencyCryptoBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+                onItemClickListener = onItemClickListener,
+                onItemLongClickListener = onItemLongClickListener
+            )
         }
     }
 }

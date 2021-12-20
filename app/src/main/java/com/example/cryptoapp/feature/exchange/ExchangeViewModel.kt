@@ -4,8 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cryptoapp.data.constant.ExchangeConstant
 import com.example.cryptoapp.data.constant.ExchangeConstant.DEFAULT_PAGE
-import com.example.cryptoapp.data.constant.ExchangeConstant.toExchangeUIModel
-import com.example.cryptoapp.data.model.exchange.ExchangeUIModel
+import com.example.cryptoapp.data.model.exchange.Exchange
 import com.example.cryptoapp.domain.exchange.GetExchangesUseCase
 import com.example.cryptoapp.util.Result
 import kotlinx.coroutines.flow.Flow
@@ -15,6 +14,10 @@ import kotlinx.coroutines.launch
 class ExchangeViewModel(private val useCase: GetExchangesUseCase) : ViewModel() {
     private val _exchanges = MutableStateFlow(emptyList<ExchangeUIModel>())
     val exchanges: Flow<List<ExchangeUIModel>> = _exchanges
+
+    init {
+        loadExchanges()
+    }
 
     fun loadExchanges(perPage: Int = ExchangeConstant.PER_PAGE, page: String = DEFAULT_PAGE) {
         viewModelScope.launch {
@@ -32,7 +35,11 @@ class ExchangeViewModel(private val useCase: GetExchangesUseCase) : ViewModel() 
         }
     }
 
-    init {
-        loadExchanges()
-    }
+    private fun Exchange.toExchangeUIModel() = ExchangeUIModel(
+        id = id,
+        name = name,
+        logo = image,
+        trustScore = trustScore.toString(),
+        volume = volume.toString()
+    )
 }

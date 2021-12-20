@@ -2,13 +2,10 @@ package com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.cryptoapp.data.constant.CryptoConstant.HOUR24
-import com.example.cryptoapp.data.constant.CryptoConstant.toCryptoCurrencyDetailsInfoUIModel
-import com.example.cryptoapp.data.constant.CryptoConstant.toCryptoCurrencyDetailsUIModel
-import com.example.cryptoapp.data.constant.CryptoConstant.toCryptoCurrencyHistoryUIModel
-import com.example.cryptoapp.data.model.cryptoCurrencyDetail.details.CryptoCurrencyDetailsInfoUIModel
+import com.example.cryptoapp.data.model.cryptoCurrencyDetail.details.CryptoCurrencyDetails
 import com.example.cryptoapp.data.model.cryptoCurrencyDetail.details.CryptoCurrencyDetailsUIModel
-import com.example.cryptoapp.data.model.cryptoCurrencyDetail.history.CryptoCurrencyHistoryUIModel
+import com.example.cryptoapp.data.model.cryptoCurrencyDetail.history.CryptoCurrencyHistory
+import com.example.cryptoapp.data.model.cryptoCurrencyDetail.history.SingleCryptoCurrencyHistoryResponse
 import com.example.cryptoapp.domain.cryptocurrency.GetCryptoCurrencyDetailsUseCase
 import com.example.cryptoapp.domain.cryptocurrency.GetCryptoCurrencyHistoryUseCase
 import com.example.cryptoapp.util.Result
@@ -18,7 +15,6 @@ import kotlinx.coroutines.launch
 
 class CryptoCurrencyDetailsViewModel(
     uuid: String,
-    timePeriod: String = HOUR24,
     private val detailsUseCase: GetCryptoCurrencyDetailsUseCase,
     private val historyUseCase: GetCryptoCurrencyHistoryUseCase
 ) : ViewModel() {
@@ -30,6 +26,10 @@ class CryptoCurrencyDetailsViewModel(
 
     private val _cryptoCurrencyHistory = MutableStateFlow<CryptoCurrencyHistoryUIModel?>(null)
     val cryptoCurrencyHistory: Flow<CryptoCurrencyHistoryUIModel?> = _cryptoCurrencyHistory
+
+    init {
+        loadCryptoCurrencyDetails(uuid = uuid)
+    }
 
     private fun loadCryptoCurrencyDetails(uuid: String) {
         viewModelScope.launch {
@@ -56,8 +56,27 @@ class CryptoCurrencyDetailsViewModel(
         }
     }
 
-    init {
-        // loadCryptoCurrencyHistory(uuid = uuid, timePeriod = timePeriod)
-        loadCryptoCurrencyDetails(uuid = uuid)
-    }
+    private fun CryptoCurrencyDetails.toCryptoCurrencyDetailsUIModel() = CryptoCurrencyDetailsUIModel(
+        uuid = uuid,
+        symbol = symbol,
+        name = name,
+        iconUrl = iconUrl,
+        marketCap = marketCap,
+        price = price,
+        change = change,
+        volume = volume
+    )
+
+    private fun CryptoCurrencyDetails.toCryptoCurrencyDetailsInfoUIModel() = CryptoCurrencyDetailsInfoUIModel(
+        rank = rank.toString(),
+        totalSupply = totalSupply,
+        circulating = circulating,
+        btcPrice = btcPrice,
+        allTimeHigh = allTimeHigh,
+        description = description
+    )
+
+    private fun CryptoCurrencyHistory.toCryptoCurrencyHistoryUIModel() = CryptoCurrencyHistoryUIModel(
+        history = history as MutableList<SingleCryptoCurrencyHistoryResponse>
+    )
 }

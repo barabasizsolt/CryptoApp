@@ -1,8 +1,8 @@
 package com.example.cryptoapp.data
 
 import com.example.cryptoapp.data.service.CryptoService
-import com.example.cryptoapp.data.service.EventService
 import com.example.cryptoapp.data.service.ExchangeService
+import com.example.cryptoapp.data.service.NewsService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -15,7 +15,7 @@ class NetworkManager {
         Retrofit.Builder().baseUrl(GEKKO_BASE_URL).addConverterFactory(GsonConverterFactory.create()).build()
     }
 
-    private val eventRetrofit by lazy {
+    private val newsRetrofit by lazy {
         Retrofit.Builder().baseUrl(GEKKO_BASE_URL).addConverterFactory(GsonConverterFactory.create()).build()
     }
 
@@ -27,8 +27,8 @@ class NetworkManager {
         exchangeRetrofit.create(ExchangeService::class.java)
     }
 
-    val eventSource: EventService by lazy {
-        eventRetrofit.create(EventService::class.java)
+    val newsSource: NewsService by lazy {
+        newsRetrofit.create(NewsService::class.java)
     }
 
     companion object {

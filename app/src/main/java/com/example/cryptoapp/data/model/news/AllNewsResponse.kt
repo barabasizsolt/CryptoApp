@@ -1,10 +1,10 @@
-package com.example.cryptoapp.data.model.event
+package com.example.cryptoapp.data.model.news
 
 import com.google.gson.annotations.SerializedName
 
-data class AllEventResponse(
+data class AllNewsResponse(
     @SerializedName("data")
-    val data: List<EventResponse>,
+    val data: List<NewsResponse>,
     @SerializedName("count")
     val count: Long = 0,
     @SerializedName("page")

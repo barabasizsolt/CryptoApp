@@ -1,7 +1,7 @@
 package com.example.cryptoapp.data.repository
 
 import com.example.cryptoapp.data.NetworkManager
-import com.example.cryptoapp.data.constant.ExchangeConstant.toExchange
+import com.example.cryptoapp.data.shared.toExchange
 import java.lang.IllegalStateException
 
 class ExchangeRepository(private val manager: NetworkManager) {
@@ -9,7 +9,7 @@ class ExchangeRepository(private val manager: NetworkManager) {
         manager.exchangeSource.getExchanges(
             perPage = perPage,
             page = page
-        ).body()?.map { exchangeResponse ->
+        ).body()?.mapNotNull { exchangeResponse ->
             exchangeResponse.toExchange()
         } ?: throw IllegalStateException("Invalid data returned by the server")
 }

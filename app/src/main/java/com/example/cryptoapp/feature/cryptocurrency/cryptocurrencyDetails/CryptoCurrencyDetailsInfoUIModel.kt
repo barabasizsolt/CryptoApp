@@ -1,4 +1,4 @@
-package com.example.cryptoapp.data.model.cryptoCurrencyDetail.details
+package com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails
 
 import com.example.cryptoapp.data.model.cryptoCurrency.AllTimeHighResponse
 

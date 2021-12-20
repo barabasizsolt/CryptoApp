@@ -3,20 +3,20 @@
         android:id="@+id/currencies"
         android:enabled="true"
         android:icon="@drawable/ic_bitcoin"
-        android:title="Currencies"/>
+        android:title="@string/bottom_nav_currencies"/>
     <item
         android:id="@+id/exchanges"
         android:enabled="true"
         android:icon="@drawable/ic_exchanges"
-        android:title="Exchanges"/>
+        android:title="@string/bottom_nav_exchanges"/>
     <item
         android:id="@+id/favorites"
         android:enabled="true"
         android:icon="@drawable/ic_favourites_star"
-        android:title="WatchLists"/>
+        android:title="@string/bottom_nav_watchlists"/>
     <item
         android:id="@+id/events"
         android:enabled="true"
         android:icon="@drawable/ic_news"
-        android:title="Events"/>
+        android:title="@string/bottom_nav_news"/>
 </menu>
