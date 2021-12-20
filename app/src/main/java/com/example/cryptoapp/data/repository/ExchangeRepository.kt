@@ -9,7 +9,7 @@ class ExchangeRepository(private val manager: NetworkManager) {
         manager.exchangeSource.getExchanges(
             perPage = perPage,
             page = page
-        ).body()?.map { exchangeResponse ->
+        ).body()?.mapNotNull { exchangeResponse ->
             exchangeResponse.toExchange()
         } ?: throw IllegalStateException("Invalid data returned by the server")
 }

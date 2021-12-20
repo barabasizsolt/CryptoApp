@@ -19,7 +19,7 @@ class CryptoRepository(private val manager: NetworkManager) {
         offset = offset,
         tags = tags,
         timePeriod = timePeriod
-    ).body()?.data?.coins?.map {
+    ).body()?.data?.coins?.mapNotNull {
         currencyResponse ->
         currencyResponse.toCryptoCurrency()
     } ?: throw IllegalStateException("Invalid data returned by the server")

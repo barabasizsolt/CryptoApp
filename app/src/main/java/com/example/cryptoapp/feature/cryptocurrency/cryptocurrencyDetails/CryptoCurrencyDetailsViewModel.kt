@@ -57,26 +57,26 @@ class CryptoCurrencyDetailsViewModel(
     }
 
     private fun CryptoCurrencyDetails.toCryptoCurrencyDetailsUIModel() = CryptoCurrencyDetailsUIModel(
-        uuid = uuid.toString(),
-        symbol = symbol.toString(),
-        name = name.toString(),
-        iconUrl = iconUrl.toString(),
-        marketCap = marketCap.toString(),
-        price = price.toString(),
-        change = change.toString(),
-        volume = volume.toString()
+        uuid = uuid,
+        symbol = symbol,
+        name = name,
+        iconUrl = iconUrl,
+        marketCap = marketCap,
+        price = price,
+        change = change,
+        volume = volume
     )
 
     private fun CryptoCurrencyDetails.toCryptoCurrencyDetailsInfoUIModel() = CryptoCurrencyDetailsInfoUIModel(
         rank = rank.toString(),
-        totalSupply = totalSupply.toString(),
-        circulating = circulating.toString(),
-        btcPrice = btcPrice.toString(),
+        totalSupply = totalSupply,
+        circulating = circulating,
+        btcPrice = btcPrice,
         allTimeHigh = allTimeHigh,
-        description = description.toString()
+        description = description
     )
 
-    fun CryptoCurrencyHistory.toCryptoCurrencyHistoryUIModel() = CryptoCurrencyHistoryUIModel(
+    private fun CryptoCurrencyHistory.toCryptoCurrencyHistoryUIModel() = CryptoCurrencyHistoryUIModel(
         history = history as MutableList<SingleCryptoCurrencyHistoryResponse>
     )
 }

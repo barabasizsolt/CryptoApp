@@ -6,7 +6,7 @@ import java.lang.IllegalStateException
 
 class EventRepository(private val manager: NetworkManager) {
     suspend fun getAllEvents(page: String) =
-        manager.eventSource.getEvents(page = page).body()?.data?.map { eventResponse ->
+        manager.eventSource.getEvents(page = page).body()?.data?.mapNotNull { eventResponse ->
             eventResponse.toEvent()
         } ?: throw IllegalStateException("Invalid data returned by the server")
 }

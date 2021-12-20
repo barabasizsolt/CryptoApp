@@ -36,10 +36,10 @@ class ExchangeViewModel(private val useCase: GetExchangesUseCase) : ViewModel() 
     }
 
     private fun Exchange.toExchangeUIModel() = ExchangeUIModel(
-        id = exchange.id.toString(),
-        name = exchange.name.toString(),
-        logo = exchange.image.toString(),
-        trustScore = exchange.trustScore.toString(),
-        volume = exchange.tradeVolume24HBtc.toString()
+        id = id,
+        name = name,
+        logo = image,
+        trustScore = trustScore.toString(),
+        volume = volume.toString()
     )
 }

@@ -35,10 +35,10 @@ class EventViewModel(private val useCase: GetEventsUseCase) : ViewModel() {
     }
 
     private fun Event.toEventUIModel() = EventUIModel(
-        title = event.title.toString(),
-        organizer = event.organizer.toString(),
-        startDate = event.startDate.toString(),
-        endDate = event.endDate.toString(),
-        logo = event.screenshot.toString()
+        title = title,
+        organizer = organizer,
+        startDate = startDate,
+        endDate = endDate,
+        logo = screenshot
     )
 }
