@@ -89,4 +89,13 @@
     <!-- Event TextView -->
     <dimen name="event_text_view_margin">5dp</dimen>
 
+    <!-- Fragment CryptoCurrency -->
+    <!-- CryptoCurrency Chip Groups-->
+    <dimen name="chip_group_height">40dp</dimen>
+    <dimen name="chip_group_horizontal_spacing">25dp</dimen>
+    <dimen name="chip_group_corner_radius">3dp</dimen>
+
+    <!-- CryptoCurrency RecyclerView-->
+    <dimen name="crypto_recycler_view_padding_bottom">40dp</dimen>
+
 </resources>

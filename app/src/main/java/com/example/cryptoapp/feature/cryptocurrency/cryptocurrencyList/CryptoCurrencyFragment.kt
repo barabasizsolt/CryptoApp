@@ -81,8 +81,20 @@ class CryptoCurrencyFragment : Fragment(), OnItemClickListener, OnItemLongClickL
         viewModel.cryptoCurrencies
             .onEach { currencies ->
                 Log.d("Observed", currencies.size.toString())
+                binding.swipeRefreshLayout.isRefreshing = false
                 cryptoCurrencyAdapter.submitList(currencies)
             }.launchIn(viewLifecycleOwner.lifecycleScope)
+
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            currentOffset = DEFAULT_OFFSET
+            viewModel.loadCryptoCurrencies(
+                sortingParam.first,
+                sortingParam.second,
+                DEFAULT_OFFSET,
+                tags,
+                timePeriod
+            )
+        }
 
         binding.recyclerview.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {

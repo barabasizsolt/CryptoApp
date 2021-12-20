@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,8 +10,8 @@
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/chip_group"
         android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        app:chipSpacingHorizontal="25dp"
+        android:layout_height="@dimen/chip_group_height"
+        app:chipSpacingHorizontal="@dimen/chip_group_horizontal_spacing"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -23,34 +24,40 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="Tags"
-            app:chipCornerRadius="3dp" />
+            android:text="@string/chip_tags"
+            app:chipCornerRadius="@dimen/chip_group_corner_radius" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_time_period"
             style="@style/Widget.MaterialComponents.Chip.Choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Time period"
-            app:chipCornerRadius="3dp" />
+            android:text="@string/chip_time_period"
+            app:chipCornerRadius="@dimen/chip_group_corner_radius" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_sort_by"
             style="@style/Widget.MaterialComponents.Chip.Choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sort by"
-            app:chipCornerRadius="3dp" />
+            android:text="@string/chip_sort_by"
+            app:chipCornerRadius="@dimen/chip_group_corner_radius" />
 
     </com.google.android.material.chip.ChipGroup>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerview"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="40dp"
         app:layout_constraintTop_toBottomOf="@+id/chip_group"
-        tools:itemCount="7"
-        tools:layout_editor_absoluteX="-40dp"
-        tools:listitem="@layout/item_cryptocurrency_crypto" />
+        android:paddingBottom="@dimen/crypto_recycler_view_padding_bottom">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:itemCount="@integer/crypto_recycler_view_item"
+            tools:listitem="@layout/item_cryptocurrency_crypto" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
