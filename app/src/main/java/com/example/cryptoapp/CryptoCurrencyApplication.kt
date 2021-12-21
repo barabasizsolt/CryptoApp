@@ -1,9 +1,9 @@
 package com.example.cryptoapp
 
 import android.app.Application
-import com.example.cryptoapp.modul.dataModule
-import com.example.cryptoapp.modul.domainModule
-import com.example.cryptoapp.modul.presentationModule
+import com.example.cryptoapp.data.dataModule
+import com.example.cryptoapp.domain.domainModule
+import com.example.cryptoapp.feature.presentationModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext.startKoin
 

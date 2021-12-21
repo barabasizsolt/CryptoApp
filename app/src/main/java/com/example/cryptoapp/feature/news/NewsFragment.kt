@@ -1,5 +1,7 @@
 package com.example.cryptoapp.feature.news
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -33,6 +35,9 @@ class NewsFragment : Fragment() {
         )
         binding.recyclerview.adapter = newsAdapter
         viewModel.listItems.onEach(newsAdapter::submitList).launchIn(viewLifecycleOwner.lifecycleScope)
+        viewModel.openBrowserEvent.onEach(::openBrowser).launchIn(viewLifecycleOwner.lifecycleScope)
         binding.swipeRefreshLayout.setOnRefreshListener { viewModel.refreshData(true) }
     }
+
+    private fun openBrowser(event: NewsViewModel.Event.OpenBrowserEvent) = startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(event.url)))
 }

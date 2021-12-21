@@ -6,7 +6,10 @@ import com.example.cryptoapp.data.model.RefreshType
 import com.example.cryptoapp.data.model.Result
 import com.example.cryptoapp.data.model.news.News
 import com.example.cryptoapp.domain.news.GetNewsUseCase
+import com.example.cryptoapp.feature.shared.eventFlow
+import com.example.cryptoapp.feature.shared.pushEvent
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
@@ -21,13 +24,16 @@ class NewsViewModel(private val useCase: GetNewsUseCase) : ViewModel() {
         if (shouldShowError) {
             listOf(NewsListItem.ErrorState())
         } else {
-            if (news == null ) {
+            if (news == null) {
                 emptyList()
             } else {
                 news.map { it.toListItem() } + NewsListItem.LoadMore()
             }
         }
     }
+
+    private val _openBrowserEvent = eventFlow<Event.OpenBrowserEvent>()
+    val openBrowserEvent: SharedFlow<Event.OpenBrowserEvent> = _openBrowserEvent
 
     init {
         refreshData(false)
@@ -38,13 +44,15 @@ class NewsViewModel(private val useCase: GetNewsUseCase) : ViewModel() {
             viewModelScope.launch {
                 _isRefreshing.value = true
                 shouldShowError.value = false
-                when (val result = useCase(
-                    refreshType = when {
-                        isForceRefresh -> RefreshType.FORCE_REFRESH
-                        news.value.isNullOrEmpty() -> RefreshType.CACHE_IF_POSSIBLE
-                        else -> RefreshType.NEXT_PAGE
-                    }
-                )) {
+                when (
+                    val result = useCase(
+                        refreshType = when {
+                            isForceRefresh -> RefreshType.FORCE_REFRESH
+                            news.value.isNullOrEmpty() -> RefreshType.CACHE_IF_POSSIBLE
+                            else -> RefreshType.NEXT_PAGE
+                        }
+                    )
+                ) {
                     is Result.Success -> {
                         news.value = result.data
                     }
@@ -57,9 +65,7 @@ class NewsViewModel(private val useCase: GetNewsUseCase) : ViewModel() {
         }
     }
 
-    fun onNewsItemClicked(url: String) {
-        // TODO
-    }
+    fun onNewsItemClicked(url: String) = _openBrowserEvent.pushEvent(Event.OpenBrowserEvent(url))
 
     private fun News.toListItem() = NewsListItem.News(
         title = title,
@@ -68,4 +74,8 @@ class NewsViewModel(private val useCase: GetNewsUseCase) : ViewModel() {
         url = url,
         logo = logo
     )
+
+    sealed class Event {
+        data class OpenBrowserEvent(val url: String) : Event()
+    }
 }

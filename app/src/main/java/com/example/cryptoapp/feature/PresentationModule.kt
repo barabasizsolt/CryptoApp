@@ -1,4 +1,4 @@
-package com.example.cryptoapp.modul
+package com.example.cryptoapp.feature
 
 import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails.CryptoCurrencyDetailsViewModel
 import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyList.CryptoCurrencyViewModel
