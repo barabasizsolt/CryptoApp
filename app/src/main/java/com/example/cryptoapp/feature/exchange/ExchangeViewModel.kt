@@ -6,7 +6,7 @@ import com.example.cryptoapp.data.constant.ExchangeConstant
 import com.example.cryptoapp.data.constant.ExchangeConstant.DEFAULT_PAGE
 import com.example.cryptoapp.data.model.exchange.Exchange
 import com.example.cryptoapp.domain.exchange.GetExchangesUseCase
-import com.example.cryptoapp.util.Result
+import com.example.cryptoapp.data.model.Result
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch

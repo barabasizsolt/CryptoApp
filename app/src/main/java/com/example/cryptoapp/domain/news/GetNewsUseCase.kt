@@ -1,11 +1,12 @@
 package com.example.cryptoapp.domain.news
 
+import com.example.cryptoapp.data.model.RefreshType
 import com.example.cryptoapp.data.repository.NewsRepository
-import com.example.cryptoapp.util.resultOf
+import com.example.cryptoapp.domain.resultOf
 
 class GetNewsUseCase(private val repository: NewsRepository) {
 
-    suspend operator fun invoke(page: String) = resultOf {
-        repository.getAllNews(page = page)
+    suspend operator fun invoke(refreshType: RefreshType) = resultOf {
+        repository.getAllNews(refreshType)
     }
 }

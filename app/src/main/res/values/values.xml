@@ -3,6 +3,4 @@
     <!-- CryptoCurrency RecyclerView-->
     <integer name="crypto_recycler_view_item">7</integer>
 
-    <!-- News RecyclerView-->
-    <integer name="news_recycler_view_item">7</integer>
 </resources>

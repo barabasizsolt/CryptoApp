@@ -6,7 +6,7 @@ import com.example.cryptoapp.data.constant.CryptoConstant
 import com.example.cryptoapp.data.constant.CryptoConstant.DEFAULT_OFFSET
 import com.example.cryptoapp.data.model.cryptoCurrency.CryptoCurrency
 import com.example.cryptoapp.domain.cryptocurrency.GetCryptoCurrenciesUseCase
-import com.example.cryptoapp.util.Result
+import com.example.cryptoapp.data.model.Result
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch

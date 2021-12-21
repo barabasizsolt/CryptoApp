@@ -4,6 +4,7 @@
     <!-- Keylines / dimensions -->
     <dimen name="content_padding_half">4dp</dimen>
     <dimen name="content_padding">8dp</dimen>
+    <dimen name="error_state_margin">32dp</dimen>
 
     <!-- CryptoCurrency RecyclerView -->
     <dimen name="crypto_currency_card_height">80dp</dimen>
@@ -97,5 +98,20 @@
 
     <!-- CryptoCurrency RecyclerView-->
     <dimen name="crypto_recycler_view_padding_bottom">40dp</dimen>
+
+    <!-- Fragment Profile-->
+    <!-- Profile ImageView-->
+    <dimen name="profile_image_view_size">150dp</dimen>
+
+    <!-- Profile Material TextView-->
+    <dimen name="profile_image_view_margin_top">120dp</dimen>
+    <dimen name="profile_text_view_padding">20dp</dimen>
+    <dimen name="profile_text_view_margin_top">15dp</dimen>
+
+    <!-- Profile Update Password TextView-->
+    <dimen name="profile_update_pwd_text_size">18sp</dimen>
+
+    <!-- Profile Progress Bar-->
+    <dimen name="profile_progress_bar_margin_top">20dp</dimen>
 
 </resources>
