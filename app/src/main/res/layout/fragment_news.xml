@@ -15,14 +15,12 @@
         android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/crypto_recycler_view_padding_bottom"
         app:refreshing="@{viewModel.isRefreshing}">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:itemCount="7"
             tools:listitem="@layout/item_news_news" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

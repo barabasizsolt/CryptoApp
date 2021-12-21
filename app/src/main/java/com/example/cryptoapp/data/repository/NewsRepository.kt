@@ -7,7 +7,6 @@ import com.example.cryptoapp.data.model.news.News
 import com.example.cryptoapp.data.shared.toNews
 
 class NewsRepository(private val manager: NetworkManager) {
-
     private var cache: MutableList<News>? = null
     private var lastDownloadedPage = DEFAULT_PAGE
 

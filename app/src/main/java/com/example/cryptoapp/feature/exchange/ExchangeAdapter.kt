@@ -5,58 +5,100 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.cryptoapp.R
+import com.example.cryptoapp.databinding.ItemExchangeErrorStateBinding
 import com.example.cryptoapp.databinding.ItemExchangeExchangeBinding
-import com.example.cryptoapp.feature.shared.OnItemClickListener
-import com.example.cryptoapp.feature.shared.OnItemLongClickListener
+import com.example.cryptoapp.databinding.ItemExchangeLoadMoreBinding
 
 class ExchangeAdapter(
-    private val onItemClickListener: OnItemClickListener,
-    private val onItemLongClickListener: OnItemLongClickListener
-) : ListAdapter<ExchangeUIModel, ExchangeAdapter.ExchangeViewHolder>(
-    object : DiffUtil.ItemCallback<ExchangeUIModel>() {
-        override fun areItemsTheSame(oldItem: ExchangeUIModel, newItem: ExchangeUIModel) =
-            oldItem.id == newItem.id
+    private val onExchangeItemClick: (String) -> Unit,
+    private val onLoadMoreExchanges: () -> Unit
+) : ListAdapter<ExchangeListItem, RecyclerView.ViewHolder>(
+    object : DiffUtil.ItemCallback<ExchangeListItem>() {
+        override fun areItemsTheSame(oldItem: ExchangeListItem, newItem: ExchangeListItem) = oldItem.id == newItem.id
 
-        override fun areContentsTheSame(oldItem: ExchangeUIModel, newItem: ExchangeUIModel) = oldItem == newItem
+        override fun areContentsTheSame(oldItem: ExchangeListItem, newItem: ExchangeListItem) = oldItem == newItem
     }
 ) {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ExchangeViewHolder = ExchangeViewHolder.create(
-        parent = parent,
-        onItemClickListener = onItemClickListener,
-        onItemLongClickListener = onItemLongClickListener
-    )
+    override fun getItemViewType(position: Int): Int = when (getItem(position)) {
+        is ExchangeListItem.Exchange -> R.layout.item_exchange_exchange
+        is ExchangeListItem.ErrorState -> R.layout.item_exchange_error_state
+        is ExchangeListItem.LoadMore -> R.layout.item_exchange_load_more
+    }
 
-    override fun onBindViewHolder(holder: ExchangeViewHolder, position: Int) = holder.bind(getItem(position))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
+        R.layout.item_exchange_exchange -> ExchangeViewHolder.create(
+            parent = parent,
+            onExchangeItemClick = onExchangeItemClick
+        )
+        R.layout.item_exchange_error_state -> ErrorStateViewHolder.create(
+            parent = parent
+        )
+        R.layout.item_exchange_load_more -> LoadMoreViewHolder.create(
+            parent = parent
+        )
+        else -> throw IllegalStateException("Invalid view type: $viewType.")
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) = when (val uiModel = getItem(position)) {
+        is ExchangeListItem.Exchange -> (holder as ExchangeViewHolder).bind(uiModel)
+        is ExchangeListItem.ErrorState -> (holder as ErrorStateViewHolder).bind(uiModel)
+        is ExchangeListItem.LoadMore -> (holder as LoadMoreViewHolder).bind(uiModel).also {
+            onLoadMoreExchanges()
+        }
+    }
+
+    class ErrorStateViewHolder private constructor(
+        private val binding: ItemExchangeErrorStateBinding,
+    ) : RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(listItem: ExchangeListItem.ErrorState) {
+            binding.uiModel = listItem
+        }
+
+        companion object {
+            fun create(parent: ViewGroup) = ErrorStateViewHolder(
+                binding = ItemExchangeErrorStateBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+            )
+        }
+    }
+
+    class LoadMoreViewHolder private constructor(
+        private val binding: ItemExchangeLoadMoreBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(listItem: ExchangeListItem.LoadMore) {
+            binding.uiModel = listItem
+        }
+
+        companion object {
+            fun create(parent: ViewGroup) = LoadMoreViewHolder(
+                binding = ItemExchangeLoadMoreBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            )
+        }
+    }
 
     class ExchangeViewHolder private constructor(
         private val binding: ItemExchangeExchangeBinding,
-        private val onItemClickListener: OnItemClickListener,
-        private val onItemLongClickListener: OnItemLongClickListener
+        private val onExchangeItemClick: (String) -> Unit,
     ) : RecyclerView.ViewHolder(binding.root) {
 
         init {
             itemView.setOnClickListener {
-                onItemClickListener.onItemClick(bindingAdapterPosition)
-            }
-            itemView.setOnLongClickListener {
-                onItemLongClickListener.onItemLongClick(bindingAdapterPosition)
-                true
+                if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
+                    onExchangeItemClick(binding.uiModel?.id.orEmpty())
+                }
             }
         }
 
-        fun bind(uiModel: ExchangeUIModel) {
-            binding.uiModel = uiModel
+        fun bind(listItem: ExchangeListItem.Exchange) {
+            binding.uiModel = listItem
         }
 
         companion object {
-            fun create(
-                parent: ViewGroup,
-                onItemClickListener: OnItemClickListener,
-                onItemLongClickListener: OnItemLongClickListener
-            ) = ExchangeViewHolder(
+            fun create(parent: ViewGroup, onExchangeItemClick: (String) -> Unit) = ExchangeViewHolder(
                 binding = ItemExchangeExchangeBinding.inflate(LayoutInflater.from(parent.context), parent, false),
-                onItemClickListener = onItemClickListener,
-                onItemLongClickListener = onItemLongClickListener
+                onExchangeItemClick = onExchangeItemClick
             )
         }
     }

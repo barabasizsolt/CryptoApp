@@ -27,6 +27,7 @@ class NewsFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.recyclerview.layoutManager = LinearLayoutManager(requireContext())
         val newsAdapter = NewsAdapter(
             onNewsItemClicked = viewModel::onNewsItemClicked,

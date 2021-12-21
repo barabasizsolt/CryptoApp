@@ -24,7 +24,6 @@ sealed class NewsListItem : ListItem {
         val url: String,
         val logo: String
     ) : NewsListItem() {
-
         override val id = "news_$title"
         val source = site + " (" + updated.getFormattedTime(withHours = true) + ")"
     }
