@@ -5,11 +5,11 @@ import androidx.lifecycle.viewModelScope
 import com.example.cryptoapp.data.model.RefreshType
 import com.example.cryptoapp.data.model.Result
 import com.example.cryptoapp.data.model.cryptoCurrency.CryptoCurrency
+import com.example.cryptoapp.domain.cryptocurrency.GetCryptoCurrenciesUseCase
 import com.example.cryptoapp.feature.cryptocurrency.Constant.sortingParams
 import com.example.cryptoapp.feature.cryptocurrency.Constant.sortingTypes
 import com.example.cryptoapp.feature.cryptocurrency.Constant.tags
 import com.example.cryptoapp.feature.cryptocurrency.Constant.timePeriods
-import com.example.cryptoapp.domain.cryptocurrency.GetCryptoCurrenciesUseCase
 import com.example.cryptoapp.feature.shared.eventFlow
 import com.example.cryptoapp.feature.shared.pushEvent
 import kotlinx.coroutines.flow.MutableStateFlow
