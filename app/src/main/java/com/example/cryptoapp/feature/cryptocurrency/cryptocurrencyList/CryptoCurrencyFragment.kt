@@ -33,19 +33,6 @@ class CryptoCurrencyFragment : Fragment() {
         return binding.root
     }
 
-    private fun openDetailsPage(event: CryptoCurrencyViewModel.Event) {
-        val id = (event as CryptoCurrencyViewModel.Event.OpenDetailsPageEvent).id
-        val fragment = CryptoCurrencyDetailsFragment()
-        val bundle = Bundle()
-        bundle.putString(COIN_ID, id)
-        fragment.arguments = bundle
-        (activity as MainActivity).replaceFragment(
-            fragment,
-            R.id.activity_fragment_container,
-            addToBackStack = true
-        )
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         (activity as MainActivity).bottomNavigationView.visibility = View.VISIBLE
@@ -59,8 +46,7 @@ class CryptoCurrencyFragment : Fragment() {
         )
         binding.recyclerview.adapter = cryptoCurrencyAdapter
         viewModel.listItems.onEach(cryptoCurrencyAdapter::submitList).launchIn(viewLifecycleOwner.lifecycleScope)
-        viewModel.dialogEvent.onEach(::createDialog).launchIn(viewLifecycleOwner.lifecycleScope)
-        viewModel.event.onEach(::openDetailsPage).launchIn(viewLifecycleOwner.lifecycleScope)
+        viewModel.event.onEach(::listenToEvents).launchIn(viewLifecycleOwner.lifecycleScope)
         binding.swipeRefreshLayout.setOnRefreshListener { viewModel.refreshData(isForceRefresh = true) }
         binding.chipTimePeriod.setOnClickListener {
             viewModel.onChipClicked(filterChip = FilterChip.TIME_PERIOD_CHIP)
@@ -73,15 +59,32 @@ class CryptoCurrencyFragment : Fragment() {
         }
     }
 
-    private fun createDialog(event: Pair<FilterChip, CryptoCurrencyViewModel.Event.DialogEvent>) {
-        var checkedItemIndex = 0
+    private fun listenToEvents(event: CryptoCurrencyViewModel.Event) = when (event) {
+        is CryptoCurrencyViewModel.Event.DialogEvent -> createDialog(event)
+        is CryptoCurrencyViewModel.Event.OpenDetailsPageEvent -> openDetailsPage(event)
+    }
+
+    private fun openDetailsPage(openDetailsPageEvent: CryptoCurrencyViewModel.Event.OpenDetailsPageEvent) {
+        val fragment = CryptoCurrencyDetailsFragment()
+        val bundle = Bundle()
+        bundle.putString(COIN_ID, openDetailsPageEvent.id)
+        fragment.arguments = bundle
+        (activity as MainActivity).replaceFragment(
+            fragment,
+            R.id.activity_fragment_container,
+            addToBackStack = true
+        )
+    }
+
+    private fun createDialog(dialogEvent: CryptoCurrencyViewModel.Event.DialogEvent) {
         val checkedItems = BooleanArray(tags.size) { false }
         val selectedTags: MutableList<String> = mutableListOf()
-        val chipType = event.first
-        val elements = event.second.dialogElements.toTypedArray()
-        val dialogType = event.second.dialogType
-        val lastSelectedElement = event.second.lastSelectedItemIndex
-        val previouslySelectedTags = event.second.selectedItems
+        val elements = dialogEvent.dialogElements.toTypedArray()
+        val dialogType = dialogEvent.dialogType
+        val lastSelectedElement = dialogEvent.lastSelectedItemIndex
+        val previouslySelectedTags = dialogEvent.selectedItems
+        val chipType = dialogEvent.filterType
+        var checkedItemIndex = lastSelectedElement
 
         previouslySelectedTags.forEach { tag ->
             checkedItems[tags.indexOf(tag)] = true
@@ -105,7 +108,7 @@ class CryptoCurrencyFragment : Fragment() {
                                 selectedTags.add(tags[i])
                             }
                         }
-                        viewModel.onDialogItemSelected(filterChip = chipType, selectedItemIndex = checkedItemIndex, selectedItems = selectedTags)
+                        viewModel.onDialogItemSelected(filterChip = chipType, selectedItems = selectedTags)
                     }
                 }
             }

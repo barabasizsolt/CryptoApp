@@ -46,8 +46,6 @@ class CryptoCurrencyViewModel(private val useCase: GetCryptoCurrenciesUseCase) :
         }
     }
 
-    private val _dialogEvent = eventFlow<Pair<FilterChip, Event.DialogEvent>>()
-    val dialogEvent: SharedFlow<Pair<FilterChip, Event.DialogEvent>> = _dialogEvent
     private val _event = eventFlow<Event>()
     val event: SharedFlow<Event> = _event
 
@@ -92,32 +90,26 @@ class CryptoCurrencyViewModel(private val useCase: GetCryptoCurrenciesUseCase) :
     }
 
     fun onChipClicked(filterChip: FilterChip) = when (filterChip) {
-        FilterChip.TAG_CHIP -> _dialogEvent.pushEvent(
-            Pair(
-                FilterChip.TAG_CHIP,
-                Event.DialogEvent(
-                    dialogElements = tags,
-                    selectedItems = selectedTags,
-                    dialogType = DialogType.MULTI_CHOICE
-                )
+        FilterChip.TAG_CHIP -> _event.pushEvent(
+            Event.DialogEvent(
+                dialogElements = tags,
+                selectedItems = selectedTags,
+                dialogType = DialogType.MULTI_CHOICE,
+                filterType = FilterChip.TAG_CHIP
             )
         )
-        FilterChip.SORTING_CHIP -> _dialogEvent.pushEvent(
-            Pair(
-                FilterChip.SORTING_CHIP,
-                Event.DialogEvent(
-                    dialogElements = sortingTypes,
-                    lastSelectedItemIndex = selectedSortingCriteria
-                )
+        FilterChip.SORTING_CHIP -> _event.pushEvent(
+            Event.DialogEvent(
+                dialogElements = sortingTypes,
+                lastSelectedItemIndex = selectedSortingCriteria,
+                filterType = FilterChip.SORTING_CHIP
             )
         )
-        FilterChip.TIME_PERIOD_CHIP -> _dialogEvent.pushEvent(
-            Pair(
-                FilterChip.TIME_PERIOD_CHIP,
-                Event.DialogEvent(
-                    dialogElements = timePeriods,
-                    lastSelectedItemIndex = selectedTimePeriod
-                )
+        FilterChip.TIME_PERIOD_CHIP -> _event.pushEvent(
+            Event.DialogEvent(
+                dialogElements = timePeriods,
+                lastSelectedItemIndex = selectedTimePeriod,
+                filterType = FilterChip.TIME_PERIOD_CHIP
             )
         )
     }
@@ -144,11 +136,13 @@ class CryptoCurrencyViewModel(private val useCase: GetCryptoCurrenciesUseCase) :
     )
 
     sealed class Event {
+        // Should I split this into 2 types of event (SingleChoiceDialogEvent and MultiChoiceDialogEvent)?
         data class DialogEvent(
             val dialogElements: List<String>,
             val lastSelectedItemIndex: Int = 0,
             val selectedItems: List<String> = listOf(),
-            val dialogType: DialogType = DialogType.SINGLE_CHOICE
+            val dialogType: DialogType = DialogType.SINGLE_CHOICE,
+            val filterType: FilterChip
         ) : Event()
 
         data class OpenDetailsPageEvent(val id: String) : Event()
