@@ -26,7 +26,7 @@ class CryptoCurrencyViewModel(private val useCase: GetCryptoCurrenciesUseCase) :
     private val cryptoCurrencies = MutableStateFlow<List<CryptoCurrency>?>(null)
     private val shouldShowError = MutableStateFlow(false)
 
-    private var selectedTags: Int = 0
+    private var selectedTags: List<String> = listOf()
     private var selectedTimePeriod: Int = 1
     private var selectedSortingCriteria: Int = 4
 
@@ -58,7 +58,7 @@ class CryptoCurrencyViewModel(private val useCase: GetCryptoCurrenciesUseCase) :
     fun refreshData(
         orderBy: String = sortingParams[selectedSortingCriteria].first,
         orderDirection: String = sortingParams[selectedSortingCriteria].second,
-        cryptoTags: List<String> = emptyList(),
+        cryptoTags: List<String> = selectedTags,
         timePeriod: String = timePeriods[selectedTimePeriod],
         isForceRefresh: Boolean
     ) {
@@ -97,7 +97,8 @@ class CryptoCurrencyViewModel(private val useCase: GetCryptoCurrenciesUseCase) :
                 FilterChip.TAG_CHIP,
                 Event.DialogEvent(
                     dialogElements = tags,
-                    lastSelectedItemIndex = selectedTags
+                    selectedItems = selectedTags,
+                    dialogType = DialogType.MULTI_CHOICE
                 )
             )
         )
@@ -121,15 +122,15 @@ class CryptoCurrencyViewModel(private val useCase: GetCryptoCurrenciesUseCase) :
         )
     }
 
-    fun onDialogItemSelected(filterChip: FilterChip, selectedItemIndex: Int) = when (filterChip) {
-        FilterChip.TAG_CHIP -> selectedTags = selectedItemIndex
+    fun onDialogItemSelected(filterChip: FilterChip, selectedItemIndex: Int = 0, selectedItems: List<String> = listOf()) = when (filterChip) {
+        FilterChip.TAG_CHIP -> selectedTags = selectedItems
         FilterChip.SORTING_CHIP -> selectedSortingCriteria = selectedItemIndex
         FilterChip.TIME_PERIOD_CHIP -> selectedTimePeriod = selectedItemIndex
     }.also {
         refreshData(
             orderBy = sortingParams[selectedSortingCriteria].first,
             orderDirection = sortingParams[selectedSortingCriteria].second,
-            cryptoTags = listOf(tags[selectedTags]),
+            cryptoTags = selectedTags,
             timePeriod = timePeriods[selectedTimePeriod],
             isForceRefresh = true
         )
@@ -145,7 +146,9 @@ class CryptoCurrencyViewModel(private val useCase: GetCryptoCurrenciesUseCase) :
     sealed class Event {
         data class DialogEvent(
             val dialogElements: List<String>,
-            val lastSelectedItemIndex: Int
+            val lastSelectedItemIndex: Int = 0,
+            val selectedItems: List<String> = listOf(),
+            val dialogType: DialogType = DialogType.SINGLE_CHOICE
         ) : Event()
 
         data class OpenDetailsPageEvent(val id: String) : Event()

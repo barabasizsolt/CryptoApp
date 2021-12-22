@@ -11,6 +11,7 @@ import com.example.cryptoapp.MainActivity
 import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.FragmentCryptoCurrencyBinding
 import com.example.cryptoapp.domain.cryptocurrency.Constant.COIN_ID
+import com.example.cryptoapp.domain.cryptocurrency.Constant.tags
 import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails.CryptoCurrencyDetailsFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.flow.launchIn
@@ -73,20 +74,49 @@ class CryptoCurrencyFragment : Fragment() {
     }
 
     private fun createDialog(event: Pair<FilterChip, CryptoCurrencyViewModel.Event.DialogEvent>) {
-        var checkedItem = 0
+        var checkedItemIndex = 0
+        val checkedItems = BooleanArray(tags.size) { false }
+        val selectedTags: MutableList<String> = mutableListOf()
         val chipType = event.first
-        val dialogEvent = event.second
+        val elements = event.second.dialogElements.toTypedArray()
+        val dialogType = event.second.dialogType
+        val lastSelectedElement = event.second.lastSelectedItemIndex
+        val previouslySelectedTags = event.second.selectedItems
 
-        // TODO: based on ChipType change title, and make single/multi choice dialog
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle(resources.getString(R.string.time_period_title))
+        previouslySelectedTags.forEach { tag ->
+            checkedItems[tags.indexOf(tag)] = true
+        }
+
+        val dialogBuilder = MaterialAlertDialogBuilder(requireContext())
+            .setTitle(when(chipType) {
+                FilterChip.TAG_CHIP -> resources.getString(R.string.tags_title)
+                FilterChip.SORTING_CHIP -> resources.getString(R.string.sorting_title)
+                FilterChip.TIME_PERIOD_CHIP -> resources.getString(R.string.time_period_title)
+            })
             .setNeutralButton(resources.getString(R.string.cancel)) { _, _ -> }
             .setPositiveButton(resources.getString(R.string.ok)) { _, _ ->
-                viewModel.onDialogItemSelected(filterChip = chipType, selectedItemIndex = checkedItem)
+                when(dialogType){
+                    DialogType.SINGLE_CHOICE -> viewModel.onDialogItemSelected(filterChip = chipType, selectedItemIndex = checkedItemIndex)
+                    DialogType.MULTI_CHOICE -> {
+                        for (i in checkedItems.indices) {
+                            if (checkedItems[i]) {
+                                selectedTags.add(tags[i])
+                            }
+                        }
+                        viewModel.onDialogItemSelected(filterChip = chipType, selectedItemIndex = checkedItemIndex, selectedItems = selectedTags)
+                    }
+                }
             }
-            .setSingleChoiceItems(dialogEvent.dialogElements.toTypedArray(), dialogEvent.lastSelectedItemIndex) { _, which ->
-                checkedItem = which
+            when(dialogType) {
+                DialogType.SINGLE_CHOICE -> dialogBuilder.setSingleChoiceItems(
+                    elements, lastSelectedElement) { _, which ->
+                        checkedItemIndex = which
+                    }
+                DialogType.MULTI_CHOICE -> dialogBuilder.setMultiChoiceItems(
+                    elements, checkedItems) { _, which, checked ->
+                    checkedItems[which] = checked
+                }
             }
-            .show()
+        dialogBuilder.show()
     }
 }
