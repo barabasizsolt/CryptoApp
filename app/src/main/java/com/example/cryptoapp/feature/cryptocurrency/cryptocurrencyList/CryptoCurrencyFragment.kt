@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.cryptoapp.MainActivity
 import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.FragmentCryptoCurrencyBinding
-import com.example.cryptoapp.domain.cryptocurrency.Constant.COIN_ID
-import com.example.cryptoapp.domain.cryptocurrency.Constant.tags
+import com.example.cryptoapp.feature.cryptocurrency.Constant.COIN_ID
+import com.example.cryptoapp.feature.cryptocurrency.Constant.tags
 import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails.CryptoCurrencyDetailsFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.flow.launchIn

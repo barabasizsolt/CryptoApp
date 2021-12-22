@@ -9,9 +9,9 @@ import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.example.cryptoapp.databinding.FragmentCryptoDetailsInfoBinding
-import com.example.cryptoapp.domain.cryptocurrency.Constant.COIN_ID
-import com.example.cryptoapp.domain.cryptocurrency.Constant.ROTATE_180
-import com.example.cryptoapp.domain.cryptocurrency.Constant.ROTATE_360
+import com.example.cryptoapp.feature.cryptocurrency.Constant.COIN_ID
+import com.example.cryptoapp.feature.cryptocurrency.Constant.ROTATE_180
+import com.example.cryptoapp.feature.cryptocurrency.Constant.ROTATE_360
 import com.example.cryptoapp.feature.shared.convertToPrice
 import com.example.cryptoapp.feature.shared.formatInput
 import com.example.cryptoapp.feature.shared.getFormattedTime

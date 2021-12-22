@@ -1,4 +1,4 @@
-package com.example.cryptoapp.domain.cryptocurrency
+package com.example.cryptoapp.feature.cryptocurrency
 import java.util.Calendar
 
 object Constant {
