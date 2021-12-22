@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="app_background_color" format="color"/>
+    <attr name="app_text_color" format="color"/>
+    <attr name="crypto_chart_color" format="color"/>
+</resources>
