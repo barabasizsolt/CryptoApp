@@ -22,19 +22,19 @@ import com.anychart.anychart.TooltipDisplayMode
 import com.anychart.anychart.ValueDataEntry
 import com.example.cryptoapp.MainActivity
 import com.example.cryptoapp.R
-import com.example.cryptoapp.data.constant.CryptoConstant
-import com.example.cryptoapp.data.constant.CryptoConstant.CALENDAR
-import com.example.cryptoapp.data.constant.CryptoConstant.CURRENCY_FIRE_STORE_PATH
-import com.example.cryptoapp.data.constant.CryptoConstant.DAY7
-import com.example.cryptoapp.data.constant.CryptoConstant.HOUR24
-import com.example.cryptoapp.data.constant.CryptoConstant.MAX_HOUR
-import com.example.cryptoapp.data.constant.CryptoConstant.MAX_MONTH
-import com.example.cryptoapp.data.constant.CryptoConstant.YEAR1
-import com.example.cryptoapp.data.constant.CryptoConstant.YEAR6
 import com.example.cryptoapp.data.model.cryptoCurrencyDetail.details.CryptoCurrencyDetailsUIModel
 import com.example.cryptoapp.data.model.cryptoCurrencyDetail.history.SingleCryptoCurrencyHistoryResponse
 import com.example.cryptoapp.data.repository.Cache
 import com.example.cryptoapp.databinding.FragmentCryptoCurrencyDetailsBinding
+import com.example.cryptoapp.domain.cryptocurrency.Constant.CALENDAR
+import com.example.cryptoapp.domain.cryptocurrency.Constant.COIN_ID
+import com.example.cryptoapp.domain.cryptocurrency.Constant.CURRENCY_FIRE_STORE_PATH
+import com.example.cryptoapp.domain.cryptocurrency.Constant.DAY7
+import com.example.cryptoapp.domain.cryptocurrency.Constant.HOUR24
+import com.example.cryptoapp.domain.cryptocurrency.Constant.MAX_HOUR
+import com.example.cryptoapp.domain.cryptocurrency.Constant.MAX_MONTH
+import com.example.cryptoapp.domain.cryptocurrency.Constant.YEAR1
+import com.example.cryptoapp.domain.cryptocurrency.Constant.YEAR6
 import com.example.cryptoapp.feature.shared.convertToCompactPrice
 import com.example.cryptoapp.feature.shared.convertToPrice
 import com.example.cryptoapp.feature.shared.getColorFromAttr
@@ -73,8 +73,7 @@ class CryptoCurrencyDetailsFragment : Fragment() {
 
         initChartColors()
         initializeChart()
-        cryptoCurrencyId = arguments?.getString(CryptoConstant.COIN_ID).toString()
-        Log.d("ID", cryptoCurrencyId)
+        cryptoCurrencyId = arguments?.getString(COIN_ID).toString()
 
         viewModel.cryptoCurrencyDetails
             .onEach { cryptoDetails ->
@@ -90,7 +89,6 @@ class CryptoCurrencyDetailsFragment : Fragment() {
 
         viewModel.cryptoCurrencyHistory
             .onEach { cryptoHistory ->
-                Log.d("History", cryptoHistory.toString())
                 if (cryptoHistory != null) {
                     when (currentTimeFrame) {
                         HOUR24 -> {
@@ -208,22 +206,18 @@ class CryptoCurrencyDetailsFragment : Fragment() {
         binding.chipGroup.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 R.id.chip_24h -> {
-                    Log.d("CH24", "Chipped")
                     viewModel.loadCryptoCurrencyHistory(uuid = cryptoCurrencyId, timePeriod = HOUR24)
                     currentTimeFrame = HOUR24
                 }
                 R.id.chip_7d -> {
-                    Log.d("CH7", "Chipped")
                     viewModel.loadCryptoCurrencyHistory(uuid = cryptoCurrencyId, timePeriod = DAY7)
                     currentTimeFrame = DAY7
                 }
                 R.id.chip_1y -> {
-                    Log.d("CH1", "Chipped")
                     viewModel.loadCryptoCurrencyHistory(uuid = cryptoCurrencyId, timePeriod = YEAR1)
                     currentTimeFrame = YEAR1
                 }
                 R.id.chip_6y -> {
-                    Log.d("CH3", "Chipped")
                     viewModel.loadCryptoCurrencyHistory(uuid = cryptoCurrencyId, timePeriod = YEAR6)
                     currentTimeFrame = YEAR6
                 }
@@ -238,7 +232,7 @@ class CryptoCurrencyDetailsFragment : Fragment() {
                     0 -> {
                         val fragment = CryptoDetailsInfoFragment()
                         val bundle = Bundle()
-                        bundle.putString(CryptoConstant.COIN_ID, cryptoCurrencyId)
+                        bundle.putString(COIN_ID, cryptoCurrencyId)
                         fragment.arguments = bundle
                         (activity as MainActivity).replaceFragment(fragment, R.id.crypto_details_fragment_container)
                     }

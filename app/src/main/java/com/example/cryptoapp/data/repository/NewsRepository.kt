@@ -1,12 +1,16 @@
 package com.example.cryptoapp.data.repository
 
 import com.example.cryptoapp.data.NetworkManager
-import com.example.cryptoapp.data.constant.NewsConstant.DEFAULT_PAGE
 import com.example.cryptoapp.data.model.RefreshType
 import com.example.cryptoapp.data.model.news.News
 import com.example.cryptoapp.data.shared.toNews
 
 class NewsRepository(private val manager: NetworkManager) {
+
+    companion object {
+        const val DEFAULT_PAGE = 1
+    }
+
     private var cache: MutableList<News>? = null
     private var lastDownloadedPage = DEFAULT_PAGE
 
@@ -20,8 +24,8 @@ class NewsRepository(private val manager: NetworkManager) {
             }
         }
         RefreshType.NEXT_PAGE -> loadData(lastDownloadedPage + 1).let { newData ->
-            val newCache = (cache.orEmpty() + newData).toMutableList()
-            cache = newCache
+            val newCache = (cache.orEmpty() + newData)
+            cache = newCache.toMutableList()
             newCache
         }
     }

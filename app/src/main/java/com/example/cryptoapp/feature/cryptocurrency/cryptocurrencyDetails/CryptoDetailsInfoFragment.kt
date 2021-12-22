@@ -8,10 +8,10 @@ import android.view.ViewGroup
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import com.example.cryptoapp.data.constant.CryptoConstant
-import com.example.cryptoapp.data.constant.CryptoConstant.ROTATE_180
-import com.example.cryptoapp.data.constant.CryptoConstant.ROTATE_360
 import com.example.cryptoapp.databinding.FragmentCryptoDetailsInfoBinding
+import com.example.cryptoapp.domain.cryptocurrency.Constant.COIN_ID
+import com.example.cryptoapp.domain.cryptocurrency.Constant.ROTATE_180
+import com.example.cryptoapp.domain.cryptocurrency.Constant.ROTATE_360
 import com.example.cryptoapp.feature.shared.convertToPrice
 import com.example.cryptoapp.feature.shared.formatInput
 import com.example.cryptoapp.feature.shared.getFormattedTime
@@ -32,7 +32,7 @@ class CryptoDetailsInfoFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentCryptoDetailsInfoBinding.inflate(inflater, container, false)
-        cryptoCurrencyId = arguments?.getString(CryptoConstant.COIN_ID).toString()
+        cryptoCurrencyId = arguments?.getString(COIN_ID).toString()
         initUI()
         return binding.root
     }

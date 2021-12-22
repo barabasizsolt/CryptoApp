@@ -16,7 +16,7 @@ interface CryptoService {
         @Query("orderBy") orderBy: String,
         @Query("orderDirection") orderDirection: String,
         @Query("offset") offset: Int,
-        @Query("tags[]") tags: Set<String>,
+        @Query("tags[]") tags: List<String>,
         @Query("timePeriod") timePeriod: String,
     ): Response<AllCryptoCurrenciesResponse>
 

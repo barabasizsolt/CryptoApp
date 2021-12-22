@@ -31,14 +31,15 @@ class NewsFragment : Fragment() {
         binding.recyclerview.layoutManager = LinearLayoutManager(requireContext())
         val newsAdapter = NewsAdapter(
             onNewsItemClicked = viewModel::onNewsItemClicked,
-            onTryAgainButtonClicked = { viewModel.refreshData(true) },
-            onLoadMoreBound = { viewModel.refreshData(false) }
+            onTryAgainButtonClicked = { viewModel.refreshData(isForceRefresh = true) },
+            onLoadMoreBound = { viewModel.refreshData(isForceRefresh = false) }
         )
         binding.recyclerview.adapter = newsAdapter
         viewModel.listItems.onEach(newsAdapter::submitList).launchIn(viewLifecycleOwner.lifecycleScope)
         viewModel.openBrowserEvent.onEach(::openBrowser).launchIn(viewLifecycleOwner.lifecycleScope)
-        binding.swipeRefreshLayout.setOnRefreshListener { viewModel.refreshData(true) }
+        binding.swipeRefreshLayout.setOnRefreshListener { viewModel.refreshData(isForceRefresh = true) }
     }
 
-    private fun openBrowser(event: NewsViewModel.Event.OpenBrowserEvent) = startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(event.url)))
+    private fun openBrowser(event: NewsViewModel.Event) =
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse((event as NewsViewModel.Event.OpenBrowserEvent).url)))
 }

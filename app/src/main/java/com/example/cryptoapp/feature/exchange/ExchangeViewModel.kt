@@ -32,8 +32,8 @@ class ExchangeViewModel(private val useCase: GetExchangesUseCase) : ViewModel() 
         }
     }
 
-    private val _logExchangeDetails = eventFlow<Event.LogExchangeId>()
-    val logExchangeDetails: SharedFlow<Event.LogExchangeId> = _logExchangeDetails
+    private val _logExchangeDetails = eventFlow<Event>()
+    val logExchangeDetails: SharedFlow<Event> = _logExchangeDetails
 
     init {
         refreshData(false)

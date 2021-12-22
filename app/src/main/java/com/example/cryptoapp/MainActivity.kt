@@ -9,9 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
-import com.example.cryptoapp.data.constant.CryptoConstant
 import com.example.cryptoapp.data.repository.Cache
 import com.example.cryptoapp.databinding.ActivityMainBinding
+import com.example.cryptoapp.domain.cryptocurrency.Constant.CURRENCY_FIRE_STORE_PATH
 import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyList.CryptoCurrencyFragment
 import com.example.cryptoapp.feature.exchange.ExchangeFragment
 import com.example.cryptoapp.feature.news.NewsFragment
@@ -70,7 +70,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun getUserWatchLists() {
-        fireStore.collection(CryptoConstant.CURRENCY_FIRE_STORE_PATH)
+        fireStore.collection(CURRENCY_FIRE_STORE_PATH)
             .get()
             .addOnSuccessListener { result ->
                 for (document in result) {

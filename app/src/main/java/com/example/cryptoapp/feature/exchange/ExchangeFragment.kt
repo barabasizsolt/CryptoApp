@@ -42,5 +42,6 @@ class ExchangeFragment : Fragment() {
         binding.swipeRefreshLayout.setOnRefreshListener { viewModel.refreshData(true) }
     }
 
-    private fun logExchangeDetails(event: ExchangeViewModel.Event.LogExchangeId) = Log.d("Details", event.id)
+    private fun logExchangeDetails(event: ExchangeViewModel.Event) =
+        Log.d("Details", (event as ExchangeViewModel.Event.LogExchangeId).id)
 }

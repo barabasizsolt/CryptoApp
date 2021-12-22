@@ -13,7 +13,6 @@ import coil.load
 import coil.request.ImageRequest
 import coil.transform.CircleCropTransformation
 import com.example.cryptoapp.R
-import com.example.cryptoapp.data.constant.CryptoConstant
 import com.example.cryptoapp.feature.shared.Constant.currency
 import com.example.cryptoapp.feature.shared.Constant.formatter
 import com.example.cryptoapp.feature.shared.Constant.numberFormatter
@@ -23,8 +22,7 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 
 @BindingAdapter("percentage")
-fun TextView.setPercentage(percentageStr: String?) {
-    if (percentageStr == CryptoConstant.EMPTY_STR || percentageStr.isNullOrBlank()) return
+fun TextView.setPercentage(percentageStr: String) {
     val percentage = percentageStr.toDouble()
     when {
         percentage < 0 -> {

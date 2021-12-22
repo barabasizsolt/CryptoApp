@@ -1,14 +1,21 @@
-package com.example.cryptoapp.data.constant
-
+package com.example.cryptoapp.domain.cryptocurrency
 import java.util.Calendar
 
-object CryptoConstant {
+object Constant {
+    const val ROTATE_180 = 180f
+    const val ROTATE_360 = 360f
+
+    private const val PRICE_FIELD = "price"
+    private const val VOLUME_FIELD = "24hVolume"
+    private const val MARKET_CAP_FIELD = "marketCap"
+    private const val ASC = "asc"
+    private const val DESC = "desc"
+
     val CALENDAR: Calendar = Calendar.getInstance()
     const val MAX_HOUR: Int = 24
     const val MAX_DAY: Int = 7
     const val MAX_MONTH: Int = 12
 
-    const val EMPTY_STR = "null"
     const val CURRENCY_FIRE_STORE_PATH = "currencies"
     const val COIN_ID: String = "coin_id"
 
@@ -17,21 +24,7 @@ object CryptoConstant {
     const val YEAR1 = "1y"
     const val YEAR6 = "5y"
 
-    const val PRICE_FIELD = "price"
-    const val VOLUME_FIELD = "24hVolume"
-    const val MARKET_CAP_FIELD = "marketCap"
-    const val ASC = "asc"
-    const val DESC = "desc"
-    const val DEFAULT_OFFSET = 0
-    const val LIMIT = 50
-
-    const val CHECKED_SORTING_ITEM_INDEX = 4
-    const val CHECKED_TIME_PERIOD_ITEM_INDEX = 1
-
-    const val ROTATE_180 = 180f
-    const val ROTATE_360 = 360f
-
-    val filterTags = arrayOf(
+    val tags = listOf(
         "defi",
         "stablecoin",
         "nft",
@@ -43,9 +36,9 @@ object CryptoConstant {
         "privacy"
     )
 
-    val timePeriods = arrayOf("3h", "24h", "7d", "30d", "3m", "1y", "3y", "5y")
+    val timePeriods = listOf("3h", "24h", "7d", "30d", "3m", "1y", "3y", "5y")
 
-    val sortingTags = arrayOf(
+    val sortingTypes = listOf(
         "Highest Price",
         "Lowest Price",
         "Highest 24H Volume",

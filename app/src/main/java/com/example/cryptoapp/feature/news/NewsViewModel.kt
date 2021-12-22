@@ -32,11 +32,11 @@ class NewsViewModel(private val useCase: GetNewsUseCase) : ViewModel() {
         }
     }
 
-    private val _openBrowserEvent = eventFlow<Event.OpenBrowserEvent>()
-    val openBrowserEvent: SharedFlow<Event.OpenBrowserEvent> = _openBrowserEvent
+    private val _openBrowserEvent = eventFlow<Event>()
+    val openBrowserEvent: SharedFlow<Event> = _openBrowserEvent
 
     init {
-        refreshData(false)
+        refreshData(isForceRefresh = false)
     }
 
     fun refreshData(isForceRefresh: Boolean) {
