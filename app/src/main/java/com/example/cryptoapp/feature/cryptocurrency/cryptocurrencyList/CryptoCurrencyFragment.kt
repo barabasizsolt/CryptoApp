@@ -88,14 +88,16 @@ class CryptoCurrencyFragment : Fragment() {
         }
 
         val dialogBuilder = MaterialAlertDialogBuilder(requireContext())
-            .setTitle(when(chipType) {
-                FilterChip.TAG_CHIP -> resources.getString(R.string.tags_title)
-                FilterChip.SORTING_CHIP -> resources.getString(R.string.sorting_title)
-                FilterChip.TIME_PERIOD_CHIP -> resources.getString(R.string.time_period_title)
-            })
+            .setTitle(
+                when (chipType) {
+                    FilterChip.TAG_CHIP -> resources.getString(R.string.tags_title)
+                    FilterChip.SORTING_CHIP -> resources.getString(R.string.sorting_title)
+                    FilterChip.TIME_PERIOD_CHIP -> resources.getString(R.string.time_period_title)
+                }
+            )
             .setNeutralButton(resources.getString(R.string.cancel)) { _, _ -> }
             .setPositiveButton(resources.getString(R.string.ok)) { _, _ ->
-                when(dialogType){
+                when (dialogType) {
                     DialogType.SINGLE_CHOICE -> viewModel.onDialogItemSelected(filterChip = chipType, selectedItemIndex = checkedItemIndex)
                     DialogType.MULTI_CHOICE -> {
                         for (i in checkedItems.indices) {
@@ -107,16 +109,18 @@ class CryptoCurrencyFragment : Fragment() {
                     }
                 }
             }
-            when(dialogType) {
-                DialogType.SINGLE_CHOICE -> dialogBuilder.setSingleChoiceItems(
-                    elements, lastSelectedElement) { _, which ->
-                        checkedItemIndex = which
-                    }
-                DialogType.MULTI_CHOICE -> dialogBuilder.setMultiChoiceItems(
-                    elements, checkedItems) { _, which, checked ->
-                    checkedItems[which] = checked
-                }
+        when (dialogType) {
+            DialogType.SINGLE_CHOICE -> dialogBuilder.setSingleChoiceItems(
+                elements, lastSelectedElement
+            ) { _, which ->
+                checkedItemIndex = which
             }
+            DialogType.MULTI_CHOICE -> dialogBuilder.setMultiChoiceItems(
+                elements, checkedItems
+            ) { _, which, checked ->
+                checkedItems[which] = checked
+            }
+        }
         dialogBuilder.show()
     }
 }
