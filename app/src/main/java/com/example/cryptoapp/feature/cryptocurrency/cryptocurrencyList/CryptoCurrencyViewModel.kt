@@ -118,6 +118,7 @@ class CryptoCurrencyViewModel(private val useCase: GetCryptoCurrenciesUseCase) :
         FilterChip.SORTING_CHIP -> selectedSortingCriteria = selectedItemIndex
         FilterChip.TIME_PERIOD_CHIP -> selectedTimePeriod = selectedItemIndex
     }.also {
+        cryptoCurrencies.value = null
         refreshData(
             orderBy = sortingParams[selectedSortingCriteria].first,
             orderDirection = sortingParams[selectedSortingCriteria].second,
