@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cryptoapp.R
-import com.example.cryptoapp.databinding.ItemExchangeErrorStateBinding
 import com.example.cryptoapp.databinding.ItemExchangeExchangeBinding
 import com.example.cryptoapp.databinding.ItemExchangeLoadMoreBinding
 
@@ -22,7 +21,6 @@ class ExchangeAdapter(
 ) {
     override fun getItemViewType(position: Int): Int = when (getItem(position)) {
         is ExchangeListItem.Exchange -> R.layout.item_exchange_exchange
-        is ExchangeListItem.ErrorState -> R.layout.item_exchange_error_state
         is ExchangeListItem.LoadMore -> R.layout.item_exchange_load_more
     }
 
@@ -30,9 +28,6 @@ class ExchangeAdapter(
         R.layout.item_exchange_exchange -> ExchangeViewHolder.create(
             parent = parent,
             onExchangeItemClick = onExchangeItemClick
-        )
-        R.layout.item_exchange_error_state -> ErrorStateViewHolder.create(
-            parent = parent
         )
         R.layout.item_exchange_load_more -> LoadMoreViewHolder.create(
             parent = parent
@@ -42,24 +37,8 @@ class ExchangeAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) = when (val uiModel = getItem(position)) {
         is ExchangeListItem.Exchange -> (holder as ExchangeViewHolder).bind(uiModel)
-        is ExchangeListItem.ErrorState -> (holder as ErrorStateViewHolder).bind(uiModel)
         is ExchangeListItem.LoadMore -> (holder as LoadMoreViewHolder).bind(uiModel).also {
             onLoadMoreExchanges()
-        }
-    }
-
-    class ErrorStateViewHolder private constructor(
-        private val binding: ItemExchangeErrorStateBinding,
-    ) : RecyclerView.ViewHolder(binding.root) {
-
-        fun bind(listItem: ExchangeListItem.ErrorState) {
-            binding.uiModel = listItem
-        }
-
-        companion object {
-            fun create(parent: ViewGroup) = ErrorStateViewHolder(
-                binding = ItemExchangeErrorStateBinding.inflate(LayoutInflater.from(parent.context), parent, false),
-            )
         }
     }
 

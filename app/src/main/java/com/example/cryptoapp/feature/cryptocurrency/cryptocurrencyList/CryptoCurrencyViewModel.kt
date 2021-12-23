@@ -32,16 +32,12 @@ class CryptoCurrencyViewModel(private val useCase: GetCryptoCurrenciesUseCase) :
 
     val listItems = combine(cryptoCurrencies, shouldShowError) { cryptoCurrencies, shouldShowError ->
         if (shouldShowError) {
-            listOf(CryptoCurrencyListItem.ErrorState())
+            _event.pushEvent(Event.ErrorEvent(errorMessage = "Failed to load cryptocurrencies"))
+            cryptoCurrencies?.map { it.toListItem(timePeriods[selectedTimePeriod].uppercase(Locale.getDefault())) } ?: emptyList()
         } else {
-            if (cryptoCurrencies == null) {
-                emptyList()
-            } else {
-                cryptoCurrencies.map {
-                    it.toListItem(
-                        timePeriods[selectedTimePeriod].uppercase(Locale.getDefault())
-                    )
-                } + CryptoCurrencyListItem.LoadMore()
+            when {
+                cryptoCurrencies == null || cryptoCurrencies.isEmpty() -> emptyList()
+                else -> cryptoCurrencies.map { it.toListItem(timePeriods[selectedTimePeriod].uppercase(Locale.getDefault())) } + CryptoCurrencyListItem.LoadMore()
             }
         }
     }
@@ -136,7 +132,7 @@ class CryptoCurrencyViewModel(private val useCase: GetCryptoCurrenciesUseCase) :
     )
 
     sealed class Event {
-        // Should I split this into 2 types of event (SingleChoiceDialogEvent and MultiChoiceDialogEvent)?
+        // Should I split this into 2 type of event (SingleChoiceDialogEvent and MultiChoiceDialogEvent)?
         data class DialogEvent(
             val dialogElements: List<String>,
             val lastSelectedItemIndex: Int = 0,
@@ -145,6 +141,8 @@ class CryptoCurrencyViewModel(private val useCase: GetCryptoCurrenciesUseCase) :
             val filterType: FilterChip
         ) : Event()
 
-        data class OpenDetailsPageEvent(val id: String) : Event()
+        data class OpenDetailsPageEvent(val cryptoCurrencyId: String) : Event()
+
+        data class ErrorEvent(val errorMessage: String) : Event()
     }
 }

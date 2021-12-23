@@ -6,13 +6,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cryptoapp.R
-import com.example.cryptoapp.databinding.ItemNewsErrorStateBinding
 import com.example.cryptoapp.databinding.ItemNewsLoadMoreBinding
 import com.example.cryptoapp.databinding.ItemNewsNewsBinding
 
 class NewsAdapter(
     private val onNewsItemClicked: (String) -> Unit,
-    private val onTryAgainButtonClicked: () -> Unit,
     private val onLoadMoreBound: () -> Unit
 ) : ListAdapter<NewsListItem, RecyclerView.ViewHolder>(
     object : DiffUtil.ItemCallback<NewsListItem>() {
@@ -22,16 +20,11 @@ class NewsAdapter(
     }
 ) {
     override fun getItemViewType(position: Int) = when (getItem(position)) {
-        is NewsListItem.ErrorState -> R.layout.item_news_error_state
         is NewsListItem.LoadMore -> R.layout.item_news_load_more
         is NewsListItem.News -> R.layout.item_news_news
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
-        R.layout.item_news_error_state -> ErrorStateViewHolder.create(
-            parent = parent,
-            onTryAgainButtonClicked = onTryAgainButtonClicked
-        )
         R.layout.item_news_load_more -> LoadMoreViewHolder.create(
             parent = parent
         )
@@ -43,36 +36,10 @@ class NewsAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) = when (val uiModel = getItem(position)) {
-        is NewsListItem.ErrorState -> (holder as ErrorStateViewHolder).bind(uiModel)
         is NewsListItem.LoadMore -> (holder as LoadMoreViewHolder).bind(uiModel).also {
             onLoadMoreBound()
         }
         is NewsListItem.News -> (holder as NewsViewHolder).bind(uiModel)
-    }
-
-    class ErrorStateViewHolder private constructor(
-        private val binding: ItemNewsErrorStateBinding,
-        private val onTryAgainButtonClicked: () -> Unit
-    ) : RecyclerView.ViewHolder(binding.root) {
-
-        init {
-            binding.tryAgain.setOnClickListener {
-                if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
-                    onTryAgainButtonClicked()
-                }
-            }
-        }
-
-        fun bind(listItem: NewsListItem.ErrorState) {
-            binding.uiModel = listItem
-        }
-
-        companion object {
-            fun create(parent: ViewGroup, onTryAgainButtonClicked: () -> Unit) = ErrorStateViewHolder(
-                binding = ItemNewsErrorStateBinding.inflate(LayoutInflater.from(parent.context), parent, false),
-                onTryAgainButtonClicked = onTryAgainButtonClicked
-            )
-        }
     }
 
     class LoadMoreViewHolder private constructor(

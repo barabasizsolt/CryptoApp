@@ -22,18 +22,18 @@ class NewsViewModel(private val useCase: GetNewsUseCase) : ViewModel() {
     private val shouldShowError = MutableStateFlow(false)
     val listItems = combine(news, shouldShowError) { news, shouldShowError ->
         if (shouldShowError) {
-            listOf(NewsListItem.ErrorState())
+            _event.pushEvent(Event.ErrorEvent(errorMessage = "Failed to load news"))
+            news?.map { it.toListItem() } ?: emptyList()
         } else {
-            if (news == null) {
-                emptyList()
-            } else {
-                news.map { it.toListItem() } + NewsListItem.LoadMore()
+            when {
+                news == null || news.isEmpty() -> emptyList()
+                else -> news.map { it.toListItem() } + NewsListItem.LoadMore()
             }
         }
     }
 
-    private val _openBrowserEvent = eventFlow<Event>()
-    val openBrowserEvent: SharedFlow<Event> = _openBrowserEvent
+    private val _event = eventFlow<Event>()
+    val event: SharedFlow<Event> = _event
 
     init {
         refreshData(isForceRefresh = false)
@@ -65,7 +65,7 @@ class NewsViewModel(private val useCase: GetNewsUseCase) : ViewModel() {
         }
     }
 
-    fun onNewsItemClicked(url: String) = _openBrowserEvent.pushEvent(Event.OpenBrowserEvent(url))
+    fun onNewsItemClicked(url: String) = _event.pushEvent(Event.OpenBrowserEvent(url))
 
     private fun News.toListItem() = NewsListItem.News(
         title = title,
@@ -77,5 +77,7 @@ class NewsViewModel(private val useCase: GetNewsUseCase) : ViewModel() {
 
     sealed class Event {
         data class OpenBrowserEvent(val url: String) : Event()
+
+        data class ErrorEvent(val errorMessage: String) : Event()
     }
 }

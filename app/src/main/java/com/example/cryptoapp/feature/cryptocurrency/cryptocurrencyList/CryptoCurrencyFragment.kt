@@ -14,6 +14,7 @@ import com.example.cryptoapp.feature.cryptocurrency.Constant.COIN_ID
 import com.example.cryptoapp.feature.cryptocurrency.Constant.tags
 import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails.CryptoCurrencyDetailsFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -41,8 +42,7 @@ class CryptoCurrencyFragment : Fragment() {
         binding.recyclerview.layoutManager = LinearLayoutManager(requireContext())
         val cryptoCurrencyAdapter = CryptoCurrencyAdapter(
             onCryptoCurrencyItemClicked = viewModel::onCryptoCurrencyItemClicked,
-            onLoadMoreCryptoCurrency = { viewModel.refreshData(isForceRefresh = false) },
-            onTryAgainButtonClicked = { viewModel.refreshData(isForceRefresh = true) }
+            onLoadMoreCryptoCurrency = { viewModel.refreshData(isForceRefresh = false) }
         )
         binding.recyclerview.adapter = cryptoCurrencyAdapter
         viewModel.listItems.onEach(cryptoCurrencyAdapter::submitList).launchIn(viewLifecycleOwner.lifecycleScope)
@@ -62,12 +62,13 @@ class CryptoCurrencyFragment : Fragment() {
     private fun listenToEvents(event: CryptoCurrencyViewModel.Event) = when (event) {
         is CryptoCurrencyViewModel.Event.DialogEvent -> createDialog(event)
         is CryptoCurrencyViewModel.Event.OpenDetailsPageEvent -> openDetailsPage(event)
+        is CryptoCurrencyViewModel.Event.ErrorEvent -> createErrorSnackBar(event)
     }
 
     private fun openDetailsPage(openDetailsPageEvent: CryptoCurrencyViewModel.Event.OpenDetailsPageEvent) {
         val fragment = CryptoCurrencyDetailsFragment()
         val bundle = Bundle()
-        bundle.putString(COIN_ID, openDetailsPageEvent.id)
+        bundle.putString(COIN_ID, openDetailsPageEvent.cryptoCurrencyId)
         fragment.arguments = bundle
         (activity as MainActivity).replaceFragment(
             fragment,
@@ -125,5 +126,13 @@ class CryptoCurrencyFragment : Fragment() {
             }
         }
         dialogBuilder.show()
+    }
+
+    private fun createErrorSnackBar(errorEvent: CryptoCurrencyViewModel.Event.ErrorEvent) {
+        Snackbar.make(binding.root, errorEvent.errorMessage, Snackbar.LENGTH_LONG)
+            .setAction("Retry") {
+                viewModel.refreshData(isForceRefresh = true)
+            }
+            .show()
     }
 }

@@ -7,12 +7,6 @@ import com.example.cryptoapp.feature.shared.convertToPrice
 
 sealed class CryptoCurrencyListItem : ListItem {
 
-    data class ErrorState(
-        val nothing: Any? = null
-    ) : CryptoCurrencyListItem() {
-        override val id = "errorState"
-    }
-
     data class LoadMore(
         val nothing: Any? = null
     ) : CryptoCurrencyListItem() {

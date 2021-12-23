@@ -5,12 +5,6 @@ import com.example.cryptoapp.feature.shared.getFormattedTime
 
 sealed class NewsListItem : ListItem {
 
-    data class ErrorState(
-        val nothing: Any? = null
-    ) : NewsListItem() {
-        override val id = "errorState"
-    }
-
     data class LoadMore(
         val nothing: Any? = null
     ) : NewsListItem() {

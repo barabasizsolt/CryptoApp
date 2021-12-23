@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.cryptoapp.databinding.FragmentNewsBinding
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -31,15 +32,28 @@ class NewsFragment : Fragment() {
         binding.recyclerview.layoutManager = LinearLayoutManager(requireContext())
         val newsAdapter = NewsAdapter(
             onNewsItemClicked = viewModel::onNewsItemClicked,
-            onTryAgainButtonClicked = { viewModel.refreshData(isForceRefresh = true) },
             onLoadMoreBound = { viewModel.refreshData(isForceRefresh = false) }
         )
         binding.recyclerview.adapter = newsAdapter
         viewModel.listItems.onEach(newsAdapter::submitList).launchIn(viewLifecycleOwner.lifecycleScope)
-        viewModel.openBrowserEvent.onEach(::openBrowser).launchIn(viewLifecycleOwner.lifecycleScope)
+        viewModel.event.onEach(::listenToEvents).launchIn(viewLifecycleOwner.lifecycleScope)
         binding.swipeRefreshLayout.setOnRefreshListener { viewModel.refreshData(isForceRefresh = true) }
     }
 
-    private fun openBrowser(event: NewsViewModel.Event) =
-        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse((event as NewsViewModel.Event.OpenBrowserEvent).url)))
+    private fun listenToEvents(event: NewsViewModel.Event) = when (event) {
+        is NewsViewModel.Event.ErrorEvent -> createErrorSnackBar(event)
+        is NewsViewModel.Event.OpenBrowserEvent -> openBrowser(event)
+    }
+
+    private fun openBrowser(event: NewsViewModel.Event.OpenBrowserEvent) {
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(event.url)))
+    }
+
+    private fun createErrorSnackBar(errorEvent: NewsViewModel.Event.ErrorEvent) {
+        Snackbar.make(binding.root, errorEvent.errorMessage, Snackbar.LENGTH_LONG)
+            .setAction("Retry") {
+                viewModel.refreshData(isForceRefresh = true)
+            }
+            .show()
+    }
 }

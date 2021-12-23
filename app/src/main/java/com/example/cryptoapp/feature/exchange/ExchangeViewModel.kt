@@ -22,21 +22,21 @@ class ExchangeViewModel(private val useCase: GetExchangesUseCase) : ViewModel() 
     private val shouldShowError = MutableStateFlow(false)
     val listItems = combine(exchanges, shouldShowError) { exchanges, shouldShowError ->
         if (shouldShowError) {
-            listOf(ExchangeListItem.ErrorState())
+            _event.pushEvent(Event.ErrorEvent(errorMessage = "Failed to load exchanges"))
+            exchanges?.map { it.toListItem() } ?: emptyList()
         } else {
-            if (exchanges == null) {
-                emptyList()
-            } else {
-                exchanges.map { it.toListItem() } + ExchangeListItem.LoadMore()
+            when {
+                exchanges == null || exchanges.isEmpty() -> emptyList()
+                else -> exchanges.map { it.toListItem() } + ExchangeListItem.LoadMore()
             }
         }
     }
 
-    private val _logExchangeDetails = eventFlow<Event>()
-    val logExchangeDetails: SharedFlow<Event> = _logExchangeDetails
+    private val _event = eventFlow<Event>()
+    val event: SharedFlow<Event> = _event
 
     init {
-        refreshData(false)
+        refreshData(isForceRefresh = false)
     }
 
     fun refreshData(isForceRefresh: Boolean) {
@@ -65,7 +65,7 @@ class ExchangeViewModel(private val useCase: GetExchangesUseCase) : ViewModel() 
         }
     }
 
-    fun onExchangeItemClicked(id: String) = _logExchangeDetails.pushEvent(Event.LogExchangeId(id))
+    fun onExchangeItemClicked(id: String) = _event.pushEvent(Event.LogExchangeIdEvent(id))
 
     private fun Exchange.toListItem() = ExchangeListItem.Exchange(
         exchangeId = id,
@@ -76,6 +76,8 @@ class ExchangeViewModel(private val useCase: GetExchangesUseCase) : ViewModel() 
     )
 
     sealed class Event {
-        data class LogExchangeId(val id: String) : Event()
+        data class LogExchangeIdEvent(val id: String) : Event()
+
+        data class ErrorEvent(val errorMessage: String) : Event()
     }
 }
