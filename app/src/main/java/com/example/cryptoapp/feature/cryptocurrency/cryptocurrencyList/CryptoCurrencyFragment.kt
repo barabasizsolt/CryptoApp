@@ -64,9 +64,7 @@ class CryptoCurrencyFragment : Fragment() {
         is CryptoCurrencyViewModel.Event.DialogEvent -> createDialog(event)
         is CryptoCurrencyViewModel.Event.OpenDetailsPageEvent -> openDetailsPage(event)
         is CryptoCurrencyViewModel.Event.ErrorEvent -> binding.root.createErrorSnackBar(event.errorMessage) {
-            viewModel.refreshData(
-                isForceRefresh = true
-            )
+            viewModel.refreshData(isForceRefresh = true)
         }
     }
 

@@ -46,9 +46,7 @@ class ExchangeFragment : Fragment() {
 
     private fun listenToEvents(event: ExchangeViewModel.Event) = when (event) {
         is ExchangeViewModel.Event.ErrorEvent -> binding.root.createErrorSnackBar(event.errorMessage) {
-            viewModel.refreshData(
-                isForceRefresh = true
-            )
+            viewModel.refreshData(isForceRefresh = true)
         }
         is ExchangeViewModel.Event.LogExchangeIdEvent -> logExchangeDetails(event)
     }

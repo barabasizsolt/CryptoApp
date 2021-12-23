@@ -43,9 +43,7 @@ class NewsFragment : Fragment() {
 
     private fun listenToEvents(event: NewsViewModel.Event) = when (event) {
         is NewsViewModel.Event.ErrorEvent -> binding.root.createErrorSnackBar(event.errorMessage) {
-            viewModel.refreshData(
-                isForceRefresh = true
-            )
+            viewModel.refreshData(isForceRefresh = true)
         }
         is NewsViewModel.Event.OpenBrowserEvent -> openBrowser(event)
     }
