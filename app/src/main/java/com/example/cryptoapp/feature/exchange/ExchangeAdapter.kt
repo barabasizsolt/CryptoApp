@@ -6,12 +6,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cryptoapp.R
+import com.example.cryptoapp.databinding.ItemExchangeErrorStateBinding
 import com.example.cryptoapp.databinding.ItemExchangeExchangeBinding
 import com.example.cryptoapp.databinding.ItemExchangeLoadMoreBinding
 
 class ExchangeAdapter(
     private val onExchangeItemClick: (String) -> Unit,
-    private val onLoadMoreExchanges: () -> Unit
+    private val onLoadMoreExchanges: () -> Unit,
+    private val onTryAgainButtonClicked: () -> Unit
 ) : ListAdapter<ExchangeListItem, RecyclerView.ViewHolder>(
     object : DiffUtil.ItemCallback<ExchangeListItem>() {
         override fun areItemsTheSame(oldItem: ExchangeListItem, newItem: ExchangeListItem) = oldItem.id == newItem.id
@@ -22,6 +24,7 @@ class ExchangeAdapter(
     override fun getItemViewType(position: Int): Int = when (getItem(position)) {
         is ExchangeListItem.Exchange -> R.layout.item_exchange_exchange
         is ExchangeListItem.LoadMore -> R.layout.item_exchange_load_more
+        is ExchangeListItem.ErrorState -> R.layout.item_exchange_error_state
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
@@ -32,6 +35,10 @@ class ExchangeAdapter(
         R.layout.item_exchange_load_more -> LoadMoreViewHolder.create(
             parent = parent
         )
+        R.layout.item_exchange_error_state -> ErrorStateViewHolder.create(
+            parent = parent,
+            onTryAgainButtonClicked = onTryAgainButtonClicked
+        )
         else -> throw IllegalStateException("Invalid view type: $viewType.")
     }
 
@@ -39,6 +46,32 @@ class ExchangeAdapter(
         is ExchangeListItem.Exchange -> (holder as ExchangeViewHolder).bind(uiModel)
         is ExchangeListItem.LoadMore -> (holder as LoadMoreViewHolder).bind(uiModel).also {
             onLoadMoreExchanges()
+        }
+        is ExchangeListItem.ErrorState -> (holder as ErrorStateViewHolder).bind(uiModel)
+    }
+
+    class ErrorStateViewHolder private constructor(
+        private val binding: ItemExchangeErrorStateBinding,
+        private val onTryAgainButtonClicked: () -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
+
+        init {
+            binding.errorStateLayout.tryAgain.setOnClickListener {
+                if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
+                    onTryAgainButtonClicked()
+                }
+            }
+        }
+
+        fun bind(listItem: ExchangeListItem.ErrorState) {
+            binding.uiModel = listItem
+        }
+
+        companion object {
+            fun create(parent: ViewGroup, onTryAgainButtonClicked: () -> Unit) = ErrorStateViewHolder(
+                binding = ItemExchangeErrorStateBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+                onTryAgainButtonClicked = onTryAgainButtonClicked
+            )
         }
     }
 

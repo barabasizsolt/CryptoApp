@@ -22,8 +22,9 @@ class ExchangeViewModel(private val useCase: GetExchangesUseCase) : ViewModel() 
     private val shouldShowError = MutableStateFlow(false)
     val listItems = combine(exchanges, shouldShowError) { exchanges, shouldShowError ->
         if (shouldShowError) {
-            _event.pushEvent(Event.ErrorEvent(errorMessage = "Failed to load exchanges"))
-            exchanges?.map { it.toListItem() } ?: emptyList()
+            exchanges?.map { it.toListItem() }?.also {
+                _event.pushEvent(Event.ErrorEvent(errorMessage = "Failed to load exchanges"))
+            } ?: listOf(ExchangeListItem.ErrorState())
         } else {
             when {
                 exchanges == null || exchanges.isEmpty() -> emptyList()

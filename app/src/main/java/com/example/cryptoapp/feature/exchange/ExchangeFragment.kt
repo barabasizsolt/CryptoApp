@@ -35,7 +35,8 @@ class ExchangeFragment : Fragment() {
         binding.recyclerview.layoutManager = LinearLayoutManager(requireContext())
         val exchangeAdapter = ExchangeAdapter(
             onExchangeItemClick = viewModel::onExchangeItemClicked,
-            onLoadMoreExchanges = { viewModel.refreshData(isForceRefresh = false) }
+            onLoadMoreExchanges = { viewModel.refreshData(isForceRefresh = false) },
+            onTryAgainButtonClicked = { viewModel.refreshData(isForceRefresh = true) }
         )
         binding.recyclerview.adapter = exchangeAdapter
         viewModel.listItems.onEach(exchangeAdapter::submitList).launchIn(viewLifecycleOwner.lifecycleScope)

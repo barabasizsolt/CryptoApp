@@ -22,11 +22,13 @@ class NewsViewModel(private val useCase: GetNewsUseCase) : ViewModel() {
     private val shouldShowError = MutableStateFlow(false)
     val listItems = combine(news, shouldShowError) { news, shouldShowError ->
         if (shouldShowError) {
-            _event.pushEvent(Event.ErrorEvent(errorMessage = "Failed to load news"))
-            news?.map { it.toListItem() } ?: emptyList()
+            news?.map { it.toListItem() }?.also {
+                _event.pushEvent(Event.ErrorEvent(errorMessage = "Failed to load news"))
+            } ?: listOf(NewsListItem.ErrorState())
         } else {
             when {
-                news == null || news.isEmpty() -> emptyList()
+                news == null -> listOf(NewsListItem.ErrorState())
+                news.isEmpty() -> emptyList()
                 else -> news.map { it.toListItem() } + NewsListItem.LoadMore()
             }
         }

@@ -42,7 +42,8 @@ class CryptoCurrencyFragment : Fragment() {
         binding.recyclerview.layoutManager = LinearLayoutManager(requireContext())
         val cryptoCurrencyAdapter = CryptoCurrencyAdapter(
             onCryptoCurrencyItemClicked = viewModel::onCryptoCurrencyItemClicked,
-            onLoadMoreCryptoCurrency = { viewModel.refreshData(isForceRefresh = false) }
+            onLoadMoreCryptoCurrency = { viewModel.refreshData(isForceRefresh = false) },
+            onTryAgainButtonClicked = { viewModel.refreshData(isForceRefresh = true) }
         )
         binding.recyclerview.adapter = cryptoCurrencyAdapter
         viewModel.listItems.onEach(cryptoCurrencyAdapter::submitList).launchIn(viewLifecycleOwner.lifecycleScope)

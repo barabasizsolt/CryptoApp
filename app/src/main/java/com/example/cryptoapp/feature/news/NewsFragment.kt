@@ -32,7 +32,8 @@ class NewsFragment : Fragment() {
         binding.recyclerview.layoutManager = LinearLayoutManager(requireContext())
         val newsAdapter = NewsAdapter(
             onNewsItemClicked = viewModel::onNewsItemClicked,
-            onLoadMoreBound = { viewModel.refreshData(isForceRefresh = false) }
+            onLoadMoreBound = { viewModel.refreshData(isForceRefresh = false) },
+            onTryAgainButtonClicked = { viewModel.refreshData(isForceRefresh = true) }
         )
         binding.recyclerview.adapter = newsAdapter
         viewModel.listItems.onEach(newsAdapter::submitList).launchIn(viewLifecycleOwner.lifecycleScope)

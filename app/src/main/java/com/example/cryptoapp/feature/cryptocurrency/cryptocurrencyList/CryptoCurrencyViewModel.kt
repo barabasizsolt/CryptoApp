@@ -32,8 +32,11 @@ class CryptoCurrencyViewModel(private val useCase: GetCryptoCurrenciesUseCase) :
 
     val listItems = combine(cryptoCurrencies, shouldShowError) { cryptoCurrencies, shouldShowError ->
         if (shouldShowError) {
-            _event.pushEvent(Event.ErrorEvent(errorMessage = "Failed to load cryptocurrencies"))
-            cryptoCurrencies?.map { it.toListItem(timePeriods[selectedTimePeriod].uppercase(Locale.getDefault())) } ?: emptyList()
+            cryptoCurrencies?.map { it.toListItem(timePeriods[selectedTimePeriod].uppercase(Locale.getDefault())) }
+                ?.also {
+                    _event.pushEvent(Event.ErrorEvent(errorMessage = "Failed to load cryptocurrencies"))
+                }
+                ?: listOf(CryptoCurrencyListItem.ErrorState())
         } else {
             when {
                 cryptoCurrencies == null || cryptoCurrencies.isEmpty() -> emptyList()
