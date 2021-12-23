@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.cryptoapp.databinding.FragmentNewsBinding
-import com.google.android.material.snackbar.Snackbar
+import com.example.cryptoapp.feature.shared.createErrorSnackBar
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -42,19 +42,15 @@ class NewsFragment : Fragment() {
     }
 
     private fun listenToEvents(event: NewsViewModel.Event) = when (event) {
-        is NewsViewModel.Event.ErrorEvent -> createErrorSnackBar(event)
+        is NewsViewModel.Event.ErrorEvent -> binding.root.createErrorSnackBar(event.errorMessage) {
+            viewModel.refreshData(
+                isForceRefresh = true
+            )
+        }
         is NewsViewModel.Event.OpenBrowserEvent -> openBrowser(event)
     }
 
     private fun openBrowser(event: NewsViewModel.Event.OpenBrowserEvent) {
         startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(event.url)))
-    }
-
-    private fun createErrorSnackBar(errorEvent: NewsViewModel.Event.ErrorEvent) {
-        Snackbar.make(binding.root, errorEvent.errorMessage, Snackbar.LENGTH_LONG)
-            .setAction("Retry") {
-                viewModel.refreshData(isForceRefresh = true)
-            }
-            .show()
     }
 }

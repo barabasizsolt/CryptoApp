@@ -13,8 +13,8 @@ import com.example.cryptoapp.databinding.FragmentCryptoCurrencyBinding
 import com.example.cryptoapp.feature.cryptocurrency.Constant.COIN_ID
 import com.example.cryptoapp.feature.cryptocurrency.Constant.tags
 import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails.CryptoCurrencyDetailsFragment
+import com.example.cryptoapp.feature.shared.createErrorSnackBar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -63,7 +63,11 @@ class CryptoCurrencyFragment : Fragment() {
     private fun listenToEvents(event: CryptoCurrencyViewModel.Event) = when (event) {
         is CryptoCurrencyViewModel.Event.DialogEvent -> createDialog(event)
         is CryptoCurrencyViewModel.Event.OpenDetailsPageEvent -> openDetailsPage(event)
-        is CryptoCurrencyViewModel.Event.ErrorEvent -> createErrorSnackBar(event)
+        is CryptoCurrencyViewModel.Event.ErrorEvent -> binding.root.createErrorSnackBar(event.errorMessage) {
+            viewModel.refreshData(
+                isForceRefresh = true
+            )
+        }
     }
 
     private fun openDetailsPage(openDetailsPageEvent: CryptoCurrencyViewModel.Event.OpenDetailsPageEvent) {
@@ -127,13 +131,5 @@ class CryptoCurrencyFragment : Fragment() {
             }
         }
         dialogBuilder.show()
-    }
-
-    private fun createErrorSnackBar(errorEvent: CryptoCurrencyViewModel.Event.ErrorEvent) {
-        Snackbar.make(binding.root, errorEvent.errorMessage, Snackbar.LENGTH_LONG)
-            .setAction("Retry") {
-                viewModel.refreshData(isForceRefresh = true)
-            }
-            .show()
     }
 }

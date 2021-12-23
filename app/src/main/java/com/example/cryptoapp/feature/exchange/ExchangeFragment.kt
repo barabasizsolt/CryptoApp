@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.cryptoapp.databinding.FragmentExchangeBinding
-import com.google.android.material.snackbar.Snackbar
+import com.example.cryptoapp.feature.shared.createErrorSnackBar
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -45,19 +45,15 @@ class ExchangeFragment : Fragment() {
     }
 
     private fun listenToEvents(event: ExchangeViewModel.Event) = when (event) {
-        is ExchangeViewModel.Event.ErrorEvent -> createErrorSnackBar(event)
+        is ExchangeViewModel.Event.ErrorEvent -> binding.root.createErrorSnackBar(event.errorMessage) {
+            viewModel.refreshData(
+                isForceRefresh = true
+            )
+        }
         is ExchangeViewModel.Event.LogExchangeIdEvent -> logExchangeDetails(event)
     }
 
     private fun logExchangeDetails(event: ExchangeViewModel.Event.LogExchangeIdEvent) {
         Log.d("Details", event.id)
-    }
-
-    private fun createErrorSnackBar(errorEvent: ExchangeViewModel.Event.ErrorEvent) {
-        Snackbar.make(binding.root, errorEvent.errorMessage, Snackbar.LENGTH_LONG)
-            .setAction("Retry") {
-                viewModel.refreshData(isForceRefresh = true)
-            }
-            .show()
     }
 }

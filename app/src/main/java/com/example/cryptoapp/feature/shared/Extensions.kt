@@ -3,6 +3,7 @@ package com.example.cryptoapp.feature.shared
 import android.content.Context
 import android.icu.util.CurrencyAmount
 import android.net.Uri
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -17,6 +18,7 @@ import com.example.cryptoapp.feature.shared.Constant.currency
 import com.example.cryptoapp.feature.shared.Constant.formatter
 import com.example.cryptoapp.feature.shared.Constant.numberFormatter
 import com.google.android.material.color.MaterialColors
+import com.google.android.material.snackbar.Snackbar
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -87,3 +89,8 @@ fun String.convertToCompactPrice(): String = formatter.format(CurrencyAmount(thi
 fun Int.getColorFromAttr(context: Context, defaultColor: Int): Int = MaterialColors.getColor(context, this, defaultColor)
 
 fun Int.toHexStringColor(): String = "#" + Integer.toHexString(this).substring(2)
+
+fun View.createErrorSnackBar(errorMessage: String, snackBarAction: () -> Unit) =
+    Snackbar.make(this, errorMessage, Snackbar.LENGTH_LONG)
+        .setAction("Retry") { snackBarAction() }
+        .show()
