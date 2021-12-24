@@ -11,12 +11,11 @@ import java.lang.IllegalStateException
 class CryptoRepository(private val manager: NetworkManager) {
 
     companion object {
-        const val DEFAULT_OFFSET = 0
         const val LIMIT = 50
     }
 
     private var cache: MutableList<CryptoCurrency>? = null
-    private var lastCryptoCurrencyOffset = DEFAULT_OFFSET
+    private var lastCryptoCurrencyOffset = 0
 
     suspend fun getAllCryptoCurrencies(
         orderBy: String,
@@ -25,27 +24,27 @@ class CryptoRepository(private val manager: NetworkManager) {
         timePeriod: String,
         refreshType: RefreshType
     ): List<CryptoCurrency> = when (refreshType) {
-        RefreshType.FORCE_REFRESH -> loadALlCurrencies(
+        RefreshType.FORCE_REFRESH -> loadAllCryptoCurrencies(
             orderBy = orderBy,
             orderDirection = orderDirection,
-            offset = DEFAULT_OFFSET,
+            offset = 0,
             tags = tags,
             timePeriod = timePeriod
         ).let { newData ->
             newData.also { cache = it.toMutableList() }
         }
         RefreshType.CACHE_IF_POSSIBLE -> cache.let { currentCache ->
-            currentCache ?: loadALlCurrencies(
+            currentCache ?: loadAllCryptoCurrencies(
                 orderBy = orderBy,
                 orderDirection = orderDirection,
-                offset = DEFAULT_OFFSET,
+                offset = 0,
                 tags = tags,
                 timePeriod = timePeriod
             ).let { newData ->
                 newData.also { cache = it.toMutableList() }
             }
         }
-        RefreshType.NEXT_PAGE -> loadALlCurrencies(
+        RefreshType.NEXT_PAGE -> loadAllCryptoCurrencies(
             orderBy = orderBy,
             orderDirection = orderDirection,
             offset = lastCryptoCurrencyOffset + LIMIT,
@@ -58,7 +57,7 @@ class CryptoRepository(private val manager: NetworkManager) {
         }
     }
 
-    private suspend fun loadALlCurrencies(
+    private suspend fun loadAllCryptoCurrencies(
         orderBy: String,
         orderDirection: String,
         offset: Int,

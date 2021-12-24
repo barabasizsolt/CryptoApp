@@ -34,7 +34,8 @@
                 android:layout_height="wrap_content"
                 android:checked="true"
                 android:text="@string/chip_tags"
-                app:chipCornerRadius="@dimen/chip_group_corner_radius" />
+                app:chipCornerRadius="@dimen/chip_group_corner_radius"
+                android:onClick="@{() -> viewModel.onTagChipClicked()}"/>
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chip_time_period"
@@ -42,7 +43,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/chip_time_period"
-                app:chipCornerRadius="@dimen/chip_group_corner_radius" />
+                app:chipCornerRadius="@dimen/chip_group_corner_radius"
+                android:onClick="@{() -> viewModel.onTimePeriodChipClicked()}"/>
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chip_sort_by"
@@ -50,7 +52,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/chip_sort_by"
-                app:chipCornerRadius="@dimen/chip_group_corner_radius" />
+                app:chipCornerRadius="@dimen/chip_group_corner_radius"
+                android:onClick="@{() -> viewModel.onSortingChipClicked()}"/>
 
         </com.google.android.material.chip.ChipGroup>
 

@@ -2,25 +2,19 @@ package com.example.cryptoapp.feature.news
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.ItemNewsErrorStateBinding
 import com.example.cryptoapp.databinding.ItemNewsLoadMoreBinding
 import com.example.cryptoapp.databinding.ItemNewsNewsBinding
+import com.example.cryptoapp.feature.shared.ListItemDiff
 
 class NewsAdapter(
     private val onNewsItemClicked: (String) -> Unit,
     private val onLoadMoreBound: () -> Unit,
     private val onTryAgainButtonClicked: () -> Unit
-) : ListAdapter<NewsListItem, RecyclerView.ViewHolder>(
-    object : DiffUtil.ItemCallback<NewsListItem>() {
-        override fun areItemsTheSame(oldItem: NewsListItem, newItem: NewsListItem) = oldItem.id == newItem.id
-
-        override fun areContentsTheSame(oldItem: NewsListItem, newItem: NewsListItem) = oldItem == newItem
-    }
-) {
+) : ListAdapter<NewsListItem, RecyclerView.ViewHolder>(ListItemDiff()) {
     override fun getItemViewType(position: Int) = when (getItem(position)) {
         is NewsListItem.LoadMore -> R.layout.item_news_load_more
         is NewsListItem.News -> R.layout.item_news_news

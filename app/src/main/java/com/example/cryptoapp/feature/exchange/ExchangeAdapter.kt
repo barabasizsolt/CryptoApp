@@ -2,25 +2,19 @@ package com.example.cryptoapp.feature.exchange
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.ItemExchangeErrorStateBinding
 import com.example.cryptoapp.databinding.ItemExchangeExchangeBinding
 import com.example.cryptoapp.databinding.ItemExchangeLoadMoreBinding
+import com.example.cryptoapp.feature.shared.ListItemDiff
 
 class ExchangeAdapter(
     private val onExchangeItemClick: (String) -> Unit,
     private val onLoadMoreExchanges: () -> Unit,
     private val onTryAgainButtonClicked: () -> Unit
-) : ListAdapter<ExchangeListItem, RecyclerView.ViewHolder>(
-    object : DiffUtil.ItemCallback<ExchangeListItem>() {
-        override fun areItemsTheSame(oldItem: ExchangeListItem, newItem: ExchangeListItem) = oldItem.id == newItem.id
-
-        override fun areContentsTheSame(oldItem: ExchangeListItem, newItem: ExchangeListItem) = oldItem == newItem
-    }
-) {
+) : ListAdapter<ExchangeListItem, RecyclerView.ViewHolder>(ListItemDiff()) {
     override fun getItemViewType(position: Int): Int = when (getItem(position)) {
         is ExchangeListItem.Exchange -> R.layout.item_exchange_exchange
         is ExchangeListItem.LoadMore -> R.layout.item_exchange_load_more

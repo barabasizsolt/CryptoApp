@@ -33,9 +33,6 @@ class CryptoCurrencyViewModel(private val useCase: GetCryptoCurrenciesUseCase) :
     val listItems = combine(cryptoCurrencies, shouldShowError) { cryptoCurrencies, shouldShowError ->
         if (shouldShowError) {
             cryptoCurrencies?.map { it.toListItem(timePeriods[selectedTimePeriod].uppercase(Locale.getDefault())) }
-                ?.also {
-                    _event.pushEvent(Event.ErrorEvent(errorMessage = "Failed to load cryptocurrencies"))
-                }
                 ?: listOf(CryptoCurrencyListItem.ErrorState())
         } else {
             when {
@@ -81,6 +78,9 @@ class CryptoCurrencyViewModel(private val useCase: GetCryptoCurrenciesUseCase) :
                     }
                     is Result.Failure -> {
                         shouldShowError.value = true
+                        if (cryptoCurrencies.value != null) {
+                            _event.pushEvent(Event.ShowErrorMessage(errorMessage = "Failed to load cryptocurrencies"))
+                        }
                     }
                 }
                 _isRefreshing.value = false
@@ -88,30 +88,30 @@ class CryptoCurrencyViewModel(private val useCase: GetCryptoCurrenciesUseCase) :
         }
     }
 
-    fun onChipClicked(filterChip: FilterChip) = when (filterChip) {
-        FilterChip.TAG_CHIP -> _event.pushEvent(
-            Event.DialogEvent(
-                dialogElements = tags,
-                selectedItems = selectedTags,
-                dialogType = DialogType.MULTI_CHOICE,
-                filterType = FilterChip.TAG_CHIP
-            )
+    fun onTimePeriodChipClicked() = _event.pushEvent(
+        Event.ShowDialog(
+            dialogElements = timePeriods,
+            lastSelectedItemIndex = selectedTimePeriod,
+            filterType = FilterChip.TIME_PERIOD_CHIP
         )
-        FilterChip.SORTING_CHIP -> _event.pushEvent(
-            Event.DialogEvent(
-                dialogElements = sortingTypes,
-                lastSelectedItemIndex = selectedSortingCriteria,
-                filterType = FilterChip.SORTING_CHIP
-            )
+    )
+
+    fun onSortingChipClicked() = _event.pushEvent(
+        Event.ShowDialog(
+            dialogElements = sortingTypes,
+            lastSelectedItemIndex = selectedSortingCriteria,
+            filterType = FilterChip.SORTING_CHIP
         )
-        FilterChip.TIME_PERIOD_CHIP -> _event.pushEvent(
-            Event.DialogEvent(
-                dialogElements = timePeriods,
-                lastSelectedItemIndex = selectedTimePeriod,
-                filterType = FilterChip.TIME_PERIOD_CHIP
-            )
+    )
+
+    fun onTagChipClicked() = _event.pushEvent(
+        Event.ShowDialog(
+            dialogElements = tags,
+            selectedItems = selectedTags,
+            dialogType = DialogType.MULTI_CHOICE,
+            filterType = FilterChip.TAG_CHIP
         )
-    }
+    )
 
     fun onDialogItemSelected(filterChip: FilterChip, selectedItemIndex: Int = 0, selectedItems: List<String> = listOf()) = when (filterChip) {
         FilterChip.TAG_CHIP -> selectedTags = selectedItems
@@ -128,7 +128,7 @@ class CryptoCurrencyViewModel(private val useCase: GetCryptoCurrenciesUseCase) :
         )
     }
 
-    fun onCryptoCurrencyItemClicked(id: String) = _event.pushEvent(Event.OpenDetailsPageEvent(id))
+    fun onCryptoCurrencyItemClicked(id: String) = _event.pushEvent(Event.OpenDetailsPage(id))
 
     private fun CryptoCurrency.toListItem(timePeriod: String) = CryptoCurrencyListItem.Crypto(
         cryptoCurrency = this,
@@ -136,8 +136,7 @@ class CryptoCurrencyViewModel(private val useCase: GetCryptoCurrenciesUseCase) :
     )
 
     sealed class Event {
-        // Should I split this into 2 type of event (SingleChoiceDialogEvent and MultiChoiceDialogEvent)?
-        data class DialogEvent(
+        data class ShowDialog(
             val dialogElements: List<String>,
             val lastSelectedItemIndex: Int = 0,
             val selectedItems: List<String> = listOf(),
@@ -145,8 +144,8 @@ class CryptoCurrencyViewModel(private val useCase: GetCryptoCurrenciesUseCase) :
             val filterType: FilterChip
         ) : Event()
 
-        data class OpenDetailsPageEvent(val cryptoCurrencyId: String) : Event()
+        data class OpenDetailsPage(val cryptoCurrencyId: String) : Event()
 
-        data class ErrorEvent(val errorMessage: String) : Event()
+        data class ShowErrorMessage(val errorMessage: String) : Event()
     }
 }

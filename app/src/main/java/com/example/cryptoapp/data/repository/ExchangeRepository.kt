@@ -10,18 +10,17 @@ class ExchangeRepository(private val manager: NetworkManager) {
 
     companion object {
         const val PER_PAGE: Int = 50
-        const val DEFAULT_PAGE: Int = 1
     }
 
     private var cache: MutableList<Exchange>? = null
-    private var lastDownloadedPage = DEFAULT_PAGE
+    private var lastDownloadedPage = 1
 
     suspend fun getAllExchanges(refreshType: RefreshType): List<Exchange> = when (refreshType) {
-        RefreshType.FORCE_REFRESH -> loadData(DEFAULT_PAGE).let { exchanges ->
+        RefreshType.FORCE_REFRESH -> loadData(1).let { exchanges ->
             exchanges.also { cache = it.toMutableList() }
         }
         RefreshType.CACHE_IF_POSSIBLE -> cache.let { currentCache ->
-            currentCache ?: loadData(DEFAULT_PAGE).let { exchanges ->
+            currentCache ?: loadData(1).let { exchanges ->
                 exchanges.also { cache = it.toMutableList() }
             }
         }

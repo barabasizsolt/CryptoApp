@@ -23,7 +23,8 @@ sealed class CryptoCurrencyListItem : ListItem {
         val cryptoCurrency: CryptoCurrency,
         val timePeriod: String
     ) : CryptoCurrencyListItem() {
-        override val id = cryptoCurrency.uuid
+        override val id = "crypto_${cryptoCurrency.uuid}"
+        val cryptoCurrencyId = cryptoCurrency.uuid
         val formattedPrice = cryptoCurrency.price.convertToPrice()
         val formattedVolume = cryptoCurrency.volume.convertToCompactPrice()
         val formattedMarketCap = cryptoCurrency.marketCap.convertToCompactPrice()

@@ -45,13 +45,13 @@ class ExchangeFragment : Fragment() {
     }
 
     private fun listenToEvents(event: ExchangeViewModel.Event) = when (event) {
-        is ExchangeViewModel.Event.ErrorEvent -> binding.root.createErrorSnackBar(event.errorMessage) {
+        is ExchangeViewModel.Event.ShowErrorMessage -> binding.root.createErrorSnackBar(event.errorMessage) {
             viewModel.refreshData(isForceRefresh = true)
         }
-        is ExchangeViewModel.Event.LogExchangeIdEvent -> logExchangeDetails(event)
+        is ExchangeViewModel.Event.LogExchangeId -> logExchangeDetails(event)
     }
 
-    private fun logExchangeDetails(event: ExchangeViewModel.Event.LogExchangeIdEvent) {
+    private fun logExchangeDetails(event: ExchangeViewModel.Event.LogExchangeId) {
         Log.d("Details", event.id)
     }
 }

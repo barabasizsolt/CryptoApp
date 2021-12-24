@@ -7,19 +7,15 @@ import com.example.cryptoapp.data.shared.toNews
 
 class NewsRepository(private val manager: NetworkManager) {
 
-    companion object {
-        const val DEFAULT_PAGE = 1
-    }
-
     private var cache: MutableList<News>? = null
-    private var lastDownloadedPage = DEFAULT_PAGE
+    private var lastDownloadedPage = 1
 
     suspend fun getAllNews(refreshType: RefreshType): List<News> = when (refreshType) {
-        RefreshType.FORCE_REFRESH -> loadData(DEFAULT_PAGE).let { newData ->
+        RefreshType.FORCE_REFRESH -> loadData(1).let { newData ->
             newData.also { cache = it.toMutableList() }
         }
         RefreshType.CACHE_IF_POSSIBLE -> cache.let { currentCache ->
-            currentCache ?: loadData(DEFAULT_PAGE).let { newData ->
+            currentCache ?: loadData(1).let { newData ->
                 newData.also { cache = it.toMutableList() }
             }
         }

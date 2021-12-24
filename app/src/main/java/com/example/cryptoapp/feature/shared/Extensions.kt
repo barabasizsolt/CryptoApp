@@ -92,5 +92,5 @@ fun Int.toHexStringColor(): String = "#" + Integer.toHexString(this).substring(2
 
 fun View.createErrorSnackBar(errorMessage: String, snackBarAction: () -> Unit) =
     Snackbar.make(this, errorMessage, Snackbar.LENGTH_LONG)
-        .setAction("Retry") { snackBarAction() }
+        .setAction(resources.getString(R.string.retry)) { snackBarAction() }
         .show()

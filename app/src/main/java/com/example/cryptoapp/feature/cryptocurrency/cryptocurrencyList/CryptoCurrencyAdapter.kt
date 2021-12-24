@@ -2,25 +2,19 @@ package com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyList
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.ItemCryptocurrencyCryptoBinding
 import com.example.cryptoapp.databinding.ItemCryptocurrencyErrorStateBinding
 import com.example.cryptoapp.databinding.ItemCryptocurrencyLoadMoreBinding
+import com.example.cryptoapp.feature.shared.ListItemDiff
 
 class CryptoCurrencyAdapter(
     private val onCryptoCurrencyItemClicked: (String) -> Unit,
     private val onLoadMoreCryptoCurrency: () -> Unit,
     private val onTryAgainButtonClicked: () -> Unit
-) : ListAdapter<CryptoCurrencyListItem, RecyclerView.ViewHolder>(
-    object : DiffUtil.ItemCallback<CryptoCurrencyListItem>() {
-        override fun areItemsTheSame(oldItem: CryptoCurrencyListItem, newItem: CryptoCurrencyListItem) = oldItem.id == newItem.id
-
-        override fun areContentsTheSame(oldItem: CryptoCurrencyListItem, newItem: CryptoCurrencyListItem) = oldItem == newItem
-    }
-) {
+) : ListAdapter<CryptoCurrencyListItem, RecyclerView.ViewHolder>(ListItemDiff()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
         R.layout.item_cryptocurrency_crypto -> CryptoCurrencyViewHolder.create(
             parent = parent,
@@ -98,7 +92,7 @@ class CryptoCurrencyAdapter(
         init {
             itemView.setOnClickListener {
                 if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
-                    onCryptoCurrencyItemClicked(binding.uiModel?.id.orEmpty())
+                    onCryptoCurrencyItemClicked(binding.uiModel?.cryptoCurrencyId.orEmpty())
                 }
             }
         }

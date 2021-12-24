@@ -42,13 +42,13 @@ class NewsFragment : Fragment() {
     }
 
     private fun listenToEvents(event: NewsViewModel.Event) = when (event) {
-        is NewsViewModel.Event.ErrorEvent -> binding.root.createErrorSnackBar(event.errorMessage) {
+        is NewsViewModel.Event.ShowErrorMessage -> binding.root.createErrorSnackBar(event.errorMessage) {
             viewModel.refreshData(isForceRefresh = true)
         }
-        is NewsViewModel.Event.OpenBrowserEvent -> openBrowser(event)
+        is NewsViewModel.Event.OpenBrowser -> openBrowser(event)
     }
 
-    private fun openBrowser(event: NewsViewModel.Event.OpenBrowserEvent) {
+    private fun openBrowser(event: NewsViewModel.Event.OpenBrowser) {
         startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(event.url)))
     }
 }

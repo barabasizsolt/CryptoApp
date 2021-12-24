@@ -22,13 +22,10 @@ class NewsViewModel(private val useCase: GetNewsUseCase) : ViewModel() {
     private val shouldShowError = MutableStateFlow(false)
     val listItems = combine(news, shouldShowError) { news, shouldShowError ->
         if (shouldShowError) {
-            news?.map { it.toListItem() }?.also {
-                _event.pushEvent(Event.ErrorEvent(errorMessage = "Failed to load news"))
-            } ?: listOf(NewsListItem.ErrorState())
+            news?.map { it.toListItem() } ?: listOf(NewsListItem.ErrorState())
         } else {
             when {
-                news == null -> listOf(NewsListItem.ErrorState())
-                news.isEmpty() -> emptyList()
+                news == null || news.isEmpty() -> emptyList()
                 else -> news.map { it.toListItem() } + NewsListItem.LoadMore()
             }
         }
@@ -60,6 +57,9 @@ class NewsViewModel(private val useCase: GetNewsUseCase) : ViewModel() {
                     }
                     is Result.Failure -> {
                         shouldShowError.value = true
+                        if (news.value != null) {
+                            _event.pushEvent(Event.ShowErrorMessage(errorMessage = "Failed to load news"))
+                        }
                     }
                 }
                 _isRefreshing.value = false
@@ -67,7 +67,7 @@ class NewsViewModel(private val useCase: GetNewsUseCase) : ViewModel() {
         }
     }
 
-    fun onNewsItemClicked(url: String) = _event.pushEvent(Event.OpenBrowserEvent(url))
+    fun onNewsItemClicked(url: String) = _event.pushEvent(Event.OpenBrowser(url))
 
     private fun News.toListItem() = NewsListItem.News(
         title = title,
@@ -78,8 +78,8 @@ class NewsViewModel(private val useCase: GetNewsUseCase) : ViewModel() {
     )
 
     sealed class Event {
-        data class OpenBrowserEvent(val url: String) : Event()
+        data class OpenBrowser(val url: String) : Event()
 
-        data class ErrorEvent(val errorMessage: String) : Event()
+        data class ShowErrorMessage(val errorMessage: String) : Event()
     }
 }
