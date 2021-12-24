@@ -81,4 +81,8 @@ class ProfileFragment : Fragment() {
     }
 
     private fun Long.formatUserRegistrationDate() = SimpleDateFormat("MMM dd, yyy", Locale.getDefault()).format(this)
+
+    companion object {
+        fun newInstance() = ProfileFragment()
+    }
 }

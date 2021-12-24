@@ -8,6 +8,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import coil.ImageLoader
 import coil.decode.SvgDecoder
 import coil.load
@@ -19,6 +21,7 @@ import com.example.cryptoapp.feature.shared.Constant.formatter
 import com.example.cryptoapp.feature.shared.Constant.numberFormatter
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.transition.MaterialFadeThrough
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -94,3 +97,27 @@ fun View.createErrorSnackBar(errorMessage: String, snackBarAction: () -> Unit) =
     Snackbar.make(this, errorMessage, Snackbar.LENGTH_LONG)
         .setAction(resources.getString(R.string.retry)) { snackBarAction() }
         .show()
+
+inline fun <reified T : Fragment> FragmentManager.handleReplace(
+    tag: String = T::class.java.name,
+    addToBackStack: Boolean = false,
+    containerId: Int = R.id.activity_fragment_container,
+    crossinline newInstance: () -> T
+) {
+    beginTransaction().apply {
+        val currentFragment = findFragmentById(containerId)
+        val newFragment = findFragmentByTag(tag) ?: newInstance()
+        currentFragment?.let {
+            currentFragment.exitTransition = MaterialFadeThrough()
+            currentFragment.reenterTransition = MaterialFadeThrough()
+            newFragment.enterTransition = MaterialFadeThrough()
+            newFragment.returnTransition = MaterialFadeThrough()
+        }
+        replace(containerId, newFragment, tag)
+        if (addToBackStack) {
+            addToBackStack(null)
+        }
+        setReorderingAllowed(true)
+        commitAllowingStateLoss()
+    }
+}

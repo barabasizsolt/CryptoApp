@@ -10,10 +10,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.cryptoapp.MainActivity
 import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.FragmentCryptoCurrencyBinding
-import com.example.cryptoapp.feature.cryptocurrency.Constant.COIN_ID
 import com.example.cryptoapp.feature.cryptocurrency.Constant.tags
 import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails.CryptoCurrencyDetailsFragment
 import com.example.cryptoapp.feature.shared.createErrorSnackBar
+import com.example.cryptoapp.feature.shared.handleReplace
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -53,22 +53,12 @@ class CryptoCurrencyFragment : Fragment() {
 
     private fun listenToEvents(event: CryptoCurrencyViewModel.Event) = when (event) {
         is CryptoCurrencyViewModel.Event.ShowDialog -> createDialog(event)
-        is CryptoCurrencyViewModel.Event.OpenDetailsPage -> openDetailsPage(event)
+        is CryptoCurrencyViewModel.Event.OpenDetailsPage -> activity?.supportFragmentManager?.handleReplace(addToBackStack = true) {
+            CryptoCurrencyDetailsFragment.newInstance(event.cryptoCurrencyId)
+        }
         is CryptoCurrencyViewModel.Event.ShowErrorMessage -> binding.root.createErrorSnackBar(event.errorMessage) {
             viewModel.refreshData(isForceRefresh = true)
         }
-    }
-
-    private fun openDetailsPage(openDetailsPage: CryptoCurrencyViewModel.Event.OpenDetailsPage) {
-        val fragment = CryptoCurrencyDetailsFragment()
-        val bundle = Bundle()
-        bundle.putString(COIN_ID, openDetailsPage.cryptoCurrencyId)
-        fragment.arguments = bundle
-        (activity as MainActivity).replaceFragment(
-            fragment,
-            R.id.activity_fragment_container,
-            addToBackStack = true
-        )
     }
 
     private fun createDialog(showDialog: CryptoCurrencyViewModel.Event.ShowDialog) {
@@ -120,5 +110,9 @@ class CryptoCurrencyFragment : Fragment() {
             }
         }
         dialogBuilder.show()
+    }
+
+    companion object {
+        fun newInstance() = CryptoCurrencyFragment()
     }
 }

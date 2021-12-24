@@ -36,7 +36,7 @@ class CryptoCurrencyViewModel(private val useCase: GetCryptoCurrenciesUseCase) :
                 ?: listOf(CryptoCurrencyListItem.ErrorState())
         } else {
             when {
-                cryptoCurrencies == null || cryptoCurrencies.isEmpty() -> emptyList()
+                cryptoCurrencies.isNullOrEmpty() -> emptyList()
                 else -> cryptoCurrencies.map { it.toListItem(timePeriods[selectedTimePeriod].uppercase(Locale.getDefault())) } + CryptoCurrencyListItem.LoadMore()
             }
         }

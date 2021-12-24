@@ -51,4 +51,8 @@ class NewsFragment : Fragment() {
     private fun openBrowser(event: NewsViewModel.Event.OpenBrowser) {
         startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(event.url)))
     }
+
+    companion object {
+        fun newInstance() = NewsFragment()
+    }
 }

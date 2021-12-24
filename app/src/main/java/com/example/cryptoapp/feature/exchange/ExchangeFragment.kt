@@ -54,4 +54,8 @@ class ExchangeFragment : Fragment() {
     private fun logExchangeDetails(event: ExchangeViewModel.Event.LogExchangeId) {
         Log.d("Details", event.id)
     }
+
+    companion object {
+        fun newInstance() = ExchangeFragment()
+    }
 }

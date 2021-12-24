@@ -11,6 +11,7 @@ import com.example.cryptoapp.MainActivity
 import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.FragmentLoginBinding
 import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyList.CryptoCurrencyFragment
+import com.example.cryptoapp.feature.shared.handleReplace
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class LoginFragment : Fragment() {
@@ -48,10 +49,7 @@ class LoginFragment : Fragment() {
                             (activity as MainActivity).bottomNavigationView.selectedItemId = R.id.currencies
                             (activity as MainActivity).initModalNavigationDrawer()
                             (activity as MainActivity).getUserWatchLists()
-                            (activity as MainActivity).replaceFragment(
-                                CryptoCurrencyFragment(),
-                                R.id.activity_fragment_container
-                            )
+                            activity?.supportFragmentManager?.handleReplace { CryptoCurrencyFragment.newInstance() }
                         } else {
                             Toast.makeText(
                                 requireActivity(),
@@ -90,7 +88,7 @@ class LoginFragment : Fragment() {
                 .show()
         }
         binding.signUp.setOnClickListener {
-            (activity as MainActivity).replaceFragment(SignUpFragment(), R.id.activity_fragment_container, addToBackStack = true)
+            activity?.supportFragmentManager?.handleReplace(addToBackStack = true) { SignUpFragment.newInstance() }
         }
     }
 
@@ -118,5 +116,9 @@ class LoginFragment : Fragment() {
             }
         }
         return true
+    }
+
+    companion object {
+        fun newInstance() = LoginFragment()
     }
 }

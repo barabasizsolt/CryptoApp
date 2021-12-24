@@ -27,7 +27,6 @@ import com.example.cryptoapp.data.model.cryptoCurrencyDetail.history.SingleCrypt
 import com.example.cryptoapp.data.repository.Cache
 import com.example.cryptoapp.databinding.FragmentCryptoCurrencyDetailsBinding
 import com.example.cryptoapp.feature.cryptocurrency.Constant.CALENDAR
-import com.example.cryptoapp.feature.cryptocurrency.Constant.COIN_ID
 import com.example.cryptoapp.feature.cryptocurrency.Constant.CURRENCY_FIRE_STORE_PATH
 import com.example.cryptoapp.feature.cryptocurrency.Constant.DAY7
 import com.example.cryptoapp.feature.cryptocurrency.Constant.HOUR24
@@ -35,10 +34,12 @@ import com.example.cryptoapp.feature.cryptocurrency.Constant.MAX_HOUR
 import com.example.cryptoapp.feature.cryptocurrency.Constant.MAX_MONTH
 import com.example.cryptoapp.feature.cryptocurrency.Constant.YEAR1
 import com.example.cryptoapp.feature.cryptocurrency.Constant.YEAR6
+import com.example.cryptoapp.feature.shared.BundleArgumentDelegate
 import com.example.cryptoapp.feature.shared.convertToCompactPrice
 import com.example.cryptoapp.feature.shared.convertToPrice
 import com.example.cryptoapp.feature.shared.getColorFromAttr
 import com.example.cryptoapp.feature.shared.getTime
+import com.example.cryptoapp.feature.shared.handleReplace
 import com.example.cryptoapp.feature.shared.loadImage
 import com.example.cryptoapp.feature.shared.setPercentage
 import com.example.cryptoapp.feature.shared.toHexStringColor
@@ -70,10 +71,9 @@ class CryptoCurrencyDetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentCryptoCurrencyDetailsBinding.inflate(inflater, container, false)
-
+        cryptoCurrencyId = arguments?.cryptoCurrencyId.toString()
         initChartColors()
         initializeChart()
-        cryptoCurrencyId = arguments?.getString(COIN_ID).toString()
 
         viewModel.cryptoCurrencyDetails
             .onEach { cryptoDetails ->
@@ -229,12 +229,8 @@ class CryptoCurrencyDetailsFragment : Fragment() {
         binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 when (tab!!.position) {
-                    0 -> {
-                        val fragment = CryptoDetailsInfoFragment()
-                        val bundle = Bundle()
-                        bundle.putString(COIN_ID, cryptoCurrencyId)
-                        fragment.arguments = bundle
-                        (activity as MainActivity).replaceFragment(fragment, R.id.crypto_details_fragment_container)
+                    0 -> activity?.supportFragmentManager?.handleReplace(containerId = R.id.crypto_details_fragment_container) {
+                        CryptoDetailsInfoFragment.newInstance(cryptoCurrencyId)
                     }
                     1 -> {
                         // TODO:Implement it
@@ -416,5 +412,15 @@ class CryptoCurrencyDetailsFragment : Fragment() {
             setStroke("1.5 $chartTextColor")
         }
         areaChart.setData(data)
+    }
+
+    companion object {
+        private var Bundle.cryptoCurrencyId by BundleArgumentDelegate.String(key = "crypto_currency_id", defaultValue = "")
+
+        fun newInstance(cryptoCurrencyId: String) = CryptoCurrencyDetailsFragment().apply {
+            arguments = Bundle().apply {
+                this.cryptoCurrencyId = cryptoCurrencyId
+            }
+        }
     }
 }

@@ -8,13 +8,13 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.get
-import androidx.fragment.app.Fragment
 import com.example.cryptoapp.data.repository.Cache
 import com.example.cryptoapp.databinding.ActivityMainBinding
 import com.example.cryptoapp.feature.cryptocurrency.Constant.CURRENCY_FIRE_STORE_PATH
 import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyList.CryptoCurrencyFragment
 import com.example.cryptoapp.feature.exchange.ExchangeFragment
 import com.example.cryptoapp.feature.news.NewsFragment
+import com.example.cryptoapp.feature.shared.handleReplace
 import com.example.cryptoapp.feature.shared.loadImage
 import com.example.cryptoapp.feature.user.LoginFragment
 import com.example.cryptoapp.feature.user.ProfileFragment
@@ -61,11 +61,11 @@ class MainActivity : AppCompatActivity() {
 
         initBottomNavigation()
         if (mAuth.currentUser == null) {
-            replaceFragment(LoginFragment(), R.id.activity_fragment_container)
+            supportFragmentManager.handleReplace(newInstance = LoginFragment.Companion::newInstance)
         } else {
             initModalNavigationDrawer()
             getUserWatchLists()
-            replaceFragment(CryptoCurrencyFragment(), R.id.activity_fragment_container)
+            supportFragmentManager.handleReplace(newInstance = CryptoCurrencyFragment.Companion::newInstance)
         }
     }
 
@@ -85,11 +85,11 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNavigation.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.currencies -> {
-                    replaceFragment(CryptoCurrencyFragment(), R.id.activity_fragment_container)
+                    supportFragmentManager.handleReplace(newInstance = CryptoCurrencyFragment.Companion::newInstance)
                     true
                 }
                 R.id.exchanges -> {
-                    replaceFragment(ExchangeFragment(), R.id.activity_fragment_container)
+                    supportFragmentManager.handleReplace(newInstance = ExchangeFragment.Companion::newInstance)
                     true
                 }
                 R.id.favorites -> {
@@ -97,7 +97,7 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.events -> {
-                    replaceFragment(NewsFragment(), R.id.activity_fragment_container)
+                    supportFragmentManager.handleReplace(newInstance = NewsFragment.Companion::newInstance)
                     true
                 }
                 else -> false
@@ -113,9 +113,10 @@ class MainActivity : AppCompatActivity() {
         binding.navigationView.setNavigationItemSelectedListener { menuItem ->
             menuItem.isChecked = true
             when (menuItem.itemId) {
-                R.id.profile -> {
-                    replaceFragment(ProfileFragment(), R.id.activity_fragment_container)
-                }
+                R.id.profile -> supportFragmentManager.handleReplace(
+                    addToBackStack = true,
+                    newInstance = ProfileFragment.Companion::newInstance
+                )
                 R.id.wallet -> {
                     // TODO: implement it
                 }
@@ -127,7 +128,7 @@ class MainActivity : AppCompatActivity() {
                     Cache.deleteUserWatchList()
                     binding.topAppBar.visibility = View.GONE
                     binding.bottomNavigation.visibility = View.GONE
-                    replaceFragment(LoginFragment(), R.id.activity_fragment_container)
+                    supportFragmentManager.handleReplace(newInstance = LoginFragment.Companion::newInstance)
                 }
             }
             binding.drawerLayout.close()
@@ -135,27 +136,5 @@ class MainActivity : AppCompatActivity() {
         }
         mAuth.currentUser?.photoUrl?.let { userLogo.loadImage(it, R.drawable.ic_avatar) }
         userEmail.text = mAuth.currentUser?.email.toString()
-    }
-
-    fun replaceFragment(
-        fragment: Fragment,
-        containerId: Int,
-        addToBackStack: Boolean = false,
-        withAnimation: Boolean = false
-    ) {
-        val transaction = supportFragmentManager.beginTransaction()
-        if (withAnimation) {
-            transaction.setCustomAnimations(
-                R.anim.fade_in,
-                R.anim.fade_out,
-                R.anim.fade_in,
-                R.anim.fade_out
-            )
-        }
-        transaction.replace(containerId, fragment)
-        if (addToBackStack) {
-            transaction.addToBackStack(null)
-        }
-        transaction.commit()
     }
 }
