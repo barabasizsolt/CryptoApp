@@ -2,13 +2,13 @@ package com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.cryptoapp.data.model.Result
 import com.example.cryptoapp.data.model.cryptoCurrencyDetail.details.CryptoCurrencyDetails
 import com.example.cryptoapp.data.model.cryptoCurrencyDetail.details.CryptoCurrencyDetailsUIModel
 import com.example.cryptoapp.data.model.cryptoCurrencyDetail.history.CryptoCurrencyHistory
 import com.example.cryptoapp.data.model.cryptoCurrencyDetail.history.SingleCryptoCurrencyHistoryResponse
 import com.example.cryptoapp.domain.cryptocurrency.GetCryptoCurrencyDetailsUseCase
 import com.example.cryptoapp.domain.cryptocurrency.GetCryptoCurrencyHistoryUseCase
-import com.example.cryptoapp.util.Result
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch

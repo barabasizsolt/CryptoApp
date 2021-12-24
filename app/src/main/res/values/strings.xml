@@ -34,4 +34,13 @@
     <string name="bottom_nav_exchanges">Exchanges</string>
     <string name="bottom_nav_watchlists">WatchLists</string>
     <string name="bottom_nav_news">News</string>
+    <string name="chip_sort_by">Sort by</string>
+    <string name="chip_time_period">Time period</string>
+    <string name="chip_tags">Tags</string>
+    <string name="user_email">Email</string>
+    <string name="user_registration_date">Registration date</string>
+    <string name="user_update_password">Update password</string>
+    <string name="something_went_wrong">Something went wrong</string>
+    <string name="try_again">Try again</string>
+    <string name="retry">Retry</string>
 </resources>

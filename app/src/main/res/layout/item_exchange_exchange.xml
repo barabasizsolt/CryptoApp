@@ -5,7 +5,7 @@
     <data>
         <variable
             name="uiModel"
-            type="com.example.cryptoapp.feature.exchange.ExchangeUIModel" />
+            type="com.example.cryptoapp.feature.exchange.ExchangeListItem.Exchange" />
     </data>
 
     <androidx.cardview.widget.CardView

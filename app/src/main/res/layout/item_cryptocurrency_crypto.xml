@@ -5,7 +5,7 @@
     <data>
         <variable
             name="uiModel"
-            type="com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyList.CryptoCurrencyUIModel" />
+            type="com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyList.CryptoCurrencyListItem.Crypto" />
     </data>
 
     <androidx.cardview.widget.CardView

@@ -10,6 +10,7 @@ import com.example.cryptoapp.MainActivity
 import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.FragmentSignUpBinding
 import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyList.CryptoCurrencyFragment
+import com.example.cryptoapp.feature.shared.handleReplace
 
 class SignUpFragment : Fragment() {
     private lateinit var binding: FragmentSignUpBinding
@@ -43,10 +44,7 @@ class SignUpFragment : Fragment() {
                                 fm.popBackStack()
                             }
                             (activity as MainActivity).initModalNavigationDrawer()
-                            (activity as MainActivity).replaceFragment(
-                                CryptoCurrencyFragment(),
-                                R.id.activity_fragment_container
-                            )
+                            activity?.supportFragmentManager?.handleReplace { CryptoCurrencyFragment.newInstance() }
                         } else {
                             Toast.makeText(
                                 requireContext(),
@@ -80,5 +78,9 @@ class SignUpFragment : Fragment() {
             }
         }
         return true
+    }
+
+    companion object {
+        fun newInstance() = SignUpFragment()
     }
 }

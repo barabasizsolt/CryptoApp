@@ -4,6 +4,7 @@
     <!-- Keylines / dimensions -->
     <dimen name="content_padding_half">4dp</dimen>
     <dimen name="content_padding">8dp</dimen>
+    <dimen name="error_state_margin">32dp</dimen>
 
     <!-- CryptoCurrency RecyclerView -->
     <dimen name="crypto_currency_card_height">80dp</dimen>
@@ -75,7 +76,7 @@
     <!-- ExchangeVolumeChange TextView -->
     <dimen name="exchange_volume_change_text_view_margin_end">16dp</dimen>
 
-    <!-- Event RecyclerView -->
+    <!-- News RecyclerView -->
     <dimen name="event_item_margin">5dp</dimen>
 
     <!-- TextSizes -->
@@ -83,10 +84,35 @@
     <dimen name="medium_event_item_text">15sp</dimen>
     <dimen name="large_event_item_text">16sp</dimen>
 
-    <!-- Event ImageView -->
+    <!-- News ImageView -->
     <dimen name="event_image_view_margin">5dp</dimen>
+    <dimen name="event_image_view_size">0dp</dimen>
 
-    <!-- Event TextView -->
+    <!-- News TextView -->
     <dimen name="event_text_view_margin">5dp</dimen>
+
+    <!-- Fragment CryptoCurrency -->
+    <!-- CryptoCurrency Chip Groups-->
+    <dimen name="chip_group_height">40dp</dimen>
+    <dimen name="chip_group_horizontal_spacing">25dp</dimen>
+    <dimen name="chip_group_corner_radius">3dp</dimen>
+
+    <!-- CryptoCurrency RecyclerView-->
+    <dimen name="crypto_recycler_view_padding_bottom">40dp</dimen>
+
+    <!-- Fragment Profile-->
+    <!-- Profile ImageView-->
+    <dimen name="profile_image_view_size">150dp</dimen>
+
+    <!-- Profile Material TextView-->
+    <dimen name="profile_image_view_margin_top">120dp</dimen>
+    <dimen name="profile_text_view_padding">20dp</dimen>
+    <dimen name="profile_text_view_margin_top">15dp</dimen>
+
+    <!-- Profile Update Password TextView-->
+    <dimen name="profile_update_pwd_text_size">18sp</dimen>
+
+    <!-- Profile Progress Bar-->
+    <dimen name="profile_progress_bar_margin_top">20dp</dimen>
 
 </resources>

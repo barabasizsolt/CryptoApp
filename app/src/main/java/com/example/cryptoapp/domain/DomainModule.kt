@@ -1,4 +1,4 @@
-package com.example.cryptoapp.modul
+package com.example.cryptoapp.domain
 
 import com.example.cryptoapp.domain.cryptocurrency.GetCryptoCurrenciesUseCase
 import com.example.cryptoapp.domain.cryptocurrency.GetCryptoCurrencyDetailsUseCase

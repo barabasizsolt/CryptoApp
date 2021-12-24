@@ -1,65 +1,58 @@
 package com.example.cryptoapp.feature.news
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.cryptoapp.data.constant.NewsConstant
 import com.example.cryptoapp.databinding.FragmentNewsBinding
-import com.example.cryptoapp.feature.shared.OnItemClickListener
-import com.example.cryptoapp.feature.shared.OnItemLongClickListener
+import com.example.cryptoapp.feature.shared.createErrorSnackBar
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class NewsFragment : Fragment(), OnItemClickListener, OnItemLongClickListener {
-    private lateinit var linearLayoutManager: LinearLayoutManager
-    private val newsAdapter: NewsAdapter = NewsAdapter(this, this)
-    private var currentPage: Long = NewsConstant.DEFAULT_PAGE.toLong()
+class NewsFragment : Fragment() {
+
     private lateinit var binding: FragmentNewsBinding
     private val viewModel by viewModel<NewsViewModel>()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentNewsBinding.inflate(inflater, container, false)
-        initUI()
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewModel = viewModel
         return binding.root
     }
 
-    private fun initUI() {
-        linearLayoutManager = LinearLayoutManager(requireContext())
-        binding.recyclerview.layoutManager = linearLayoutManager
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.recyclerview.layoutManager = LinearLayoutManager(requireContext())
+        val newsAdapter = NewsAdapter(
+            onNewsItemClicked = viewModel::onNewsItemClicked,
+            onLoadMoreBound = { viewModel.refreshData(isForceRefresh = false) },
+            onTryAgainButtonClicked = { viewModel.refreshData(isForceRefresh = true) }
+        )
         binding.recyclerview.adapter = newsAdapter
-        viewModel.news.onEach { events ->
-            Log.d("News", events.toString())
-            newsAdapter.submitList(events)
-        }.launchIn(viewLifecycleOwner.lifecycleScope)
-
-        binding.recyclerview.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                if (!recyclerView.canScrollVertically(1) && newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    currentPage++
-                    viewModel.loadAllNews(page = currentPage.toString())
-                    Log.d("End", currentPage.toString())
-                }
-            }
-        })
+        viewModel.listItems.onEach(newsAdapter::submitList).launchIn(viewLifecycleOwner.lifecycleScope)
+        viewModel.event.onEach(::listenToEvents).launchIn(viewLifecycleOwner.lifecycleScope)
+        binding.swipeRefreshLayout.setOnRefreshListener { viewModel.refreshData(isForceRefresh = true) }
     }
 
-    override fun onItemClick(position: Int) {
-        // TODO: implement it
+    private fun listenToEvents(event: NewsViewModel.Event) = when (event) {
+        is NewsViewModel.Event.ShowErrorMessage -> binding.root.createErrorSnackBar(event.errorMessage) {
+            viewModel.refreshData(isForceRefresh = true)
+        }
+        is NewsViewModel.Event.OpenBrowser -> openBrowser(event)
     }
 
-    override fun onItemLongClick(position: Int) {
-        // TODO: implement it
+    private fun openBrowser(event: NewsViewModel.Event.OpenBrowser) {
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(event.url)))
+    }
+
+    companion object {
+        fun newInstance() = NewsFragment()
     }
 }

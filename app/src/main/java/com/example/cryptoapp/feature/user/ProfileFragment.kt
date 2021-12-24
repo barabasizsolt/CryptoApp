@@ -40,7 +40,7 @@ class ProfileFragment : Fragment() {
         val user = (activity as MainActivity).mAuth.currentUser
         user?.photoUrl?.let { binding.userLogo.loadImage(it, R.drawable.ic_avatar) }
         binding.email.setText(user?.email)
-        binding.registrationDate.setText(user?.metadata?.creationTimestamp?.let { getDate(it) })
+        binding.registrationDate.setText(user?.metadata?.creationTimestamp?.formatUserRegistrationDate())
         binding.updatePassword.setOnClickListener {
             if (customDialogView.parent != null) {
                 (customDialogView.parent as ViewGroup).removeView(customDialogView)
@@ -80,8 +80,9 @@ class ProfileFragment : Fragment() {
         return true
     }
 
-    private fun getDate(timeStamp: Long): String? {
-        val formatter = SimpleDateFormat("MMM dd, yyy", Locale.getDefault())
-        return formatter.format(timeStamp)
+    private fun Long.formatUserRegistrationDate() = SimpleDateFormat("MMM dd, yyy", Locale.getDefault()).format(this)
+
+    companion object {
+        fun newInstance() = ProfileFragment()
     }
 }

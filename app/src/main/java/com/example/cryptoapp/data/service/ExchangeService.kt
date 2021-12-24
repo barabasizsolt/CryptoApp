@@ -11,6 +11,6 @@ interface ExchangeService {
     suspend fun getExchanges(
         @Header("accept") key: String = "application/json",
         @Query("per_page") perPage: Int,
-        @Query("page") page: String,
+        @Query("page") page: Int,
     ): Response<List<ExchangeResponse>>
 }

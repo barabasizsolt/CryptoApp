@@ -3,28 +3,31 @@ package com.example.cryptoapp.feature.shared
 import android.content.Context
 import android.icu.util.CurrencyAmount
 import android.net.Uri
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import coil.ImageLoader
 import coil.decode.SvgDecoder
 import coil.load
 import coil.request.ImageRequest
 import coil.transform.CircleCropTransformation
 import com.example.cryptoapp.R
-import com.example.cryptoapp.data.constant.CryptoConstant
 import com.example.cryptoapp.feature.shared.Constant.currency
 import com.example.cryptoapp.feature.shared.Constant.formatter
 import com.example.cryptoapp.feature.shared.Constant.numberFormatter
 import com.google.android.material.color.MaterialColors
+import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.transition.MaterialFadeThrough
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
 
 @BindingAdapter("percentage")
-fun TextView.setPercentage(percentageStr: String?) {
-    if (percentageStr == CryptoConstant.EMPTY_STR || percentageStr.isNullOrBlank()) return
+fun TextView.setPercentage(percentageStr: String) {
     val percentage = percentageStr.toDouble()
     when {
         percentage < 0 -> {
@@ -89,3 +92,32 @@ fun String.convertToCompactPrice(): String = formatter.format(CurrencyAmount(thi
 fun Int.getColorFromAttr(context: Context, defaultColor: Int): Int = MaterialColors.getColor(context, this, defaultColor)
 
 fun Int.toHexStringColor(): String = "#" + Integer.toHexString(this).substring(2)
+
+fun View.createErrorSnackBar(errorMessage: String, snackBarAction: () -> Unit) =
+    Snackbar.make(this, errorMessage, Snackbar.LENGTH_LONG)
+        .setAction(resources.getString(R.string.retry)) { snackBarAction() }
+        .show()
+
+inline fun <reified T : Fragment> FragmentManager.handleReplace(
+    tag: String = T::class.java.name,
+    addToBackStack: Boolean = false,
+    containerId: Int = R.id.activity_fragment_container,
+    crossinline newInstance: () -> T
+) {
+    beginTransaction().apply {
+        val currentFragment = findFragmentById(containerId)
+        val newFragment = findFragmentByTag(tag) ?: newInstance()
+        currentFragment?.let {
+            currentFragment.exitTransition = MaterialFadeThrough()
+            currentFragment.reenterTransition = MaterialFadeThrough()
+            newFragment.enterTransition = MaterialFadeThrough()
+            newFragment.returnTransition = MaterialFadeThrough()
+        }
+        replace(containerId, newFragment, tag)
+        if (addToBackStack) {
+            addToBackStack(null)
+        }
+        setReorderingAllowed(true)
+        commitAllowingStateLoss()
+    }
+}

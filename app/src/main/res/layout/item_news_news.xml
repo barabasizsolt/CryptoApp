@@ -3,9 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="uiModel"
-            type="com.example.cryptoapp.feature.news.NewsUIModel" />
+            type="com.example.cryptoapp.feature.news.NewsListItem.News" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -13,46 +14,55 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/event_item_margin">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
             <ImageView
                 android:id="@+id/news_logo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/event_image_view_size"
+                android:layout_height="@dimen/event_image_view_size"
                 android:layout_gravity="center_horizontal"
+                app:layout_constraintDimensionRatio="16:9"
                 android:layout_margin="@dimen/event_image_view_margin"
+                android:importantForAccessibility="no"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:src="@tools:sample/avatars"
+                android:scaleType="centerCrop"
                 app:url="@{uiModel.logo}"
                 />
 
             <TextView
                 android:id="@+id/news_title"
-                android:layout_marginTop="@dimen/event_text_view_margin"
-                android:layout_marginStart="@dimen/event_text_view_margin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="UK Advertising watchdog announces greater scrutiny of crypto adverts in the new year"
+                android:layout_marginStart="@dimen/event_text_view_margin"
+                android:layout_marginTop="@dimen/event_text_view_margin"
                 android:text="@{uiModel.title}"
                 android:textAlignment="textStart"
                 android:textSize="@dimen/large_event_item_text"
                 android:textStyle="bold"
-                />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/news_logo"
+                tools:text="UK Advertising watchdog announces greater scrutiny of crypto adverts in the new year" />
 
             <TextView
                 android:id="@+id/news_source"
-                android:layout_marginTop="@dimen/event_text_view_margin"
-                android:layout_marginStart="@dimen/event_text_view_margin"
-                android:layout_marginBottom="@dimen/event_text_view_margin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="CoinGape (1 hours ago)"
+                android:layout_marginStart="@dimen/event_text_view_margin"
+                android:layout_marginBottom="@dimen/event_text_view_margin"
                 android:text="@{uiModel.source}"
                 android:textAlignment="textStart"
                 android:textSize="@dimen/small_event_item_text"
-                />
-        </LinearLayout>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/news_title"
+                tools:text="CoinGape (1 hours ago)" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
+
 </layout>

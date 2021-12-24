@@ -1,4 +1,4 @@
-package com.example.cryptoapp.util
+package com.example.cryptoapp.data.model
 
 /**
  * Represents the result of simple API requests that either fail or succeed.
