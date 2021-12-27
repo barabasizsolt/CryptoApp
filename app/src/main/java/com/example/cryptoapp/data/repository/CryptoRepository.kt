@@ -5,7 +5,7 @@ import com.example.cryptoapp.data.model.RefreshType
 import com.example.cryptoapp.data.model.cryptoCurrency.CryptoCurrency
 import com.example.cryptoapp.data.shared.toCryptoCurrency
 import com.example.cryptoapp.data.shared.toCryptoCurrencyDetails
-import com.example.cryptoapp.data.shared.toCryptoCurrencyHistory
+import com.example.cryptoapp.data.shared.toCryptoHistoryItem
 import java.lang.IllegalStateException
 
 class CryptoRepository(private val manager: NetworkManager) {
@@ -87,5 +87,7 @@ class CryptoRepository(private val manager: NetworkManager) {
     ) = manager.cryptoSource.getCryptoCurrencyHistory(
         uuid = uuid,
         timePeriod = timePeriod
-    ).body()?.toCryptoCurrencyHistory() ?: throw IllegalStateException("Invalid data returned by the server")
+    ).body()?.data?.history?.mapNotNull {
+        it.toCryptoHistoryItem()
+    } ?: throw IllegalStateException("Invalid data returned by the server")
 }

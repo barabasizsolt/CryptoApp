@@ -4,8 +4,8 @@ import com.example.cryptoapp.data.model.cryptoCurrency.CryptoCurrency
 import com.example.cryptoapp.data.model.cryptoCurrency.CryptoCurrencyResponse
 import com.example.cryptoapp.data.model.cryptoCurrencyDetail.CoinDetailsResponse
 import com.example.cryptoapp.data.model.cryptoCurrencyDetail.details.CryptoCurrencyDetails
-import com.example.cryptoapp.data.model.cryptoCurrencyDetail.history.CryptoCurrencyHistory
-import com.example.cryptoapp.data.model.cryptoCurrencyDetail.history.CryptoCurrencyHistoryResponse
+import com.example.cryptoapp.data.model.cryptoCurrencyDetail.history.CryptoHistoryItem
+import com.example.cryptoapp.data.model.cryptoCurrencyDetail.history.SingleCryptoCurrencyHistoryResponse
 import com.example.cryptoapp.data.model.exchange.Exchange
 import com.example.cryptoapp.data.model.exchange.ExchangeResponse
 import com.example.cryptoapp.data.model.news.News
@@ -63,9 +63,13 @@ fun CoinDetailsResponse.toCryptoCurrencyDetails() = when {
     )
 }
 
-fun CryptoCurrencyHistoryResponse.toCryptoCurrencyHistory() = CryptoCurrencyHistory(
-    history = data.history.filter { response -> !response.price.isNullOrEmpty() }
-)
+fun SingleCryptoCurrencyHistoryResponse.toCryptoHistoryItem() = when {
+    price == null || timestamp == null -> null
+    else -> CryptoHistoryItem(
+        price = price,
+        timestamp = timestamp
+    )
+}
 
 // Exchange Mappers
 fun ExchangeResponse.toExchange() = when {

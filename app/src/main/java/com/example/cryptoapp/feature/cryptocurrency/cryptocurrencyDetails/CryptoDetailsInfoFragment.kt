@@ -31,40 +31,40 @@ class CryptoDetailsInfoFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentCryptoDetailsInfoBinding.inflate(inflater, container, false)
-        initUI()
+        //initUI()
         return binding.root
     }
 
-    private fun initUI() {
-        viewModel.cryptoCurrencyDetailsInfo
-            .onEach { coin ->
-                if (coin != null) {
-                    val allTimeHighText = coin.allTimeHigh.price.convertToPrice()
-                    val allTimeHighDateText = coin.allTimeHigh.timestamp.getFormattedTime()
-                    val btcPrice = String.format("%.7f", coin.btcPrice.toDouble()) + " Btc"
-                    binding.cryptoRankValue.text = coin.rank
-                    binding.cryptoSupplyValue.text = coin.totalSupply.formatInput()
-                    binding.cryptoCirculatingValue.text = coin.circulating.formatInput()
-                    binding.cryptoBtcRiceValue.text = btcPrice
-                    binding.cryptoDescriptionText.text = Html.fromHtml(coin.description, HtmlCompat.FROM_HTML_MODE_LEGACY)
-                    binding.cryptoAllTimeHighValue.text = allTimeHighText
-                    binding.cryptoAllTimeHighDateValue.text = allTimeHighDateText
-                    binding.cryptoDescriptionText.visibility = View.GONE
-
-                    binding.descriptionDropDown.setOnClickListener {
-                        if (isDescriptionVisible) {
-                            it.animate().rotation(ROTATE_360).start()
-                            binding.cryptoDescriptionText.visibility = View.GONE
-                            isDescriptionVisible = false
-                        } else {
-                            it.animate().rotation(ROTATE_180).start()
-                            binding.cryptoDescriptionText.visibility = View.VISIBLE
-                            isDescriptionVisible = true
-                        }
-                    }
-                }
-            }.launchIn(viewLifecycleOwner.lifecycleScope)
-    }
+//    private fun initUI() {
+//        viewModel.cryptoCurrencyDetailsInfo
+//            .onEach { coin ->
+//                if (coin != null) {
+//                    val allTimeHighText = coin.allTimeHigh.price.convertToPrice()
+//                    val allTimeHighDateText = coin.allTimeHigh.timestamp.getFormattedTime()
+//                    val btcPrice = String.format("%.7f", coin.btcPrice.toDouble()) + " Btc"
+//                    binding.cryptoRankValue.text = coin.rank
+//                    binding.cryptoSupplyValue.text = coin.totalSupply.formatInput()
+//                    binding.cryptoCirculatingValue.text = coin.circulating.formatInput()
+//                    binding.cryptoBtcRiceValue.text = btcPrice
+//                    binding.cryptoDescriptionText.text = Html.fromHtml(coin.description, HtmlCompat.FROM_HTML_MODE_LEGACY)
+//                    binding.cryptoAllTimeHighValue.text = allTimeHighText
+//                    binding.cryptoAllTimeHighDateValue.text = allTimeHighDateText
+//                    binding.cryptoDescriptionText.visibility = View.GONE
+//
+//                    binding.descriptionDropDown.setOnClickListener {
+//                        if (isDescriptionVisible) {
+//                            it.animate().rotation(ROTATE_360).start()
+//                            binding.cryptoDescriptionText.visibility = View.GONE
+//                            isDescriptionVisible = false
+//                        } else {
+//                            it.animate().rotation(ROTATE_180).start()
+//                            binding.cryptoDescriptionText.visibility = View.VISIBLE
+//                            isDescriptionVisible = true
+//                        }
+//                    }
+//                }
+//            }.launchIn(viewLifecycleOwner.lifecycleScope)
+//    }
 
     companion object {
         private var Bundle.cryptoCurrencyId by BundleArgumentDelegate.String(key = "crypto_currency_id", defaultValue = "")

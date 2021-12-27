@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -12,6 +13,8 @@
         android:layout_marginTop="@dimen/crypto_details_chart_margin_top"
         android:id="@+id/any_chart_view"
         android:layout_width="match_parent"
+        app:bgColor="@{uiModel.chartBackgroundColor}"
+        app:txtColor="@{uiModel.chartTextColor}"
         android:layout_height="@dimen/crypto_details_chart_height" />
 
 </layout>

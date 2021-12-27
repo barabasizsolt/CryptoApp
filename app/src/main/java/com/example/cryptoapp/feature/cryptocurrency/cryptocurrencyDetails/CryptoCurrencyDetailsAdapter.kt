@@ -8,10 +8,8 @@ import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.*
 import com.example.cryptoapp.feature.shared.ListItemDiff
 
-class CryptoCurrencyDetailsAdapter(
-
-) : ListAdapter<CryptoCurrencyDetailsListItem, RecyclerView.ViewHolder>(ListItemDiff()) {
-    override fun getItemViewType(position: Int) = when(getItem(position)) {
+class CryptoCurrencyDetailsAdapter() : ListAdapter<CryptoCurrencyDetailsListItem, RecyclerView.ViewHolder>(ListItemDiff()) {
+    override fun getItemViewType(position: Int) = when (getItem(position)) {
         is CryptoCurrencyDetailsListItem.CryptoCurrencyLogo -> R.layout.item_cryptocurrency_details_coin_logo
         is CryptoCurrencyDetailsListItem.CryptoCurrencyChart -> R.layout.item_cryptocurrency_details_chart
         is CryptoCurrencyDetailsListItem.CryptoCurrencyChipGroup -> R.layout.item_cryptocurrency_details_chip_group
@@ -19,7 +17,7 @@ class CryptoCurrencyDetailsAdapter(
         is CryptoCurrencyDetailsListItem.CryptoCurrencyBody -> R.layout.item_cryptocurrency_details_coin_body
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when(viewType) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
         R.layout.item_cryptocurrency_details_coin_logo -> LogoViewHolder.create(
             parent = parent
         )
@@ -50,7 +48,7 @@ class CryptoCurrencyDetailsAdapter(
         private val binding: ItemCryptocurrencyDetailsCoinLogoBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(listItem: CryptoCurrencyDetailsListItem.CryptoCurrencyLogo){
+        fun bind(listItem: CryptoCurrencyDetailsListItem.CryptoCurrencyLogo) {
             binding.uiModel = listItem
         }
 
@@ -65,7 +63,7 @@ class CryptoCurrencyDetailsAdapter(
         private val binding: ItemCryptocurrencyDetailsChartBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(listItem: CryptoCurrencyDetailsListItem.CryptoCurrencyChart){
+        fun bind(listItem: CryptoCurrencyDetailsListItem.CryptoCurrencyChart) {
             binding.uiModel = listItem
         }
 
@@ -80,7 +78,7 @@ class CryptoCurrencyDetailsAdapter(
         private val binding: ItemCryptocurrencyDetailsChipGroupBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(listItem: CryptoCurrencyDetailsListItem.CryptoCurrencyChipGroup){
+        fun bind(listItem: CryptoCurrencyDetailsListItem.CryptoCurrencyChipGroup) {
             binding.uiModel = listItem
         }
 
@@ -95,7 +93,7 @@ class CryptoCurrencyDetailsAdapter(
         private val binding: ItemCryptocurrencyDetailsCoinHeaderBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(listItem: CryptoCurrencyDetailsListItem.CryptoCurrencyHeader){
+        fun bind(listItem: CryptoCurrencyDetailsListItem.CryptoCurrencyHeader) {
             binding.uiModel = listItem
         }
 
@@ -110,7 +108,7 @@ class CryptoCurrencyDetailsAdapter(
         private val binding: ItemCryptocurrencyDetailsCoinBodyBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(listItem: CryptoCurrencyDetailsListItem.CryptoCurrencyBody){
+        fun bind(listItem: CryptoCurrencyDetailsListItem.CryptoCurrencyBody) {
             binding.uiModel = listItem
         }
 

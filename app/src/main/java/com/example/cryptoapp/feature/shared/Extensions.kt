@@ -3,6 +3,7 @@ package com.example.cryptoapp.feature.shared
 import android.content.Context
 import android.icu.util.CurrencyAmount
 import android.net.Uri
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -15,6 +16,8 @@ import coil.decode.SvgDecoder
 import coil.load
 import coil.request.ImageRequest
 import coil.transform.CircleCropTransformation
+import com.anychart.anychart.*
+import com.anychart.anychart.AnyChart.area
 import com.example.cryptoapp.R
 import com.example.cryptoapp.feature.shared.Constant.currency
 import com.example.cryptoapp.feature.shared.Constant.formatter
@@ -97,6 +100,67 @@ fun View.createErrorSnackBar(errorMessage: String, snackBarAction: () -> Unit) =
     Snackbar.make(this, errorMessage, Snackbar.LENGTH_LONG)
         .setAction(resources.getString(R.string.retry)) { snackBarAction() }
         .show()
+
+@BindingAdapter("bgColor", "txtColor", requireAll = true)
+fun AnyChartView.initializeChart(chartBackgroundColor: String, chartTextColor: String) {
+    Log.d("color", chartBackgroundColor)
+
+    this.setBackgroundColor(chartBackgroundColor)
+
+    val areaChart: Cartesian = area()
+    with(areaChart) {
+        yScale.setStackMode(ScaleStackMode.VALUE)
+        yGrid.setEnabled(true)
+        background.fill(chartBackgroundColor, 0)
+        interactivity.setHoverMode(HoverMode.BY_X)
+    }
+    with(areaChart.crosshair) {
+        setEnabled(true)
+        setYStroke(null as Stroke?, null as Number?, null as String?, null as StrokeLineJoin?, null as StrokeLineCap?)
+        setXStroke(chartTextColor, 1.0, null, null as StrokeLineJoin?, null as StrokeLineCap?)
+        setZIndex(39.0)
+        getYLabel(0).setEnabled(true)
+    }
+    with(areaChart.tooltip) {
+        setValuePrefix("$")
+        setDisplayMode(TooltipDisplayMode.SINGLE)
+    }
+    with(areaChart.legend) {
+        setEnabled(true)
+        setFontSize(13.0)
+        setPadding(0.0, 0.0, 20.0, 0.0)
+    }
+    with(areaChart.getXAxis(0)) {
+        setTitle(false)
+        labels.setFontColor(chartTextColor)
+    }
+    with(areaChart.getYAxis(0)) {
+        setTitle("Value (in US Dollars)")
+        title.setFontColor(chartTextColor)
+        labels.setFormat("\${%value}")
+        labels.setFontColor(chartTextColor)
+    }
+    this.setChart(areaChart)
+}
+
+@BindingAdapter("data", "strokeColor", "chartColor", requireAll = true)
+fun Cartesian.refreshChart(data: MutableList<DataEntry>, strokeColor: String, chartColor: String) {
+    val series = this.area(data)
+    with(series) {
+        setName("Cryptocurrency History")
+        setStroke("1 $strokeColor")
+        hovered.markers.setEnabled(true)
+        series.markers.setZIndex(100.0)
+        hovered.setStroke("3 $strokeColor")
+        fill(chartColor, 5)
+    }
+    with(series.hovered.markers) {
+        setType(MarkerType.CIRCLE)
+        setSize(4.0)
+        setStroke("1.5 $strokeColor")
+    }
+    this.setData(data)
+}
 
 inline fun <reified T : Fragment> FragmentManager.handleReplace(
     tag: String = T::class.java.name,

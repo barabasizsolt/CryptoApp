@@ -6,5 +6,5 @@ data class SingleCryptoCurrencyHistoryResponse(
     @SerializedName("price")
     val price: String?,
     @SerializedName("timestamp")
-    val timestamp: Long
+    val timestamp: Long?
 )

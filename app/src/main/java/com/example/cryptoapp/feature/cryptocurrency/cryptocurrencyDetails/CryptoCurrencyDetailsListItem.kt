@@ -1,6 +1,7 @@
 package com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails
 
-import com.example.cryptoapp.data.model.cryptoCurrencyDetail.history.SingleCryptoCurrencyHistoryResponse
+import com.anychart.anychart.DataEntry
+import com.example.cryptoapp.data.model.cryptoCurrencyDetail.history.CryptoHistoryItem
 import com.example.cryptoapp.feature.shared.ListItem
 
 sealed class CryptoCurrencyDetailsListItem : ListItem {
@@ -10,11 +11,13 @@ sealed class CryptoCurrencyDetailsListItem : ListItem {
         val name: String,
         val symbol: String
     ) : CryptoCurrencyDetailsListItem() {
-        override val id = "crypto_details_${name}"
+        override val id = "crypto_details_$name"
     }
 
     data class CryptoCurrencyChart(
-        val history: List<SingleCryptoCurrencyHistoryResponse>
+        val history: MutableList<DataEntry> = mutableListOf(),
+        val chartBackgroundColor: String,
+        val chartTextColor: String
     ) : CryptoCurrencyDetailsListItem() {
         override val id = "crypto_details_chart"
     }
@@ -32,7 +35,7 @@ sealed class CryptoCurrencyDetailsListItem : ListItem {
         val marketCap: String,
         val volume: String,
     ) : CryptoCurrencyDetailsListItem() {
-        override val id = "crypto_details_${price}"
+        override val id = "crypto_details_$price"
     }
 
     data class CryptoCurrencyBody(
