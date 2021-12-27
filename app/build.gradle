@@ -105,7 +105,7 @@ dependencies {
     //Swipe Refresh Layout dependency
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
     //Material design dependency
-    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'com.google.android.material:material:1.6.0-alpha01'
     //Splash screen dependency
     implementation 'androidx.core:core-splashscreen:1.0.0-alpha02'
     //Constraint Layout dependency

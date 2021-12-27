@@ -115,4 +115,43 @@
     <!-- Profile Progress Bar-->
     <dimen name="profile_progress_bar_margin_top">20dp</dimen>
 
+    <!-- Fragment CryptoCurrencyDetails-->
+    <!-- CryptoCurrencyDetails RecyclerView-->
+    <!-- TextSizes -->
+    <dimen name="small_crypto_details_item_text">13sp</dimen>
+    <dimen name="medium_crypto_details_item_text">15sp</dimen>
+    <dimen name="large_crypto_details_item_text">24sp</dimen>
+
+    <!-- CoinLogo Layout Margin-->
+    <dimen name="crypto_details_coin_layout_margin">10dp</dimen>
+
+    <!-- CoinLogo ImageView-->
+    <dimen name="crypto_details_coin_logo_img_size">40dp</dimen>
+
+    <!-- CoinLogo TextViews-->
+    <dimen name="crypto_details_coin_logo_text_view_margin_start">4dp</dimen>
+    <dimen name="crypto_details_coin_logo_text_view_margin_top">10dp</dimen>
+
+    <!-- AnyChart-->
+    <dimen name="crypto_details_chart_margin_top">25dp</dimen>
+    <dimen name="crypto_details_chart_height">300dp</dimen>
+
+    <!-- Chip Layout Margin-->
+    <dimen name="crypto_details_chip_layout_margin">5dp</dimen>
+
+    <!-- ChipGroup-->
+    <dimen name="crypto_details_chip_group_height">48dp</dimen>
+    <dimen name="crypto_details_chip_group_horizontal_spacing">25dp</dimen>
+
+    <!-- Chip-->
+    <dimen name="crypto_details_chip_corner_radius">3dp</dimen>
+
+    <!-- Coin Header-->
+    <dimen name="crypto_details_coin_header_margin_start">20dp</dimen>
+    <dimen name="crypto_details_coin_header_margin_end">4dp</dimen>
+    <dimen name="crypto_details_coin_header_value_symbol_margin_top">5dp</dimen>
+    <dimen name="crypto_details_coin_header_daily_change_text_margin_end">9dp</dimen>
+    <dimen name="crypto_details_coin_header_market_cap_text_margin_end">11dp</dimen>
+    <dimen name="crypto_details_coin_header_volume_text_margin_end">14dp</dimen>
+
 </resources>

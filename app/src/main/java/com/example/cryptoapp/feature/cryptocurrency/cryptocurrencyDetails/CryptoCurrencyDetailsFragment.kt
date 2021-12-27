@@ -40,8 +40,6 @@ import com.example.cryptoapp.feature.shared.convertToPrice
 import com.example.cryptoapp.feature.shared.getColorFromAttr
 import com.example.cryptoapp.feature.shared.getTime
 import com.example.cryptoapp.feature.shared.handleReplace
-import com.example.cryptoapp.feature.shared.loadImage
-import com.example.cryptoapp.feature.shared.setPercentage
 import com.example.cryptoapp.feature.shared.toHexStringColor
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.flow.launchIn
@@ -78,7 +76,7 @@ class CryptoCurrencyDetailsFragment : Fragment() {
         viewModel.cryptoCurrencyDetails
             .onEach { cryptoDetails ->
                 if (cryptoDetails != null) {
-                    viewModel.loadCryptoCurrencyHistory(uuid = cryptoCurrencyId, timePeriod = HOUR24)
+                    viewModel.refreshCoinHistory(uuid = cryptoCurrencyId, timePeriod = HOUR24)
                     initUI(cryptoDetails)
                     binding.tabLayout.getTabAt(1)!!.select()
                     binding.tabLayout.getTabAt(0)!!.select()
@@ -87,7 +85,7 @@ class CryptoCurrencyDetailsFragment : Fragment() {
                 }
             }.launchIn(viewLifecycleOwner.lifecycleScope)
 
-        viewModel.cryptoCurrencyHistory
+        viewModel.cryptoCurrencyDetailsHistory
             .onEach { cryptoHistory ->
                 if (cryptoHistory != null) {
                     when (currentTimeFrame) {
@@ -206,19 +204,19 @@ class CryptoCurrencyDetailsFragment : Fragment() {
         binding.chipGroup.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 R.id.chip_24h -> {
-                    viewModel.loadCryptoCurrencyHistory(uuid = cryptoCurrencyId, timePeriod = HOUR24)
+                    viewModel.refreshCoinHistory(uuid = cryptoCurrencyId, timePeriod = HOUR24)
                     currentTimeFrame = HOUR24
                 }
                 R.id.chip_7d -> {
-                    viewModel.loadCryptoCurrencyHistory(uuid = cryptoCurrencyId, timePeriod = DAY7)
+                    viewModel.refreshCoinHistory(uuid = cryptoCurrencyId, timePeriod = DAY7)
                     currentTimeFrame = DAY7
                 }
                 R.id.chip_1y -> {
-                    viewModel.loadCryptoCurrencyHistory(uuid = cryptoCurrencyId, timePeriod = YEAR1)
+                    viewModel.refreshCoinHistory(uuid = cryptoCurrencyId, timePeriod = YEAR1)
                     currentTimeFrame = YEAR1
                 }
                 R.id.chip_6y -> {
-                    viewModel.loadCryptoCurrencyHistory(uuid = cryptoCurrencyId, timePeriod = YEAR6)
+                    viewModel.refreshCoinHistory(uuid = cryptoCurrencyId, timePeriod = YEAR6)
                     currentTimeFrame = YEAR6
                 }
             }

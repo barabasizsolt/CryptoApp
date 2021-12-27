@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="uiModel"
+            type="com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails.CryptoCurrencyDetailsListItem.CryptoCurrencyChart" />
+    </data>
+
+    <com.anychart.anychart.AnyChartView
+        android:layout_marginTop="@dimen/crypto_details_chart_margin_top"
+        android:id="@+id/any_chart_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/crypto_details_chart_height" />
+
+</layout>

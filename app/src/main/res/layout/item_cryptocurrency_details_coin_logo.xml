@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="uiModel"
+            type="com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails.CryptoCurrencyDetailsListItem.CryptoCurrencyLogo" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/crypto_details_coin_layout_margin">
+
+        <ImageView
+            android:id="@+id/crypto_logo"
+            android:layout_width="@dimen/crypto_details_coin_logo_img_size"
+            android:layout_height="@dimen/crypto_details_coin_logo_img_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@tools:sample/avatars"
+            app:url="@{uiModel.logo}" />
+
+        <TextView
+            android:id="@+id/crypto_symbol"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/crypto_details_coin_logo_text_view_margin_start"
+            tools:text="BTC"
+            android:textAlignment="center"
+            android:textSize="@dimen/small_crypto_details_item_text"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/crypto_logo"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="@{uiModel.symbol}" />
+
+        <TextView
+            android:id="@+id/crypto_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/crypto_details_coin_logo_text_view_margin_start"
+            tools:text="Bitcoin"
+            android:textAlignment="center"
+            android:textSize="@dimen/small_crypto_details_item_text"
+            app:layout_constraintBottom_toBottomOf="@+id/crypto_logo"
+            app:layout_constraintStart_toEndOf="@+id/crypto_logo"
+            android:text="@{uiModel.name}"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

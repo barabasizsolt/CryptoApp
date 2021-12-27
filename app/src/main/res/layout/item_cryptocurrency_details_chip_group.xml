@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="uiModel"
+            type="com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails.CryptoCurrencyDetailsListItem.CryptoCurrencyChipGroup" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/crypto_details_chip_layout_margin">
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chip_group"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/crypto_details_chip_group_height"
+            android:layout_gravity="center_horizontal"
+            app:chipSpacingHorizontal="@dimen/crypto_details_chip_group_horizontal_spacing"
+            app:selectionRequired="true"
+            app:singleSelection="true">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_24h"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="@string/chip_24hr"
+                app:chipCornerRadius="@dimen/crypto_details_chip_corner_radius" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_7d"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/chip_7d"
+                app:chipCornerRadius="@dimen/crypto_details_chip_corner_radius" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_1y"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/chip_1y"
+                app:chipCornerRadius="@dimen/crypto_details_chip_corner_radius" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_6y"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/chip_6y"
+                app:chipCornerRadius="@dimen/crypto_details_chip_corner_radius" />
+
+        </com.google.android.material.chip.ChipGroup>
+
+    </FrameLayout>
+
+</layout>
+
