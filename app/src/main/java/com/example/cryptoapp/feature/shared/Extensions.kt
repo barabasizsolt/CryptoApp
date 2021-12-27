@@ -101,13 +101,27 @@ fun View.createErrorSnackBar(errorMessage: String, snackBarAction: () -> Unit) =
         .setAction(resources.getString(R.string.retry)) { snackBarAction() }
         .show()
 
-@BindingAdapter("bgColor", "txtColor", requireAll = true)
-fun AnyChartView.initializeChart(chartBackgroundColor: String, chartTextColor: String) {
-    Log.d("color", chartBackgroundColor)
-
+@BindingAdapter("data", "bgColor", "txtColor", "cColor",  requireAll = true)
+fun AnyChartView.initializeChart(data: MutableList<DataEntry>, chartBackgroundColor: String, chartTextColor: String, chartColor: String) {
     this.setBackgroundColor(chartBackgroundColor)
 
     val areaChart: Cartesian = area()
+    val series = areaChart.area(data)
+    with(series) {
+        setName("Cryptocurrency History")
+        setStroke("1 $chartTextColor")
+        hovered.markers.setEnabled(true)
+        series.markers.setZIndex(100.0)
+        hovered.setStroke("3 $chartTextColor")
+        fill(chartColor, 5)
+    }
+    with(series.hovered.markers) {
+        setType(MarkerType.CIRCLE)
+        setSize(4.0)
+        setStroke("1.5 $chartTextColor")
+    }
+    areaChart.setData(data)
+
     with(areaChart) {
         yScale.setStackMode(ScaleStackMode.VALUE)
         yGrid.setEnabled(true)
@@ -141,25 +155,6 @@ fun AnyChartView.initializeChart(chartBackgroundColor: String, chartTextColor: S
         labels.setFontColor(chartTextColor)
     }
     this.setChart(areaChart)
-}
-
-@BindingAdapter("data", "strokeColor", "chartColor", requireAll = true)
-fun Cartesian.refreshChart(data: MutableList<DataEntry>, strokeColor: String, chartColor: String) {
-    val series = this.area(data)
-    with(series) {
-        setName("Cryptocurrency History")
-        setStroke("1 $strokeColor")
-        hovered.markers.setEnabled(true)
-        series.markers.setZIndex(100.0)
-        hovered.setStroke("3 $strokeColor")
-        fill(chartColor, 5)
-    }
-    with(series.hovered.markers) {
-        setType(MarkerType.CIRCLE)
-        setSize(4.0)
-        setStroke("1.5 $strokeColor")
-    }
-    this.setData(data)
 }
 
 inline fun <reified T : Fragment> FragmentManager.handleReplace(

@@ -1,22 +1,12 @@
 package com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails
 
 import android.os.Bundle
-import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import com.example.cryptoapp.databinding.FragmentCryptoDetailsInfoBinding
-import com.example.cryptoapp.feature.cryptocurrency.Constant.ROTATE_180
-import com.example.cryptoapp.feature.cryptocurrency.Constant.ROTATE_360
 import com.example.cryptoapp.feature.shared.BundleArgumentDelegate
-import com.example.cryptoapp.feature.shared.convertToPrice
-import com.example.cryptoapp.feature.shared.formatInput
-import com.example.cryptoapp.feature.shared.getFormattedTime
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -31,7 +21,7 @@ class CryptoDetailsInfoFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentCryptoDetailsInfoBinding.inflate(inflater, container, false)
-        //initUI()
+        // initUI()
         return binding.root
     }
 

@@ -2,13 +2,18 @@ package com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.*
 import com.example.cryptoapp.feature.shared.ListItemDiff
 
-class CryptoCurrencyDetailsAdapter() : ListAdapter<CryptoCurrencyDetailsListItem, RecyclerView.ViewHolder>(ListItemDiff()) {
+class CryptoCurrencyDetailsAdapter(
+    private val onChipClicked: (ChipType) -> Unit,
+    private val onDescriptionArrowClicked: (ImageView, TextView) -> Unit
+) : ListAdapter<CryptoCurrencyDetailsListItem, RecyclerView.ViewHolder>(ListItemDiff()) {
     override fun getItemViewType(position: Int) = when (getItem(position)) {
         is CryptoCurrencyDetailsListItem.CryptoCurrencyLogo -> R.layout.item_cryptocurrency_details_coin_logo
         is CryptoCurrencyDetailsListItem.CryptoCurrencyChart -> R.layout.item_cryptocurrency_details_chart
@@ -25,13 +30,15 @@ class CryptoCurrencyDetailsAdapter() : ListAdapter<CryptoCurrencyDetailsListItem
             parent = parent
         )
         R.layout.item_cryptocurrency_details_chip_group -> ChipGroupViewHolder.create(
-            parent = parent
+            parent = parent,
+            onChipClicked = onChipClicked
         )
         R.layout.item_cryptocurrency_details_coin_header -> HeaderViewHolder.create(
             parent = parent
         )
         R.layout.item_cryptocurrency_details_coin_body -> BodyViewHolder.create(
-            parent = parent
+            parent = parent,
+            onDescriptionArrowClicked = onDescriptionArrowClicked
         )
         else -> throw IllegalStateException("Invalid view type: $viewType.")
     }
@@ -75,16 +82,25 @@ class CryptoCurrencyDetailsAdapter() : ListAdapter<CryptoCurrencyDetailsListItem
     }
 
     class ChipGroupViewHolder private constructor(
-        private val binding: ItemCryptocurrencyDetailsChipGroupBinding
+        private val binding: ItemCryptocurrencyDetailsChipGroupBinding,
+        private val onChipClicked: (ChipType) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
+
+        init {
+            binding.chip24h.setOnClickListener { onChipClicked(ChipType.CHIP_24H) }
+            binding.chip7d.setOnClickListener { onChipClicked(ChipType.CHIP_7D) }
+            binding.chip1y.setOnClickListener { onChipClicked(ChipType.CHIP_1Y) }
+            binding.chip6y.setOnClickListener { onChipClicked(ChipType.CHIP_6Y) }
+        }
 
         fun bind(listItem: CryptoCurrencyDetailsListItem.CryptoCurrencyChipGroup) {
             binding.uiModel = listItem
         }
 
         companion object {
-            fun create(parent: ViewGroup) = ChipGroupViewHolder(
-                binding = ItemCryptocurrencyDetailsChipGroupBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            fun create(parent: ViewGroup, onChipClicked: (ChipType) -> Unit) = ChipGroupViewHolder(
+                binding = ItemCryptocurrencyDetailsChipGroupBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+                onChipClicked = onChipClicked
             )
         }
     }
@@ -105,16 +121,22 @@ class CryptoCurrencyDetailsAdapter() : ListAdapter<CryptoCurrencyDetailsListItem
     }
 
     class BodyViewHolder private constructor(
-        private val binding: ItemCryptocurrencyDetailsCoinBodyBinding
+        private val binding: ItemCryptocurrencyDetailsCoinBodyBinding,
+        private val onDescriptionArrowClicked: (ImageView, TextView) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
+
+        init {
+            binding.descriptionDropDown.setOnClickListener{ onDescriptionArrowClicked(it as ImageView, binding.cryptoDescriptionText) }
+        }
 
         fun bind(listItem: CryptoCurrencyDetailsListItem.CryptoCurrencyBody) {
             binding.uiModel = listItem
         }
 
         companion object {
-            fun create(parent: ViewGroup) = BodyViewHolder(
-                binding = ItemCryptocurrencyDetailsCoinBodyBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            fun create(parent: ViewGroup, onDescriptionArrowClicked: (ImageView, TextView) -> Unit) = BodyViewHolder(
+                binding = ItemCryptocurrencyDetailsCoinBodyBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+                onDescriptionArrowClicked = onDescriptionArrowClicked
             )
         }
     }

@@ -50,7 +50,7 @@
             app:layout_constraintEnd_toStartOf="@+id/daily_change_text"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="+0.53%"
-            android:text="@{uiModel.percentageChange}" />
+            app:percentage="@{uiModel.percentageChange}" />
 
         <TextView
             android:id="@+id/market_cap"

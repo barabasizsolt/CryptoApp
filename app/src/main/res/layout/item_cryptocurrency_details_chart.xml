@@ -13,8 +13,10 @@
         android:layout_marginTop="@dimen/crypto_details_chart_margin_top"
         android:id="@+id/any_chart_view"
         android:layout_width="match_parent"
+        app:data="@{uiModel.history}"
         app:bgColor="@{uiModel.chartBackgroundColor}"
         app:txtColor="@{uiModel.chartTextColor}"
+        app:cColor="@{uiModel.chartColor}"
         android:layout_height="@dimen/crypto_details_chart_height" />
 
 </layout>

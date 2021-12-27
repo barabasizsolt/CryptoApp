@@ -1,6 +1,10 @@
 package com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails
 
 import android.text.Html
+import android.view.View.GONE
+import android.view.View.VISIBLE
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.text.HtmlCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,10 +12,7 @@ import com.anychart.anychart.DataEntry
 import com.anychart.anychart.ValueDataEntry
 import com.example.cryptoapp.data.model.Result
 import com.example.cryptoapp.data.model.cryptoCurrencyDetail.details.CryptoCurrencyDetails
-import com.example.cryptoapp.data.model.cryptoCurrencyDetail.details.CryptoCurrencyDetailsUIModel
-import com.example.cryptoapp.data.model.cryptoCurrencyDetail.history.CryptoCurrencyHistory
 import com.example.cryptoapp.data.model.cryptoCurrencyDetail.history.CryptoHistoryItem
-import com.example.cryptoapp.data.model.cryptoCurrencyDetail.history.SingleCryptoCurrencyHistoryResponse
 import com.example.cryptoapp.domain.cryptocurrency.GetCryptoCurrencyDetailsUseCase
 import com.example.cryptoapp.domain.cryptocurrency.GetCryptoCurrencyHistoryUseCase
 import com.example.cryptoapp.feature.cryptocurrency.Constant.CALENDAR
@@ -19,6 +20,8 @@ import com.example.cryptoapp.feature.cryptocurrency.Constant.DAY7
 import com.example.cryptoapp.feature.cryptocurrency.Constant.HOUR24
 import com.example.cryptoapp.feature.cryptocurrency.Constant.MAX_HOUR
 import com.example.cryptoapp.feature.cryptocurrency.Constant.MAX_MONTH
+import com.example.cryptoapp.feature.cryptocurrency.Constant.ROTATE_180
+import com.example.cryptoapp.feature.cryptocurrency.Constant.ROTATE_360
 import com.example.cryptoapp.feature.cryptocurrency.Constant.YEAR1
 import com.example.cryptoapp.feature.cryptocurrency.Constant.YEAR6
 import com.example.cryptoapp.feature.news.NewsViewModel
@@ -35,10 +38,10 @@ import java.util.Calendar.HOUR_OF_DAY
 import java.util.Calendar.MONTH
 
 class CryptoCurrencyDetailsViewModel(
-    uuid: String,
-    chartBackgroundColor: String,
-    chartTextColor: String,
-    chartColor: String,
+    private val uuid: String,
+    private val chartBackgroundColor: String,
+    private val chartTextColor: String,
+    private val chartColor: String,
     private val detailsUseCase: GetCryptoCurrencyDetailsUseCase,
     private val historyUseCase: GetCryptoCurrencyHistoryUseCase
 ) : ViewModel() {
@@ -48,6 +51,8 @@ class CryptoCurrencyDetailsViewModel(
     private val shouldShowError = MutableStateFlow(false)
     private val details = MutableStateFlow<CryptoCurrencyDetails?>(null)
     private val history = MutableStateFlow<List<CryptoHistoryItem>?>(null)
+    private var timePeriod: String = HOUR24
+    private var isDescriptionVisible: Boolean = false
 
     val listItem = combine(details, history, shouldShowError) {
         details, history, shouldShowError ->
@@ -58,16 +63,16 @@ class CryptoCurrencyDetailsViewModel(
                 listOf(
                     details.toCryptoCurrencyLogoListItem(),
                     CryptoCurrencyDetailsListItem.CryptoCurrencyChart(
-                        history = history.toAnyChartArray(timeFrame = HOUR24),
+                        history = history.toAnyChartArray(timeFrame = timePeriod),
                         chartBackgroundColor = chartBackgroundColor,
-                        chartTextColor = chartTextColor
+                        chartTextColor = chartTextColor,
+                        chartColor = chartColor
                     ),
                     CryptoCurrencyDetailsListItem.CryptoCurrencyChipGroup(),
                     details.toCryptoCurrencyHeaderListItem(),
                     details.toCryptoCurrencyBodyListItem()
                 )
-            }
-            else {
+            } else {
                 emptyList()
             }
         }
@@ -138,7 +143,6 @@ class CryptoCurrencyDetailsViewModel(
 
     private fun List<CryptoHistoryItem>.toAnyChartArray(timeFrame: String): MutableList<DataEntry> {
         val currencyHistory: MutableList<DataEntry> = ArrayList()
-
         // TODO:refactor it
         when (timeFrame) {
             HOUR24 -> {
@@ -248,8 +252,29 @@ class CryptoCurrencyDetailsViewModel(
         return currencyHistory
     }
 
+    fun onChipClicked(chipType: ChipType) = when(chipType) {
+        ChipType.CHIP_24H -> timePeriod = HOUR24
+        ChipType.CHIP_7D -> timePeriod = DAY7
+        ChipType.CHIP_1Y -> timePeriod = YEAR1
+        ChipType.CHIP_6Y -> timePeriod = YEAR6
+    }.also {
+        refreshCoinHistory(uuid = uuid, timePeriod = timePeriod)
+    }
+
+    fun onDescriptionArrowClicked(arrow: ImageView, description: TextView){
+        if (isDescriptionVisible) {
+            arrow.animate().rotation(ROTATE_360).start()
+            description.visibility = GONE
+            isDescriptionVisible = false
+        } else {
+            arrow.animate().rotation(ROTATE_180).start()
+            description.visibility = VISIBLE
+            isDescriptionVisible = true
+        }
+    }
+
     sealed class Event {
-        data class RefreshChart(val data: List<CryptoHistoryItem>): Event()
+        data class RefreshChart(val data: List<CryptoHistoryItem>) : Event()
     }
 
     // val currentTime = System.currentTimeMillis().getTime()
