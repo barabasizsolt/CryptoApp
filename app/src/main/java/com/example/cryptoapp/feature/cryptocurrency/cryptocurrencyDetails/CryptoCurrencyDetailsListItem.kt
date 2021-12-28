@@ -1,7 +1,7 @@
 package com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails
 
-import com.anychart.anychart.DataEntry
 import com.example.cryptoapp.feature.shared.ListItem
+import com.github.mikephil.charting.data.LineDataSet
 
 sealed class CryptoCurrencyDetailsListItem : ListItem {
 
@@ -14,10 +14,10 @@ sealed class CryptoCurrencyDetailsListItem : ListItem {
     }
 
     data class CryptoCurrencyChart(
-        val history: MutableList<DataEntry> = mutableListOf(),
-        val chartBackgroundColor: String,
-        val chartTextColor: String,
-        val chartColor: String
+        val data: LineDataSet,
+        val chartBackgroundColor: Int,
+        val chartTextColor: Int,
+        val chartColor: Int
     ) : CryptoCurrencyDetailsListItem() {
         override val id = "crypto_details_chart"
     }

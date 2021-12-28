@@ -6,26 +6,32 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.FragmentCryptoCurrencyDetailsBinding
 import com.example.cryptoapp.feature.shared.BundleArgumentDelegate
-import com.example.cryptoapp.feature.shared.getColorFromAttr
-import com.example.cryptoapp.feature.shared.toHexStringColor
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.cryptoapp.R
+import com.github.mikephil.charting.charts.LineChart
+import com.google.android.material.color.MaterialColors
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 class CryptoCurrencyDetailsFragment : Fragment() {
-    private lateinit var chartBackgroundColor: String
-    private lateinit var chartTextColor: String
-    private lateinit var chartColor: String
     private lateinit var binding: FragmentCryptoCurrencyDetailsBinding
     private val viewModel: CryptoCurrencyDetailsViewModel by viewModel {
-        parametersOf(arguments?.cryptoCurrencyId, chartBackgroundColor, chartTextColor, chartColor)
+        parametersOf(
+            arguments?.cryptoCurrencyId,
+            MaterialColors.getColor(requireContext(), R.attr.app_background_color, Color.WHITE),
+            MaterialColors.getColor(requireContext(), R.attr.app_text_color, Color.BLACK),
+            ContextCompat.getColor(requireContext(), R.color.orange)
+        )
     }
+
+    private lateinit var chart: LineChart
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -33,101 +39,95 @@ class CryptoCurrencyDetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentCryptoCurrencyDetailsBinding.inflate(inflater, container, false)
-        initChartColors()
 
         val detailsAdapter = CryptoCurrencyDetailsAdapter(
             onChipClicked = viewModel::onChipClicked,
             onDescriptionArrowClicked = viewModel::onDescriptionArrowClicked
         )
-        binding.recyclerview.adapter = detailsAdapter
-        binding.recyclerview.layoutManager = LinearLayoutManager(requireContext())
+        val layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerview.let {
+            it.adapter = detailsAdapter
+            it.layoutManager = layoutManager
+            it.addItemDecoration(DividerItemDecoration(requireContext(), layoutManager.orientation))
+        }
         viewModel.listItem.onEach(detailsAdapter::submitList).launchIn(viewLifecycleOwner.lifecycleScope)
+
+//        chart = binding.lineChart
+//        chart.setTouchEnabled(false)
+//        chart.isDragEnabled = true
+//        chart.setScaleEnabled(true)
+//        chart.setPinchZoom(false)
+//        chart.setDrawGridBackground(false)
+//        chart.description.isEnabled = false
+//        chart.legend.isEnabled = true
+//        chart.legend.textColor = Color.WHITE
+//        chart.legend.textSize = 13f
+//        chart.legend.verticalAlignment = Legend.LegendVerticalAlignment.TOP
+//        chart.legend.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
+//        chart.legend.orientation = Legend.LegendOrientation.HORIZONTAL
+//        chart.legend.setDrawInside(false)
+//        val legendEntry = LegendEntry()
+//        legendEntry.label = "Cryptocurrency value changes"
+//        legendEntry.formColor = ContextCompat.getColor(requireContext(), R.color.orange)
+//        legendEntry.form
+//        chart.legend.setCustom(arrayListOf(legendEntry))
+//        chart.xAxis.textColor = Color.WHITE
+//        chart.xAxis.position = XAxis.XAxisPosition.BOTTOM
+//        chart.xAxis.setDrawGridLines(true)
+//        chart.axisLeft.textColor = Color.WHITE
+//        chart.axisLeft.valueFormatter = CryptoAxisFormatter()
+//        chart.axisLeft.setDrawGridLines(true)
+//        chart.setBackgroundColor(Color.BLACK)
+//        chart.data = LineData(arrayListOf<ILineDataSet>(refresh(ctr = 25f)))
+//        chart.invalidate()
+
+//        var ctr = 50
+//        binding.button.setOnClickListener {
+//            chart.data.clearValues()
+//            chart.data = LineData(arrayListOf<ILineDataSet>(refresh(ctr = ctr.toFloat())))
+//            ctr += 20
+//            chart.notifyDataSetChanged()
+//            chart.invalidate()
+//        }
+
 
         return binding.root
     }
 
-//    override fun onPause() {
-//        super.onPause()
-//        (activity as MainActivity).favoriteMenuItem.isVisible = false
-//        (activity as MainActivity).favoriteMenuItem.setIcon(R.drawable.ic_watchlist)
-//    }
+//    private fun refresh(ctr: Float): LineDataSet {
+//        val entryArrayList: ArrayList<Entry> = ArrayList()
+//        entryArrayList.add(Entry(0f, 60f, "1"))
+//        entryArrayList.add(Entry(1f, 55f, "2"))
+//        entryArrayList.add(Entry(2f, 60f, "3"))
+//        entryArrayList.add(Entry(3f, 40f, "4"))
+//        entryArrayList.add(Entry(4f, 45f, "5"))
+//        entryArrayList.add(Entry(5f, 36f, "6"))
+//        entryArrayList.add(Entry(6f, ctr, "7"))
 //
-    private fun initChartColors() {
-        val intBgColor =
-            context?.let { R.attr.app_background_color.getColorFromAttr(context = it, defaultColor = Color.WHITE) }
-        if (intBgColor != null) {
-            chartBackgroundColor = intBgColor.toHexStringColor()
-        }
-
-        val intTxtColor =
-            context?.let { R.attr.app_text_color.getColorFromAttr(context = it, defaultColor = Color.BLACK) }
-        if (intTxtColor != null) {
-            chartTextColor = intTxtColor.toHexStringColor()
-        }
-
-        val intChartColor =
-            context?.let { R.attr.crypto_chart_color.getColorFromAttr(context = it, defaultColor = Color.YELLOW) }
-        if (intChartColor != null) {
-            chartColor = intChartColor.toHexStringColor()
-        }
-    }
-
-//    private fun isFavourite() {
-//        if (Cache.getUserWatchList().contains(cryptoCurrencyId)) {
-//            (activity as MainActivity).favoriteMenuItem.setIcon(R.drawable.ic_watchlist_gold)
-//            isAddedToFavorite = true
-//        }
-//    }
+//        val xAxisLabel: ArrayList<String> = ArrayList()
+//        xAxisLabel.add("Mon")
+//        xAxisLabel.add("Tue")
+//        xAxisLabel.add("Wed")
+//        xAxisLabel.add("Thu")
+//        xAxisLabel.add("Fri")
+//        xAxisLabel.add("Sat")
+//        xAxisLabel.add("Sun")
+//        chart.xAxis.valueFormatter = IndexAxisValueFormatter(xAxisLabel)
 //
-//    private fun initTobBarListener() {
-//        (activity as MainActivity).topAppBar.setOnMenuItemClickListener { menuItem ->
-//            when (menuItem.itemId) {
-//                R.id.favorite -> {
-//                    // TODO: check if exist
-//                    if (!isAddedToFavorite) {
-//                        (activity as MainActivity).fireStore.collection(CURRENCY_FIRE_STORE_PATH)
-//                            .add(
-//                                hashMapOf(
-//                                    "uuid" to cryptoCurrencyId,
-//                                    "userid" to (activity as MainActivity).mAuth.currentUser?.uid
-//                                )
-//                            )
-//                            .addOnSuccessListener {
-//                                (activity as MainActivity).favoriteMenuItem.setIcon(R.drawable.ic_watchlist_gold)
-//                                isAddedToFavorite = true
-//                                Cache.addUserWatchList(cryptoCurrencyId)
-//                                Toast.makeText(requireContext(), "Added to watchlist", Toast.LENGTH_SHORT).show()
-//                            }
-//                            .addOnFailureListener { e ->
-//                                Log.w("fireStore", "Error adding document", e)
-//                            }
-//                    }
-//                    true
-//                }
-//                else -> false
-//            }
-//        }
-//    }
+//        val lineDataSet = LineDataSet(entryArrayList, "")
+//        lineDataSet.lineWidth = 3f
+//        lineDataSet.color = Color.WHITE
+//        lineDataSet.highLightColor = Color.RED
+//        lineDataSet.setDrawValues(false)
+//        lineDataSet.circleRadius = 10f
+//        lineDataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
+//        lineDataSet.cubicIntensity = 0.1f
+//        lineDataSet.setDrawFilled(true)
+//        lineDataSet.fillColor = ContextCompat.getColor(requireContext(), R.color.orange)
+//        lineDataSet.fillAlpha = 255
+//        lineDataSet.setDrawCircles(false)
 //
-//
-//
-//
-//    private fun refreshChart(data: MutableList<DataEntry>) {
-//        val series = areaChart.area(data)
-//        with(series) {
-//            setName("Cryptocurrency History")
-//            setStroke("1 $chartTextColor")
-//            hovered.markers.setEnabled(true)
-//            series.markers.setZIndex(100.0)
-//            hovered.setStroke("3 $chartTextColor")
-//            fill(chartColor, 5)
-//        }
-//        with(series.hovered.markers) {
-//            setType(MarkerType.CIRCLE)
-//            setSize(4.0)
-//            setStroke("1.5 $chartTextColor")
-//        }
-//        areaChart.setData(data)
+//       return lineDataSet
 //    }
 
     companion object {

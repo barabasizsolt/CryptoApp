@@ -114,6 +114,8 @@ dependencies {
     implementation 'androidx.drawerlayout:drawerlayout:1.1.1'
     //AnyChart dependency
     implementation 'com.github.AnyChart:AnyChart-Android:0.3.0'
+    //MPAndroidChart dependency
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
     /*-------------------Android Core dependencies-----------------*/
     implementation 'androidx.core:core-ktx:1.7.0'

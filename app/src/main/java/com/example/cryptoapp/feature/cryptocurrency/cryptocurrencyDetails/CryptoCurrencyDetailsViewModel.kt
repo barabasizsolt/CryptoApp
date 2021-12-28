@@ -1,8 +1,6 @@
 package com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails
 
 import android.text.Html
-import android.view.View.GONE
-import android.view.View.VISIBLE
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.text.HtmlCompat
@@ -26,6 +24,8 @@ import com.example.cryptoapp.feature.cryptocurrency.Constant.YEAR1
 import com.example.cryptoapp.feature.cryptocurrency.Constant.YEAR6
 import com.example.cryptoapp.feature.news.NewsViewModel
 import com.example.cryptoapp.feature.shared.*
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineDataSet
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -39,9 +39,9 @@ import java.util.Calendar.MONTH
 
 class CryptoCurrencyDetailsViewModel(
     private val uuid: String,
-    private val chartBackgroundColor: String,
-    private val chartTextColor: String,
-    private val chartColor: String,
+    private val chartBackgroundColor: Int,
+    private val chartTextColor: Int,
+    private val chartColor: Int,
     private val detailsUseCase: GetCryptoCurrencyDetailsUseCase,
     private val historyUseCase: GetCryptoCurrencyHistoryUseCase
 ) : ViewModel() {
@@ -52,7 +52,7 @@ class CryptoCurrencyDetailsViewModel(
     private val details = MutableStateFlow<CryptoCurrencyDetails?>(null)
     private val history = MutableStateFlow<List<CryptoHistoryItem>?>(null)
     private var timePeriod: String = HOUR24
-    private var isDescriptionVisible: Boolean = false
+    private var isDescriptionExpanded: Boolean = false
 
     val listItem = combine(details, history, shouldShowError) {
         details, history, shouldShowError ->
@@ -63,7 +63,7 @@ class CryptoCurrencyDetailsViewModel(
                 listOf(
                     details.toCryptoCurrencyLogoListItem(),
                     CryptoCurrencyDetailsListItem.CryptoCurrencyChart(
-                        history = history.toAnyChartArray(timeFrame = timePeriod),
+                        data = refresh(),
                         chartBackgroundColor = chartBackgroundColor,
                         chartTextColor = chartTextColor,
                         chartColor = chartColor
@@ -83,7 +83,7 @@ class CryptoCurrencyDetailsViewModel(
 
     init {
         refreshCoinDetails(uuid = uuid)
-        refreshCoinHistory(uuid = uuid, timePeriod = HOUR24)
+        refreshCoinHistory(uuid = uuid, timePeriod = timePeriod)
     }
 
     private fun refreshCoinDetails(uuid: String) {
@@ -141,13 +141,13 @@ class CryptoCurrencyDetailsViewModel(
         description = Html.fromHtml(description, HtmlCompat.FROM_HTML_MODE_LEGACY).toString()
     )
 
-    private fun List<CryptoHistoryItem>.toAnyChartArray(timeFrame: String): MutableList<DataEntry> {
-        val currencyHistory: MutableList<DataEntry> = ArrayList()
+    private fun List<CryptoHistoryItem>.toChartArray(timeFrame: String): ArrayList<Entry> {
+        val currencyHistory: ArrayList<Entry> = ArrayList()
         // TODO:refactor it
         when (timeFrame) {
             HOUR24 -> {
                 val groupedHistory = sortedMapOf<Int, MutableList<Double>>()
-                val tmpHistory: MutableList<Pair<Int, Double?>> = mutableListOf()
+                val tmpHistory: MutableList<Pair<Int, Double>> = mutableListOf()
 
                 val currentHour: Int = CALENDAR.get(HOUR_OF_DAY)
 
@@ -162,20 +162,21 @@ class CryptoCurrencyDetailsViewModel(
                 }
 
                 groupedHistory.forEach { elem ->
-                    tmpHistory.add(Pair(elem.key, elem.value.maxOfOrNull { it }))
+                    tmpHistory.add(Pair(elem.key, elem.value.maxOf { it }))
                 }
 
                 for (i in (currentHour - 12)..(currentHour + 12)) {
                     val idx = i.mod(MAX_HOUR)
                     if (idx < tmpHistory.size) {
                         val elem = tmpHistory[idx]
-                        currencyHistory.add(ValueDataEntry(elem.first.toString() + ":00", elem.second))
+                        //currencyHistory.add(Entry(elem.first.toString() + ":00", elem.second))
+                        currencyHistory.add(Entry(elem.first.toFloat(), elem.second.toFloat()))
                     }
                 }
             }
             DAY7 -> {
                 val groupedHistory = mutableMapOf<DayOfWeek, MutableList<Double>>()
-                val tmpHistory: MutableList<Pair<DayOfWeek, Double?>> = mutableListOf()
+                val tmpHistory: MutableList<Pair<DayOfWeek, Double>> = mutableListOf()
 
                 val currentDay: Int = LocalDate.now().dayOfWeek.value - 1
 
@@ -191,20 +192,21 @@ class CryptoCurrencyDetailsViewModel(
                 }
 
                 groupedHistory.forEach { elem ->
-                    tmpHistory.add(Pair(elem.key, elem.value.maxOfOrNull { it }))
+                    tmpHistory.add(Pair(elem.key, elem.value.maxOf { it }))
                 }
 
                 for (i in (currentDay - 3)..(currentDay + 3)) {
                     val idx = i.mod(MAX_HOUR)
                     if (idx < tmpHistory.size) {
                         val elem = tmpHistory[idx]
-                        currencyHistory.add(ValueDataEntry(elem.first.name.substring(0, 3), elem.second))
+                        //currencyHistory.add(Entry(elem.first.name.substring(0, 3), elem.second.toFloat()))
+                        currencyHistory.add(Entry(elem.first.value.toFloat(), elem.second.toFloat()))
                     }
                 }
             }
             YEAR1 -> {
                 val groupedHistory = mutableMapOf<Month, MutableList<Double>>()
-                val tmpHistory: MutableList<Pair<Month, Double?>> = mutableListOf()
+                val tmpHistory: MutableList<Pair<Month, Double>> = mutableListOf()
 
                 val currentMonth: Int = CALENDAR.get(MONTH)
 
@@ -220,23 +222,24 @@ class CryptoCurrencyDetailsViewModel(
                 }
 
                 groupedHistory.forEach { elem ->
-                    tmpHistory.add(Pair(elem.key, elem.value.maxOfOrNull { it }))
+                    tmpHistory.add(Pair(elem.key, elem.value.maxOf { it }))
                 }
 
                 for (i in (currentMonth - 6)..(currentMonth + 6)) {
                     val idx = i.mod(MAX_MONTH)
                     if (idx < tmpHistory.size) {
                         val elem = tmpHistory[idx]
-                        currencyHistory.add(ValueDataEntry(elem.first.name.substring(0, 3), elem.second))
+                        //currencyHistory.add(ValueDataEntry(elem.first.name.substring(0, 3), elem.second))
+                        currencyHistory.add(Entry(elem.first.value.toFloat(), elem.second.toFloat()))
                     }
                 }
             }
             YEAR6 -> {
-                val groupedHistory = mutableMapOf<String, MutableList<Double>>()
+                val groupedHistory = mutableMapOf<Int, MutableList<Double>>()
 
                 this.toMutableList().sortWith(compareBy { it.timestamp.getTime().year })
                 this.forEach { curr ->
-                    val year = curr.timestamp.getTime().year.toString()
+                    val year = curr.timestamp.getTime().year
                     if (!groupedHistory.containsKey(year)) {
                         groupedHistory[year] = mutableListOf()
                     }
@@ -245,14 +248,41 @@ class CryptoCurrencyDetailsViewModel(
                     }
                 }
 
-                groupedHistory.forEach { elem -> currencyHistory.add(ValueDataEntry(elem.key, elem.value.maxOfOrNull { it })) }
+                //groupedHistory.forEach { elem -> currencyHistory.add(ValueDataEntry(elem.key, elem.value.maxOfOrNull { it })) }
+                groupedHistory.forEach { elem -> currencyHistory.add(Entry(elem.key.toFloat(), elem.value.maxOf { it }.toFloat())) }
             }
         }
 
         return currencyHistory
     }
 
-    fun onChipClicked(chipType: ChipType) = when(chipType) {
+    private fun refresh(): LineDataSet {
+        val entryArrayList: ArrayList<Entry> = ArrayList()
+        entryArrayList.add(Entry(0f, 60f, "1"))
+        entryArrayList.add(Entry(1f, 55f, "2"))
+        entryArrayList.add(Entry(2f, 60f, "3"))
+        entryArrayList.add(Entry(3f, 40f, "4"))
+        entryArrayList.add(Entry(4f, 45f, "5"))
+        entryArrayList.add(Entry(5f, 36f, "6"))
+        entryArrayList.add(Entry(6f, 40f, "7"))
+
+        val lineDataSet = LineDataSet(entryArrayList, "")
+        lineDataSet.lineWidth = 3f
+        lineDataSet.color = chartTextColor
+        lineDataSet.highLightColor = chartColor
+        lineDataSet.setDrawValues(false)
+        lineDataSet.circleRadius = 10f
+        lineDataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
+        lineDataSet.cubicIntensity = 0.1f
+        lineDataSet.setDrawFilled(true)
+        lineDataSet.fillColor = chartColor
+        lineDataSet.fillAlpha = 255
+        lineDataSet.setDrawCircles(false)
+
+        return lineDataSet
+    }
+
+    fun onChipClicked(chipType: ChipType) = when (chipType) {
         ChipType.CHIP_24H -> timePeriod = HOUR24
         ChipType.CHIP_7D -> timePeriod = DAY7
         ChipType.CHIP_1Y -> timePeriod = YEAR1
@@ -261,15 +291,15 @@ class CryptoCurrencyDetailsViewModel(
         refreshCoinHistory(uuid = uuid, timePeriod = timePeriod)
     }
 
-    fun onDescriptionArrowClicked(arrow: ImageView, description: TextView){
-        if (isDescriptionVisible) {
+    fun onDescriptionArrowClicked(arrow: ImageView, description: TextView) {
+        if (isDescriptionExpanded) {
             arrow.animate().rotation(ROTATE_360).start()
-            description.visibility = GONE
-            isDescriptionVisible = false
+            description.maxLines = 3
+            isDescriptionExpanded = false
         } else {
             arrow.animate().rotation(ROTATE_180).start()
-            description.visibility = VISIBLE
-            isDescriptionVisible = true
+            description.maxLines = 100
+            isDescriptionExpanded = true
         }
     }
 

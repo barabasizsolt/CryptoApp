@@ -9,14 +9,13 @@
             type="com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails.CryptoCurrencyDetailsListItem.CryptoCurrencyChart" />
     </data>
 
-    <com.anychart.anychart.AnyChartView
-        android:layout_marginTop="@dimen/crypto_details_chart_margin_top"
-        android:id="@+id/any_chart_view"
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/line_chart"
         android:layout_width="match_parent"
-        app:data="@{uiModel.history}"
+        android:layout_height="@dimen/crypto_details_chart_height"
+        app:data="@{uiModel.data}"
         app:bgColor="@{uiModel.chartBackgroundColor}"
         app:txtColor="@{uiModel.chartTextColor}"
-        app:cColor="@{uiModel.chartColor}"
-        android:layout_height="@dimen/crypto_details_chart_height" />
+        app:cColor="@{uiModel.chartColor}" />
 
 </layout>

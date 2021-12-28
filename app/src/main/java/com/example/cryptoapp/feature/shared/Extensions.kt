@@ -3,7 +3,6 @@ package com.example.cryptoapp.feature.shared
 import android.content.Context
 import android.icu.util.CurrencyAmount
 import android.net.Uri
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -16,12 +15,17 @@ import coil.decode.SvgDecoder
 import coil.load
 import coil.request.ImageRequest
 import coil.transform.CircleCropTransformation
-import com.anychart.anychart.*
-import com.anychart.anychart.AnyChart.area
 import com.example.cryptoapp.R
 import com.example.cryptoapp.feature.shared.Constant.currency
 import com.example.cryptoapp.feature.shared.Constant.formatter
 import com.example.cryptoapp.feature.shared.Constant.numberFormatter
+import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.components.Legend
+import com.github.mikephil.charting.components.LegendEntry
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialFadeThrough
@@ -101,60 +105,40 @@ fun View.createErrorSnackBar(errorMessage: String, snackBarAction: () -> Unit) =
         .setAction(resources.getString(R.string.retry)) { snackBarAction() }
         .show()
 
-@BindingAdapter("data", "bgColor", "txtColor", "cColor",  requireAll = true)
-fun AnyChartView.initializeChart(data: MutableList<DataEntry>, chartBackgroundColor: String, chartTextColor: String, chartColor: String) {
+@BindingAdapter("data", "bgColor", "txtColor", "cColor", requireAll = true)
+fun LineChart.initializeChart(data: LineDataSet, chartBackgroundColor: Int, chartTextColor: Int, chartColor: Int) {
+    this.setTouchEnabled(false)
+    this.isDragEnabled = true
+    this.setScaleEnabled(true)
+    this.setPinchZoom(false)
+    this.setDrawGridBackground(false)
+    this.description.isEnabled = false
+    this.legend.isEnabled = true
+    //this.legend.textColor = Color.WHITE
+    this.legend.textColor = chartTextColor
+    this.legend.textSize = 13f
+    this.legend.verticalAlignment = Legend.LegendVerticalAlignment.TOP
+    this.legend.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
+    this.legend.orientation = Legend.LegendOrientation.HORIZONTAL
+    this.legend.setDrawInside(false)
+    val legendEntry = LegendEntry()
+    legendEntry.label = "Cryptocurrency value changes"
+    //legendEntry.formColor = ContextCompat.getColor(requireContext(), R.color.orange)
+    legendEntry.formColor = chartColor
+    legendEntry.form
+    this.legend.setCustom(arrayListOf(legendEntry))
+    //this.xAxis.textColor = Color.WHITE
+    this.xAxis.textColor = chartTextColor
+    this.xAxis.position = XAxis.XAxisPosition.BOTTOM
+    this.xAxis.setDrawGridLines(true)
+    //this.axisLeft.textColor = Color.WHITE
+    this.axisLeft.textColor = chartTextColor
+    this.axisLeft.valueFormatter = CryptoYAxisFormatter()
+    this.axisLeft.setDrawGridLines(true)
+    //this.setBackgroundColor(Color.BLACK)
     this.setBackgroundColor(chartBackgroundColor)
-
-    val areaChart: Cartesian = area()
-    val series = areaChart.area(data)
-    with(series) {
-        setName("Cryptocurrency History")
-        setStroke("1 $chartTextColor")
-        hovered.markers.setEnabled(true)
-        series.markers.setZIndex(100.0)
-        hovered.setStroke("3 $chartTextColor")
-        fill(chartColor, 5)
-    }
-    with(series.hovered.markers) {
-        setType(MarkerType.CIRCLE)
-        setSize(4.0)
-        setStroke("1.5 $chartTextColor")
-    }
-    areaChart.setData(data)
-
-    with(areaChart) {
-        yScale.setStackMode(ScaleStackMode.VALUE)
-        yGrid.setEnabled(true)
-        background.fill(chartBackgroundColor, 0)
-        interactivity.setHoverMode(HoverMode.BY_X)
-    }
-    with(areaChart.crosshair) {
-        setEnabled(true)
-        setYStroke(null as Stroke?, null as Number?, null as String?, null as StrokeLineJoin?, null as StrokeLineCap?)
-        setXStroke(chartTextColor, 1.0, null, null as StrokeLineJoin?, null as StrokeLineCap?)
-        setZIndex(39.0)
-        getYLabel(0).setEnabled(true)
-    }
-    with(areaChart.tooltip) {
-        setValuePrefix("$")
-        setDisplayMode(TooltipDisplayMode.SINGLE)
-    }
-    with(areaChart.legend) {
-        setEnabled(true)
-        setFontSize(13.0)
-        setPadding(0.0, 0.0, 20.0, 0.0)
-    }
-    with(areaChart.getXAxis(0)) {
-        setTitle(false)
-        labels.setFontColor(chartTextColor)
-    }
-    with(areaChart.getYAxis(0)) {
-        setTitle("Value (in US Dollars)")
-        title.setFontColor(chartTextColor)
-        labels.setFormat("\${%value}")
-        labels.setFontColor(chartTextColor)
-    }
-    this.setChart(areaChart)
+    this.data = LineData(arrayListOf<ILineDataSet>(data))
+    this.invalidate()
 }
 
 inline fun <reified T : Fragment> FragmentManager.handleReplace(

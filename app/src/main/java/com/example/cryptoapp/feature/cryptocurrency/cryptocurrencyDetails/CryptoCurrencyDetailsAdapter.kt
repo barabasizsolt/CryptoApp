@@ -126,7 +126,7 @@ class CryptoCurrencyDetailsAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         init {
-            binding.descriptionDropDown.setOnClickListener{ onDescriptionArrowClicked(it as ImageView, binding.cryptoDescriptionText) }
+            binding.descriptionDropDown.setOnClickListener { onDescriptionArrowClicked(it as ImageView, binding.cryptoDescriptionText) }
         }
 
         fun bind(listItem: CryptoCurrencyDetailsListItem.CryptoCurrencyBody) {

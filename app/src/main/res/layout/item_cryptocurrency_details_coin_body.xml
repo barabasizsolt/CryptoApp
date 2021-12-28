@@ -222,7 +222,9 @@
             tools:text="Description"
             android:textSize="13sp"
             android:textAlignment="center"
-            android:visibility="gone"
+            android:ellipsize="end"
+            android:inputType="none"
+            android:maxLines="3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/crypto_description" />
