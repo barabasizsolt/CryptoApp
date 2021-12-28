@@ -16,6 +16,7 @@
         app:data="@{uiModel.data}"
         app:bgColor="@{uiModel.chartBackgroundColor}"
         app:txtColor="@{uiModel.chartTextColor}"
-        app:cColor="@{uiModel.chartColor}" />
+        app:cColor="@{uiModel.chartColor}"
+        app:isInit="@{uiModel.chartInitialized}" />
 
 </layout>

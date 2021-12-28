@@ -17,7 +17,8 @@ sealed class CryptoCurrencyDetailsListItem : ListItem {
         val data: LineDataSet,
         val chartBackgroundColor: Int,
         val chartTextColor: Int,
-        val chartColor: Int
+        val chartColor: Int,
+        val isChartInitialized: Boolean
     ) : CryptoCurrencyDetailsListItem() {
         override val id = "crypto_details_chart"
     }
@@ -47,6 +48,6 @@ sealed class CryptoCurrencyDetailsListItem : ListItem {
         val allTimeHighPrice: String,
         val description: String
     ) : CryptoCurrencyDetailsListItem() {
-        override val id = "crypto_details_{$rank}"
+        override val id = "crypto_details_$rank"
     }
 }

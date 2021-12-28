@@ -1,6 +1,5 @@
 package com.example.cryptoapp.feature.shared
 
-import android.content.Context
 import android.icu.util.CurrencyAmount
 import android.net.Uri
 import android.view.View
@@ -18,6 +17,7 @@ import coil.transform.CircleCropTransformation
 import com.example.cryptoapp.R
 import com.example.cryptoapp.feature.shared.Constant.currency
 import com.example.cryptoapp.feature.shared.Constant.formatter
+import com.example.cryptoapp.feature.shared.Constant.hourFormatter
 import com.example.cryptoapp.feature.shared.Constant.numberFormatter
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.Legend
@@ -26,7 +26,6 @@ import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
-import com.google.android.material.color.MaterialColors
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialFadeThrough
 import java.time.Instant
@@ -81,14 +80,15 @@ fun Long.getTime(): LocalDateTime =
 fun Long.getFormattedTime(withHours: Boolean = false): String {
     val time = this.getTime()
     val month = time.month.name.lowercase().replaceFirstChar { it.uppercase() }.substring(0, 3)
-    val hour = if (time.hour < 10) "0${time.hour}" else time.hour
-    val minute = if (time.minute < 10) "0${time.minute}" else time.minute
+    val hour = this.getFormattedHour()
 
     return when (withHours) {
-        true -> month + " " + time.dayOfMonth.toString() + ", " + time.year.toString() + " at " + hour + ":" + minute
+        true -> month + " " + time.dayOfMonth.toString() + ", " + time.year.toString() + " at " + hour
         else -> month + " " + time.dayOfMonth.toString() + ", " + time.year.toString()
     }
 }
+
+fun Long.getFormattedHour(): String = hourFormatter.format(this)
 
 fun String.formatInput(): String = formatter.format(this.toDouble())
 
@@ -96,50 +96,48 @@ fun String.convertToPrice(): String = numberFormatter.format(this.toDouble())
 
 fun String.convertToCompactPrice(): String = formatter.format(CurrencyAmount(this.toDouble(), currency))
 
-fun Int.getColorFromAttr(context: Context, defaultColor: Int): Int = MaterialColors.getColor(context, this, defaultColor)
-
-fun Int.toHexStringColor(): String = "#" + Integer.toHexString(this).substring(2)
-
 fun View.createErrorSnackBar(errorMessage: String, snackBarAction: () -> Unit) =
     Snackbar.make(this, errorMessage, Snackbar.LENGTH_LONG)
         .setAction(resources.getString(R.string.retry)) { snackBarAction() }
         .show()
 
-@BindingAdapter("data", "bgColor", "txtColor", "cColor", requireAll = true)
-fun LineChart.initializeChart(data: LineDataSet, chartBackgroundColor: Int, chartTextColor: Int, chartColor: Int) {
-    this.setTouchEnabled(false)
-    this.isDragEnabled = true
-    this.setScaleEnabled(true)
-    this.setPinchZoom(false)
-    this.setDrawGridBackground(false)
-    this.description.isEnabled = false
-    this.legend.isEnabled = true
-    //this.legend.textColor = Color.WHITE
-    this.legend.textColor = chartTextColor
-    this.legend.textSize = 13f
-    this.legend.verticalAlignment = Legend.LegendVerticalAlignment.TOP
-    this.legend.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
-    this.legend.orientation = Legend.LegendOrientation.HORIZONTAL
-    this.legend.setDrawInside(false)
-    val legendEntry = LegendEntry()
-    legendEntry.label = "Cryptocurrency value changes"
-    //legendEntry.formColor = ContextCompat.getColor(requireContext(), R.color.orange)
-    legendEntry.formColor = chartColor
-    legendEntry.form
-    this.legend.setCustom(arrayListOf(legendEntry))
-    //this.xAxis.textColor = Color.WHITE
-    this.xAxis.textColor = chartTextColor
-    this.xAxis.position = XAxis.XAxisPosition.BOTTOM
-    this.xAxis.setDrawGridLines(true)
-    //this.axisLeft.textColor = Color.WHITE
-    this.axisLeft.textColor = chartTextColor
-    this.axisLeft.valueFormatter = CryptoYAxisFormatter()
-    this.axisLeft.setDrawGridLines(true)
-    //this.setBackgroundColor(Color.BLACK)
-    this.setBackgroundColor(chartBackgroundColor)
-    this.data = LineData(arrayListOf<ILineDataSet>(data))
-    this.invalidate()
-}
+@BindingAdapter("data", "bgColor", "txtColor", "cColor", "isInit", requireAll = true)
+fun LineChart.initializeChart(dataSet: LineDataSet, chartBackgroundColor: Int, chartTextColor: Int, chartColor: Int, isChartInitialized: Boolean) =
+    this.let {
+        if (!isChartInitialized) {
+            setTouchEnabled(false)
+            isDragEnabled = true
+            setScaleEnabled(true)
+            setPinchZoom(false)
+            setDrawGridBackground(false)
+            description.isEnabled = false
+            legend.isEnabled = true
+            legend.textColor = chartTextColor
+            legend.textSize = 13f
+            legend.verticalAlignment = Legend.LegendVerticalAlignment.TOP
+            legend.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
+            legend.orientation = Legend.LegendOrientation.HORIZONTAL
+            legend.setDrawInside(false)
+            legend.setCustom(
+                arrayListOf(
+                    LegendEntry().also {
+                        it.label = resources.getString(R.string.crypto_value_changes)
+                        it.formColor = chartColor
+                    }
+                )
+            )
+            xAxis.textColor = chartTextColor
+            xAxis.position = XAxis.XAxisPosition.BOTTOM
+            xAxis.setDrawGridLines(true)
+            axisLeft.textColor = chartTextColor
+            axisLeft.valueFormatter = CryptoYAxisFormatter()
+            axisLeft.setDrawGridLines(true)
+            setBackgroundColor(chartBackgroundColor)
+        }
+        data = LineData(arrayListOf<ILineDataSet>(dataSet))
+        notifyDataSetChanged()
+        invalidate()
+    }
 
 inline fun <reified T : Fragment> FragmentManager.handleReplace(
     tag: String = T::class.java.name,

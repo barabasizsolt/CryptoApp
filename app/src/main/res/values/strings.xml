@@ -44,4 +44,5 @@
     <string name="try_again">Try again</string>
     <string name="retry">Retry</string>
     <string name="daily_change">24H</string>
+    <string name="crypto_value_changes">Cryptocurrency value changes</string>
 </resources>
