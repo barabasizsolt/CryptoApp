@@ -22,10 +22,6 @@ sealed class CryptoCurrencyDetailsListItem : ListItem {
 
     data class CryptoCurrencyChart(
         val data: LineDataSet,
-        val chartBackgroundColor: Int,
-        val chartTextColor: Int,
-        val chartColor: Int,
-        val isChartInitialized: Boolean,
         val axisFormatterType: AxisFormatterType
     ) : CryptoCurrencyDetailsListItem() {
         override val id = "crypto_details_chart"

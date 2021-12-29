@@ -43,9 +43,6 @@ import kotlin.collections.ArrayList
 
 class CryptoCurrencyDetailsViewModel(
     private val uuid: String,
-    private val chartBackgroundColor: Int,
-    private val chartTextColor: Int,
-    private val chartColor: Int,
     private val detailsUseCase: GetCryptoCurrencyDetailsUseCase,
     private val historyUseCase: GetCryptoCurrencyHistoryUseCase
 ) : ViewModel() {
@@ -58,7 +55,6 @@ class CryptoCurrencyDetailsViewModel(
     private var timePeriod: String = HOUR24
     private var axisFormatterType: AxisFormatterType = AxisFormatterType.FORMAT_24H
     private var isDescriptionExpanded: Boolean = false
-    private var isChartInitialized: Boolean = false
     private var isDetailsErrorEmitted: Boolean = false
     private var isHistoryErrorEmitted: Boolean = false
 
@@ -70,10 +66,6 @@ class CryptoCurrencyDetailsViewModel(
                     details.toCryptoCurrencyLogoListItem(),
                     CryptoCurrencyDetailsListItem.CryptoCurrencyChart(
                         data = getDataSet(history),
-                        chartBackgroundColor = chartBackgroundColor,
-                        chartTextColor = chartTextColor,
-                        chartColor = chartColor,
-                        isChartInitialized = isChartInitialized,
                         axisFormatterType = axisFormatterType
                     ),
                     CryptoCurrencyDetailsListItem.CryptoCurrencyChipGroup(),
@@ -270,14 +262,11 @@ class CryptoCurrencyDetailsViewModel(
     private fun getDataSet(history: List<CryptoHistoryItem>) = LineDataSet(history.toChartArray(timePeriod = timePeriod), "data")
         .also { lineDataSet ->
             lineDataSet.lineWidth = 3f
-            lineDataSet.color = chartTextColor
-            lineDataSet.highLightColor = chartColor
             lineDataSet.setDrawValues(false)
             lineDataSet.circleRadius = 10f
             lineDataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
             lineDataSet.cubicIntensity = 0.1f
             lineDataSet.setDrawFilled(true)
-            lineDataSet.fillColor = chartColor
             lineDataSet.fillAlpha = 255
             lineDataSet.setDrawCircles(false)
         }
@@ -300,7 +289,6 @@ class CryptoCurrencyDetailsViewModel(
             axisFormatterType = AxisFormatterType.FORMAT_6Y
         }
     }.let {
-        isChartInitialized = true
         refreshCoinHistory()
     }
 

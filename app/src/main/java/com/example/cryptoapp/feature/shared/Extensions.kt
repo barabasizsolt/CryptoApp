@@ -1,5 +1,6 @@
 package com.example.cryptoapp.feature.shared
 
+import android.graphics.Color
 import android.icu.util.CurrencyAmount
 import android.net.Uri
 import android.view.View
@@ -29,6 +30,7 @@ import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
+import com.google.android.material.color.MaterialColors
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialFadeThrough
 import java.time.Instant
@@ -111,47 +113,46 @@ fun View.createErrorSnackBar(errorMessage: String, snackBarAction: () -> Unit) =
         .setAction(resources.getString(R.string.retry)) { snackBarAction() }
         .show()
 
-@BindingAdapter("data", "bgColor", "txtColor", "cColor", "isInit", "formatter", requireAll = true)
+@BindingAdapter("data", "formatter", requireAll = true)
 fun LineChart.initializeChart(
     dataSet: LineDataSet,
-    chartBackgroundColor: Int,
-    chartTextColor: Int,
-    chartColor: Int,
-    isChartInitialized: Boolean,
     axisFormatterType: AxisFormatterType
 ) = this.let {
-    if (!isChartInitialized) {
-        extraBottomOffset = 5f
-        setTouchEnabled(false)
-        isDragEnabled = true
-        setScaleEnabled(true)
-        setPinchZoom(false)
-        setDrawGridBackground(false)
-        description.isEnabled = false
-        legend.isEnabled = true
-        legend.textColor = chartTextColor
-        legend.textSize = 13f
-        legend.verticalAlignment = Legend.LegendVerticalAlignment.TOP
-        legend.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
-        legend.orientation = Legend.LegendOrientation.HORIZONTAL
-        legend.setDrawInside(false)
-        legend.setCustom(
-            arrayListOf(
-                LegendEntry().also {
-                    it.label = resources.getString(R.string.crypto_value_changes)
-                    it.formColor = chartColor
-                }
-            )
+    extraBottomOffset = 5f
+    setTouchEnabled(false)
+    isDragEnabled = true
+    setScaleEnabled(true)
+    setPinchZoom(false)
+    setDrawGridBackground(false)
+    description.isEnabled = false
+    legend.isEnabled = true
+    legend.textColor = MaterialColors.getColor(context, R.attr.app_text_color, Color.WHITE)
+    legend.textSize = 13f
+    legend.verticalAlignment = Legend.LegendVerticalAlignment.TOP
+    legend.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
+    legend.orientation = Legend.LegendOrientation.HORIZONTAL
+    legend.setDrawInside(false)
+    legend.setCustom(
+        arrayListOf(
+            LegendEntry().also {
+                it.label = resources.getString(R.string.crypto_value_changes)
+                it.formColor = MaterialColors.getColor(context, R.attr.crypto_chart_color, Color.WHITE)
+            }
         )
-        xAxis.textColor = chartTextColor
-        xAxis.textSize = 12f
-        xAxis.position = XAxis.XAxisPosition.BOTTOM
-        xAxis.setDrawGridLines(true)
-        axisLeft.textColor = chartTextColor
-        axisLeft.valueFormatter = CryptoYAxisFormatter()
-        axisLeft.setDrawGridLines(true)
-        axisRight.isEnabled = false
-        setBackgroundColor(chartBackgroundColor)
+    )
+    xAxis.textColor = MaterialColors.getColor(context, R.attr.app_text_color, Color.WHITE)
+    xAxis.textSize = 12f
+    xAxis.position = XAxis.XAxisPosition.BOTTOM
+    xAxis.setDrawGridLines(true)
+    axisLeft.textColor = MaterialColors.getColor(context, R.attr.app_text_color, Color.WHITE)
+    axisLeft.valueFormatter = CryptoYAxisFormatter()
+    axisLeft.setDrawGridLines(true)
+    axisRight.isEnabled = false
+    setBackgroundColor(MaterialColors.getColor(context, R.attr.app_background_color, Color.WHITE))
+    dataSet.let {
+        it.color = MaterialColors.getColor(context, R.attr.app_text_color, Color.WHITE)
+        it.highLightColor = MaterialColors.getColor(context, R.attr.crypto_chart_color, Color.WHITE)
+        it.fillColor = MaterialColors.getColor(context, R.attr.crypto_chart_color, Color.WHITE)
     }
     xAxis.valueFormatter = CryptoXAxisFormatter(axisFormatterType = axisFormatterType)
     data = LineData(arrayListOf<ILineDataSet>(dataSet))

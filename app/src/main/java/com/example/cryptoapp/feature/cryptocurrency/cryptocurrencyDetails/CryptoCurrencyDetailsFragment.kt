@@ -1,20 +1,16 @@
 package com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails
 
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.FragmentCryptoCurrencyDetailsBinding
 import com.example.cryptoapp.feature.shared.BundleArgumentDelegate
 import com.example.cryptoapp.feature.shared.createErrorSnackBar
-import com.google.android.material.color.MaterialColors
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -22,14 +18,7 @@ import org.koin.core.parameter.parametersOf
 
 class CryptoCurrencyDetailsFragment : Fragment() {
     private lateinit var binding: FragmentCryptoCurrencyDetailsBinding
-    private val viewModel: CryptoCurrencyDetailsViewModel by viewModel {
-        parametersOf(
-            arguments?.cryptoCurrencyId,
-            MaterialColors.getColor(requireContext(), R.attr.app_background_color, Color.WHITE),
-            MaterialColors.getColor(requireContext(), R.attr.app_text_color, Color.BLACK),
-            ContextCompat.getColor(requireContext(), R.color.orange)
-        )
-    }
+    private val viewModel: CryptoCurrencyDetailsViewModel by viewModel { parametersOf(arguments?.cryptoCurrencyId,) }
 
     override fun onCreateView(
         inflater: LayoutInflater,

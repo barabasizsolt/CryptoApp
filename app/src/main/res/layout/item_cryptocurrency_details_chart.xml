@@ -15,10 +15,6 @@
         android:layout_height="@dimen/crypto_details_chart_height"
         android:layout_marginBottom="@dimen/crypto_details_chart_margin_Bottom"
         app:data="@{uiModel.data}"
-        app:bgColor="@{uiModel.chartBackgroundColor}"
-        app:txtColor="@{uiModel.chartTextColor}"
-        app:cColor="@{uiModel.chartColor}"
-        app:isInit="@{uiModel.chartInitialized}"
         app:formatter="@{uiModel.axisFormatterType}"/>
 
 </layout>
