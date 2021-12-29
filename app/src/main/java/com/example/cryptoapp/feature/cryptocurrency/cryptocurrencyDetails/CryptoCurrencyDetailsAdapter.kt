@@ -13,6 +13,7 @@ import com.example.cryptoapp.databinding.ItemCryptocurrencyDetailsCoinBodyBindin
 import com.example.cryptoapp.databinding.ItemCryptocurrencyDetailsCoinHeaderBinding
 import com.example.cryptoapp.databinding.ItemCryptocurrencyDetailsCoinLogoBinding
 import com.example.cryptoapp.databinding.ItemCryptocurrencyDetailsErrorStateBinding
+import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails.helpers.ChipType
 import com.example.cryptoapp.feature.shared.ListItemDiff
 
 class CryptoCurrencyDetailsAdapter(

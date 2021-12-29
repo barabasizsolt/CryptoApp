@@ -18,6 +18,7 @@
         app:bgColor="@{uiModel.chartBackgroundColor}"
         app:txtColor="@{uiModel.chartTextColor}"
         app:cColor="@{uiModel.chartColor}"
-        app:isInit="@{uiModel.chartInitialized}" />
+        app:isInit="@{uiModel.chartInitialized}"
+        app:formatter="@{uiModel.axisFormatterType}"/>
 
 </layout>

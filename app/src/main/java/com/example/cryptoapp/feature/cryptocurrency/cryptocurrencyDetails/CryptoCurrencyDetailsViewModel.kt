@@ -17,6 +17,8 @@ import com.example.cryptoapp.feature.cryptocurrency.Constant.ROTATE_180
 import com.example.cryptoapp.feature.cryptocurrency.Constant.ROTATE_360
 import com.example.cryptoapp.feature.cryptocurrency.Constant.YEAR1
 import com.example.cryptoapp.feature.cryptocurrency.Constant.YEAR6
+import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails.helpers.AxisFormatterType
+import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails.helpers.ChipType
 import com.example.cryptoapp.feature.shared.convertToCompactPrice
 import com.example.cryptoapp.feature.shared.convertToPrice
 import com.example.cryptoapp.feature.shared.eventFlow
@@ -53,6 +55,7 @@ class CryptoCurrencyDetailsViewModel(
     private val details = MutableStateFlow<CryptoCurrencyDetails?>(null)
     private val history = MutableStateFlow<List<CryptoHistoryItem>?>(null)
     private var timePeriod: String = HOUR24
+    private var axisFormatterType: AxisFormatterType = AxisFormatterType.FORMAT_24H
     private var isDescriptionExpanded: Boolean = false
     private var isChartInitialized: Boolean = false
     private var isDetailsErrorEmitted: Boolean = false
@@ -69,7 +72,8 @@ class CryptoCurrencyDetailsViewModel(
                         chartBackgroundColor = chartBackgroundColor,
                         chartTextColor = chartTextColor,
                         chartColor = chartColor,
-                        isChartInitialized = isChartInitialized
+                        isChartInitialized = isChartInitialized,
+                        axisFormatterType = axisFormatterType
                     ),
                     CryptoCurrencyDetailsListItem.CryptoCurrencyChipGroup(),
                     details.toCryptoCurrencyHeaderListItem(),
@@ -279,10 +283,22 @@ class CryptoCurrencyDetailsViewModel(
         }
 
     fun onChipClicked(chipType: ChipType) = when (chipType) {
-        ChipType.CHIP_24H -> timePeriod = HOUR24
-        ChipType.CHIP_7D -> timePeriod = DAY7
-        ChipType.CHIP_1Y -> timePeriod = YEAR1
-        ChipType.CHIP_6Y -> timePeriod = YEAR6
+        ChipType.CHIP_24H -> {
+            timePeriod = HOUR24
+            axisFormatterType = AxisFormatterType.FORMAT_24H
+        }
+        ChipType.CHIP_7D -> {
+            timePeriod = DAY7
+            axisFormatterType = AxisFormatterType.FORMAT_7D
+        }
+        ChipType.CHIP_1Y -> {
+            timePeriod = YEAR1
+            axisFormatterType = AxisFormatterType.FORMAT_1Y
+        }
+        ChipType.CHIP_6Y -> {
+            timePeriod = YEAR6
+            axisFormatterType = AxisFormatterType.FORMAT_6Y
+        }
     }.let {
         isChartInitialized = true
         refreshCoinHistory()

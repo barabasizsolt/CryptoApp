@@ -1,5 +1,6 @@
 package com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails
 
+import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails.helpers.AxisFormatterType
 import com.example.cryptoapp.feature.shared.ListItem
 import com.github.mikephil.charting.data.LineDataSet
 
@@ -24,7 +25,8 @@ sealed class CryptoCurrencyDetailsListItem : ListItem {
         val chartBackgroundColor: Int,
         val chartTextColor: Int,
         val chartColor: Int,
-        val isChartInitialized: Boolean
+        val isChartInitialized: Boolean,
+        val axisFormatterType: AxisFormatterType
     ) : CryptoCurrencyDetailsListItem() {
         override val id = "crypto_details_chart"
     }

@@ -15,6 +15,9 @@ import coil.load
 import coil.request.ImageRequest
 import coil.transform.CircleCropTransformation
 import com.example.cryptoapp.R
+import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails.helpers.AxisFormatterType
+import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails.helpers.CryptoXAxisFormatter
+import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails.helpers.CryptoYAxisFormatter
 import com.example.cryptoapp.feature.shared.Constant.currency
 import com.example.cryptoapp.feature.shared.Constant.formatter
 import com.example.cryptoapp.feature.shared.Constant.hourFormatter
@@ -101,45 +104,53 @@ fun View.createErrorSnackBar(errorMessage: String, snackBarAction: () -> Unit) =
         .setAction(resources.getString(R.string.retry)) { snackBarAction() }
         .show()
 
-@BindingAdapter("data", "bgColor", "txtColor", "cColor", "isInit", requireAll = true)
-fun LineChart.initializeChart(dataSet: LineDataSet, chartBackgroundColor: Int, chartTextColor: Int, chartColor: Int, isChartInitialized: Boolean) =
-    this.let {
-        if (!isChartInitialized) {
-            setTouchEnabled(false)
-            isDragEnabled = true
-            setScaleEnabled(true)
-            setPinchZoom(false)
-            setDrawGridBackground(false)
-            description.isEnabled = false
-            legend.isEnabled = true
-            legend.textColor = chartTextColor
-            legend.textSize = 13f
-            legend.verticalAlignment = Legend.LegendVerticalAlignment.TOP
-            legend.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
-            legend.orientation = Legend.LegendOrientation.HORIZONTAL
-            legend.setDrawInside(false)
-            legend.setCustom(
-                arrayListOf(
-                    LegendEntry().also {
-                        it.label = resources.getString(R.string.crypto_value_changes)
-                        it.formColor = chartColor
-                    }
-                )
+@BindingAdapter("data", "bgColor", "txtColor", "cColor", "isInit", "formatter", requireAll = true)
+fun LineChart.initializeChart(
+    dataSet: LineDataSet,
+    chartBackgroundColor: Int,
+    chartTextColor: Int,
+    chartColor: Int,
+    isChartInitialized: Boolean,
+    axisFormatterType: AxisFormatterType
+) = this.let {
+    if (!isChartInitialized) {
+        extraBottomOffset = 5f
+        setTouchEnabled(false)
+        isDragEnabled = true
+        setScaleEnabled(true)
+        setPinchZoom(false)
+        setDrawGridBackground(false)
+        description.isEnabled = false
+        legend.isEnabled = true
+        legend.textColor = chartTextColor
+        legend.textSize = 13f
+        legend.verticalAlignment = Legend.LegendVerticalAlignment.TOP
+        legend.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
+        legend.orientation = Legend.LegendOrientation.HORIZONTAL
+        legend.setDrawInside(false)
+        legend.setCustom(
+            arrayListOf(
+                LegendEntry().also {
+                    it.label = resources.getString(R.string.crypto_value_changes)
+                    it.formColor = chartColor
+                }
             )
-            xAxis.textColor = chartTextColor
-            xAxis.textSize = 12f
-            xAxis.position = XAxis.XAxisPosition.BOTTOM
-            xAxis.setDrawGridLines(true)
-            axisLeft.textColor = chartTextColor
-            axisLeft.valueFormatter = CryptoYAxisFormatter()
-            axisLeft.setDrawGridLines(true)
-            axisRight.isEnabled = false
-            setBackgroundColor(chartBackgroundColor)
-        }
-        data = LineData(arrayListOf<ILineDataSet>(dataSet))
-        notifyDataSetChanged()
-        invalidate()
+        )
+        xAxis.textColor = chartTextColor
+        xAxis.textSize = 12f
+        xAxis.position = XAxis.XAxisPosition.BOTTOM
+        xAxis.setDrawGridLines(true)
+        axisLeft.textColor = chartTextColor
+        axisLeft.valueFormatter = CryptoYAxisFormatter()
+        axisLeft.setDrawGridLines(true)
+        axisRight.isEnabled = false
+        setBackgroundColor(chartBackgroundColor)
     }
+    xAxis.valueFormatter = CryptoXAxisFormatter(axisFormatterType = axisFormatterType)
+    data = LineData(arrayListOf<ILineDataSet>(dataSet))
+    notifyDataSetChanged()
+    invalidate()
+}
 
 inline fun <reified T : Fragment> FragmentManager.handleReplace(
     tag: String = T::class.java.name,

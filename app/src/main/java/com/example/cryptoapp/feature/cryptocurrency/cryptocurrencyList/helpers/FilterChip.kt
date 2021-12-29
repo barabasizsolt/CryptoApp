@@ -1,4 +1,4 @@
-package com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyList
+package com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyList.helpers
 
 enum class FilterChip {
     TAG_CHIP,
