@@ -206,7 +206,7 @@ class CryptoCurrencyDetailsViewModel(
                 }
 
                 groupedHistory.forEach { elem ->
-                    currencyHistory.add(Entry(elem.key.toFloat(), elem.value.maxOf { it }.toFloat()))
+                    currencyHistory.add(Entry(elem.key.toFloat(), elem.value.average().toFloat()))
                 }
             }
             DAY7 -> {
@@ -221,7 +221,7 @@ class CryptoCurrencyDetailsViewModel(
                 }
 
                 groupedHistory.toSortedMap(compareBy { it.ordinal }).forEach { elem ->
-                    currencyHistory.add(Entry(elem.key.value.toFloat(), elem.value.maxOf { it }.toFloat()))
+                    currencyHistory.add(Entry(elem.key.value.toFloat(), elem.value.average().toFloat()))
                 }
             }
             YEAR1 -> {
@@ -236,7 +236,7 @@ class CryptoCurrencyDetailsViewModel(
                 }
 
                 groupedHistory.toSortedMap(compareBy { it.ordinal }).forEach { elem ->
-                    currencyHistory.add(Entry(elem.key.value.toFloat(), elem.value.maxOf { it }.toFloat()))
+                    currencyHistory.add(Entry(elem.key.value.toFloat(), elem.value.average().toFloat()))
                 }
             }
             YEAR6 -> {
@@ -250,7 +250,7 @@ class CryptoCurrencyDetailsViewModel(
                     groupedHistory[year]?.add(curr.price.toDouble())
                 }
                 groupedHistory.toSortedMap(compareBy { it }).forEach { elem ->
-                    currencyHistory.add(Entry(elem.key.toFloat(), elem.value.maxOf { it }.toFloat()))
+                    currencyHistory.add(Entry(elem.key.toFloat(), elem.value.average().toFloat()))
                 }
             }
         }

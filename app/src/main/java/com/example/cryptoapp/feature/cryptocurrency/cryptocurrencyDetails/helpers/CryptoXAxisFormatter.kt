@@ -18,7 +18,8 @@ class CryptoXAxisFormatter(private val axisFormatterType: AxisFormatterType) : V
 
     private val monthsOfYear = mapOf(
         1f to "Jan",
-        2f to "Mar",
+        2f to "Feb",
+        3f to "Mar",
         4f to "Apr",
         5f to "May",
         6f to "June",
