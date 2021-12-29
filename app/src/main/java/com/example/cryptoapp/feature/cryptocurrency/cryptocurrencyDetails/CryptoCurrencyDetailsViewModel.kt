@@ -201,7 +201,6 @@ class CryptoCurrencyDetailsViewModel(
 
     private fun List<CryptoHistoryItem>.toChartArray(timePeriod: String): ArrayList<Entry> {
         val currencyHistory: ArrayList<Entry> = ArrayList()
-        // TODO:refactor it
         when (timePeriod) {
             HOUR24 -> {
                 val groupedHistory = sortedMapOf<Int, MutableList<Double>>()
