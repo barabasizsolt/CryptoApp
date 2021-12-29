@@ -99,6 +99,13 @@ fun String.convertToPrice(): String = numberFormatter.format(this.toDouble())
 
 fun String.convertToCompactPrice(): String = formatter.format(CurrencyAmount(this.toDouble(), currency))
 
+fun Int.ordinalOf() = "$this" + if (this % 100 in 11..13) "th" else when (this % 10) {
+    1 -> "st"
+    2 -> "nd"
+    3 -> "rd"
+    else -> "th"
+}
+
 fun View.createErrorSnackBar(errorMessage: String, snackBarAction: () -> Unit) =
     Snackbar.make(this, errorMessage, Snackbar.LENGTH_LONG)
         .setAction(resources.getString(R.string.retry)) { snackBarAction() }

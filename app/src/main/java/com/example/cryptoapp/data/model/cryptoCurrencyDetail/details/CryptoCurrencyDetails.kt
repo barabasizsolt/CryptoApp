@@ -15,6 +15,6 @@ data class CryptoCurrencyDetails(
     val price: String,
     val btcPrice: String,
     val change: String,
-    val rank: Long,
+    val rank: Int,
     val allTimeHigh: AllTimeHighResponse
 )

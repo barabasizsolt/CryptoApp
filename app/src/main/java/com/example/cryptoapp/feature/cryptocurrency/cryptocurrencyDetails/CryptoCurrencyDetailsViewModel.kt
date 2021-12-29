@@ -26,6 +26,7 @@ import com.example.cryptoapp.feature.shared.formatInput
 import com.example.cryptoapp.feature.shared.getFormattedHour
 import com.example.cryptoapp.feature.shared.getFormattedTime
 import com.example.cryptoapp.feature.shared.getTime
+import com.example.cryptoapp.feature.shared.ordinalOf
 import com.example.cryptoapp.feature.shared.pushEvent
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineDataSet
@@ -189,7 +190,7 @@ class CryptoCurrencyDetailsViewModel(
     )
 
     private fun CryptoCurrencyDetails.toCryptoCurrencyBodyListItem() = CryptoCurrencyDetailsListItem.CryptoCurrencyBody(
-        rank = rank.toString(),
+        rank = rank.ordinalOf(),
         supply = totalSupply.formatInput(),
         circulating = circulating.formatInput(),
         btcPrice = "${String.format("%.7f", btcPrice.toDouble())} Btc",

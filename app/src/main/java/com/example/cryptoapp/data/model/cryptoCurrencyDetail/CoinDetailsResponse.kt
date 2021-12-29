@@ -37,7 +37,7 @@ data class CoinDetailsResponse(
     @SerializedName("change")
     val change: String?,
     @SerializedName("rank")
-    val rank: Long?,
+    val rank: Int?,
     @SerializedName("sparkline")
     val sparkline: List<String>?,
     @SerializedName("allTimeHigh")
