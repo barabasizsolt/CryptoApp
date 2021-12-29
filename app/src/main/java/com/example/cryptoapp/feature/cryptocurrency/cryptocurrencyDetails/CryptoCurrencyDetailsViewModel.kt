@@ -249,8 +249,7 @@ class CryptoCurrencyDetailsViewModel(
                     }
                     groupedHistory[year]?.add(curr.price.toDouble())
                 }
-                groupedHistory.toSortedMap(compareBy { it }).forEach {
-                    elem ->
+                groupedHistory.toSortedMap(compareBy { it }).forEach { elem ->
                     currencyHistory.add(Entry(elem.key.toFloat(), elem.value.maxOf { it }.toFloat()))
                 }
             }

@@ -144,6 +144,7 @@ fun LineChart.initializeChart(
     xAxis.textSize = 12f
     xAxis.position = XAxis.XAxisPosition.BOTTOM
     xAxis.setDrawGridLines(true)
+    xAxis.isGranularityEnabled = true
     axisLeft.textColor = MaterialColors.getColor(context, R.attr.app_text_color, Color.WHITE)
     axisLeft.valueFormatter = CryptoYAxisFormatter()
     axisLeft.setDrawGridLines(true)
