@@ -3,6 +3,8 @@ package com.example.cryptoapp.data.repository
 import com.example.cryptoapp.data.NetworkManager
 import com.example.cryptoapp.data.model.RefreshType
 import com.example.cryptoapp.data.model.cryptoCurrency.CryptoCurrency
+import com.example.cryptoapp.data.model.cryptoCurrencyDetail.details.CryptoCurrencyDetails
+import com.example.cryptoapp.data.model.cryptoCurrencyDetail.history.CryptoHistoryItem
 import com.example.cryptoapp.data.shared.toCryptoCurrency
 import com.example.cryptoapp.data.shared.toCryptoCurrencyDetails
 import com.example.cryptoapp.data.shared.toCryptoHistoryItem
@@ -14,7 +16,9 @@ class CryptoRepository(private val manager: NetworkManager) {
         const val LIMIT = 50
     }
 
-    private var cache: MutableList<CryptoCurrency>? = null
+    private var cryptoCurrenciesCache: MutableList<CryptoCurrency>? = null
+    private var cryptoCurrencyDetailsCache: CryptoCurrencyDetails? = null
+    private var cryptoCurrencyHistoryCache: MutableList<CryptoHistoryItem>? = null
     private var lastCryptoCurrencyOffset = 0
 
     suspend fun getAllCryptoCurrencies(
@@ -31,9 +35,9 @@ class CryptoRepository(private val manager: NetworkManager) {
             tags = tags,
             timePeriod = timePeriod
         ).let { newData ->
-            newData.also { cache = it.toMutableList() }
+            newData.also { cryptoCurrenciesCache = it.toMutableList() }
         }
-        RefreshType.CACHE_IF_POSSIBLE -> cache.let { currentCache ->
+        RefreshType.CACHE_IF_POSSIBLE -> cryptoCurrenciesCache.let { currentCache ->
             currentCache ?: loadAllCryptoCurrencies(
                 orderBy = orderBy,
                 orderDirection = orderDirection,
@@ -41,7 +45,7 @@ class CryptoRepository(private val manager: NetworkManager) {
                 tags = tags,
                 timePeriod = timePeriod
             ).let { newData ->
-                newData.also { cache = it.toMutableList() }
+                newData.also { cryptoCurrenciesCache = it.toMutableList() }
             }
         }
         RefreshType.NEXT_PAGE -> loadAllCryptoCurrencies(
@@ -51,8 +55,8 @@ class CryptoRepository(private val manager: NetworkManager) {
             tags = tags,
             timePeriod = timePeriod
         ).let { newData ->
-            val newCache = (cache.orEmpty() + newData)
-            cache = newCache.toMutableList()
+            val newCache = (cryptoCurrenciesCache.orEmpty() + newData)
+            cryptoCurrenciesCache = newCache.toMutableList()
             newCache
         }
     }
@@ -76,18 +80,22 @@ class CryptoRepository(private val manager: NetworkManager) {
     } ?: throw IllegalStateException("Invalid data returned by the server")
 
     suspend fun getCryptoCurrencyDetails(
-        uuid: String
+        uuid: String,
     ) = manager.cryptoSource.getCryptoCurrencyDetails(
         uuid = uuid
-    ).body()?.data?.coin?.toCryptoCurrencyDetails() ?: throw IllegalStateException("Invalid data returned by the server")
+    ).body()?.data?.coin?.toCryptoCurrencyDetails().let { newData ->
+        newData.also { cryptoCurrencyDetailsCache = it }
+    } ?: throw IllegalStateException("Invalid data returned by the server")
 
     suspend fun getCryptoCurrencyHistory(
         uuid: String,
-        timePeriod: String
+        timePeriod: String,
     ) = manager.cryptoSource.getCryptoCurrencyHistory(
         uuid = uuid,
         timePeriod = timePeriod
     ).body()?.data?.history?.mapNotNull {
         it.toCryptoHistoryItem()
+    }.let { newData ->
+        newData.also { cryptoCurrencyHistoryCache = it?.toMutableList() }
     } ?: throw IllegalStateException("Invalid data returned by the server")
 }

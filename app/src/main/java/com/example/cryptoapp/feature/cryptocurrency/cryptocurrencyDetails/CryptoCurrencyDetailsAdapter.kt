@@ -7,12 +7,18 @@ import android.widget.TextView
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cryptoapp.R
-import com.example.cryptoapp.databinding.*
+import com.example.cryptoapp.databinding.ItemCryptocurrencyDetailsChartBinding
+import com.example.cryptoapp.databinding.ItemCryptocurrencyDetailsChipGroupBinding
+import com.example.cryptoapp.databinding.ItemCryptocurrencyDetailsCoinBodyBinding
+import com.example.cryptoapp.databinding.ItemCryptocurrencyDetailsCoinHeaderBinding
+import com.example.cryptoapp.databinding.ItemCryptocurrencyDetailsCoinLogoBinding
+import com.example.cryptoapp.databinding.ItemCryptocurrencyDetailsErrorStateBinding
 import com.example.cryptoapp.feature.shared.ListItemDiff
 
 class CryptoCurrencyDetailsAdapter(
     private val onChipClicked: (ChipType) -> Unit,
-    private val onDescriptionArrowClicked: (ImageView, TextView) -> Unit
+    private val onDescriptionArrowClicked: (ImageView, TextView) -> Unit,
+    private val onTryAgainButtonClicked: () -> Unit
 ) : ListAdapter<CryptoCurrencyDetailsListItem, RecyclerView.ViewHolder>(ListItemDiff()) {
     override fun getItemViewType(position: Int) = when (getItem(position)) {
         is CryptoCurrencyDetailsListItem.CryptoCurrencyLogo -> R.layout.item_cryptocurrency_details_coin_logo
@@ -20,6 +26,7 @@ class CryptoCurrencyDetailsAdapter(
         is CryptoCurrencyDetailsListItem.CryptoCurrencyChipGroup -> R.layout.item_cryptocurrency_details_chip_group
         is CryptoCurrencyDetailsListItem.CryptoCurrencyHeader -> R.layout.item_cryptocurrency_details_coin_header
         is CryptoCurrencyDetailsListItem.CryptoCurrencyBody -> R.layout.item_cryptocurrency_details_coin_body
+        is CryptoCurrencyDetailsListItem.ErrorState -> R.layout.item_cryptocurrency_details_error_state
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
@@ -40,6 +47,10 @@ class CryptoCurrencyDetailsAdapter(
             parent = parent,
             onDescriptionArrowClicked = onDescriptionArrowClicked
         )
+        R.layout.item_cryptocurrency_details_error_state -> ErrorStateViewHolder.create(
+            parent = parent,
+            onTryAgainButtonClicked = onTryAgainButtonClicked
+        )
         else -> throw IllegalStateException("Invalid view type: $viewType.")
     }
 
@@ -49,6 +60,32 @@ class CryptoCurrencyDetailsAdapter(
         is CryptoCurrencyDetailsListItem.CryptoCurrencyChipGroup -> (holder as ChipGroupViewHolder).bind(uiModel)
         is CryptoCurrencyDetailsListItem.CryptoCurrencyHeader -> (holder as HeaderViewHolder).bind(uiModel)
         is CryptoCurrencyDetailsListItem.CryptoCurrencyBody -> (holder as BodyViewHolder).bind(uiModel)
+        is CryptoCurrencyDetailsListItem.ErrorState -> (holder as ErrorStateViewHolder).bind(uiModel)
+    }
+
+    class ErrorStateViewHolder private constructor(
+        private val binding: ItemCryptocurrencyDetailsErrorStateBinding,
+        private val onTryAgainButtonClicked: () -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
+
+        init {
+            binding.errorStateLayout.tryAgain.setOnClickListener {
+                if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
+                    onTryAgainButtonClicked()
+                }
+            }
+        }
+
+        fun bind(listItem: CryptoCurrencyDetailsListItem.ErrorState) {
+            binding.uiModel = listItem
+        }
+
+        companion object {
+            fun create(parent: ViewGroup, onTryAgainButtonClicked: () -> Unit) = ErrorStateViewHolder(
+                binding = ItemCryptocurrencyDetailsErrorStateBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+                onTryAgainButtonClicked = onTryAgainButtonClicked
+            )
+        }
     }
 
     class LogoViewHolder private constructor(

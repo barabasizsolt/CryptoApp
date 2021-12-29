@@ -17,7 +17,6 @@ import com.example.cryptoapp.feature.cryptocurrency.Constant.ROTATE_180
 import com.example.cryptoapp.feature.cryptocurrency.Constant.ROTATE_360
 import com.example.cryptoapp.feature.cryptocurrency.Constant.YEAR1
 import com.example.cryptoapp.feature.cryptocurrency.Constant.YEAR6
-import com.example.cryptoapp.feature.news.NewsViewModel
 import com.example.cryptoapp.feature.shared.convertToCompactPrice
 import com.example.cryptoapp.feature.shared.convertToPrice
 import com.example.cryptoapp.feature.shared.eventFlow
@@ -25,8 +24,11 @@ import com.example.cryptoapp.feature.shared.formatInput
 import com.example.cryptoapp.feature.shared.getFormattedHour
 import com.example.cryptoapp.feature.shared.getFormattedTime
 import com.example.cryptoapp.feature.shared.getTime
+import com.example.cryptoapp.feature.shared.pushEvent
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineDataSet
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -34,6 +36,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import java.time.DayOfWeek
 import java.time.Month
+import kotlin.collections.ArrayList
 
 class CryptoCurrencyDetailsViewModel(
     private val uuid: String,
@@ -52,17 +55,17 @@ class CryptoCurrencyDetailsViewModel(
     private var timePeriod: String = HOUR24
     private var isDescriptionExpanded: Boolean = false
     private var isChartInitialized: Boolean = false
+    private var isDetailsErrorEmitted: Boolean = false
+    private var isHistoryErrorEmitted: Boolean = false
 
     val listItem = combine(details, history, shouldShowError) {
         details, history, shouldShowError ->
-        if (shouldShowError) {
-            emptyList()
-        } else {
-            if (details != null && history != null) {
+        when {
+            (shouldShowError && details != null && history != null) || (details != null && history != null) ->
                 listOf(
                     details.toCryptoCurrencyLogoListItem(),
                     CryptoCurrencyDetailsListItem.CryptoCurrencyChart(
-                        data = getDataSet(),
+                        data = getDataSet(history),
                         chartBackgroundColor = chartBackgroundColor,
                         chartTextColor = chartTextColor,
                         chartColor = chartColor,
@@ -72,47 +75,97 @@ class CryptoCurrencyDetailsViewModel(
                     details.toCryptoCurrencyHeaderListItem(),
                     details.toCryptoCurrencyBodyListItem()
                 )
-            } else {
-                emptyList()
+            shouldShowError && history == null && details != null ->
+                listOf(
+                    details.toCryptoCurrencyLogoListItem(),
+                    CryptoCurrencyDetailsListItem.ErrorState(),
+                    CryptoCurrencyDetailsListItem.CryptoCurrencyChipGroup(),
+                    details.toCryptoCurrencyHeaderListItem(),
+                    details.toCryptoCurrencyBodyListItem()
+                )
+            shouldShowError && (details == null || history == null) -> listOf(CryptoCurrencyDetailsListItem.ErrorState())
+            else -> emptyList()
+        }
+    }
+
+    private val _event = eventFlow<Event>()
+    val event: SharedFlow<Event> = _event
+
+    init {
+        refreshData()
+    }
+
+    fun refreshData() {
+        if (!_isRefreshing.value) {
+            _isRefreshing.value = true
+            viewModelScope.launch {
+                listOf(
+                    async {
+                        when (
+                            val result = detailsUseCase(uuid = uuid,)
+                        ) {
+                            is Result.Success -> {
+                                shouldShowError.value = false
+                                details.value = result.data
+                            }
+                            is Result.Failure -> {
+                                shouldShowError.value = true
+                                if (details.value != null && !isHistoryErrorEmitted) {
+                                    isDetailsErrorEmitted = true
+                                    _event.pushEvent(Event.ShowErrorMessage(errorMessage = "Failed to load cryptocurrency details"))
+                                }
+                            }
+                        }
+                    },
+                    async {
+                        when (
+                            val result = historyUseCase(
+                                uuid = uuid,
+                                timePeriod = timePeriod
+                            )
+                        ) {
+                            is Result.Success -> {
+                                shouldShowError.value = false
+                                history.value = result.data
+                            }
+                            is Result.Failure -> {
+                                shouldShowError.value = true
+                                if (history.value != null && !isDetailsErrorEmitted) {
+                                    isHistoryErrorEmitted = true
+                                    _event.pushEvent(Event.ShowErrorMessage(errorMessage = "Failed to load cryptocurrency history"))
+                                }
+                            }
+                        }
+                    }
+                ).awaitAll()
+                _isRefreshing.value = false
+                isDetailsErrorEmitted = false
+                isHistoryErrorEmitted = false
             }
         }
     }
 
-    private val _event = eventFlow<NewsViewModel.Event>()
-    val event: SharedFlow<NewsViewModel.Event> = _event
-
-    init {
-        refreshCoinDetails(uuid = uuid)
-        refreshCoinHistory(uuid = uuid, timePeriod = timePeriod)
-    }
-
-    private fun refreshCoinDetails(uuid: String) {
+    private fun refreshCoinHistory() {
         if (!_isRefreshing.value) {
+            _isRefreshing.value = true
             viewModelScope.launch {
-                _isRefreshing.value = true
-                shouldShowError.value = false
-                when (val result = detailsUseCase(uuid = uuid)) {
+                when (
+                    val result = historyUseCase(
+                        uuid = uuid,
+                        timePeriod = timePeriod
+                    )
+                ) {
                     is Result.Success -> {
-                        details.value = result.data
+                        shouldShowError.value = false
+                        history.value = result.data
                     }
                     is Result.Failure -> {
                         shouldShowError.value = true
+                        history.value = null
+                        _event.pushEvent(Event.ShowErrorMessage(errorMessage = "Failed to load cryptocurrency history"))
                     }
                 }
                 _isRefreshing.value = false
-            }
-        }
-    }
-
-    private fun refreshCoinHistory(uuid: String, timePeriod: String) {
-        viewModelScope.launch {
-            when (val result = historyUseCase(uuid = uuid, timePeriod = timePeriod)) {
-                is Result.Success -> {
-                    history.value = result.data
-                }
-                is Result.Failure -> {
-                    shouldShowError.value = true
-                }
             }
         }
     }
@@ -135,7 +188,7 @@ class CryptoCurrencyDetailsViewModel(
         rank = rank.toString(),
         supply = totalSupply.formatInput(),
         circulating = circulating.formatInput(),
-        btcPrice = String.format("%.7f", btcPrice.toDouble()) + " Btc",
+        btcPrice = "${String.format("%.7f", btcPrice.toDouble())} Btc",
         allTimeHighDate = allTimeHigh.timestamp.getFormattedTime(),
         allTimeHighPrice = allTimeHigh.price.convertToPrice(),
         description = Html.fromHtml(description, HtmlCompat.FROM_HTML_MODE_LEGACY).toString()
@@ -210,7 +263,7 @@ class CryptoCurrencyDetailsViewModel(
         return currencyHistory
     }
 
-    private fun getDataSet() = LineDataSet(history.value?.toChartArray(timePeriod = timePeriod), "data")
+    private fun getDataSet(history: List<CryptoHistoryItem>) = LineDataSet(history.toChartArray(timePeriod = timePeriod), "data")
         .also { lineDataSet ->
             lineDataSet.lineWidth = 3f
             lineDataSet.color = chartTextColor
@@ -232,7 +285,7 @@ class CryptoCurrencyDetailsViewModel(
         ChipType.CHIP_6Y -> timePeriod = YEAR6
     }.let {
         isChartInitialized = true
-        refreshCoinHistory(uuid = uuid, timePeriod = timePeriod)
+        refreshCoinHistory()
     }
 
     fun onDescriptionArrowClicked(arrow: ImageView, description: TextView) = when (isDescriptionExpanded) {
@@ -246,5 +299,9 @@ class CryptoCurrencyDetailsViewModel(
             description.maxLines = 100
             isDescriptionExpanded = true
         }
+    }
+
+    sealed class Event {
+        data class ShowErrorMessage(val errorMessage: String) : Event()
     }
 }

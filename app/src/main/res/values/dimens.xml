@@ -5,6 +5,7 @@
     <dimen name="content_padding_half">4dp</dimen>
     <dimen name="content_padding">8dp</dimen>
     <dimen name="error_state_margin">32dp</dimen>
+    <dimen name="chart_error_state_margin">40dp</dimen>
 
     <!-- CryptoCurrency RecyclerView -->
     <dimen name="crypto_currency_card_height">80dp</dimen>
@@ -132,9 +133,10 @@
     <dimen name="crypto_details_coin_logo_text_view_margin_start">4dp</dimen>
     <dimen name="crypto_details_coin_logo_text_view_margin_top">10dp</dimen>
 
-    <!-- AnyChart-->
+    <!-- MPAndroidChart-->
     <dimen name="crypto_details_chart_margin_top">25dp</dimen>
     <dimen name="crypto_details_chart_height">300dp</dimen>
+    <dimen name="crypto_details_chart_margin_Bottom">10dp</dimen>
 
     <!-- Chip Layout Margin-->
     <dimen name="crypto_details_chip_layout_margin">5dp</dimen>
@@ -153,5 +155,36 @@
     <dimen name="crypto_details_coin_header_daily_change_text_margin_end">9dp</dimen>
     <dimen name="crypto_details_coin_header_market_cap_text_margin_end">11dp</dimen>
     <dimen name="crypto_details_coin_header_volume_text_margin_end">14dp</dimen>
+
+    <!-- Coin Body-->
+    <!-- TextSizes -->
+    <dimen name="small_crypto_details_coin_body_text">13sp</dimen>
+    <dimen name="medium_crypto_details_coin_body_text">14sp</dimen>
+    <dimen name="large_crypto_details_coin_body_text">15sp</dimen>
+
+    <!-- Delimiter -->
+    <dimen name="crypto_details_coin_body_delimiter_height">1dp</dimen>
+    <dimen name="crypto_details_coin_body_delimiter_margin_top">5dp</dimen>
+
+    <!-- TextViews -->
+    <dimen name="crypto_details_coin_body_margin_start">10dp</dimen>
+    <dimen name="crypto_details_coin_body_margin_start2">20dp</dimen>
+    <dimen name="crypto_details_coin_body_margin_end">10dp</dimen>
+    <dimen name="crypto_details_coin_body_crypto_rank_margin_top">8dp</dimen>
+    <dimen name="crypto_details_coin_body_crypto_supply_margin_top">8dp</dimen>
+    <dimen name="crypto_details_coin_body_crypto_circulating_margin_top">3dp</dimen>
+    <dimen name="crypto_details_coin_body_crypto_btc_price_margin_top">5dp</dimen>
+    <dimen name="crypto_details_coin_body_crypto_all_time_high_margin_top">5dp</dimen>
+    <dimen name="crypto_details_coin_body_crypto_all_time_high_date_margin_top">3dp</dimen>
+    <dimen name="crypto_details_coin_body_crypto_description_margin_top">3dp</dimen>
+
+    <!-- Description TextView -->
+    <dimen name="crypto_details_coin_body_description_box_margin_start_end">30dp</dimen>
+    <dimen name="crypto_details_coin_body_description_box_margin_top">10dp</dimen>
+    <dimen name="crypto_details_coin_body_description_box_padding">5dp</dimen>
+
+    <!-- ImageView -->
+    <dimen name="crypto_details_coin_body_drop_down_size">30dp</dimen>
+    <dimen name="crypto_details_coin_body_drop_down_margin_end">30dp</dimen>
 
 </resources>

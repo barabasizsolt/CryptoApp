@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.FragmentCryptoCurrencyDetailsBinding
 import com.example.cryptoapp.feature.shared.BundleArgumentDelegate
+import com.example.cryptoapp.feature.shared.createErrorSnackBar
 import com.google.android.material.color.MaterialColors
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -36,10 +37,17 @@ class CryptoCurrencyDetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentCryptoCurrencyDetailsBinding.inflate(inflater, container, false)
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewModel = viewModel
+        return binding.root
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         val detailsAdapter = CryptoCurrencyDetailsAdapter(
             onChipClicked = viewModel::onChipClicked,
-            onDescriptionArrowClicked = viewModel::onDescriptionArrowClicked
+            onDescriptionArrowClicked = viewModel::onDescriptionArrowClicked,
+            onTryAgainButtonClicked = viewModel::refreshData
         )
         val layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerview.let {
@@ -48,8 +56,14 @@ class CryptoCurrencyDetailsFragment : Fragment() {
             it.addItemDecoration(DividerItemDecoration(requireContext(), layoutManager.orientation))
         }
         viewModel.listItem.onEach(detailsAdapter::submitList).launchIn(viewLifecycleOwner.lifecycleScope)
+        viewModel.event.onEach(::listenToEvents).launchIn(viewLifecycleOwner.lifecycleScope)
+        binding.swipeRefreshLayout.setOnRefreshListener(viewModel::refreshData)
+    }
 
-        return binding.root
+    private fun listenToEvents(event: CryptoCurrencyDetailsViewModel.Event) = when (event) {
+        is CryptoCurrencyDetailsViewModel.Event.ShowErrorMessage -> binding.root.createErrorSnackBar(event.errorMessage) {
+            viewModel.refreshData()
+        }
     }
 
     companion object {

@@ -5,6 +5,12 @@ import com.github.mikephil.charting.data.LineDataSet
 
 sealed class CryptoCurrencyDetailsListItem : ListItem {
 
+    data class ErrorState(
+        val nothing: Any? = null
+    ) : CryptoCurrencyDetailsListItem() {
+        override val id = "errorState"
+    }
+
     data class CryptoCurrencyLogo(
         val logo: String,
         val name: String,

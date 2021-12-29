@@ -127,11 +127,13 @@ fun LineChart.initializeChart(dataSet: LineDataSet, chartBackgroundColor: Int, c
                 )
             )
             xAxis.textColor = chartTextColor
+            xAxis.textSize = 12f
             xAxis.position = XAxis.XAxisPosition.BOTTOM
             xAxis.setDrawGridLines(true)
             axisLeft.textColor = chartTextColor
             axisLeft.valueFormatter = CryptoYAxisFormatter()
             axisLeft.setDrawGridLines(true)
+            axisRight.isEnabled = false
             setBackgroundColor(chartBackgroundColor)
         }
         data = LineData(arrayListOf<ILineDataSet>(dataSet))
