@@ -169,7 +169,7 @@ inline fun <reified T : Fragment> FragmentManager.handleReplace(
 ) {
     beginTransaction().apply {
         val currentFragment = findFragmentById(containerId)
-        //val newFragment = findFragmentByTag(tag) ?: newInstance()
+        // val newFragment = findFragmentByTag(tag) ?: newInstance()
         val newFragment = newInstance()
         currentFragment?.let {
             currentFragment.exitTransition = MaterialFadeThrough()
