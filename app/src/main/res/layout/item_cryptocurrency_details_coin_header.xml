@@ -15,8 +15,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp">
+        android:layout_marginTop="@dimen/crypto_details_coin_header_layout_margin"
+        android:layout_marginBottom="@dimen/crypto_details_coin_header_layout_margin">
 
         <TextView
             android:id="@+id/crypto_price"

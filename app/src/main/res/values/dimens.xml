@@ -149,6 +149,7 @@
     <dimen name="crypto_details_chip_corner_radius">3dp</dimen>
 
     <!-- Coin Header-->
+    <dimen name="crypto_details_coin_header_layout_margin">5dp</dimen>
     <dimen name="crypto_details_coin_header_margin_start">20dp</dimen>
     <dimen name="crypto_details_coin_header_margin_end">4dp</dimen>
     <dimen name="crypto_details_coin_header_value_symbol_margin_top">5dp</dimen>
