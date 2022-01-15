@@ -7,7 +7,7 @@
 
         <variable
             name="uiModel"
-            type="com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails.ChipItem.CryptoCurrencyDetailsChipItem" />
+            type="com.example.cryptoapp.feature.shared.ChipItem.CryptoCurrencyDetailsChipItem" />
     </data>
 
     <FrameLayout android:layout_width="wrap_content"

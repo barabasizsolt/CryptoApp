@@ -1,12 +1,12 @@
-package com.example.cryptoapp.feature.cryptocurrency
+package com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cryptoapp.databinding.ItemCryptocurrencyChipBinding
-import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails.ChipItem
 import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails.helpers.UnitOfTimeType
+import com.example.cryptoapp.feature.shared.ChipItem
 import com.example.cryptoapp.feature.shared.ListItemDiff
 
 class CryptoCurrencyDetailsChipAdapter(
@@ -40,7 +40,7 @@ class CryptoCurrencyDetailsChipAdapter(
         UnitOfTimeType.UNIT_6Y.ordinal -> ChipViewHolder.create(
             parent = parent,
             onChipClicked = onChipClicked,
-            unitOfTimeType = UnitOfTimeType.UNIT_1Y
+            unitOfTimeType = UnitOfTimeType.UNIT_6Y
         )
         else -> throw IllegalStateException("Invalid viewType: $viewType.")
     }
@@ -54,7 +54,11 @@ class CryptoCurrencyDetailsChipAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         init {
-            binding.chip.setOnClickListener { onChipClicked(unitOfTimeType) }
+            binding.chip.setOnClickListener {
+                if (bindingAdapterPosition != RecyclerView.NO_POSITION){
+                    onChipClicked(unitOfTimeType)
+                }
+            }
         }
 
         fun bind(listItem: ChipItem.CryptoCurrencyDetailsChipItem) {
