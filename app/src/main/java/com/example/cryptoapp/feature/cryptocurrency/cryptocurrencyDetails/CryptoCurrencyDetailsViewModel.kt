@@ -55,28 +55,30 @@ class CryptoCurrencyDetailsViewModel(
                         data = history.toChartDataSet(timePeriod = timePeriod),
                         unitOfTimeType = unitOfTimeType
                     ),
-                    CryptoCurrencyDetailsListItem.CryptoCurrencyChipGroup(chips = listOf(
-                        ChipItem.CryptoCurrencyDetailsChipItem(
-                            chipItemId = UnitOfTimeType.UNIT_24H.ordinal,
-                            chipTextId = R.string.chip_24hr,
-                            isChecked = true
-                        ),
-                        ChipItem.CryptoCurrencyDetailsChipItem(
-                            chipItemId = UnitOfTimeType.UNIT_7D.ordinal,
-                            chipTextId = R.string.chip_7d,
-                            isChecked = false
-                        ),
-                        ChipItem.CryptoCurrencyDetailsChipItem(
-                            chipItemId = UnitOfTimeType.UNIT_1Y.ordinal,
-                            chipTextId = R.string.chip_1y,
-                            isChecked = false
-                        ),
-                        ChipItem.CryptoCurrencyDetailsChipItem(
-                            chipItemId = UnitOfTimeType.UNIT_6Y.ordinal,
-                            chipTextId = R.string.chip_6y,
-                            isChecked = false
+                    CryptoCurrencyDetailsListItem.CryptoCurrencyChipGroup(
+                        chips = listOf(
+                            ChipItem.CryptoCurrencyDetailsChipItem(
+                                chipItemId = UnitOfTimeType.UNIT_24H.ordinal,
+                                chipTextId = R.string.chip_24hr,
+                                isChecked = true
+                            ),
+                            ChipItem.CryptoCurrencyDetailsChipItem(
+                                chipItemId = UnitOfTimeType.UNIT_7D.ordinal,
+                                chipTextId = R.string.chip_7d,
+                                isChecked = false
+                            ),
+                            ChipItem.CryptoCurrencyDetailsChipItem(
+                                chipItemId = UnitOfTimeType.UNIT_1Y.ordinal,
+                                chipTextId = R.string.chip_1y,
+                                isChecked = false
+                            ),
+                            ChipItem.CryptoCurrencyDetailsChipItem(
+                                chipItemId = UnitOfTimeType.UNIT_6Y.ordinal,
+                                chipTextId = R.string.chip_6y,
+                                isChecked = false
+                            )
                         )
-                    )),
+                    ),
                     details.toCryptoCurrencyHeaderListItem(),
                     details.toCryptoCurrencyBodyListItem()
                 )

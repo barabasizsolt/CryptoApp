@@ -11,9 +11,9 @@ import com.example.cryptoapp.feature.shared.ListItemDiff
 
 class CryptoCurrencyDetailsChipAdapter(
     private val onChipClicked: (UnitOfTimeType) -> Unit
-): ListAdapter<ChipItem.CryptoCurrencyDetailsChipItem, CryptoCurrencyDetailsChipAdapter.ChipViewHolder>(ListItemDiff()) {
+) : ListAdapter<ChipItem.CryptoCurrencyDetailsChipItem, CryptoCurrencyDetailsChipAdapter.ChipViewHolder>(ListItemDiff()) {
 
-    override fun getItemViewType(position: Int) = when(val chipItemId = getItem(position).chipItemId) {
+    override fun getItemViewType(position: Int) = when (val chipItemId = getItem(position).chipItemId) {
         0 -> UnitOfTimeType.UNIT_24H.ordinal
         1 -> UnitOfTimeType.UNIT_7D.ordinal
         2 -> UnitOfTimeType.UNIT_1Y.ordinal
