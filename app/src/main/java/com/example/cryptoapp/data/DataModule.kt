@@ -1,8 +1,10 @@
 package com.example.cryptoapp.data
 
-import com.example.cryptoapp.data.repository.CryptoRepository
+import com.example.cryptoapp.data.repository.cryptocurrency.CryptoCurrencyRepository
 import com.example.cryptoapp.data.repository.ExchangeRepository
 import com.example.cryptoapp.data.repository.NewsRepository
+import com.example.cryptoapp.data.repository.cryptocurrency.CryptoCurrencyDetailsRepository
+import com.example.cryptoapp.data.repository.cryptocurrency.CryptoCurrencyHistoryRepository
 import org.koin.dsl.module
 
 val dataModule = module {
@@ -10,7 +12,9 @@ val dataModule = module {
     single { NetworkManager() }
 
     // Repository
-    single { CryptoRepository(get()) }
-    single { NewsRepository(get()) }
-    single { ExchangeRepository(get()) }
+    single { CryptoCurrencyRepository(manager = get()) }
+    single { CryptoCurrencyDetailsRepository(manager = get()) }
+    single { CryptoCurrencyHistoryRepository(manager = get()) }
+    single { NewsRepository(manager = get()) }
+    single { ExchangeRepository(manager = get()) }
 }

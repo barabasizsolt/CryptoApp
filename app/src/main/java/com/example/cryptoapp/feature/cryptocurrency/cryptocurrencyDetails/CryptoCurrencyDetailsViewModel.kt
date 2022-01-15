@@ -6,6 +6,7 @@ import android.widget.TextView
 import androidx.core.text.HtmlCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.cryptoapp.R
 import com.example.cryptoapp.data.model.Result
 import com.example.cryptoapp.data.model.cryptoCurrencyDetail.details.CryptoCurrencyDetails
 import com.example.cryptoapp.data.model.cryptoCurrencyDetail.history.CryptoHistoryItem
@@ -17,19 +18,8 @@ import com.example.cryptoapp.feature.cryptocurrency.Constant.ROTATE_180
 import com.example.cryptoapp.feature.cryptocurrency.Constant.ROTATE_360
 import com.example.cryptoapp.feature.cryptocurrency.Constant.YEAR1
 import com.example.cryptoapp.feature.cryptocurrency.Constant.YEAR6
-import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails.helpers.AxisFormatterType
-import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails.helpers.ChipType
-import com.example.cryptoapp.feature.shared.convertToCompactPrice
-import com.example.cryptoapp.feature.shared.convertToPrice
-import com.example.cryptoapp.feature.shared.eventFlow
-import com.example.cryptoapp.feature.shared.formatInput
-import com.example.cryptoapp.feature.shared.getFormattedHour
-import com.example.cryptoapp.feature.shared.getFormattedTime
-import com.example.cryptoapp.feature.shared.getTime
-import com.example.cryptoapp.feature.shared.ordinalOf
-import com.example.cryptoapp.feature.shared.pushEvent
-import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.data.LineDataSet
+import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails.helpers.UnitOfTimeType
+import com.example.cryptoapp.feature.shared.*
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -37,9 +27,6 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
-import java.time.DayOfWeek
-import java.time.Month
-import kotlin.collections.ArrayList
 
 class CryptoCurrencyDetailsViewModel(
     private val uuid: String,
@@ -53,7 +40,7 @@ class CryptoCurrencyDetailsViewModel(
     private val details = MutableStateFlow<CryptoCurrencyDetails?>(null)
     private val history = MutableStateFlow<List<CryptoHistoryItem>?>(null)
     private var timePeriod: String = HOUR24
-    private var axisFormatterType: AxisFormatterType = AxisFormatterType.FORMAT_24H
+    private var unitOfTimeType: UnitOfTimeType = UnitOfTimeType.UNIT_24H
     private var isDescriptionExpanded: Boolean = false
     private var isDetailsErrorEmitted: Boolean = false
     private var isHistoryErrorEmitted: Boolean = false
@@ -65,10 +52,31 @@ class CryptoCurrencyDetailsViewModel(
                 listOf(
                     details.toCryptoCurrencyLogoListItem(),
                     CryptoCurrencyDetailsListItem.CryptoCurrencyChart(
-                        data = getDataSet(history),
-                        axisFormatterType = axisFormatterType
+                        data = history.toChartDataSet(timePeriod = timePeriod),
+                        unitOfTimeType = unitOfTimeType
                     ),
-                    CryptoCurrencyDetailsListItem.CryptoCurrencyChipGroup(),
+                    CryptoCurrencyDetailsListItem.CryptoCurrencyChipGroup(chips = listOf(
+                        ChipItem.CryptoCurrencyDetailsChipItem(
+                            chipItemId = UnitOfTimeType.UNIT_24H.ordinal,
+                            chipTextId = R.string.chip_24hr,
+                            isChecked = true
+                        ),
+                        ChipItem.CryptoCurrencyDetailsChipItem(
+                            chipItemId = UnitOfTimeType.UNIT_7D.ordinal,
+                            chipTextId = R.string.chip_7d,
+                            isChecked = false
+                        ),
+                        ChipItem.CryptoCurrencyDetailsChipItem(
+                            chipItemId = UnitOfTimeType.UNIT_1Y.ordinal,
+                            chipTextId = R.string.chip_1y,
+                            isChecked = false
+                        ),
+                        ChipItem.CryptoCurrencyDetailsChipItem(
+                            chipItemId = UnitOfTimeType.UNIT_6Y.ordinal,
+                            chipTextId = R.string.chip_6y,
+                            isChecked = false
+                        )
+                    )),
                     details.toCryptoCurrencyHeaderListItem(),
                     details.toCryptoCurrencyBodyListItem()
                 )
@@ -76,7 +84,7 @@ class CryptoCurrencyDetailsViewModel(
                 listOf(
                     details.toCryptoCurrencyLogoListItem(),
                     CryptoCurrencyDetailsListItem.ErrorState(),
-                    CryptoCurrencyDetailsListItem.CryptoCurrencyChipGroup(),
+                    CryptoCurrencyDetailsListItem.CryptoCurrencyChipGroup(emptyList()),
                     details.toCryptoCurrencyHeaderListItem(),
                     details.toCryptoCurrencyBodyListItem()
                 )
@@ -191,101 +199,22 @@ class CryptoCurrencyDetailsViewModel(
         description = Html.fromHtml(description, HtmlCompat.FROM_HTML_MODE_LEGACY).toString()
     )
 
-    private fun List<CryptoHistoryItem>.toChartArray(timePeriod: String): ArrayList<Entry> {
-        val currencyHistory: ArrayList<Entry> = ArrayList()
-        when (timePeriod) {
-            HOUR24 -> {
-                val groupedHistory = sortedMapOf<Int, MutableList<Double>>()
-
-                this.forEach { curr ->
-                    val time = curr.timestamp.getTime().hour
-                    if (!groupedHistory.containsKey(time)) {
-                        groupedHistory[time] = mutableListOf()
-                    }
-                    groupedHistory[time]?.add(curr.price.toDouble())
-                }
-
-                groupedHistory.forEach { elem ->
-                    currencyHistory.add(Entry(elem.key.toFloat(), elem.value.average().toFloat()))
-                }
-            }
-            DAY7 -> {
-                val groupedHistory = mutableMapOf<DayOfWeek, MutableList<Double>>()
-
-                this.forEach { curr ->
-                    val dayOfWeek = curr.timestamp.getTime().dayOfWeek
-                    if (!groupedHistory.containsKey(dayOfWeek)) {
-                        groupedHistory[dayOfWeek] = mutableListOf()
-                    }
-                    groupedHistory[dayOfWeek]?.add(curr.price.toDouble())
-                }
-
-                groupedHistory.toSortedMap(compareBy { it.ordinal }).forEach { elem ->
-                    currencyHistory.add(Entry(elem.key.value.toFloat(), elem.value.average().toFloat()))
-                }
-            }
-            YEAR1 -> {
-                val groupedHistory = mutableMapOf<Month, MutableList<Double>>()
-
-                this.forEach { curr ->
-                    val month = curr.timestamp.getTime().month
-                    if (!groupedHistory.containsKey(month)) {
-                        groupedHistory[month] = mutableListOf()
-                    }
-                    groupedHistory[month]?.add(curr.price.toDouble())
-                }
-
-                groupedHistory.toSortedMap(compareBy { it.ordinal }).forEach { elem ->
-                    currencyHistory.add(Entry(elem.key.value.toFloat(), elem.value.average().toFloat()))
-                }
-            }
-            YEAR6 -> {
-                val groupedHistory = mutableMapOf<Int, MutableList<Double>>()
-
-                this.forEach { curr ->
-                    val year = curr.timestamp.getTime().year
-                    if (!groupedHistory.containsKey(year)) {
-                        groupedHistory[year] = mutableListOf()
-                    }
-                    groupedHistory[year]?.add(curr.price.toDouble())
-                }
-                groupedHistory.toSortedMap(compareBy { it }).forEach { elem ->
-                    currencyHistory.add(Entry(elem.key.toFloat(), elem.value.average().toFloat()))
-                }
-            }
-        }
-
-        return currencyHistory
-    }
-
-    private fun getDataSet(history: List<CryptoHistoryItem>) = LineDataSet(history.toChartArray(timePeriod = timePeriod), "data")
-        .also { lineDataSet ->
-            lineDataSet.lineWidth = 3f
-            lineDataSet.setDrawValues(false)
-            lineDataSet.circleRadius = 10f
-            lineDataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
-            lineDataSet.cubicIntensity = 0.1f
-            lineDataSet.setDrawFilled(true)
-            lineDataSet.fillAlpha = 255
-            lineDataSet.setDrawCircles(false)
-        }
-
-    fun onChipClicked(chipType: ChipType) = when (chipType) {
-        ChipType.CHIP_24H -> {
+    fun onChipClicked(timeType: UnitOfTimeType) = when (timeType) {
+        UnitOfTimeType.UNIT_24H -> {
             timePeriod = HOUR24
-            axisFormatterType = AxisFormatterType.FORMAT_24H
+            unitOfTimeType = UnitOfTimeType.UNIT_24H
         }
-        ChipType.CHIP_7D -> {
+        UnitOfTimeType.UNIT_7D -> {
             timePeriod = DAY7
-            axisFormatterType = AxisFormatterType.FORMAT_7D
+            unitOfTimeType = UnitOfTimeType.UNIT_7D
         }
-        ChipType.CHIP_1Y -> {
+        UnitOfTimeType.UNIT_1Y -> {
             timePeriod = YEAR1
-            axisFormatterType = AxisFormatterType.FORMAT_1Y
+            unitOfTimeType = UnitOfTimeType.UNIT_1Y
         }
-        ChipType.CHIP_6Y -> {
+        UnitOfTimeType.UNIT_6Y -> {
             timePeriod = YEAR6
-            axisFormatterType = AxisFormatterType.FORMAT_6Y
+            unitOfTimeType = UnitOfTimeType.UNIT_6Y
         }
     }.let {
         refreshCoinHistory()

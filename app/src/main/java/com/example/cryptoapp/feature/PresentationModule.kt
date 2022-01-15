@@ -9,7 +9,7 @@ import org.koin.dsl.module
 
 val presentationModule = module {
     // View model
-    viewModel { CryptoCurrencyViewModel(get()) }
+    viewModel { CryptoCurrencyViewModel(useCase = get()) }
     viewModel { params ->
         CryptoCurrencyDetailsViewModel(
             uuid = params[0],
@@ -17,6 +17,6 @@ val presentationModule = module {
             historyUseCase = get()
         )
     }
-    viewModel { NewsViewModel(get()) }
-    viewModel { ExchangeViewModel(get()) }
+    viewModel { NewsViewModel(useCase = get()) }
+    viewModel { ExchangeViewModel(useCase = get()) }
 }

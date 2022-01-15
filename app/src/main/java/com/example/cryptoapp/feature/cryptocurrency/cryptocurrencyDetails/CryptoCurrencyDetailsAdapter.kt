@@ -13,11 +13,13 @@ import com.example.cryptoapp.databinding.ItemCryptocurrencyDetailsCoinBodyBindin
 import com.example.cryptoapp.databinding.ItemCryptocurrencyDetailsCoinHeaderBinding
 import com.example.cryptoapp.databinding.ItemCryptocurrencyDetailsCoinLogoBinding
 import com.example.cryptoapp.databinding.ItemCryptocurrencyDetailsErrorStateBinding
-import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails.helpers.ChipType
+import com.example.cryptoapp.feature.cryptocurrency.CryptoCurrencyDetailsChipAdapter
+import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails.helpers.UnitOfTimeType
 import com.example.cryptoapp.feature.shared.ListItemDiff
+import com.google.android.flexbox.*
 
 class CryptoCurrencyDetailsAdapter(
-    private val onChipClicked: (ChipType) -> Unit,
+    private val onChipClicked: (UnitOfTimeType) -> Unit,
     private val onDescriptionArrowClicked: (ImageView, TextView) -> Unit,
     private val onTryAgainButtonClicked: () -> Unit
 ) : ListAdapter<CryptoCurrencyDetailsListItem, RecyclerView.ViewHolder>(ListItemDiff()) {
@@ -121,22 +123,28 @@ class CryptoCurrencyDetailsAdapter(
 
     class ChipGroupViewHolder private constructor(
         private val binding: ItemCryptocurrencyDetailsChipGroupBinding,
-        private val onChipClicked: (ChipType) -> Unit
+        private val onChipClicked: (UnitOfTimeType) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
 
+        private val cryptoCurrencyDetailsChipAdapter = CryptoCurrencyDetailsChipAdapter(onChipClicked = onChipClicked)
+
         init {
-            binding.chip24h.setOnClickListener { onChipClicked(ChipType.CHIP_24H) }
-            binding.chip7d.setOnClickListener { onChipClicked(ChipType.CHIP_7D) }
-            binding.chip1y.setOnClickListener { onChipClicked(ChipType.CHIP_1Y) }
-            binding.chip6y.setOnClickListener { onChipClicked(ChipType.CHIP_6Y) }
+            binding.chipRecyclerview.layoutManager = FlexboxLayoutManager(binding.root.context).also {
+                it.justifyContent = JustifyContent.SPACE_AROUND
+                it.alignItems = AlignItems.CENTER
+                it.flexDirection = FlexDirection.ROW
+                it.flexWrap = FlexWrap.NOWRAP
+            }
+            binding.chipRecyclerview.adapter = cryptoCurrencyDetailsChipAdapter
         }
 
         fun bind(listItem: CryptoCurrencyDetailsListItem.CryptoCurrencyChipGroup) {
             binding.uiModel = listItem
+            cryptoCurrencyDetailsChipAdapter.submitList(listItem.chips)
         }
 
         companion object {
-            fun create(parent: ViewGroup, onChipClicked: (ChipType) -> Unit) = ChipGroupViewHolder(
+            fun create(parent: ViewGroup, onChipClicked: (UnitOfTimeType) -> Unit) = ChipGroupViewHolder(
                 binding = ItemCryptocurrencyDetailsChipGroupBinding.inflate(LayoutInflater.from(parent.context), parent, false),
                 onChipClicked = onChipClicked
             )

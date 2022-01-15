@@ -1,8 +1,8 @@
 package com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails.helpers
 
-enum class ChipType {
-    CHIP_24H,
-    CHIP_7D,
-    CHIP_1Y,
-    CHIP_6Y
+enum class UnitOfTimeType {
+    UNIT_24H,
+    UNIT_7D,
+    UNIT_1Y,
+    UNIT_6Y
 }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -11,56 +11,23 @@
             type="com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails.CryptoCurrencyDetailsListItem.CryptoCurrencyChipGroup" />
     </data>
 
-    <FrameLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/crypto_details_chip_layout_margin">
+        android:layout_height="wrap_content">
 
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/chip_group"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/crypto_details_chip_group_height"
-            android:layout_gravity="center_horizontal"
-            app:chipSpacingHorizontal="@dimen/crypto_details_chip_group_horizontal_spacing"
-            app:selectionRequired="true"
-            app:singleSelection="true">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/chip_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:listitem="@layout/item_cryptocurrency_chip" />
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_24h"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:text="@string/chip_24hr"
-                app:chipCornerRadius="@dimen/crypto_details_chip_corner_radius" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_7d"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/chip_7d"
-                app:chipCornerRadius="@dimen/crypto_details_chip_corner_radius" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_1y"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/chip_1y"
-                app:chipCornerRadius="@dimen/crypto_details_chip_corner_radius" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_6y"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/chip_6y"
-                app:chipCornerRadius="@dimen/crypto_details_chip_corner_radius" />
-
-        </com.google.android.material.chip.ChipGroup>
-
-    </FrameLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>
 

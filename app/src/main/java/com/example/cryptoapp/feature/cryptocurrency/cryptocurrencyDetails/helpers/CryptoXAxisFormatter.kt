@@ -4,7 +4,7 @@ import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.formatter.ValueFormatter
 import kotlin.math.roundToInt
 
-class CryptoXAxisFormatter(private val axisFormatterType: AxisFormatterType) : ValueFormatter() {
+class CryptoXAxisFormatter(private val unitOfTimeType: UnitOfTimeType) : ValueFormatter() {
 
     private val daysOfWeek = mapOf(
         1f to "Mon",
@@ -35,10 +35,10 @@ class CryptoXAxisFormatter(private val axisFormatterType: AxisFormatterType) : V
 
     private fun Float.formatYear() = this.roundToInt().toString()
 
-    override fun getAxisLabel(value: Float, axis: AxisBase?) = when (axisFormatterType) {
-        AxisFormatterType.FORMAT_24H -> value.formatHour()
-        AxisFormatterType.FORMAT_7D -> daysOfWeek[value]
-        AxisFormatterType.FORMAT_1Y -> monthsOfYear[value]
-        AxisFormatterType.FORMAT_6Y -> value.formatYear()
+    override fun getAxisLabel(value: Float, axis: AxisBase?) = when (unitOfTimeType) {
+        UnitOfTimeType.UNIT_24H -> value.formatHour()
+        UnitOfTimeType.UNIT_7D -> daysOfWeek[value]
+        UnitOfTimeType.UNIT_1Y -> monthsOfYear[value]
+        UnitOfTimeType.UNIT_6Y -> value.formatYear()
     }
 }

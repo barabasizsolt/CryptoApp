@@ -109,7 +109,9 @@ dependencies {
     //Splash screen dependency
     implementation 'androidx.core:core-splashscreen:1.0.0-alpha02'
     //Constraint Layout dependency
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.2'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
+    //Flexbox Layout dependency
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
     //DrawerLayout dependency
     implementation 'androidx.drawerlayout:drawerlayout:1.1.1'
     //MPAndroidChart dependency
@@ -117,7 +119,7 @@ dependencies {
 
     /*-------------------Android Core dependencies-----------------*/
     implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.appcompat:appcompat:1.4.0'
+    implementation 'androidx.appcompat:appcompat:1.4.1'
 
     /*-------------------Android Test dependencies-----------------*/
     testImplementation 'junit:junit:4.13.2'

@@ -15,6 +15,6 @@
         android:layout_height="@dimen/crypto_details_chart_height"
         android:layout_marginBottom="@dimen/crypto_details_chart_margin_Bottom"
         app:data="@{uiModel.data}"
-        app:formatter="@{uiModel.axisFormatterType}"/>
+        app:formatter="@{uiModel.unitOfTimeType}"/>
 
 </layout>

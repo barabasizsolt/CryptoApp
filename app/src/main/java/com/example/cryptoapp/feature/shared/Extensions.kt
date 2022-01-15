@@ -1,69 +1,25 @@
 package com.example.cryptoapp.feature.shared
 
-import android.graphics.Color
 import android.icu.util.CurrencyAmount
 import android.net.Uri
 import android.view.View
 import android.widget.ImageView
-import android.widget.TextView
-import androidx.core.content.ContextCompat
-import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import coil.ImageLoader
-import coil.decode.SvgDecoder
 import coil.load
-import coil.request.ImageRequest
 import coil.transform.CircleCropTransformation
 import com.example.cryptoapp.R
-import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails.helpers.AxisFormatterType
-import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails.helpers.CryptoXAxisFormatter
-import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails.helpers.CryptoYAxisFormatter
+import com.example.cryptoapp.data.model.cryptoCurrencyDetail.history.CryptoHistoryItem
+import com.example.cryptoapp.feature.cryptocurrency.Constant
 import com.example.cryptoapp.feature.shared.Constant.currency
 import com.example.cryptoapp.feature.shared.Constant.formatter
 import com.example.cryptoapp.feature.shared.Constant.hourFormatter
 import com.example.cryptoapp.feature.shared.Constant.numberFormatter
-import com.github.mikephil.charting.charts.LineChart
-import com.github.mikephil.charting.components.Legend
-import com.github.mikephil.charting.components.LegendEntry
-import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineDataSet
-import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
-import com.google.android.material.color.MaterialColors
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialFadeThrough
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneId
-
-@BindingAdapter("percentage")
-fun TextView.setPercentage(percentageStr: String) {
-    val percentage = percentageStr.toDouble()
-    when {
-        percentage < 0 -> {
-            val percentageText = String.format("%.2f", percentage) + "%"
-            text = percentageText
-            setTextColor(ContextCompat.getColor(context, R.color.red))
-        }
-        percentage > 0 -> {
-            val percentageText = "+" + String.format("%.2f", percentage) + "%"
-            text = percentageText
-            setTextColor(ContextCompat.getColor(context, R.color.green))
-        }
-    }
-}
-
-@BindingAdapter("url")
-fun ImageView.loadImage(url: String?) = ImageLoader.Builder(context)
-    .componentRegistry { add(SvgDecoder(context)) }
-    .build()
-    .enqueue(
-        ImageRequest.Builder(context)
-            .data(url)
-            .target(this)
-            .build()
-    )
+import java.time.*
 
 fun ImageView.loadImage(image: Uri, placeholder: Int) = load(image) {
     placeholder(placeholder)
@@ -113,53 +69,84 @@ fun View.createErrorSnackBar(errorMessage: String, snackBarAction: () -> Unit) =
         .setAction(resources.getString(R.string.retry)) { snackBarAction() }
         .show()
 
-@BindingAdapter("data", "formatter", requireAll = true)
-fun LineChart.initializeChart(
-    dataSet: LineDataSet,
-    axisFormatterType: AxisFormatterType
-) = this.let {
-    extraBottomOffset = 5f
-    setTouchEnabled(false)
-    isDragEnabled = true
-    setScaleEnabled(true)
-    setPinchZoom(false)
-    setDrawGridBackground(false)
-    description.isEnabled = false
-    legend.isEnabled = true
-    legend.textColor = MaterialColors.getColor(context, R.attr.app_text_color, Color.WHITE)
-    legend.textSize = 13f
-    legend.verticalAlignment = Legend.LegendVerticalAlignment.TOP
-    legend.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
-    legend.orientation = Legend.LegendOrientation.HORIZONTAL
-    legend.setDrawInside(false)
-    legend.setCustom(
-        arrayListOf(
-            LegendEntry().also {
-                it.label = resources.getString(R.string.crypto_value_changes)
-                it.formColor = MaterialColors.getColor(context, R.attr.crypto_chart_color, Color.WHITE)
+private fun List<CryptoHistoryItem>.toChartArray(timePeriod: String): ArrayList<Entry> {
+    val currencyHistory: ArrayList<Entry> = ArrayList()
+    when (timePeriod) {
+        Constant.HOUR24 -> {
+            val groupedHistory = sortedMapOf<Int, MutableList<Double>>()
+
+            this.forEach { curr ->
+                val time = curr.timestamp.getTime().hour
+                if (!groupedHistory.containsKey(time)) {
+                    groupedHistory[time] = mutableListOf()
+                }
+                groupedHistory[time]?.add(curr.price.toDouble())
             }
-        )
-    )
-    xAxis.textColor = MaterialColors.getColor(context, R.attr.app_text_color, Color.WHITE)
-    xAxis.textSize = 12f
-    xAxis.position = XAxis.XAxisPosition.BOTTOM
-    xAxis.setDrawGridLines(true)
-    xAxis.isGranularityEnabled = true
-    axisLeft.textColor = MaterialColors.getColor(context, R.attr.app_text_color, Color.WHITE)
-    axisLeft.valueFormatter = CryptoYAxisFormatter()
-    axisLeft.setDrawGridLines(true)
-    axisRight.isEnabled = false
-    setBackgroundColor(MaterialColors.getColor(context, R.attr.app_background_color, Color.WHITE))
-    dataSet.let {
-        it.color = MaterialColors.getColor(context, R.attr.app_text_color, Color.WHITE)
-        it.highLightColor = MaterialColors.getColor(context, R.attr.crypto_chart_color, Color.WHITE)
-        it.fillColor = MaterialColors.getColor(context, R.attr.crypto_chart_color, Color.WHITE)
+
+            groupedHistory.forEach { elem ->
+                currencyHistory.add(Entry(elem.key.toFloat(), elem.value.average().toFloat()))
+            }
+        }
+        Constant.DAY7 -> {
+            val groupedHistory = mutableMapOf<DayOfWeek, MutableList<Double>>()
+
+            this.forEach { curr ->
+                val dayOfWeek = curr.timestamp.getTime().dayOfWeek
+                if (!groupedHistory.containsKey(dayOfWeek)) {
+                    groupedHistory[dayOfWeek] = mutableListOf()
+                }
+                groupedHistory[dayOfWeek]?.add(curr.price.toDouble())
+            }
+
+            groupedHistory.toSortedMap(compareBy { it.ordinal }).forEach { elem ->
+                currencyHistory.add(Entry(elem.key.value.toFloat(), elem.value.average().toFloat()))
+            }
+        }
+        Constant.YEAR1 -> {
+            val groupedHistory = mutableMapOf<Month, MutableList<Double>>()
+
+            this.forEach { curr ->
+                val month = curr.timestamp.getTime().month
+                if (!groupedHistory.containsKey(month)) {
+                    groupedHistory[month] = mutableListOf()
+                }
+                groupedHistory[month]?.add(curr.price.toDouble())
+            }
+
+            groupedHistory.toSortedMap(compareBy { it.ordinal }).forEach { elem ->
+                currencyHistory.add(Entry(elem.key.value.toFloat(), elem.value.average().toFloat()))
+            }
+        }
+        Constant.YEAR6 -> {
+            val groupedHistory = mutableMapOf<Int, MutableList<Double>>()
+
+            this.forEach { curr ->
+                val year = curr.timestamp.getTime().year
+                if (!groupedHistory.containsKey(year)) {
+                    groupedHistory[year] = mutableListOf()
+                }
+                groupedHistory[year]?.add(curr.price.toDouble())
+            }
+            groupedHistory.toSortedMap(compareBy { it }).forEach { elem ->
+                currencyHistory.add(Entry(elem.key.toFloat(), elem.value.average().toFloat()))
+            }
+        }
     }
-    xAxis.valueFormatter = CryptoXAxisFormatter(axisFormatterType = axisFormatterType)
-    data = LineData(arrayListOf<ILineDataSet>(dataSet))
-    notifyDataSetChanged()
-    invalidate()
+
+    return currencyHistory
 }
+
+fun List<CryptoHistoryItem>.toChartDataSet(timePeriod: String) = LineDataSet(this.toChartArray(timePeriod = timePeriod), "data")
+    .also { lineDataSet ->
+        lineDataSet.lineWidth = 3f
+        lineDataSet.setDrawValues(false)
+        lineDataSet.circleRadius = 10f
+        lineDataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
+        lineDataSet.cubicIntensity = 0.1f
+        lineDataSet.setDrawFilled(true)
+        lineDataSet.fillAlpha = 255
+        lineDataSet.setDrawCircles(false)
+    }
 
 inline fun <reified T : Fragment> FragmentManager.handleReplace(
     tag: String = T::class.java.name,

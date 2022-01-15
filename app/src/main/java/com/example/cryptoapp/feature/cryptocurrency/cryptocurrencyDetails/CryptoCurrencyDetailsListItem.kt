@@ -1,6 +1,6 @@
 package com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails
 
-import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails.helpers.AxisFormatterType
+import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails.helpers.UnitOfTimeType
 import com.example.cryptoapp.feature.shared.ListItem
 import com.github.mikephil.charting.data.LineDataSet
 
@@ -22,13 +22,13 @@ sealed class CryptoCurrencyDetailsListItem : ListItem {
 
     data class CryptoCurrencyChart(
         val data: LineDataSet,
-        val axisFormatterType: AxisFormatterType
+        val unitOfTimeType: UnitOfTimeType
     ) : CryptoCurrencyDetailsListItem() {
         override val id = "crypto_details_chart"
     }
 
     data class CryptoCurrencyChipGroup(
-        val nothing: Any? = null
+        val chips: List<ChipItem.CryptoCurrencyDetailsChipItem>
     ) : CryptoCurrencyDetailsListItem() {
         override val id = "crypto_details_chip_group"
     }
@@ -53,5 +53,16 @@ sealed class CryptoCurrencyDetailsListItem : ListItem {
         val description: String
     ) : CryptoCurrencyDetailsListItem() {
         override val id = "crypto_details_$rank"
+    }
+}
+
+sealed class ChipItem : ListItem {
+
+    data class CryptoCurrencyDetailsChipItem(
+        val chipItemId: Int,
+        val chipTextId: Int,
+        val isChecked: Boolean
+    ) : ChipItem() {
+        override val id = "crypto_details_chip_$chipItemId"
     }
 }

@@ -1,24 +1,18 @@
-package com.example.cryptoapp.data.repository
+package com.example.cryptoapp.data.repository.cryptocurrency
 
 import com.example.cryptoapp.data.NetworkManager
 import com.example.cryptoapp.data.model.RefreshType
 import com.example.cryptoapp.data.model.cryptoCurrency.CryptoCurrency
-import com.example.cryptoapp.data.model.cryptoCurrencyDetail.details.CryptoCurrencyDetails
-import com.example.cryptoapp.data.model.cryptoCurrencyDetail.history.CryptoHistoryItem
 import com.example.cryptoapp.data.shared.toCryptoCurrency
-import com.example.cryptoapp.data.shared.toCryptoCurrencyDetails
-import com.example.cryptoapp.data.shared.toCryptoHistoryItem
 import java.lang.IllegalStateException
 
-class CryptoRepository(private val manager: NetworkManager) {
+class CryptoCurrencyRepository(private val manager: NetworkManager) {
 
     companion object {
         const val LIMIT = 50
     }
 
     private var cryptoCurrenciesCache: MutableList<CryptoCurrency>? = null
-    private var cryptoCurrencyDetailsCache: CryptoCurrencyDetails? = null
-    private var cryptoCurrencyHistoryCache: MutableList<CryptoHistoryItem>? = null
     private var lastCryptoCurrencyOffset = 0
 
     suspend fun getAllCryptoCurrencies(
@@ -77,25 +71,5 @@ class CryptoRepository(private val manager: NetworkManager) {
         currencyResponse.toCryptoCurrency()
     }?.distinctBy { it.name }.also {
         lastCryptoCurrencyOffset = offset
-    } ?: throw IllegalStateException("Invalid data returned by the server")
-
-    suspend fun getCryptoCurrencyDetails(
-        uuid: String,
-    ) = manager.cryptoSource.getCryptoCurrencyDetails(
-        uuid = uuid
-    ).body()?.data?.coin?.toCryptoCurrencyDetails().let { newData ->
-        newData.also { cryptoCurrencyDetailsCache = it }
-    } ?: throw IllegalStateException("Invalid data returned by the server")
-
-    suspend fun getCryptoCurrencyHistory(
-        uuid: String,
-        timePeriod: String,
-    ) = manager.cryptoSource.getCryptoCurrencyHistory(
-        uuid = uuid,
-        timePeriod = timePeriod
-    ).body()?.data?.history?.mapNotNull {
-        it.toCryptoHistoryItem()
-    }.let { newData ->
-        newData.also { cryptoCurrencyHistoryCache = it?.toMutableList() }
     } ?: throw IllegalStateException("Invalid data returned by the server")
 }

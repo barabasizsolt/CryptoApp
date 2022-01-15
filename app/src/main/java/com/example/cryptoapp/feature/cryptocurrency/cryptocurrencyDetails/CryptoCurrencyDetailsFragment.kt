@@ -18,7 +18,7 @@ import org.koin.core.parameter.parametersOf
 
 class CryptoCurrencyDetailsFragment : Fragment() {
     private lateinit var binding: FragmentCryptoCurrencyDetailsBinding
-    private val viewModel: CryptoCurrencyDetailsViewModel by viewModel { parametersOf(arguments?.cryptoCurrencyId,) }
+    private val viewModel: CryptoCurrencyDetailsViewModel by viewModel { parametersOf(arguments?.cryptoCurrencyId) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,7 +32,6 @@ class CryptoCurrencyDetailsFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         val detailsAdapter = CryptoCurrencyDetailsAdapter(
             onChipClicked = viewModel::onChipClicked,
             onDescriptionArrowClicked = viewModel::onDescriptionArrowClicked,

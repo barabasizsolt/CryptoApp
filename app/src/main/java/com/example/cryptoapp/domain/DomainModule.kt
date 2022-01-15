@@ -9,9 +9,9 @@ import org.koin.dsl.module
 
 val domainModule = module {
     // Use case
-    factory { GetCryptoCurrenciesUseCase(get()) }
-    factory { GetCryptoCurrencyDetailsUseCase(get()) }
-    factory { GetCryptoCurrencyHistoryUseCase(get()) }
-    factory { GetNewsUseCase(get()) }
-    factory { GetExchangesUseCase(get()) }
+    factory { GetCryptoCurrenciesUseCase(repository = get()) }
+    factory { GetCryptoCurrencyDetailsUseCase(repository = get()) }
+    factory { GetCryptoCurrencyHistoryUseCase(repository = get()) }
+    factory { GetNewsUseCase(repository = get()) }
+    factory { GetExchangesUseCase(repository = get()) }
 }
