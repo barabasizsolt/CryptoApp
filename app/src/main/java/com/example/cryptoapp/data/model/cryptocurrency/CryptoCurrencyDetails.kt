@@ -1,6 +1,6 @@
-package com.example.cryptoapp.data.model.cryptoCurrencyDetail.details
+package com.example.cryptoapp.data.model.cryptocurrency
 
-import com.example.cryptoapp.data.model.cryptoCurrency.AllTimeHighResponse
+import com.example.cryptoapp.data.model.response.cryptocurrency.detail.AllTimeHighResponse
 
 data class CryptoCurrencyDetails(
     val uuid: String,

@@ -1,8 +1,8 @@
-package com.example.cryptoapp.data.model.cryptoCurrencyDetail.history
+package com.example.cryptoapp.data.model.response.cryptocurrency.history
 
 import com.google.gson.annotations.SerializedName
 
-data class CryptoCurrencyDataResponse(
+data class CryptoCurrencyHistoryDataResponse(
     @SerializedName("change")
     val change: String,
     @SerializedName("history")

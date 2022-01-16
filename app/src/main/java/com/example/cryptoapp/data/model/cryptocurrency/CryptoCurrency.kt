@@ -1,4 +1,4 @@
-package com.example.cryptoapp.data.model.cryptoCurrency
+package com.example.cryptoapp.data.model.cryptocurrency
 
 data class CryptoCurrency(
     val uuid: String,

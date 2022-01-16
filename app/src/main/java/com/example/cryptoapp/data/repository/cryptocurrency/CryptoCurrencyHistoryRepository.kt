@@ -1,7 +1,7 @@
 package com.example.cryptoapp.data.repository.cryptocurrency
 
 import com.example.cryptoapp.data.NetworkManager
-import com.example.cryptoapp.data.shared.toCryptoHistoryItem
+import com.example.cryptoapp.data.shared.toCryptoCurrencyHistory
 import java.lang.IllegalStateException
 
 class CryptoCurrencyHistoryRepository(private val manager: NetworkManager) {
@@ -13,6 +13,6 @@ class CryptoCurrencyHistoryRepository(private val manager: NetworkManager) {
         uuid = uuid,
         timePeriod = timePeriod
     ).body()?.data?.history?.mapNotNull {
-        it.toCryptoHistoryItem()
+        it.toCryptoCurrencyHistory()
     } ?: throw IllegalStateException("Invalid data returned by the server")
 }

@@ -9,7 +9,7 @@ import androidx.fragment.app.FragmentManager
 import coil.load
 import coil.transform.CircleCropTransformation
 import com.example.cryptoapp.R
-import com.example.cryptoapp.data.model.cryptoCurrencyDetail.history.CryptoHistoryItem
+import com.example.cryptoapp.data.model.cryptocurrency.CryptoCurrencyHistory
 import com.example.cryptoapp.feature.cryptocurrency.Constant
 import com.example.cryptoapp.feature.shared.Constant.currency
 import com.example.cryptoapp.feature.shared.Constant.formatter
@@ -19,7 +19,11 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineDataSet
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialFadeThrough
-import java.time.*
+import java.time.DayOfWeek
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.Month
+import java.time.ZoneId
 
 fun ImageView.loadImage(image: Uri, placeholder: Int) = load(image) {
     placeholder(placeholder)
@@ -69,7 +73,7 @@ fun View.createErrorSnackBar(errorMessage: String, snackBarAction: () -> Unit) =
         .setAction(resources.getString(R.string.retry)) { snackBarAction() }
         .show()
 
-private fun List<CryptoHistoryItem>.toChartArray(timePeriod: String): ArrayList<Entry> {
+private fun List<CryptoCurrencyHistory>.toChartArray(timePeriod: String): ArrayList<Entry> {
     val currencyHistory: ArrayList<Entry> = ArrayList()
     when (timePeriod) {
         Constant.HOUR24 -> {
@@ -136,7 +140,7 @@ private fun List<CryptoHistoryItem>.toChartArray(timePeriod: String): ArrayList<
     return currencyHistory
 }
 
-fun List<CryptoHistoryItem>.toChartDataSet(timePeriod: String) = LineDataSet(this.toChartArray(timePeriod = timePeriod), "data")
+fun List<CryptoCurrencyHistory>.toChartDataSet(timePeriod: String) = LineDataSet(this.toChartArray(timePeriod = timePeriod), "data")
     .also { lineDataSet ->
         lineDataSet.lineWidth = 3f
         lineDataSet.setDrawValues(false)

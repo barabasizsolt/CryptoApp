@@ -1,15 +1,15 @@
 package com.example.cryptoapp.data.shared
 
-import com.example.cryptoapp.data.model.cryptoCurrency.CryptoCurrency
-import com.example.cryptoapp.data.model.cryptoCurrency.CryptoCurrencyResponse
-import com.example.cryptoapp.data.model.cryptoCurrencyDetail.CoinDetailsResponse
-import com.example.cryptoapp.data.model.cryptoCurrencyDetail.details.CryptoCurrencyDetails
-import com.example.cryptoapp.data.model.cryptoCurrencyDetail.history.CryptoHistoryItem
-import com.example.cryptoapp.data.model.cryptoCurrencyDetail.history.SingleCryptoCurrencyHistoryResponse
+import com.example.cryptoapp.data.model.cryptocurrency.CryptoCurrency
+import com.example.cryptoapp.data.model.cryptocurrency.CryptoCurrencyDetails
+import com.example.cryptoapp.data.model.cryptocurrency.CryptoCurrencyHistory
 import com.example.cryptoapp.data.model.exchange.Exchange
-import com.example.cryptoapp.data.model.exchange.ExchangeResponse
 import com.example.cryptoapp.data.model.news.News
-import com.example.cryptoapp.data.model.news.NewsResponse
+import com.example.cryptoapp.data.model.response.cryptocurrency.all.CryptoCurrencyResponse
+import com.example.cryptoapp.data.model.response.cryptocurrency.detail.SingleCryptoCurrencyDetailsResponse
+import com.example.cryptoapp.data.model.response.cryptocurrency.history.SingleCryptoCurrencyHistoryResponse
+import com.example.cryptoapp.data.model.response.exchange.ExchangeResponse
+import com.example.cryptoapp.data.model.response.news.NewsResponse
 
 fun CryptoCurrencyResponse.toCryptoCurrency() = when {
     symbol == null ||
@@ -31,7 +31,7 @@ fun CryptoCurrencyResponse.toCryptoCurrency() = when {
     )
 }
 
-fun CoinDetailsResponse.toCryptoCurrencyDetails() = when {
+fun SingleCryptoCurrencyDetailsResponse.toCryptoCurrencyDetails() = when {
     uuid == null ||
         symbol == null ||
         name == null ||
@@ -63,9 +63,9 @@ fun CoinDetailsResponse.toCryptoCurrencyDetails() = when {
     )
 }
 
-fun SingleCryptoCurrencyHistoryResponse.toCryptoHistoryItem() = when {
+fun SingleCryptoCurrencyHistoryResponse.toCryptoCurrencyHistory() = when {
     price == null || timestamp == null -> null
-    else -> CryptoHistoryItem(
+    else -> CryptoCurrencyHistory(
         price = price,
         timestamp = timestamp
     )

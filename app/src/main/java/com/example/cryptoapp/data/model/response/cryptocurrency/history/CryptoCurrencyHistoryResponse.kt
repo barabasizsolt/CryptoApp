@@ -1,4 +1,4 @@
-package com.example.cryptoapp.data.model.cryptoCurrencyDetail.history
+package com.example.cryptoapp.data.model.response.cryptocurrency.history
 
 import com.google.gson.annotations.SerializedName
 
@@ -6,5 +6,5 @@ data class CryptoCurrencyHistoryResponse(
     @SerializedName("status")
     val status: String,
     @SerializedName("data")
-    val data: CryptoCurrencyDataResponse
+    val data: CryptoCurrencyHistoryDataResponse
 )

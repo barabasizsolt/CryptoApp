@@ -8,8 +8,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cryptoapp.R
 import com.example.cryptoapp.data.model.Result
-import com.example.cryptoapp.data.model.cryptoCurrencyDetail.details.CryptoCurrencyDetails
-import com.example.cryptoapp.data.model.cryptoCurrencyDetail.history.CryptoHistoryItem
+import com.example.cryptoapp.data.model.cryptocurrency.CryptoCurrencyDetails
+import com.example.cryptoapp.data.model.cryptocurrency.CryptoCurrencyHistory
 import com.example.cryptoapp.domain.cryptocurrency.GetCryptoCurrencyDetailsUseCase
 import com.example.cryptoapp.domain.cryptocurrency.GetCryptoCurrencyHistoryUseCase
 import com.example.cryptoapp.feature.cryptocurrency.Constant.DAY7
@@ -19,7 +19,16 @@ import com.example.cryptoapp.feature.cryptocurrency.Constant.ROTATE_360
 import com.example.cryptoapp.feature.cryptocurrency.Constant.YEAR1
 import com.example.cryptoapp.feature.cryptocurrency.Constant.YEAR6
 import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails.helpers.UnitOfTimeType
-import com.example.cryptoapp.feature.shared.*
+import com.example.cryptoapp.feature.shared.ChipItem
+import com.example.cryptoapp.feature.shared.convertToCompactPrice
+import com.example.cryptoapp.feature.shared.convertToPrice
+import com.example.cryptoapp.feature.shared.eventFlow
+import com.example.cryptoapp.feature.shared.formatInput
+import com.example.cryptoapp.feature.shared.getFormattedHour
+import com.example.cryptoapp.feature.shared.getFormattedTime
+import com.example.cryptoapp.feature.shared.ordinalOf
+import com.example.cryptoapp.feature.shared.pushEvent
+import com.example.cryptoapp.feature.shared.toChartDataSet
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -38,7 +47,7 @@ class CryptoCurrencyDetailsViewModel(
     val isRefreshing: StateFlow<Boolean> = _isRefreshing
     private val shouldShowError = MutableStateFlow(false)
     private val details = MutableStateFlow<CryptoCurrencyDetails?>(null)
-    private val history = MutableStateFlow<List<CryptoHistoryItem>?>(null)
+    private val history = MutableStateFlow<List<CryptoCurrencyHistory>?>(null)
     private var timePeriod: String = HOUR24
     private var unitOfTimeType: UnitOfTimeType = UnitOfTimeType.UNIT_24H
     private var isDescriptionExpanded: Boolean = false

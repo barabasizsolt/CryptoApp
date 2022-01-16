@@ -1,4 +1,4 @@
-package com.example.cryptoapp.data.model.news
+package com.example.cryptoapp.data.model.response.news
 import com.google.gson.annotations.SerializedName
 
 data class NewsResponse(

@@ -2,7 +2,7 @@ package com.example.cryptoapp.data.repository.cryptocurrency
 
 import com.example.cryptoapp.data.NetworkManager
 import com.example.cryptoapp.data.model.RefreshType
-import com.example.cryptoapp.data.model.cryptoCurrency.CryptoCurrency
+import com.example.cryptoapp.data.model.cryptocurrency.CryptoCurrency
 import com.example.cryptoapp.data.shared.toCryptoCurrency
 import java.lang.IllegalStateException
 

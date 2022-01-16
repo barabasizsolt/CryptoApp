@@ -1,11 +1,8 @@
-package com.example.cryptoapp.data.model.cryptoCurrencyDetail
+package com.example.cryptoapp.data.model.response.cryptocurrency.detail
 
-import com.example.cryptoapp.data.model.cryptoCurrency.AllTimeHighResponse
-import com.example.cryptoapp.data.model.cryptoCurrency.SocialResponse
-import com.example.cryptoapp.data.model.cryptoCurrency.SupplyResponse
 import com.google.gson.annotations.SerializedName
 
-data class CoinDetailsResponse(
+data class SingleCryptoCurrencyDetailsResponse(
     @SerializedName("uuid")
     val uuid: String?,
     @SerializedName("symbol")

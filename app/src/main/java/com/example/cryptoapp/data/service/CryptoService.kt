@@ -1,8 +1,8 @@
 package com.example.cryptoapp.data.service
 
-import com.example.cryptoapp.data.model.cryptoCurrency.AllCryptoCurrenciesResponse
-import com.example.cryptoapp.data.model.cryptoCurrencyDetail.details.CryptoCurrencyDetailsResponse
-import com.example.cryptoapp.data.model.cryptoCurrencyDetail.history.CryptoCurrencyHistoryResponse
+import com.example.cryptoapp.data.model.response.cryptocurrency.all.AllCryptoCurrenciesResponse
+import com.example.cryptoapp.data.model.response.cryptocurrency.detail.CryptoCurrencyDetailsResponse
+import com.example.cryptoapp.data.model.response.cryptocurrency.history.CryptoCurrencyHistoryResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header

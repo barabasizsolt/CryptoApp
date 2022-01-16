@@ -10,5 +10,5 @@ class CryptoCurrencyDetailsRepository(private val manager: NetworkManager) {
         uuid: String,
     ) = manager.cryptoSource.getCryptoCurrencyDetails(
         uuid = uuid
-    ).body()?.data?.coin?.toCryptoCurrencyDetails() ?: throw IllegalStateException("Invalid data returned by the server")
+    ).body()?.data?.singleCryptoCurrencyDetails?.toCryptoCurrencyDetails() ?: throw IllegalStateException("Invalid data returned by the server")
 }
