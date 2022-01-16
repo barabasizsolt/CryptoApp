@@ -1,6 +1,5 @@
 package com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails.helpers
 
-import android.util.Log
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.formatter.ValueFormatter
 import kotlin.math.roundToInt

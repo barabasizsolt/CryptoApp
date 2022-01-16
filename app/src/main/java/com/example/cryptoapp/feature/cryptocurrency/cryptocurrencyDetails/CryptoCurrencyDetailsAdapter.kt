@@ -13,7 +13,6 @@ import com.example.cryptoapp.databinding.FragmentCryptoCurrencyBinding.inflate
 import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails.helpers.UnitOfTimeType
 import com.example.cryptoapp.feature.shared.ListItemDiff
 import com.google.android.flexbox.*
-import com.google.android.material.chip.Chip
 
 class CryptoCurrencyDetailsAdapter(
     private val onChipClicked: (UnitOfTimeType) -> Unit,

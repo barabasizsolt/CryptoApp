@@ -234,8 +234,7 @@ class CryptoCurrencyDetailsViewModel(
                     chipTextId = it.chipTextId,
                     isChecked = true
                 )
-            }
-            else {
+            } else {
                 ChipItem.CryptoCurrencyDetailsChipItem(
                     chipItemId = it.chipItemId,
                     chipTextId = it.chipTextId,
