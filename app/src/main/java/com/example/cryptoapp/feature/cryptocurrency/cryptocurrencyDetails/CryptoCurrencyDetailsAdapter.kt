@@ -7,15 +7,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cryptoapp.R
-import com.example.cryptoapp.databinding.ItemCryptocurrencyDetailsChartBinding
-import com.example.cryptoapp.databinding.ItemCryptocurrencyDetailsChipGroupBinding
-import com.example.cryptoapp.databinding.ItemCryptocurrencyDetailsCoinBodyBinding
-import com.example.cryptoapp.databinding.ItemCryptocurrencyDetailsCoinHeaderBinding
-import com.example.cryptoapp.databinding.ItemCryptocurrencyDetailsCoinLogoBinding
-import com.example.cryptoapp.databinding.ItemCryptocurrencyDetailsErrorStateBinding
+import com.example.cryptoapp.databinding.*
+import com.example.cryptoapp.databinding.ActivityMainBinding.inflate
+import com.example.cryptoapp.databinding.FragmentCryptoCurrencyBinding.inflate
 import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails.helpers.UnitOfTimeType
 import com.example.cryptoapp.feature.shared.ListItemDiff
 import com.google.android.flexbox.*
+import com.google.android.material.chip.Chip
 
 class CryptoCurrencyDetailsAdapter(
     private val onChipClicked: (UnitOfTimeType) -> Unit,
@@ -132,7 +130,7 @@ class CryptoCurrencyDetailsAdapter(
                 it.justifyContent = JustifyContent.SPACE_AROUND
                 it.alignItems = AlignItems.CENTER
                 it.flexDirection = FlexDirection.ROW
-                it.flexWrap = FlexWrap.NOWRAP
+                it.flexWrap = FlexWrap.WRAP
             }
             binding.chipRecyclerview.adapter = cryptoCurrencyDetailsChipAdapter
         }

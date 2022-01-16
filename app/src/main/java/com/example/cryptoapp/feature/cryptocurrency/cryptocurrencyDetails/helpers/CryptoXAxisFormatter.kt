@@ -1,5 +1,6 @@
 package com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails.helpers
 
+import android.util.Log
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.formatter.ValueFormatter
 import kotlin.math.roundToInt
@@ -28,7 +29,7 @@ class CryptoXAxisFormatter(private val unitOfTimeType: UnitOfTimeType) : ValueFo
         9f to "Sept",
         10f to "Oct",
         11f to "Nov",
-        12f to "Dec",
+        12f to "Dec"
     )
 
     private fun Float.formatHour() = if (this < 10f) "0${this.toInt()}:00" else "${this.toInt()}:00"

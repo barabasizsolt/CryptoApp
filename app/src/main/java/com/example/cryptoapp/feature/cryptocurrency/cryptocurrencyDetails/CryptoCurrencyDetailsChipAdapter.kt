@@ -55,7 +55,7 @@ class CryptoCurrencyDetailsChipAdapter(
 
         init {
             binding.chip.setOnClickListener {
-                if (bindingAdapterPosition != RecyclerView.NO_POSITION){
+                if (bindingAdapterPosition != RecyclerView.NO_POSITION) {
                     onChipClicked(unitOfTimeType)
                 }
             }

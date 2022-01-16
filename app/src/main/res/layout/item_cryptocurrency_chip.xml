@@ -10,18 +10,15 @@
             type="com.example.cryptoapp.feature.shared.ChipItem.CryptoCurrencyDetailsChipItem" />
     </data>
 
-    <FrameLayout android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+    <com.google.android.material.chip.Chip
+        android:id="@+id/chip"
+        style="@style/Widget.MaterialComponents.Chip.Choice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="@{uiModel.checked}"
+        android:clickable="@{!uiModel.checked}"
+        tools:text="@string/chip_24hr"
+        android:text="@{uiModel.chipTextId}"
+        app:chipCornerRadius="@dimen/crypto_details_chip_corner_radius" />
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip"
-            style="@style/Widget.MaterialComponents.Chip.Choice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="@{uiModel.checked}"
-            tools:text="@string/chip_24hr"
-            android:text="@{uiModel.chipTextId}"
-            app:chipCornerRadius="@dimen/crypto_details_chip_corner_radius" />
-
-    </FrameLayout>
 </layout>

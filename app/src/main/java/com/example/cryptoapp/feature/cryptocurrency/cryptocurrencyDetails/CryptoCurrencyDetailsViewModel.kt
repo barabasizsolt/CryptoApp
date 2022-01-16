@@ -45,6 +45,31 @@ class CryptoCurrencyDetailsViewModel(
     private var isDetailsErrorEmitted: Boolean = false
     private var isHistoryErrorEmitted: Boolean = false
 
+    private val chips = MutableStateFlow(
+        listOf(
+            ChipItem.CryptoCurrencyDetailsChipItem(
+                chipItemId = UnitOfTimeType.UNIT_24H.ordinal,
+                chipTextId = R.string.chip_24hr,
+                isChecked = true
+            ),
+            ChipItem.CryptoCurrencyDetailsChipItem(
+                chipItemId = UnitOfTimeType.UNIT_7D.ordinal,
+                chipTextId = R.string.chip_7d,
+                isChecked = false
+            ),
+            ChipItem.CryptoCurrencyDetailsChipItem(
+                chipItemId = UnitOfTimeType.UNIT_1Y.ordinal,
+                chipTextId = R.string.chip_1y,
+                isChecked = false
+            ),
+            ChipItem.CryptoCurrencyDetailsChipItem(
+                chipItemId = UnitOfTimeType.UNIT_6Y.ordinal,
+                chipTextId = R.string.chip_6y,
+                isChecked = false
+            )
+        )
+    )
+
     val listItem = combine(details, history, shouldShowError) {
         details, history, shouldShowError ->
         when {
@@ -55,30 +80,7 @@ class CryptoCurrencyDetailsViewModel(
                         data = history.toChartDataSet(timePeriod = timePeriod),
                         unitOfTimeType = unitOfTimeType
                     ),
-                    CryptoCurrencyDetailsListItem.CryptoCurrencyChipGroup(
-                        chips = listOf(
-                            ChipItem.CryptoCurrencyDetailsChipItem(
-                                chipItemId = UnitOfTimeType.UNIT_24H.ordinal,
-                                chipTextId = R.string.chip_24hr,
-                                isChecked = true
-                            ),
-                            ChipItem.CryptoCurrencyDetailsChipItem(
-                                chipItemId = UnitOfTimeType.UNIT_7D.ordinal,
-                                chipTextId = R.string.chip_7d,
-                                isChecked = false
-                            ),
-                            ChipItem.CryptoCurrencyDetailsChipItem(
-                                chipItemId = UnitOfTimeType.UNIT_1Y.ordinal,
-                                chipTextId = R.string.chip_1y,
-                                isChecked = false
-                            ),
-                            ChipItem.CryptoCurrencyDetailsChipItem(
-                                chipItemId = UnitOfTimeType.UNIT_6Y.ordinal,
-                                chipTextId = R.string.chip_6y,
-                                isChecked = false
-                            )
-                        )
-                    ),
+                    CryptoCurrencyDetailsListItem.CryptoCurrencyChipGroup(chips = chips.value),
                     details.toCryptoCurrencyHeaderListItem(),
                     details.toCryptoCurrencyBodyListItem()
                 )
@@ -86,7 +88,7 @@ class CryptoCurrencyDetailsViewModel(
                 listOf(
                     details.toCryptoCurrencyLogoListItem(),
                     CryptoCurrencyDetailsListItem.ErrorState(),
-                    CryptoCurrencyDetailsListItem.CryptoCurrencyChipGroup(emptyList()),
+                    CryptoCurrencyDetailsListItem.CryptoCurrencyChipGroup(chips = emptyList()),
                     details.toCryptoCurrencyHeaderListItem(),
                     details.toCryptoCurrencyBodyListItem()
                 )
@@ -219,7 +221,28 @@ class CryptoCurrencyDetailsViewModel(
             unitOfTimeType = UnitOfTimeType.UNIT_6Y
         }
     }.let {
+        onChipListChanged(timeType = timeType)
         refreshCoinHistory()
+    }
+
+    private fun onChipListChanged(timeType: UnitOfTimeType) {
+        val currentChips = chips.value
+        chips.value = currentChips.map {
+            if (it.chipItemId == timeType.ordinal) {
+                ChipItem.CryptoCurrencyDetailsChipItem(
+                    chipItemId = it.chipItemId,
+                    chipTextId = it.chipTextId,
+                    isChecked = true
+                )
+            }
+            else {
+                ChipItem.CryptoCurrencyDetailsChipItem(
+                    chipItemId = it.chipItemId,
+                    chipTextId = it.chipTextId,
+                    isChecked = false
+                )
+            }
+        }
     }
 
     fun onDescriptionArrowClicked(arrow: ImageView, description: TextView) = when (isDescriptionExpanded) {
