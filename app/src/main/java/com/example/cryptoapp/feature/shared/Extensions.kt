@@ -1,58 +1,29 @@
 package com.example.cryptoapp.feature.shared
 
-import android.content.Context
 import android.icu.util.CurrencyAmount
 import android.net.Uri
 import android.view.View
 import android.widget.ImageView
-import android.widget.TextView
-import androidx.core.content.ContextCompat
-import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import coil.ImageLoader
-import coil.decode.SvgDecoder
 import coil.load
-import coil.request.ImageRequest
 import coil.transform.CircleCropTransformation
 import com.example.cryptoapp.R
+import com.example.cryptoapp.data.model.cryptocurrency.CryptoCurrencyHistory
+import com.example.cryptoapp.feature.cryptocurrency.Constant
 import com.example.cryptoapp.feature.shared.Constant.currency
 import com.example.cryptoapp.feature.shared.Constant.formatter
+import com.example.cryptoapp.feature.shared.Constant.hourFormatter
 import com.example.cryptoapp.feature.shared.Constant.numberFormatter
-import com.google.android.material.color.MaterialColors
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineDataSet
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.transition.MaterialFadeThrough
+import java.time.DayOfWeek
 import java.time.Instant
 import java.time.LocalDateTime
+import java.time.Month
 import java.time.ZoneId
-
-@BindingAdapter("percentage")
-fun TextView.setPercentage(percentageStr: String) {
-    val percentage = percentageStr.toDouble()
-    when {
-        percentage < 0 -> {
-            val percentageText = String.format("%.2f", percentage) + "%"
-            text = percentageText
-            setTextColor(ContextCompat.getColor(context, R.color.red))
-        }
-        percentage > 0 -> {
-            val percentageText = "+" + String.format("%.2f", percentage) + "%"
-            text = percentageText
-            setTextColor(ContextCompat.getColor(context, R.color.green))
-        }
-    }
-}
-
-@BindingAdapter("url")
-fun ImageView.loadImage(url: String?) = ImageLoader.Builder(context)
-    .componentRegistry { add(SvgDecoder(context)) }
-    .build()
-    .enqueue(
-        ImageRequest.Builder(context)
-            .data(url)
-            .target(this)
-            .build()
-    )
 
 fun ImageView.loadImage(image: Uri, placeholder: Int) = load(image) {
     placeholder(placeholder)
@@ -74,14 +45,15 @@ fun Long.getTime(): LocalDateTime =
 fun Long.getFormattedTime(withHours: Boolean = false): String {
     val time = this.getTime()
     val month = time.month.name.lowercase().replaceFirstChar { it.uppercase() }.substring(0, 3)
-    val hour = if (time.hour < 10) "0${time.hour}" else time.hour
-    val minute = if (time.minute < 10) "0${time.minute}" else time.minute
+    val hour = this.getFormattedHour()
 
     return when (withHours) {
-        true -> month + " " + time.dayOfMonth.toString() + ", " + time.year.toString() + " at " + hour + ":" + minute
+        true -> month + " " + time.dayOfMonth.toString() + ", " + time.year.toString() + " at " + hour
         else -> month + " " + time.dayOfMonth.toString() + ", " + time.year.toString()
     }
 }
+
+fun Long.getFormattedHour(): String = hourFormatter.format(this)
 
 fun String.formatInput(): String = formatter.format(this.toDouble())
 
@@ -89,14 +61,96 @@ fun String.convertToPrice(): String = numberFormatter.format(this.toDouble())
 
 fun String.convertToCompactPrice(): String = formatter.format(CurrencyAmount(this.toDouble(), currency))
 
-fun Int.getColorFromAttr(context: Context, defaultColor: Int): Int = MaterialColors.getColor(context, this, defaultColor)
-
-fun Int.toHexStringColor(): String = "#" + Integer.toHexString(this).substring(2)
+fun Int.ordinalOf() = "$this" + if (this % 100 in 11..13) "th" else when (this % 10) {
+    1 -> "st"
+    2 -> "nd"
+    3 -> "rd"
+    else -> "th"
+}
 
 fun View.createErrorSnackBar(errorMessage: String, snackBarAction: () -> Unit) =
     Snackbar.make(this, errorMessage, Snackbar.LENGTH_LONG)
         .setAction(resources.getString(R.string.retry)) { snackBarAction() }
         .show()
+
+private fun List<CryptoCurrencyHistory>.toChartArray(timePeriod: String): ArrayList<Entry> {
+    val currencyHistory: ArrayList<Entry> = ArrayList()
+    when (timePeriod) {
+        Constant.HOUR24 -> {
+            val groupedHistory = sortedMapOf<Int, MutableList<Double>>()
+
+            this.forEach { curr ->
+                val time = curr.timestamp.getTime().hour
+                if (!groupedHistory.containsKey(time)) {
+                    groupedHistory[time] = mutableListOf()
+                }
+                groupedHistory[time]?.add(curr.price.toDouble())
+            }
+
+            groupedHistory.forEach { elem ->
+                currencyHistory.add(Entry(elem.key.toFloat(), elem.value.average().toFloat()))
+            }
+        }
+        Constant.DAY7 -> {
+            val groupedHistory = mutableMapOf<DayOfWeek, MutableList<Double>>()
+
+            this.forEach { curr ->
+                val dayOfWeek = curr.timestamp.getTime().dayOfWeek
+                if (!groupedHistory.containsKey(dayOfWeek)) {
+                    groupedHistory[dayOfWeek] = mutableListOf()
+                }
+                groupedHistory[dayOfWeek]?.add(curr.price.toDouble())
+            }
+
+            groupedHistory.toSortedMap(compareBy { it.ordinal }).forEach { elem ->
+                currencyHistory.add(Entry(elem.key.value.toFloat(), elem.value.average().toFloat()))
+            }
+        }
+        Constant.YEAR1 -> {
+            val groupedHistory = mutableMapOf<Month, MutableList<Double>>()
+
+            this.forEach { curr ->
+                val month = curr.timestamp.getTime().month
+                if (!groupedHistory.containsKey(month)) {
+                    groupedHistory[month] = mutableListOf()
+                }
+                groupedHistory[month]?.add(curr.price.toDouble())
+            }
+
+            groupedHistory.toSortedMap(compareBy { it.ordinal }).forEach { elem ->
+                currencyHistory.add(Entry(elem.key.value.toFloat(), elem.value.average().toFloat()))
+            }
+        }
+        Constant.YEAR6 -> {
+            val groupedHistory = mutableMapOf<Int, MutableList<Double>>()
+
+            this.forEach { curr ->
+                val year = curr.timestamp.getTime().year
+                if (!groupedHistory.containsKey(year)) {
+                    groupedHistory[year] = mutableListOf()
+                }
+                groupedHistory[year]?.add(curr.price.toDouble())
+            }
+            groupedHistory.toSortedMap(compareBy { it }).forEach { elem ->
+                currencyHistory.add(Entry(elem.key.toFloat(), elem.value.average().toFloat()))
+            }
+        }
+    }
+
+    return currencyHistory
+}
+
+fun List<CryptoCurrencyHistory>.toChartDataSet(timePeriod: String) = LineDataSet(this.toChartArray(timePeriod = timePeriod), "data")
+    .also { lineDataSet ->
+        lineDataSet.lineWidth = 3f
+        lineDataSet.setDrawValues(false)
+        lineDataSet.circleRadius = 10f
+        lineDataSet.mode = LineDataSet.Mode.CUBIC_BEZIER
+        lineDataSet.cubicIntensity = 0.1f
+        lineDataSet.setDrawFilled(true)
+        lineDataSet.fillAlpha = 255
+        lineDataSet.setDrawCircles(false)
+    }
 
 inline fun <reified T : Fragment> FragmentManager.handleReplace(
     tag: String = T::class.java.name,
@@ -106,7 +160,8 @@ inline fun <reified T : Fragment> FragmentManager.handleReplace(
 ) {
     beginTransaction().apply {
         val currentFragment = findFragmentById(containerId)
-        val newFragment = findFragmentByTag(tag) ?: newInstance()
+        // val newFragment = findFragmentByTag(tag) ?: newInstance()
+        val newFragment = newInstance()
         currentFragment?.let {
             currentFragment.exitTransition = MaterialFadeThrough()
             currentFragment.reenterTransition = MaterialFadeThrough()

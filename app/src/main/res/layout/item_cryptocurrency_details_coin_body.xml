@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    <variable
+        name="uiModel"
+        type="com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails.CryptoCurrencyDetailsListItem.CryptoCurrencyBody" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/crypto_rank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="@string/coin_rank"
+            android:textSize="@dimen/large_crypto_details_coin_body_text"
+            android:layout_marginStart="@dimen/crypto_details_coin_body_margin_start"
+            android:layout_marginTop="@dimen/crypto_details_coin_body_crypto_rank_margin_top"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:id="@+id/delimiter_1"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/crypto_details_coin_body_delimiter_height"
+            android:layout_marginTop="@dimen/crypto_details_coin_body_delimiter_margin_top"
+            android:background="?android:attr/dividerVertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/crypto_rank" />
+
+        <TextView
+            android:id="@+id/crypto_supply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:layout_marginStart="@dimen/crypto_details_coin_body_margin_start"
+            android:text="@string/coin_supply"
+            android:textSize="@dimen/large_crypto_details_coin_body_text"
+            android:layout_marginTop="@dimen/crypto_details_coin_body_crypto_supply_margin_top"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/delimiter_1" />
+
+        <TextView
+            android:id="@+id/crypto_circulating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/crypto_details_coin_body_margin_start2"
+            android:text="@string/coin_circulating"
+            android:textSize="@dimen/medium_crypto_details_coin_body_text"
+            android:layout_marginTop="@dimen/crypto_details_coin_body_crypto_circulating_margin_top"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/crypto_supply" />
+
+        <View
+            android:id="@+id/delimiter_2"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/crypto_details_coin_body_delimiter_height"
+            android:layout_marginTop="@dimen/crypto_details_coin_body_delimiter_margin_top"
+            android:background="?android:attr/dividerVertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/crypto_circulating" />
+
+        <TextView
+            android:id="@+id/crypto_btc_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:layout_marginStart="@dimen/crypto_details_coin_body_margin_start"
+            android:text="@string/coin_btc_price"
+            android:textSize="@dimen/large_crypto_details_coin_body_text"
+            android:layout_marginTop="@dimen/crypto_details_coin_body_crypto_btc_price_margin_top"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/delimiter_2" />
+
+        <View
+            android:id="@+id/delimiter_3"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/crypto_details_coin_body_delimiter_height"
+            android:layout_marginTop="@dimen/crypto_details_coin_body_delimiter_margin_top"
+            android:background="?android:attr/dividerVertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/crypto_btc_price" />
+
+        <TextView
+            android:id="@+id/crypto_all_time_high"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:layout_marginStart="@dimen/crypto_details_coin_body_margin_start"
+            android:text="@string/coin_all_time_high"
+            android:textSize="@dimen/large_crypto_details_coin_body_text"
+            android:layout_marginTop="@dimen/crypto_details_coin_body_crypto_all_time_high_margin_top"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/delimiter_3" />
+
+        <TextView
+            android:id="@+id/crypto_all_time_high_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/crypto_details_coin_body_margin_start2"
+            android:text="@string/coin_ath_date"
+            android:textSize="@dimen/medium_crypto_details_coin_body_text"
+            android:layout_marginTop="@dimen/crypto_details_coin_body_crypto_all_time_high_date_margin_top"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/crypto_all_time_high" />
+
+        <View
+            android:id="@+id/delimiter_4"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/crypto_details_coin_body_delimiter_height"
+            android:layout_marginTop="@dimen/crypto_details_coin_body_delimiter_margin_top"
+            android:background="?android:attr/dividerVertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/crypto_all_time_high_date" />
+
+        <TextView
+            android:id="@+id/crypto_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/crypto_details_coin_body_margin_start"
+            android:text="@string/coin_description"
+            android:textStyle="bold"
+            android:textSize="@dimen/large_crypto_details_coin_body_text"
+            android:layout_marginTop="@dimen/crypto_details_coin_body_crypto_description_margin_top"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/delimiter_4" />
+
+        <TextView
+            android:id="@+id/crypto_rank_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/crypto_details_coin_body_margin_end"
+            android:text="@{uiModel.rank}"
+            android:textSize="@dimen/large_crypto_details_coin_body_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/crypto_rank"
+            tools:text="Undefined" />
+
+        <TextView
+            android:id="@+id/crypto_supply_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/crypto_details_coin_body_margin_end"
+            android:text="@{uiModel.supply}"
+            android:textSize="@dimen/large_crypto_details_coin_body_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/crypto_supply"
+            tools:text="Undefined" />
+
+        <TextView
+            android:id="@+id/crypto_circulating_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/crypto_details_coin_body_margin_end"
+            android:text="@{uiModel.circulating}"
+            android:textSize="@dimen/small_crypto_details_coin_body_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/crypto_circulating"
+            tools:text="Undefined" />
+
+        <TextView
+            android:id="@+id/crypto_btc_rice_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/crypto_details_coin_body_margin_end"
+            android:text="@{uiModel.btcPrice}"
+            android:textSize="@dimen/large_crypto_details_coin_body_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/crypto_btc_price"
+            tools:text="Undefined" />
+
+        <TextView
+            android:id="@+id/crypto_all_time_high_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/crypto_details_coin_body_margin_end"
+            android:text="@{uiModel.allTimeHighPrice}"
+            android:textSize="@dimen/large_crypto_details_coin_body_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/crypto_all_time_high"
+            tools:text="Undefined" />
+
+        <TextView
+            android:id="@+id/crypto_all_time_high_date_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/crypto_details_coin_body_margin_end"
+            android:text="@{uiModel.allTimeHighDate}"
+            android:textSize="@dimen/small_crypto_details_coin_body_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/crypto_all_time_high_date"
+            tools:text="Undefined" />
+
+        <ImageView
+            android:id="@+id/description_drop_down"
+            android:layout_width="@dimen/crypto_details_coin_body_drop_down_size"
+            android:layout_height="@dimen/crypto_details_coin_body_drop_down_size"
+            android:layout_marginEnd="@dimen/crypto_details_coin_body_drop_down_margin_end"
+            android:src="@drawable/ic_default_drop_down_arrow"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/delimiter_4" />
+
+        <TextView
+            android:id="@+id/crypto_description_text"
+            android:scrollbars = "vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/crypto_details_coin_body_description_box_padding"
+            android:layout_marginStart="@dimen/crypto_details_coin_body_description_box_margin_start_end"
+            android:layout_marginEnd="@dimen/crypto_details_coin_body_description_box_margin_start_end"
+            android:layout_marginTop="@dimen/crypto_details_coin_body_description_box_margin_top"
+            android:text="@{uiModel.description}"
+            tools:text="Description"
+            android:textSize="@dimen/small_crypto_details_coin_body_text"
+            android:textAlignment="center"
+            android:ellipsize="end"
+            android:inputType="none"
+            android:maxLines="3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/crypto_description" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

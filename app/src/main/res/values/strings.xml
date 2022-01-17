@@ -43,4 +43,7 @@
     <string name="something_went_wrong">Something went wrong</string>
     <string name="try_again">Try again</string>
     <string name="retry">Retry</string>
+    <string name="daily_change">24H</string>
+    <string name="crypto_value_changes">Cryptocurrency value changes</string>
+    <string name="no_data_found">No data found for chart</string>
 </resources>

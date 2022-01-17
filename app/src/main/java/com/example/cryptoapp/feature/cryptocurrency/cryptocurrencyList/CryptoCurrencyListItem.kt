@@ -1,6 +1,6 @@
 package com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyList
 
-import com.example.cryptoapp.data.model.cryptoCurrency.CryptoCurrency
+import com.example.cryptoapp.data.model.cryptocurrency.CryptoCurrency
 import com.example.cryptoapp.feature.shared.ListItem
 import com.example.cryptoapp.feature.shared.convertToCompactPrice
 import com.example.cryptoapp.feature.shared.convertToPrice
