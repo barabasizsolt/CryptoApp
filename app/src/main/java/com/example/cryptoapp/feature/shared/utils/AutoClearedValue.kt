@@ -17,7 +17,7 @@ internal class AutoClearedValue<T : Any> : ReadWriteProperty<Fragment, T> {
     override fun setValue(thisRef: Fragment, property: KProperty<*>, value: T) {
         thisRef.viewLifecycleOwner.lifecycle.addObserver(object : DefaultLifecycleObserver {
             override fun onDestroy(owner: LifecycleOwner) {
-               _value = null
+                _value = null
             }
         })
         _value = value
