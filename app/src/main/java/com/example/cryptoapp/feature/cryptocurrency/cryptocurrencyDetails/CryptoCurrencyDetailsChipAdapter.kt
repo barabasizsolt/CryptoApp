@@ -6,8 +6,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cryptoapp.databinding.ItemCryptocurrencyChipBinding
 import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails.helpers.UnitOfTimeType
-import com.example.cryptoapp.feature.shared.ChipItem
-import com.example.cryptoapp.feature.shared.ListItemDiff
+import com.example.cryptoapp.feature.shared.utils.ChipItem
+import com.example.cryptoapp.feature.shared.utils.ListItemDiff
 
 class CryptoCurrencyDetailsChipAdapter(
     private val onChipClicked: (UnitOfTimeType) -> Unit

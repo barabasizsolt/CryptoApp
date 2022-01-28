@@ -1,4 +1,4 @@
-package com.example.cryptoapp.feature.shared
+package com.example.cryptoapp.feature.shared.utils
 
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow

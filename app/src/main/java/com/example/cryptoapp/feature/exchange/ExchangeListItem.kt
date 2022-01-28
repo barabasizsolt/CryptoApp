@@ -1,7 +1,7 @@
 package com.example.cryptoapp.feature.exchange
 
-import com.example.cryptoapp.feature.shared.ListItem
-import com.example.cryptoapp.feature.shared.convertToCompactPrice
+import com.example.cryptoapp.feature.shared.utils.ListItem
+import com.example.cryptoapp.feature.shared.utils.convertToCompactPrice
 
 sealed class ExchangeListItem : ListItem {
 

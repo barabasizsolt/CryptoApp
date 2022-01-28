@@ -1,4 +1,4 @@
-package com.example.cryptoapp.feature.shared
+package com.example.cryptoapp.feature.shared.utils
 
 interface ListItem {
 

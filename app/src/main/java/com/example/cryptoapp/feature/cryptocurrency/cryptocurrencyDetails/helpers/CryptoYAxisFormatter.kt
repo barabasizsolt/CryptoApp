@@ -1,6 +1,6 @@
 package com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails.helpers
 
-import com.example.cryptoapp.feature.shared.Constant
+import com.example.cryptoapp.feature.shared.utils.Constant
 import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.formatter.ValueFormatter
 

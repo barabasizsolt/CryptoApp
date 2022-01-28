@@ -10,7 +10,7 @@ import com.example.cryptoapp.MainActivity
 import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.FragmentSignUpBinding
 import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyList.CryptoCurrencyFragment
-import com.example.cryptoapp.feature.shared.handleReplace
+import com.example.cryptoapp.feature.shared.utils.handleReplace
 
 class SignUpFragment : Fragment() {
     private lateinit var binding: FragmentSignUpBinding

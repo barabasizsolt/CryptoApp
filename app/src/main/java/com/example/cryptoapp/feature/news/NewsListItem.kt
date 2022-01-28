@@ -1,7 +1,7 @@
 package com.example.cryptoapp.feature.news
 
-import com.example.cryptoapp.feature.shared.ListItem
-import com.example.cryptoapp.feature.shared.getFormattedTime
+import com.example.cryptoapp.feature.shared.utils.ListItem
+import com.example.cryptoapp.feature.shared.utils.getFormattedTime
 
 sealed class NewsListItem : ListItem {
 

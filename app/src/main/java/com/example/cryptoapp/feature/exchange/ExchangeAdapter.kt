@@ -8,7 +8,7 @@ import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.ItemExchangeErrorStateBinding
 import com.example.cryptoapp.databinding.ItemExchangeExchangeBinding
 import com.example.cryptoapp.databinding.ItemExchangeLoadMoreBinding
-import com.example.cryptoapp.feature.shared.ListItemDiff
+import com.example.cryptoapp.feature.shared.utils.ListItemDiff
 
 class ExchangeAdapter(
     private val onExchangeItemClick: (String) -> Unit,

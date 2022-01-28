@@ -7,15 +7,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.core.view.get
 import com.example.cryptoapp.data.repository.Cache
 import com.example.cryptoapp.databinding.ActivityMainBinding
 import com.example.cryptoapp.feature.cryptocurrency.Constant.CURRENCY_FIRE_STORE_PATH
 import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyList.CryptoCurrencyFragment
 import com.example.cryptoapp.feature.exchange.ExchangeFragment
 import com.example.cryptoapp.feature.news.NewsFragment
-import com.example.cryptoapp.feature.shared.handleReplace
-import com.example.cryptoapp.feature.shared.loadImage
+import com.example.cryptoapp.feature.shared.utils.handleReplace
+import com.example.cryptoapp.feature.shared.utils.loadImage
 import com.example.cryptoapp.feature.user.LoginFragment
 import com.example.cryptoapp.feature.user.ProfileFragment
 import com.google.android.material.appbar.MaterialToolbar

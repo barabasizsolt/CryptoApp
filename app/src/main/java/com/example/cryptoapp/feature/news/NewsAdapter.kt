@@ -8,7 +8,7 @@ import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.ItemNewsErrorStateBinding
 import com.example.cryptoapp.databinding.ItemNewsLoadMoreBinding
 import com.example.cryptoapp.databinding.ItemNewsNewsBinding
-import com.example.cryptoapp.feature.shared.ListItemDiff
+import com.example.cryptoapp.feature.shared.utils.ListItemDiff
 
 class NewsAdapter(
     private val onNewsItemClicked: (String) -> Unit,

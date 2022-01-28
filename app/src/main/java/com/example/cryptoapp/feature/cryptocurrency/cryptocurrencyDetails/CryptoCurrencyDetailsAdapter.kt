@@ -14,7 +14,7 @@ import com.example.cryptoapp.databinding.ItemCryptocurrencyDetailsCoinHeaderBind
 import com.example.cryptoapp.databinding.ItemCryptocurrencyDetailsCoinLogoBinding
 import com.example.cryptoapp.databinding.ItemCryptocurrencyDetailsErrorStateBinding
 import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails.helpers.UnitOfTimeType
-import com.example.cryptoapp.feature.shared.ListItemDiff
+import com.example.cryptoapp.feature.shared.utils.ListItemDiff
 import com.google.android.flexbox.AlignItems
 import com.google.android.flexbox.FlexDirection
 import com.google.android.flexbox.FlexWrap

@@ -1,4 +1,4 @@
-package com.example.cryptoapp.feature.shared
+package com.example.cryptoapp.feature.shared.utils
 
 import android.icu.util.CurrencyAmount
 import android.net.Uri
@@ -11,10 +11,10 @@ import coil.transform.CircleCropTransformation
 import com.example.cryptoapp.R
 import com.example.cryptoapp.data.model.cryptocurrency.CryptoCurrencyHistory
 import com.example.cryptoapp.feature.cryptocurrency.Constant
-import com.example.cryptoapp.feature.shared.Constant.currency
-import com.example.cryptoapp.feature.shared.Constant.formatter
-import com.example.cryptoapp.feature.shared.Constant.hourFormatter
-import com.example.cryptoapp.feature.shared.Constant.numberFormatter
+import com.example.cryptoapp.feature.shared.utils.Constant.currency
+import com.example.cryptoapp.feature.shared.utils.Constant.formatter
+import com.example.cryptoapp.feature.shared.utils.Constant.hourFormatter
+import com.example.cryptoapp.feature.shared.utils.Constant.numberFormatter
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineDataSet
 import com.google.android.material.snackbar.Snackbar

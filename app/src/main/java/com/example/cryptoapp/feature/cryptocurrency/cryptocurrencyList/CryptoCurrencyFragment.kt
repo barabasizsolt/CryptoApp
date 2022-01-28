@@ -14,8 +14,7 @@ import com.example.cryptoapp.feature.cryptocurrency.Constant.tags
 import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails.CryptoCurrencyDetailsFragment
 import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyList.helpers.DialogType
 import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyList.helpers.FilterChip
-import com.example.cryptoapp.feature.shared.createErrorSnackBar
-import com.example.cryptoapp.feature.shared.handleReplace
+import com.example.cryptoapp.feature.shared.utils.handleReplace
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach

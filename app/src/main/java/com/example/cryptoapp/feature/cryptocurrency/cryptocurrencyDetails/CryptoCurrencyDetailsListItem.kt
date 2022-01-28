@@ -1,8 +1,8 @@
 package com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails
 
 import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails.helpers.UnitOfTimeType
-import com.example.cryptoapp.feature.shared.ChipItem
-import com.example.cryptoapp.feature.shared.ListItem
+import com.example.cryptoapp.feature.shared.utils.ChipItem
+import com.example.cryptoapp.feature.shared.utils.ListItem
 import com.github.mikephil.charting.data.LineDataSet
 
 sealed class CryptoCurrencyDetailsListItem : ListItem {

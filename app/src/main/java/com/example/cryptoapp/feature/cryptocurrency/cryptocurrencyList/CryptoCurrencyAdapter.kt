@@ -8,7 +8,7 @@ import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.ItemCryptocurrencyCryptoBinding
 import com.example.cryptoapp.databinding.ItemCryptocurrencyErrorStateBinding
 import com.example.cryptoapp.databinding.ItemCryptocurrencyLoadMoreBinding
-import com.example.cryptoapp.feature.shared.ListItemDiff
+import com.example.cryptoapp.feature.shared.utils.ListItemDiff
 
 class CryptoCurrencyAdapter(
     private val onCryptoCurrencyItemClicked: (String) -> Unit,

@@ -11,7 +11,7 @@ import com.example.cryptoapp.MainActivity
 import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.FragmentLoginBinding
 import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyList.CryptoCurrencyFragment
-import com.example.cryptoapp.feature.shared.handleReplace
+import com.example.cryptoapp.feature.shared.utils.handleReplace
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class LoginFragment : Fragment() {

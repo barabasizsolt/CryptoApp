@@ -6,8 +6,8 @@ import com.example.cryptoapp.data.model.RefreshType
 import com.example.cryptoapp.data.model.Result
 import com.example.cryptoapp.data.model.news.News
 import com.example.cryptoapp.domain.news.GetNewsUseCase
-import com.example.cryptoapp.feature.shared.eventFlow
-import com.example.cryptoapp.feature.shared.pushEvent
+import com.example.cryptoapp.feature.shared.utils.eventFlow
+import com.example.cryptoapp.feature.shared.utils.pushEvent
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow

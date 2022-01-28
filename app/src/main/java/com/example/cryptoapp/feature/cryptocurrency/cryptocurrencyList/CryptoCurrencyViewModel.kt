@@ -12,8 +12,8 @@ import com.example.cryptoapp.feature.cryptocurrency.Constant.tags
 import com.example.cryptoapp.feature.cryptocurrency.Constant.timePeriods
 import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyList.helpers.DialogType
 import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyList.helpers.FilterChip
-import com.example.cryptoapp.feature.shared.eventFlow
-import com.example.cryptoapp.feature.shared.pushEvent
+import com.example.cryptoapp.feature.shared.utils.eventFlow
+import com.example.cryptoapp.feature.shared.utils.pushEvent
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow

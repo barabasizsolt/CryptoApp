@@ -9,8 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.cryptoapp.databinding.FragmentCryptoCurrencyDetailsBinding
-import com.example.cryptoapp.feature.shared.BundleArgumentDelegate
-import com.example.cryptoapp.feature.shared.createErrorSnackBar
+import com.example.cryptoapp.feature.shared.utils.BundleArgumentDelegate
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
