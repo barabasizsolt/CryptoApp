@@ -32,8 +32,6 @@ class MainActivity : AppCompatActivity(), Navigator {
         mAuth = FirebaseAuth.getInstance()
         fireStore = Firebase.firestore
 
-        // supportActionBar?.hide()
-
         if (mAuth.currentUser == null) {
             navigateToAuthentication()
         } else {
@@ -41,7 +39,7 @@ class MainActivity : AppCompatActivity(), Navigator {
         }
     }
 
-    fun getUserWatchLists() {
+    private fun getUserWatchLists() {
         fireStore.collection(CURRENCY_FIRE_STORE_PATH)
             .get()
             .addOnSuccessListener { result ->
