@@ -50,4 +50,5 @@
     <string name="general_close_confirmation_message">Do you want to leave the app?</string>
     <string name="general_close_confirmation_positive">Leave</string>
     <string name="general_close_confirmation_negative">Cancel</string>
+    <string name="crypto_details_back_stack_tag">crypto_details_tag</string>
 </resources>

@@ -2,8 +2,10 @@ package com.example.cryptoapp.feature.main
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.Fragment
 import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.FragmentMainBinding
+import com.example.cryptoapp.feature.main.cryptocurrency.cryptocurrencyDetails.CryptoCurrencyDetailsFragment
 import com.example.cryptoapp.feature.main.cryptocurrency.cryptocurrencyList.CryptoCurrencyFragment
 import com.example.cryptoapp.feature.main.exchange.ExchangeFragment
 import com.example.cryptoapp.feature.main.news.NewsFragment
@@ -20,7 +22,8 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
                     navigator?.run {
                         childFragmentManager.handleReplace(
                             tag = "currencies",
-                            newInstance = CryptoCurrencyFragment.Companion::newInstance
+                            newInstance = CryptoCurrencyFragment.Companion::newInstance,
+                            addToBackStack = true
                         )
                     }
                 }
@@ -28,7 +31,8 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
                     navigator?.run {
                         childFragmentManager.handleReplace(
                             tag = "exchanges",
-                            newInstance = ExchangeFragment.Companion::newInstance
+                            newInstance = ExchangeFragment.Companion::newInstance,
+                            addToBackStack = true
                         )
                     }
                 }
@@ -36,7 +40,8 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
                     navigator?.run {
                         childFragmentManager.handleReplace(
                             tag = "news",
-                            newInstance = NewsFragment.Companion::newInstance
+                            newInstance = NewsFragment.Companion::newInstance,
+                            addToBackStack = true
                         )
                     }
                 }
@@ -48,15 +53,19 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
         }
     }
 
-//    override fun onBackPressed(): Boolean = if (currentFragment?.childFragmentManager?.backStackEntryCount ?: 0 <= 1) {
-//        if(binding.bottomNavigationView.selectedItemId == R.id.currencies) {
-//            false
-//        } else consume {
-//            binding.bottomNavigationView.selectedItemId = R.id.currencies
-//        }
-//    } else {
-//        super.onBackPressed()
-//    }
+    override fun onBackPressed(): Boolean = if (currentFragment?.childFragmentManager?.backStackEntryCount ?: 0 <= 1) {
+        if(binding.bottomNavigationView.selectedItemId == R.id.currencies) {
+            if ((childFragmentManager.getBackStackEntryAt(childFragmentManager.backStackEntryCount - 1).name.equals(getString(R.string.crypto_details_back_stack_tag)))) {
+                childFragmentManager.popBackStackImmediate()
+            } else {
+                false
+            }
+        } else consume {
+            binding.bottomNavigationView.selectedItemId = R.id.currencies
+        }
+    } else {
+        super.onBackPressed()
+    }
 
     companion object {
         fun newInstance() = MainFragment()

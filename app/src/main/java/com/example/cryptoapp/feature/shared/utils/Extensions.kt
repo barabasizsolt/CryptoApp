@@ -171,7 +171,7 @@ inline fun <reified T : Fragment> FragmentManager.handleReplace(
 
         replace(containerId, newFragment, tag)
         if (addToBackStack) {
-            addToBackStack(null)
+            addToBackStack(tag)
         }
         setReorderingAllowed(true)
         commitAllowingStateLoss()
