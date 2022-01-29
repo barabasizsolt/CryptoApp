@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.cryptoapp.BR
 import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.FragmentNewsBinding
 import com.example.cryptoapp.feature.shared.navigation.BaseFragment
@@ -19,7 +20,7 @@ class NewsFragment : BaseFragment<FragmentNewsBinding>(R.layout.fragment_news) {
     private val viewModel by viewModel<NewsViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        binding.setVariable(BR.viewModel, viewModel)
         binding.recyclerview.layoutManager = LinearLayoutManager(requireContext())
         val newsAdapter = NewsAdapter(
             onNewsItemClicked = viewModel::onNewsItemClicked,

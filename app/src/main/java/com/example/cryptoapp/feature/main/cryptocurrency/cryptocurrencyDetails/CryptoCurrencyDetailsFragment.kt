@@ -5,6 +5,7 @@ import android.view.View
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.cryptoapp.BR
 import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.FragmentCryptoCurrencyDetailsBinding
 import com.example.cryptoapp.feature.shared.navigation.BaseFragment
@@ -19,6 +20,7 @@ class CryptoCurrencyDetailsFragment : BaseFragment<FragmentCryptoCurrencyDetails
     private val viewModel: CryptoCurrencyDetailsViewModel by viewModel { parametersOf(arguments?.cryptoCurrencyId) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.setVariable(BR.viewModel, viewModel)
         val detailsAdapter = CryptoCurrencyDetailsAdapter(
             onChipClicked = viewModel::onChipClicked,
             onDescriptionArrowClicked = viewModel::onDescriptionArrowClicked,

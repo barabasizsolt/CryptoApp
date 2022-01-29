@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.cryptoapp.BR
 import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.FragmentExchangeBinding
 import com.example.cryptoapp.feature.shared.navigation.BaseFragment
@@ -18,7 +19,7 @@ class ExchangeFragment : BaseFragment<FragmentExchangeBinding>(R.layout.fragment
     private val viewModel by viewModel<ExchangeViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        binding.setVariable(BR.viewModel, viewModel)
         binding.recyclerview.layoutManager = LinearLayoutManager(requireContext())
         val exchangeAdapter = ExchangeAdapter(
             onExchangeItemClick = viewModel::onExchangeItemClicked,
