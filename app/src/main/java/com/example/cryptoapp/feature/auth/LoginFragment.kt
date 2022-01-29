@@ -17,7 +17,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login
     private lateinit var resetEmail: TextView
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        //resetEmail = customDialogView.findViewById(R.id.reset_update_field)
+        // resetEmail = customDialogView.findViewById(R.id.reset_update_field)
         binding.emailLayout.hint = "Email"
         binding.loginButton.setOnClickListener {
             if (validateInput()) {

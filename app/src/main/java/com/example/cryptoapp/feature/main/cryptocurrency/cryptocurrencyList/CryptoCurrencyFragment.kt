@@ -1,7 +1,6 @@
 package com.example.cryptoapp.feature.main.cryptocurrency.cryptocurrencyList
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager

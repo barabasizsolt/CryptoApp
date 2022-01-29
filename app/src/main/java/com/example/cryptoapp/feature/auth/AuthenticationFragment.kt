@@ -10,7 +10,7 @@ import com.example.cryptoapp.feature.shared.utils.handleReplace
 class AuthenticationFragment : BaseFragment<FragmentAuthenticationBinding>(R.layout.fragment_authentication) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        if(savedInstanceState == null && currentFragment == null) {
+        if (savedInstanceState == null && currentFragment == null) {
             childFragmentManager.handleReplace(
                 newInstance = LoginFragment.Companion::newInstance
             )

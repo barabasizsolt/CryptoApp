@@ -1,19 +1,15 @@
 package com.example.cryptoapp.feature.main.cryptocurrency.cryptocurrencyDetails
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import androidx.annotation.CallSuper
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.FragmentCryptoCurrencyDetailsBinding
-import com.example.cryptoapp.feature.main.cryptocurrency.cryptocurrencyList.CryptoCurrencyFragment
 import com.example.cryptoapp.feature.shared.navigation.BaseFragment
 import com.example.cryptoapp.feature.shared.utils.BundleArgumentDelegate
 import com.example.cryptoapp.feature.shared.utils.createErrorSnackBar
-import com.example.cryptoapp.feature.shared.utils.handleReplace
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel

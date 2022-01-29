@@ -15,7 +15,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
-            when(item.itemId){
+            when (item.itemId) {
                 R.id.currencies -> consume {
                     navigator?.run {
                         childFragmentManager.handleReplace(
@@ -40,7 +40,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
                         )
                     }
                 }
-                else  -> false
+                else -> false
             }
         }
         if (savedInstanceState == null && currentFragment == null) {

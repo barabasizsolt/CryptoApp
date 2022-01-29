@@ -7,11 +7,11 @@ import androidx.databinding.DataBindingUtil
 import com.example.cryptoapp.data.repository.Cache
 import com.example.cryptoapp.databinding.ActivityMainBinding
 import com.example.cryptoapp.feature.auth.AuthenticationFragment
+import com.example.cryptoapp.feature.main.MainFragment
 import com.example.cryptoapp.feature.main.cryptocurrency.Constant.CURRENCY_FIRE_STORE_PATH
+import com.example.cryptoapp.feature.shared.navigation.BaseFragment
 import com.example.cryptoapp.feature.shared.navigation.Navigator
 import com.example.cryptoapp.feature.shared.utils.handleReplace
-import com.example.cryptoapp.feature.main.MainFragment
-import com.example.cryptoapp.feature.shared.navigation.BaseFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity(), Navigator {
         mAuth = FirebaseAuth.getInstance()
         fireStore = Firebase.firestore
 
-        //supportActionBar?.hide()
+        // supportActionBar?.hide()
 
         if (mAuth.currentUser == null) {
             navigateToAuthentication()
@@ -64,8 +64,8 @@ class MainActivity : AppCompatActivity(), Navigator {
     )
 
     override fun onBackPressed() {
-        if(currentFragment?.onBackPressed() != true) {
-            if(supportFragmentManager.backStackEntryCount >= 1){
+        if (currentFragment?.onBackPressed() != true) {
+            if (supportFragmentManager.backStackEntryCount >= 1) {
                 super.onBackPressed()
             } else {
                 closeAfterConfirmation()
