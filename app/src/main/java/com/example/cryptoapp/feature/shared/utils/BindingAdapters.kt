@@ -9,9 +9,9 @@ import coil.ImageLoader
 import coil.decode.SvgDecoder
 import coil.request.ImageRequest
 import com.example.cryptoapp.R
-import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails.helpers.CryptoXAxisFormatter
-import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails.helpers.CryptoYAxisFormatter
-import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails.helpers.UnitOfTimeType
+import com.example.cryptoapp.feature.main.cryptocurrency.cryptocurrencyDetails.helpers.CryptoXAxisFormatter
+import com.example.cryptoapp.feature.main.cryptocurrency.cryptocurrencyDetails.helpers.CryptoYAxisFormatter
+import com.example.cryptoapp.feature.main.cryptocurrency.cryptocurrencyDetails.helpers.UnitOfTimeType
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.LegendEntry

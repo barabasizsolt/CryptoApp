@@ -5,10 +5,4 @@ interface Navigator {
     fun navigateToMain()
 
     fun navigateToAuthentication()
-
-    fun navigateToCryptoCurrencies()
-
-    fun navigateToExchanges()
-
-    fun navigateToNews()
 }

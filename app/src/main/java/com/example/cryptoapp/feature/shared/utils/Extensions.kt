@@ -4,13 +4,14 @@ import android.icu.util.CurrencyAmount
 import android.net.Uri
 import android.view.View
 import android.widget.ImageView
+import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import coil.load
 import coil.transform.CircleCropTransformation
 import com.example.cryptoapp.R
 import com.example.cryptoapp.data.model.cryptocurrency.CryptoCurrencyHistory
-import com.example.cryptoapp.feature.cryptocurrency.Constant
+import com.example.cryptoapp.feature.main.cryptocurrency.Constant
 import com.example.cryptoapp.feature.shared.utils.Constant.currency
 import com.example.cryptoapp.feature.shared.utils.Constant.formatter
 import com.example.cryptoapp.feature.shared.utils.Constant.hourFormatter
@@ -155,19 +156,19 @@ fun List<CryptoCurrencyHistory>.toChartDataSet(timePeriod: String) = LineDataSet
 inline fun <reified T : Fragment> FragmentManager.handleReplace(
     tag: String = T::class.java.name,
     addToBackStack: Boolean = false,
-    containerId: Int = R.id.activity_fragment_container,
+    @IdRes containerId: Int = R.id.fragment_container,
     crossinline newInstance: () -> T
 ) {
     beginTransaction().apply {
         val currentFragment = findFragmentById(containerId)
-        // val newFragment = findFragmentByTag(tag) ?: newInstance()
-        val newFragment = newInstance()
+        val newFragment = findFragmentByTag(tag) ?: newInstance()
         currentFragment?.let {
             currentFragment.exitTransition = MaterialFadeThrough()
             currentFragment.reenterTransition = MaterialFadeThrough()
             newFragment.enterTransition = MaterialFadeThrough()
             newFragment.returnTransition = MaterialFadeThrough()
         }
+
         replace(containerId, newFragment, tag)
         if (addToBackStack) {
             addToBackStack(null)

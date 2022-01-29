@@ -7,14 +7,13 @@
 
         <variable
             name="viewModel"
-            type="com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyList.CryptoCurrencyViewModel" />
+            type="com.example.cryptoapp.feature.main.cryptocurrency.cryptocurrencyList.CryptoCurrencyViewModel" />
 
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".feature.cryptocurrency.cryptocurrencyList.CryptoCurrencyFragment">
+        android:layout_height="match_parent">
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/chip_group"
@@ -72,5 +71,7 @@
                 tools:listitem="@layout/item_cryptocurrency_crypto" />
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

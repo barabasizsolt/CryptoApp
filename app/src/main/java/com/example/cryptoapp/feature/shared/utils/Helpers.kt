@@ -11,3 +11,5 @@ fun <T> eventFlow() = MutableSharedFlow<T>(
     extraBufferCapacity = 1,
     onBufferOverflow = BufferOverflow.DROP_OLDEST
 )
+
+fun consume(callback: () -> Unit) = true.also { callback() }

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center_horizontal"
-    tools:context=".feature.user.ProfileFragment">
+    tools:context=".feature.main.user.ProfileFragment">
 
     <ImageView
         android:id="@+id/user_logo"

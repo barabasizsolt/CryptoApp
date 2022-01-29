@@ -1,9 +1,9 @@
 package com.example.cryptoapp.feature
 
-import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails.CryptoCurrencyDetailsViewModel
-import com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyList.CryptoCurrencyViewModel
-import com.example.cryptoapp.feature.exchange.ExchangeViewModel
-import com.example.cryptoapp.feature.news.NewsViewModel
+import com.example.cryptoapp.feature.main.cryptocurrency.cryptocurrencyDetails.CryptoCurrencyDetailsViewModel
+import com.example.cryptoapp.feature.main.cryptocurrency.cryptocurrencyList.CryptoCurrencyViewModel
+import com.example.cryptoapp.feature.main.exchange.ExchangeViewModel
+import com.example.cryptoapp.feature.main.news.NewsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 

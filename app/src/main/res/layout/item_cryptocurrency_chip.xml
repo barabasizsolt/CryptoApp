@@ -7,7 +7,7 @@
 
         <variable
             name="uiModel"
-            type="com.example.cryptoapp.feature.shared.utils.ChipItem" />
+            type="com.example.cryptoapp.feature.shared.utils.ChipItem.CryptoCurrencyDetailsChipItem" />
     </data>
 
     <com.google.android.material.chip.Chip
