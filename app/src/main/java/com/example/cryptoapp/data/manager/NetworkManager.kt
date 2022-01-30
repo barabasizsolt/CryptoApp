@@ -1,4 +1,4 @@
-package com.example.cryptoapp.data
+package com.example.cryptoapp.data.manager
 
 import com.example.cryptoapp.data.service.CryptoService
 import com.example.cryptoapp.data.service.ExchangeService

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.FragmentAuthenticationBinding
+import com.example.cryptoapp.feature.auth.login.LoginFragment
 import com.example.cryptoapp.feature.shared.navigation.BaseFragment
 import com.example.cryptoapp.feature.shared.utils.handleReplace
 

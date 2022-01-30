@@ -1,6 +1,7 @@
 package com.example.cryptoapp.feature.shared.utils
 
 import android.graphics.Color
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -95,4 +96,14 @@ fun LineChart.initializeChart(
     data = LineData(arrayListOf<ILineDataSet>(dataSet))
     notifyDataSetChanged()
     invalidate()
+}
+
+@BindingAdapter("isVisible")
+fun View.isVisible(isVisible: Boolean) {
+    if (isVisible) this.visibility = View.VISIBLE else this.visibility = View.GONE
+}
+
+@BindingAdapter("isEnabled")
+fun View.isEnabled(isEnabled: Boolean) {
+    this.isEnabled = isEnabled
 }

@@ -1,6 +1,6 @@
 package com.example.cryptoapp.data.repository
 
-import com.example.cryptoapp.data.NetworkManager
+import com.example.cryptoapp.data.manager.NetworkManager
 import com.example.cryptoapp.data.model.RefreshType
 import com.example.cryptoapp.data.model.exchange.Exchange
 import com.example.cryptoapp.data.shared.toExchange

@@ -2,12 +2,20 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.example.cryptoapp.feature.auth.login.LoginViewModel" />
+
+    </data>
+
     <LinearLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center"
-        tools:context=".feature.auth.LoginFragment">
+        tools:context=".feature.auth.login.LoginFragment">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/email_layout"
@@ -21,9 +29,11 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/email"
+                android:id="@+id/user_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:text="@={viewModel.email}"
                 />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -40,10 +50,11 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/password"
+                android:id="@+id/user_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
+                android:text="@={viewModel.password}"
                 />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -67,6 +78,8 @@
             android:layout_marginStart="70dp"
             android:layout_marginEnd="70dp"
             android:textSize="23sp"
+            android:enabled="@{viewModel.isLoginEnabled}"
+            android:onClick="@{() -> viewModel.loginWithEmailAndPassword()}"
             />
 
         <TextView
@@ -83,7 +96,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:indeterminate="true"
-            android:visibility="invisible"
+            app:isVisible="@{viewModel.isLoading}"
             android:layout_marginTop="20dp"/>
 
     </LinearLayout>

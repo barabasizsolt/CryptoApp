@@ -7,6 +7,8 @@ import android.widget.ImageView
 import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import coil.load
 import coil.transform.CircleCropTransformation
 import com.example.cryptoapp.R
@@ -72,6 +74,10 @@ fun Int.ordinalOf() = "$this" + if (this % 100 in 11..13) "th" else when (this %
 fun View.createErrorSnackBar(errorMessage: String, snackBarAction: () -> Unit) =
     Snackbar.make(this, errorMessage, Snackbar.LENGTH_LONG)
         .setAction(resources.getString(R.string.retry)) { snackBarAction() }
+        .show()
+
+fun View.createErrorSnackBar(errorMessage: String) =
+    Snackbar.make(this, errorMessage, Snackbar.LENGTH_LONG)
         .show()
 
 private fun List<CryptoCurrencyHistory>.toChartArray(timePeriod: String): ArrayList<Entry> {
