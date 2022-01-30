@@ -1,5 +1,6 @@
 package com.example.cryptoapp.domain
 
+import com.example.cryptoapp.domain.authentication.GetCurrentUserUseCase
 import com.example.cryptoapp.domain.authentication.LogOutUseCase
 import com.example.cryptoapp.domain.authentication.LoginWithEmailAndPasswordUseCase
 import com.example.cryptoapp.domain.authentication.RegisterWithEmailAndPasswordUseCase
@@ -22,4 +23,5 @@ val domainModule = module {
     factory { LogOutUseCase(repository = get()) }
     factory { RegisterWithEmailAndPasswordUseCase(repository = get()) }
     factory { ResetPasswordUseCase(repository = get()) }
+    factory { GetCurrentUserUseCase(repository = get()) }
 }

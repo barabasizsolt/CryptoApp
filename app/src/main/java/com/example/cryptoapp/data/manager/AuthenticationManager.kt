@@ -16,4 +16,6 @@ class AuthenticationManager : Authentication {
     override fun logOut() = firebaseAuth.signOut()
 
     override fun resetPassword(email: String) = firebaseAuth.sendPasswordResetEmail(email)
+
+    override fun getCurrentUser() = firebaseAuth.currentUser
 }

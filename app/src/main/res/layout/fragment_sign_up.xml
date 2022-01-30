@@ -2,6 +2,14 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.example.cryptoapp.feature.auth.signup.SignUpViewModel" />
+
+    </data>
+
     <LinearLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -24,6 +32,8 @@
                 android:id="@+id/email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:text="@={viewModel.email}"
                 />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -44,6 +54,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
+                android:text="@={viewModel.password}"
                 />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -64,6 +75,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
+                android:text="@={viewModel.confirmPassword}"
                 />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -73,11 +85,13 @@
             android:id="@+id/sign_up_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="SIGN UP"
+            android:text="@string/sign_up"
             android:textColor="#000"
             android:layout_marginStart="70dp"
             android:layout_marginEnd="70dp"
             android:textSize="23sp"
+            android:enabled="@{viewModel.isRegisterEnabled}"
+            android:onClick="@{() -> viewModel.registerWithEmailAndPassword()}"
             />
 
         <com.google.android.material.progressindicator.CircularProgressIndicator
@@ -85,8 +99,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:indeterminate="true"
-            android:visibility="invisible"
-            android:layout_marginTop="20dp"/>
+            android:layout_marginTop="20dp"
+            app:isVisible="@{viewModel.isLoading}"/>
 
     </LinearLayout>
 

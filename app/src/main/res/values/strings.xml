@@ -54,4 +54,7 @@
     <string name="profile_back_stack_tag">profile</string>
     <string name="sign_out">Sign out</string>
     <string name="general_sign_out_confirmation_message">Do you want to sing out?</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="login">LOGIN</string>
 </resources>

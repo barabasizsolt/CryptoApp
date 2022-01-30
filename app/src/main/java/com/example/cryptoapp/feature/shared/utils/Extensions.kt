@@ -7,8 +7,6 @@ import android.widget.ImageView
 import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import coil.load
 import coil.transform.CircleCropTransformation
 import com.example.cryptoapp.R

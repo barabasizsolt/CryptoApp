@@ -21,7 +21,8 @@ class LoginViewModel(private val loginWithEmailAndPasswordUseCase: LoginWithEmai
     val password = MutableStateFlow("")
 
     val isLoginEnabled = combine(email, password) {
-        email, password -> email.isNotEmpty() && password.isNotEmpty()
+        email, password ->
+        email.isNotEmpty() && password.isNotEmpty()
     }.stateIn(viewModelScope, SharingStarted.Lazily, false)
 
     private val _event = eventFlow<Event>()
@@ -31,7 +32,7 @@ class LoginViewModel(private val loginWithEmailAndPasswordUseCase: LoginWithEmai
         _isLoading.value = true
         val result = loginWithEmailAndPasswordUseCase(email = email.value, password = password.value)
         result.addOnSuccessListener {
-            _event.pushEvent(Event.LoginUser(message = "User logged in successfully"))
+            _event.pushEvent(Event.LoginUser())
             _isLoading.value = false
         }
         result.addOnFailureListener {
@@ -42,7 +43,7 @@ class LoginViewModel(private val loginWithEmailAndPasswordUseCase: LoginWithEmai
 
     sealed class Event {
 
-        data class LoginUser(val message: String) : Event()
+        data class LoginUser(val nothing: Any? = null) : Event()
 
         data class ShowErrorMessage(val message: String) : Event()
     }

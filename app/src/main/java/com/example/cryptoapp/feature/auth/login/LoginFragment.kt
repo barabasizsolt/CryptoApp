@@ -2,13 +2,11 @@ package com.example.cryptoapp.feature.auth.login
 
 import android.os.Bundle
 import android.view.View
-import android.widget.TextView
-import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import com.example.cryptoapp.BR
 import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.FragmentLoginBinding
-import com.example.cryptoapp.feature.auth.SignUpFragment
+import com.example.cryptoapp.feature.auth.signup.SignUpFragment
 import com.example.cryptoapp.feature.shared.navigation.BaseFragment
 import com.example.cryptoapp.feature.shared.utils.createErrorSnackBar
 import com.example.cryptoapp.feature.shared.utils.handleReplace
@@ -32,7 +30,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(R.layout.fragment_login
     }
 
     private fun listenToEvent(event: LoginViewModel.Event) = when (event) {
-        is LoginViewModel.Event.LoginUser -> navigator?.navigateToMain().let { binding.progressBar.visibility = View.INVISIBLE }
+        is LoginViewModel.Event.LoginUser -> navigator?.navigateToMain()
         is LoginViewModel.Event.ShowErrorMessage -> binding.root.createErrorSnackBar(errorMessage = event.message)
     }
 
