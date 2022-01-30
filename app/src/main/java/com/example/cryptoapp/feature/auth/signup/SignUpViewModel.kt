@@ -22,7 +22,7 @@ class SignUpViewModel(private val registerWithEmailAndPasswordUseCase: RegisterW
     val confirmPassword = MutableStateFlow("")
 
     val isRegisterEnabled = combine(email, password, confirmPassword) {
-            email, password, confirmPassword ->
+        email, password, confirmPassword ->
         email.isNotEmpty() && password.isNotEmpty() && confirmPassword.isNotEmpty()
     }.stateIn(viewModelScope, SharingStarted.Lazily, false)
 
