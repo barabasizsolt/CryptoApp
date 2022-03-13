@@ -11,7 +11,7 @@ data class User(
 
 sealed class UserAvatarType {
 
-    data class UriType(val uri: Uri): UserAvatarType()
+    data class UriType(val uri: Uri) : UserAvatarType()
 
-    data class IntType(val id: Int): UserAvatarType()
+    data class IntType(val id: Int) : UserAvatarType()
 }

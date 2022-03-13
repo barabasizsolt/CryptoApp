@@ -26,7 +26,7 @@ import java.time.Instant
 import java.time.LocalDateTime
 import java.time.Month
 import java.time.ZoneId
-import java.util.*
+import java.util.Locale
 import kotlin.collections.ArrayList
 
 fun ImageView.loadImage(image: Uri, placeholder: Int) = load(image) {

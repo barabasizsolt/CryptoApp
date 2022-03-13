@@ -13,7 +13,7 @@ class ProfileAdapter(
     private val onChangePasswordClicked: () -> Unit,
     private val onSignOutClicked: () -> Unit,
     private val onTryAgainButtonClicked: () -> Unit
-): ListAdapter<ProfileListItem, RecyclerView.ViewHolder>(ListItemDiff()) {
+) : ListAdapter<ProfileListItem, RecyclerView.ViewHolder>(ListItemDiff()) {
 
     override fun getItemViewType(position: Int) = when (getItem(position)) {
         is ProfileListItem.ErrorState -> R.layout.item_profile_error_state
@@ -67,7 +67,7 @@ class ProfileAdapter(
         private val binding: ItemProfileProfileBinding,
         private val onChangePasswordClicked: () -> Unit,
         private val onSignOutClicked: () -> Unit
-    ): RecyclerView.ViewHolder(binding.root) {
+    ) : RecyclerView.ViewHolder(binding.root) {
 
         init {
             binding.signOut.setOnClickListener {

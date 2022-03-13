@@ -23,7 +23,7 @@ class AuthenticationRepository(private val manager: AuthenticationManager) {
     fun getCurrentUser(): User = manager.getCurrentUser()?.toModel() ?: throw IllegalStateException("No user found")
 
     private fun FirebaseUser.toModel() = when {
-         email == null || metadata?.creationTimestamp == null -> null
+        email == null || metadata?.creationTimestamp == null -> null
         else -> User(
             userId = uid,
             avatarType = if (photoUrl == null) UserAvatarType.IntType(id = R.drawable.ic_avatar) else UserAvatarType.UriType(uri = photoUrl!!),

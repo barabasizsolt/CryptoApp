@@ -7,7 +7,7 @@ sealed class ProfileListItem : ListItem {
 
     data class ErrorState(
         val nothing: Any? = null
-    ): ProfileListItem() {
+    ) : ProfileListItem() {
         override val id = "errorState"
     }
 
@@ -16,7 +16,7 @@ sealed class ProfileListItem : ListItem {
         val avatarType: UserAvatarType,
         val email: String,
         val registrationDate: String
-    ): ProfileListItem() {
+    ) : ProfileListItem() {
         override val id = "profile_{$userId}"
     }
 }

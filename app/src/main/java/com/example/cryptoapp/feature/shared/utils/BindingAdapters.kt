@@ -1,7 +1,6 @@
 package com.example.cryptoapp.feature.shared.utils
 
 import android.graphics.Color
-import android.net.Uri
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView

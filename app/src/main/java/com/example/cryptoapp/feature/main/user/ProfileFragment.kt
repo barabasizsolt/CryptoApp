@@ -42,8 +42,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_p
         .setNegativeButton(R.string.general_close_confirmation_negative, null)
         .show()
 
-
-
     companion object {
         fun newInstance() = ProfileFragment()
     }
