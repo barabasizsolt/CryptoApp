@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="uiModel"
+            type="com.example.cryptoapp.feature.main.user.ProfileListItem.User" />
+
+    </data>
+
+    <LinearLayout xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        tools:context=".feature.main.user.ProfileFragment">
+
+        <ImageView
+            android:id="@+id/user_logo"
+            android:layout_width="@dimen/profile_image_view_size"
+            android:layout_height="@dimen/profile_image_view_size"
+            android:layout_marginTop="@dimen/profile_image_view_margin_top"
+            app:loadAvatar="@{uiModel.avatarType}"
+            android:scaleType="centerCrop"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/user_email"
+            android:layout_marginTop="@dimen/profile_text_view_margin_top"
+            android:paddingLeft="@dimen/profile_text_view_padding"
+            android:paddingRight="@dimen/profile_text_view_padding"
+            app:startIconDrawable="@drawable/ic_email"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/email"
+                android:text="@{uiModel.email}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:clickable="false"
+                android:cursorVisible="false"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/user_registration_date"
+            android:layout_marginTop="@dimen/profile_text_view_margin_top"
+            android:paddingLeft="@dimen/profile_text_view_padding"
+            android:paddingRight="@dimen/profile_text_view_padding"
+            app:startIconDrawable="@drawable/ic_created"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/registration_date"
+                android:text="@{uiModel.registrationDate}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:clickable="false"
+                android:cursorVisible="false"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/update_password"
+            android:layout_marginTop="@dimen/profile_text_view_margin_top"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textSize="@dimen/profile_update_pwd_text_size"
+            android:text="@string/user_update_password" />
+
+        <TextView
+            android:id="@+id/sign_out"
+            android:layout_marginTop="@dimen/profile_text_view_margin_top"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textColor="@color/red"
+            android:textSize="@dimen/profile_update_pwd_text_size"
+            android:text="@string/sign_out" />
+
+    </LinearLayout>
+
+</layout>

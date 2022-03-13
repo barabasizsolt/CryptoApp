@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails.CryptoCurrencyDetailsViewModel" />
+            type="com.example.cryptoapp.feature.main.cryptocurrency.cryptocurrencyDetails.CryptoCurrencyDetailsViewModel" />
 
     </data>
 

@@ -1,5 +1,10 @@
 package com.example.cryptoapp.domain
 
+import com.example.cryptoapp.domain.authentication.GetCurrentUserUseCase
+import com.example.cryptoapp.domain.authentication.LogOutUseCase
+import com.example.cryptoapp.domain.authentication.LoginWithEmailAndPasswordUseCase
+import com.example.cryptoapp.domain.authentication.RegisterWithEmailAndPasswordUseCase
+import com.example.cryptoapp.domain.authentication.ResetPasswordUseCase
 import com.example.cryptoapp.domain.cryptocurrency.GetCryptoCurrenciesUseCase
 import com.example.cryptoapp.domain.cryptocurrency.GetCryptoCurrencyDetailsUseCase
 import com.example.cryptoapp.domain.cryptocurrency.GetCryptoCurrencyHistoryUseCase
@@ -14,4 +19,9 @@ val domainModule = module {
     factory { GetCryptoCurrencyHistoryUseCase(repository = get()) }
     factory { GetNewsUseCase(repository = get()) }
     factory { GetExchangesUseCase(repository = get()) }
+    factory { LoginWithEmailAndPasswordUseCase(repository = get()) }
+    factory { LogOutUseCase(repository = get()) }
+    factory { RegisterWithEmailAndPasswordUseCase(repository = get()) }
+    factory { ResetPasswordUseCase(repository = get()) }
+    factory { GetCurrentUserUseCase(repository = get()) }
 }

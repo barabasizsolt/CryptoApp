@@ -14,7 +14,7 @@ class CryptoCurrencyApplication : Application() {
 
         startKoin {
             androidContext(this@CryptoCurrencyApplication)
-            modules(dataModule, domainModule, presentationModule)
+            modules(mainActivityModule, dataModule, domainModule, presentationModule)
         }
     }
 }

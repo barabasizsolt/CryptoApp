@@ -1,6 +1,6 @@
 package com.example.cryptoapp.data.repository.cryptocurrency
 
-import com.example.cryptoapp.data.NetworkManager
+import com.example.cryptoapp.data.manager.NetworkManager
 import com.example.cryptoapp.data.shared.toCryptoCurrencyHistory
 import java.lang.IllegalStateException
 

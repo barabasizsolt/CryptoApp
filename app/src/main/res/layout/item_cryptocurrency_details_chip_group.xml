@@ -8,7 +8,7 @@
 
         <variable
             name="uiModel"
-            type="com.example.cryptoapp.feature.cryptocurrency.cryptocurrencyDetails.CryptoCurrencyDetailsListItem.CryptoCurrencyChipGroup" />
+            type="com.example.cryptoapp.feature.main.cryptocurrency.cryptocurrencyDetails.CryptoCurrencyDetailsListItem.CryptoCurrencyChipGroup" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -46,4 +46,15 @@
     <string name="daily_change">24H</string>
     <string name="crypto_value_changes">Cryptocurrency value changes</string>
     <string name="no_data_found">No data found for chart</string>
+    <string name="general_close_confirmation_title">Are you sure?</string>
+    <string name="general_close_confirmation_message">Do you want to leave the app?</string>
+    <string name="general_close_confirmation_positive">Leave</string>
+    <string name="general_close_confirmation_negative">Cancel</string>
+    <string name="crypto_details_back_stack_tag">crypto_details_tag</string>
+    <string name="profile_back_stack_tag">profile</string>
+    <string name="sign_out">Sign out</string>
+    <string name="general_sign_out_confirmation_message">Do you want to sing out?</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="login">LOGIN</string>
 </resources>

@@ -187,5 +187,6 @@
     <!-- ImageView -->
     <dimen name="crypto_details_coin_body_drop_down_size">30dp</dimen>
     <dimen name="crypto_details_coin_body_drop_down_margin_end">30dp</dimen>
+    <dimen name="app_bar_height">50dp</dimen>
 
 </resources>

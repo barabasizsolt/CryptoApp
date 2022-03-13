@@ -1,77 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center_horizontal"
-    tools:context=".feature.user.ProfileFragment">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <ImageView
-        android:id="@+id/user_logo"
-        android:layout_width="@dimen/profile_image_view_size"
-        android:layout_height="@dimen/profile_image_view_size"
-        android:layout_marginTop="@dimen/profile_image_view_margin_top"
-        android:src="@drawable/ic_avatar"
-        android:scaleType="centerCrop"/>
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.cryptoapp.feature.main.user.ProfileViewModel" />
+    </data>
 
-    <com.google.android.material.textfield.TextInputLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/user_email"
-        android:layout_marginTop="@dimen/profile_text_view_margin_top"
-        android:paddingLeft="@dimen/profile_text_view_padding"
-        android:paddingRight="@dimen/profile_text_view_padding"
-        app:startIconDrawable="@drawable/ic_email"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        android:layout_height="match_parent">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/email"
-            android:layout_width="match_parent"
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:focusable="false"
-            android:clickable="false"
-            android:cursorVisible="false"
-            />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:indeterminate="true"
+            app:isVisible="@{viewModel.isLoading()}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/user_registration_date"
-        android:layout_marginTop="@dimen/profile_text_view_margin_top"
-        android:paddingLeft="@dimen/profile_text_view_padding"
-        android:paddingRight="@dimen/profile_text_view_padding"
-        app:startIconDrawable="@drawable/ic_created"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/registration_date"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:focusable="false"
-            android:clickable="false"
-            android:cursorVisible="false"
-            />
+            android:layout_height="match_parent"
+            tools:layout_editor_absoluteX="48dp"
+            tools:layout_editor_absoluteY="16dp"
+            tools:listitem="@layout/item_profile_profile" />
 
-    </com.google.android.material.textfield.TextInputLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <TextView
-        android:id="@+id/update_password"
-        android:layout_marginTop="@dimen/profile_text_view_margin_top"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:textSize="@dimen/profile_update_pwd_text_size"
-        android:text="@string/user_update_password" />
-
-    <com.google.android.material.progressindicator.CircularProgressIndicator
-        android:id="@+id/progress_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:indeterminate="true"
-        android:visibility="invisible"
-        android:layout_marginTop="@dimen/profile_progress_bar_margin_top"/>
-
-</LinearLayout>
+</layout>
