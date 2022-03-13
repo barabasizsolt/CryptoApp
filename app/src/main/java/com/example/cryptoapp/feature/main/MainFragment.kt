@@ -17,7 +17,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.currencies -> consume {
+                R.id.market -> consume {
                     childFragmentManager.handleReplace(
                         tag = "currencies",
                         newInstance = CryptoCurrencyFragment.Companion::newInstance,
@@ -42,7 +42,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
             }
         }
         if (savedInstanceState == null && currentFragment == null) {
-            binding.bottomNavigationView.selectedItemId = R.id.currencies
+            binding.bottomNavigationView.selectedItemId = R.id.market
         }
         binding.topBar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
@@ -60,13 +60,13 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
 
     override fun onBackPressed(): Boolean = when (currentFragment?.childFragmentManager?.backStackEntryCount ?: 0 <= 1) {
         true -> when {
-            binding.bottomNavigationView.selectedItemId == R.id.currencies -> when {
+            binding.bottomNavigationView.selectedItemId == R.id.market -> when {
                 getString(R.string.crypto_details_back_stack_tag).equalsTopBackStackName() -> childFragmentManager.popBackStackImmediate()
-                getString(R.string.profile_back_stack_tag).equalsTopBackStackName() -> consume { binding.bottomNavigationView.selectedItemId = R.id.currencies }
+                getString(R.string.profile_back_stack_tag).equalsTopBackStackName() -> consume { binding.bottomNavigationView.selectedItemId = R.id.market }
                 else -> false
             }
             getString(R.string.profile_back_stack_tag).equalsTopBackStackName() -> childFragmentManager.popBackStackImmediate()
-            else -> consume { binding.bottomNavigationView.selectedItemId = R.id.currencies }
+            else -> consume { binding.bottomNavigationView.selectedItemId = R.id.market }
         }
         else -> super.onBackPressed()
     }

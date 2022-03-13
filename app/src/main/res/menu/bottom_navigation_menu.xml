@@ -1,9 +1,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/currencies"
+        android:id="@+id/market"
         android:enabled="true"
         android:icon="@drawable/ic_bitcoin"
-        android:title="@string/bottom_nav_currencies"/>
+        android:title="@string/bottom_nav_market"/>
     <item
         android:id="@+id/exchanges"
         android:enabled="true"
