@@ -12,7 +12,7 @@ import com.example.cryptoapp.data.repository.cryptocurrency.CryptoCurrencyReposi
 import org.koin.dsl.module
 
 val dataModule = module {
-    //Authentication
+    // Authentication
     single { AuthenticationRepository(manager = get()) }
 
     // Networking
@@ -26,5 +26,4 @@ val dataModule = module {
     single { CategoryRepository(manager = get()) }
     single { ExchangeRepository(manager = get()) }
     single { NewsRepository(manager = get()) }
-
 }

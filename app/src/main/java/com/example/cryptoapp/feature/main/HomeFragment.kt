@@ -12,7 +12,7 @@ import com.example.cryptoapp.feature.main.exchange.ExchangeFragment
 import com.example.cryptoapp.feature.shared.navigation.BaseFragment
 import com.google.android.material.tabs.TabLayoutMediator
 
-class HomeFragment: BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
+class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.viewPager.adapter = ViewPagerAdapter(fragment = this)

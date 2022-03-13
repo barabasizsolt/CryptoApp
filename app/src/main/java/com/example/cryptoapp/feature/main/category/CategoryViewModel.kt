@@ -6,8 +6,6 @@ import com.example.cryptoapp.data.model.RefreshType
 import com.example.cryptoapp.data.model.Result
 import com.example.cryptoapp.data.model.category.Category
 import com.example.cryptoapp.domain.category.GetCategoriesUseCase
-import com.example.cryptoapp.feature.main.cryptocurrency.cryptocurrencyList.CryptoCurrencyViewModel
-import com.example.cryptoapp.feature.main.exchange.ExchangeListItem
 import com.example.cryptoapp.feature.shared.utils.convertToCompactPrice
 import com.example.cryptoapp.feature.shared.utils.eventFlow
 import com.example.cryptoapp.feature.shared.utils.pushEvent
@@ -17,7 +15,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
-class CategoryViewModel(private val getCategoriesUseCase: GetCategoriesUseCase): ViewModel() {
+class CategoryViewModel(private val getCategoriesUseCase: GetCategoriesUseCase) : ViewModel() {
 
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing: StateFlow<Boolean> = _isRefreshing

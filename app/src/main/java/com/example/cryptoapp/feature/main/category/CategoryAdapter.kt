@@ -9,7 +9,6 @@ import com.example.cryptoapp.databinding.ItemCategoryCategoryBinding
 import com.example.cryptoapp.databinding.ItemCategoryErrorStateBinding
 import com.example.cryptoapp.feature.shared.utils.ListItemDiff
 
-
 class CategoryAdapter(
     private val onCategoryItemClick: (String) -> Unit,
     private val onTryAgainButtonClicked: () -> Unit

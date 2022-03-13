@@ -13,7 +13,7 @@ import com.example.cryptoapp.data.model.response.cryptocurrency.history.SingleCr
 import com.example.cryptoapp.data.model.response.exchange.ExchangeResponse
 import com.example.cryptoapp.data.model.response.news.NewsResponse
 
-//CryptoCurrency Mappers
+// CryptoCurrency Mappers
 fun CryptoCurrencyResponse.toModel() = when {
     symbol == null ||
         name == null ||
@@ -74,16 +74,16 @@ fun SingleCryptoCurrencyHistoryResponse.toModel() = when {
     )
 }
 
-//Category Mappers
+// Category Mappers
 fun CategoryResponse.toModel() = when {
     id == null ||
-            name == null ||
-            marketCap == null ||
-            marketCapChange24h == null ||
-            content == null ||
-            top3Coins == null ||
-            volume24h == null ||
-            updatedAt == null -> null
+        name == null ||
+        marketCap == null ||
+        marketCapChange24h == null ||
+        content == null ||
+        top3Coins == null ||
+        volume24h == null ||
+        updatedAt == null -> null
     else -> Category(
         id = id,
         name = name,

@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.view.View
 import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.FragmentMainBinding
-import com.example.cryptoapp.feature.main.cryptocurrency.cryptocurrencyList.CryptoCurrencyFragment
-import com.example.cryptoapp.feature.main.exchange.ExchangeFragment
 import com.example.cryptoapp.feature.main.news.NewsFragment
 import com.example.cryptoapp.feature.main.user.ProfileFragment
 import com.example.cryptoapp.feature.shared.navigation.BaseFragment
