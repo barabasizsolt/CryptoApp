@@ -59,7 +59,7 @@ fun Long.getFormattedTime(withHours: Boolean = false): String {
 
 fun Long.getFormattedHour(): String = hourFormatter.format(this)
 
-fun Long.formatUserRegistrationDate() = SimpleDateFormat("MMM dd, yyy", Locale.getDefault()).format(this)
+fun Long.formatUserRegistrationDate(): String = SimpleDateFormat("MMM dd, yyy", Locale.getDefault()).format(this)
 
 fun String.formatInput(): String = formatter.format(this.toDouble())
 
