@@ -189,4 +189,35 @@
     <dimen name="crypto_details_coin_body_drop_down_margin_end">30dp</dimen>
     <dimen name="app_bar_height">50dp</dimen>
 
+    <!-- Fragment Category-->
+
+    <!-- TextSizes-->
+    <dimen name="small_category_item_text">13sp</dimen>
+    <dimen name="medium_category_item_text">14sp</dimen>
+    <dimen name="large_category_item_text">24sp</dimen>
+
+    <!-- ImageView -->
+    <dimen name="category_imageview_size">40dp</dimen>
+    <dimen name="category_imageview_margin_start">5dp</dimen>
+
+    <!-- Category Name TextView -->
+    <dimen name="category_name_margin_start">10dp</dimen>
+    <dimen name="category_name_width">120dp</dimen>
+
+    <!-- Category Volume Holder TextView -->
+    <dimen name="category_volume_holder_margin_top">8dp</dimen>
+    <dimen name="category_volume_holder_width">28dp</dimen>
+
+    <!-- Category Volume TextView -->
+    <dimen name="category_volume_margin_top">8dp</dimen>
+    <dimen name="category_volume_margin_end">4dp</dimen>
+
+    <!-- Category Market Cap Holder TextView -->
+    <dimen name="category_market_cap_holder_margin_end">3dp</dimen>
+    <dimen name="category_market_cap_holder_margin_bottom">8dp</dimen>
+
+    <!-- Category Market Cap Holder TextView -->
+    <dimen name="category_market_cap_margin_end">4dp</dimen>
+    <dimen name="category_market_cap_margin_bottom">8dp</dimen>
+
 </resources>

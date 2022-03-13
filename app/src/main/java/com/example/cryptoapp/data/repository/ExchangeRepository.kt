@@ -3,7 +3,7 @@ package com.example.cryptoapp.data.repository
 import com.example.cryptoapp.data.manager.NetworkManager
 import com.example.cryptoapp.data.model.RefreshType
 import com.example.cryptoapp.data.model.exchange.Exchange
-import com.example.cryptoapp.data.shared.toExchange
+import com.example.cryptoapp.data.shared.toModel
 import java.lang.IllegalStateException
 
 class ExchangeRepository(private val manager: NetworkManager) {
@@ -36,7 +36,7 @@ class ExchangeRepository(private val manager: NetworkManager) {
             perPage = PER_PAGE,
             page = page
         ).body()?.mapNotNull { exchangeResponse ->
-            exchangeResponse.toExchange()
+            exchangeResponse.toModel()
         }?.also {
             lastDownloadedPage = page
         } ?: throw IllegalStateException("Invalid data returned by the server")

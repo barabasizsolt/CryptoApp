@@ -3,7 +3,7 @@ package com.example.cryptoapp.data.repository.cryptocurrency
 import com.example.cryptoapp.data.manager.NetworkManager
 import com.example.cryptoapp.data.model.RefreshType
 import com.example.cryptoapp.data.model.cryptocurrency.CryptoCurrency
-import com.example.cryptoapp.data.shared.toCryptoCurrency
+import com.example.cryptoapp.data.shared.toModel
 import java.lang.IllegalStateException
 
 class CryptoCurrencyRepository(private val manager: NetworkManager) {
@@ -68,7 +68,7 @@ class CryptoCurrencyRepository(private val manager: NetworkManager) {
         tags = tags,
         timePeriod = timePeriod
     ).body()?.data?.coins?.mapNotNull { currencyResponse ->
-        currencyResponse.toCryptoCurrency()
+        currencyResponse.toModel()
     }?.distinctBy { it.name }.also {
         lastCryptoCurrencyOffset = offset
     } ?: throw IllegalStateException("Invalid data returned by the server")

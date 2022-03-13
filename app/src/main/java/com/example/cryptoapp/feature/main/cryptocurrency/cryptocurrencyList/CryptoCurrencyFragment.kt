@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CryptoCurrencyFragment : BaseFragment<FragmentCryptoCurrencyBinding>(R.layout.fragment_crypto_currency) {
+
     private val viewModel by viewModel<CryptoCurrencyViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

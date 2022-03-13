@@ -3,7 +3,7 @@ package com.example.cryptoapp.data.repository
 import com.example.cryptoapp.data.manager.NetworkManager
 import com.example.cryptoapp.data.model.RefreshType
 import com.example.cryptoapp.data.model.news.News
-import com.example.cryptoapp.data.shared.toNews
+import com.example.cryptoapp.data.shared.toModel
 
 class NewsRepository(private val manager: NetworkManager) {
 
@@ -29,7 +29,7 @@ class NewsRepository(private val manager: NetworkManager) {
     private suspend fun loadData(page: Int) = manager.newsSource.getNews(
         page = page.toString()
     ).body()?.data?.mapNotNull { newsResponse ->
-        newsResponse.toNews()
+        newsResponse.toModel()
     }?.also {
         lastDownloadedPage = page
     } ?: throw IllegalStateException("Invalid data returned by the server")

@@ -36,6 +36,9 @@ android {
             shrinkResources false
             zipAlignEnabled false
             signingConfig signingConfigs.internal
+
+            buildConfigField("String", "COINRANKING_URL", "\"https://api.coinranking.com/v2/\"")
+            buildConfigField("String", "COINGEKKO_URL", "\"https://api.coingecko.com/api/v3/\"")
         }
         release {
             minifyEnabled true
@@ -43,6 +46,9 @@ android {
             zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.internal
+
+            buildConfigField("String", "COINRANKING_URL", "\"https://api.coinranking.com/v2/\"")
+            buildConfigField("String", "COINGEKKO_URL", "\"https://api.coingecko.com/api/v3/\"")
         }
     }
 

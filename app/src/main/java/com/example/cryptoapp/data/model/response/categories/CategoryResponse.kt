@@ -10,7 +10,7 @@ data class CategoryResponse(
     @SerializedName("market_cap")
     val marketCap: Double?,
     @SerializedName("market_cap_change_24h")
-    val marketCapChange24h: String?,
+    val marketCapChange24h: Double?,
     @SerializedName("content")
     val content: String?,
     @SerializedName("top_3_coins")
@@ -18,5 +18,5 @@ data class CategoryResponse(
     @SerializedName("volume_24h")
     val volume24h: Double?,
     @SerializedName("updated_at")
-    val updated_at: String?,
+    val updatedAt: String?,
 )

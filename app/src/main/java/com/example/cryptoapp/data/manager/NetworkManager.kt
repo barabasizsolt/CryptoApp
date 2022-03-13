@@ -1,5 +1,6 @@
 package com.example.cryptoapp.data.manager
 
+import com.example.cryptoapp.BuildConfig
 import com.example.cryptoapp.data.service.CategoriesService
 import com.example.cryptoapp.data.service.CryptoService
 import com.example.cryptoapp.data.service.ExchangeService
@@ -9,11 +10,11 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class NetworkManager {
     private val coinRankingRetrofitInstance by lazy {
-        Retrofit.Builder().baseUrl(CRYPTO_BASE_URL).addConverterFactory(GsonConverterFactory.create()).build()
+        Retrofit.Builder().baseUrl(BuildConfig.COINRANKING_URL).addConverterFactory(GsonConverterFactory.create()).build()
     }
 
     private val coinGekkoRetrofitInstance by lazy {
-        Retrofit.Builder().baseUrl(GEKKO_BASE_URL).addConverterFactory(GsonConverterFactory.create()).build()
+        Retrofit.Builder().baseUrl(BuildConfig.COINGEKKO_URL).addConverterFactory(GsonConverterFactory.create()).build()
     }
 
     val cryptoSource: CryptoService by lazy {
@@ -30,10 +31,5 @@ class NetworkManager {
 
     val newsSource: NewsService by lazy {
         coinGekkoRetrofitInstance.create(NewsService::class.java)
-    }
-
-    companion object {
-        private const val CRYPTO_BASE_URL = "https://api.coinranking.com/v2/"
-        private const val GEKKO_BASE_URL = "https://api.coingecko.com/api/v3/"
     }
 }

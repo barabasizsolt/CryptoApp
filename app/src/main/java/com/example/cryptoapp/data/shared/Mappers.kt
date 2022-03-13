@@ -1,17 +1,20 @@
 package com.example.cryptoapp.data.shared
 
+import com.example.cryptoapp.data.model.category.Category
 import com.example.cryptoapp.data.model.cryptocurrency.CryptoCurrency
 import com.example.cryptoapp.data.model.cryptocurrency.CryptoCurrencyDetails
 import com.example.cryptoapp.data.model.cryptocurrency.CryptoCurrencyHistory
 import com.example.cryptoapp.data.model.exchange.Exchange
 import com.example.cryptoapp.data.model.news.News
+import com.example.cryptoapp.data.model.response.categories.CategoryResponse
 import com.example.cryptoapp.data.model.response.cryptocurrency.all.CryptoCurrencyResponse
 import com.example.cryptoapp.data.model.response.cryptocurrency.detail.SingleCryptoCurrencyDetailsResponse
 import com.example.cryptoapp.data.model.response.cryptocurrency.history.SingleCryptoCurrencyHistoryResponse
 import com.example.cryptoapp.data.model.response.exchange.ExchangeResponse
 import com.example.cryptoapp.data.model.response.news.NewsResponse
 
-fun CryptoCurrencyResponse.toCryptoCurrency() = when {
+//CryptoCurrency Mappers
+fun CryptoCurrencyResponse.toModel() = when {
     symbol == null ||
         name == null ||
         iconUrl == null ||
@@ -31,7 +34,7 @@ fun CryptoCurrencyResponse.toCryptoCurrency() = when {
     )
 }
 
-fun SingleCryptoCurrencyDetailsResponse.toCryptoCurrencyDetails() = when {
+fun SingleCryptoCurrencyDetailsResponse.toModel() = when {
     uuid == null ||
         symbol == null ||
         name == null ||
@@ -63,7 +66,7 @@ fun SingleCryptoCurrencyDetailsResponse.toCryptoCurrencyDetails() = when {
     )
 }
 
-fun SingleCryptoCurrencyHistoryResponse.toCryptoCurrencyHistory() = when {
+fun SingleCryptoCurrencyHistoryResponse.toModel() = when {
     price == null || timestamp == null -> null
     else -> CryptoCurrencyHistory(
         price = price,
@@ -71,8 +74,30 @@ fun SingleCryptoCurrencyHistoryResponse.toCryptoCurrencyHistory() = when {
     )
 }
 
+//Category Mappers
+fun CategoryResponse.toModel() = when {
+    id == null ||
+            name == null ||
+            marketCap == null ||
+            marketCapChange24h == null ||
+            content == null ||
+            top3Coins == null ||
+            volume24h == null ||
+            updatedAt == null -> null
+    else -> Category(
+        id = id,
+        name = name,
+        marketCap = marketCap,
+        marketCapChange24h = marketCapChange24h.toString(),
+        content = content,
+        top3Coins = top3Coins,
+        volume24h = volume24h,
+        updatedAt = updatedAt
+    )
+}
+
 // Exchange Mappers
-fun ExchangeResponse.toExchange() = when {
+fun ExchangeResponse.toModel() = when {
     id == null ||
         name == null ||
         yearEstablished == null ||
@@ -96,7 +121,7 @@ fun ExchangeResponse.toExchange() = when {
 }
 
 // News Mappers
-fun NewsResponse.toNews() = when {
+fun NewsResponse.toModel() = when {
     title == null ||
         description == null ||
         url == null ||

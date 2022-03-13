@@ -5,11 +5,6 @@
         android:icon="@drawable/ic_bitcoin"
         android:title="@string/bottom_nav_market"/>
     <item
-        android:id="@+id/exchanges"
-        android:enabled="true"
-        android:icon="@drawable/ic_exchanges"
-        android:title="@string/bottom_nav_exchanges"/>
-    <item
         android:id="@+id/news"
         android:enabled="true"
         android:icon="@drawable/ic_news"

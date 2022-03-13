@@ -58,4 +58,8 @@
     <string name="forgot_password">Forgot Password?</string>
     <string name="login">LOGIN</string>
     <string name="bottom_nav_market">Market</string>
+    <string name="volume">24h</string>
+    <string name="crypto_currency">Cryptocurrency</string>
+    <string name="categories">Categories</string>
+    <string name="exchanges">Exchanges</string>
 </resources>

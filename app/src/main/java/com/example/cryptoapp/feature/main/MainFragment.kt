@@ -20,14 +20,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
                 R.id.market -> consume {
                     childFragmentManager.handleReplace(
                         tag = "currencies",
-                        newInstance = CryptoCurrencyFragment.Companion::newInstance,
-                        addToBackStack = true
-                    )
-                }
-                R.id.exchanges -> consume {
-                    childFragmentManager.handleReplace(
-                        tag = "exchanges",
-                        newInstance = ExchangeFragment.Companion::newInstance,
+                        newInstance = HomeFragment.Companion::newInstance,
                         addToBackStack = true
                     )
                 }

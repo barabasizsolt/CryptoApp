@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="uiModel"
+            type="com.example.cryptoapp.feature.main.category.CategoryListItem.Category" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/crypto_currency_card_height"
+        android:layout_margin="@dimen/content_padding_half">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/content_padding">
+
+            <ImageView
+                android:id="@+id/coin_1"
+                app:url="@{uiModel.top3CoinLogos[0]}"
+                tools:srcCompat="@tools:sample/avatars"
+                android:layout_width="@dimen/category_imageview_size"
+                android:layout_height="@dimen/category_imageview_size"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/coin_2"
+                app:url="@{uiModel.top3CoinLogos[1]}"
+                tools:srcCompat="@tools:sample/avatars"
+                android:layout_width="@dimen/category_imageview_size"
+                android:layout_height="@dimen/category_imageview_size"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/coin_1"
+                android:layout_marginStart="@dimen/category_imageview_margin_start"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/coin_3"
+                app:url="@{uiModel.top3CoinLogos[2]}"
+                tools:srcCompat="@tools:sample/avatars"
+                android:layout_width="@dimen/category_imageview_size"
+                android:layout_height="@dimen/category_imageview_size"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/coin_2"
+                android:layout_marginStart="@dimen/category_imageview_margin_start"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/category_name"
+                android:text="@{uiModel.name}"
+                android:layout_width="@dimen/category_name_width"
+                android:layout_height="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/coin_3"
+                android:layout_marginStart="@dimen/category_name_margin_start"
+                android:textAlignment="textStart"
+                android:textSize="@dimen/medium_category_item_text"
+                android:gravity="center"
+                android:hint="Centralized Exchnage Token (CEX)"
+                android:maxLines="3"
+                android:ellipsize="end"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="RtlCompat" />
+
+            <TextView
+                android:id="@+id/volume_holder"
+                android:layout_width="@dimen/category_volume_holder_width"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/category_volume_holder_margin_top"
+                android:textSize="@dimen/medium_category_item_text"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="@string/volume"/>
+
+            <TextView
+                android:id="@+id/percent_change"
+                app:percentage="@{uiModel.volume}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/category_volume_margin_top"
+                android:layout_marginEnd="@dimen/category_volume_margin_end"
+                android:textSize="@dimen/medium_category_item_text"
+                app:layout_constraintEnd_toStartOf="@+id/volume_holder"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Percentage" />
+
+            <TextView
+                android:id="@+id/cap_holder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/category_market_cap_holder_margin_end"
+                android:layout_marginBottom="@dimen/category_market_cap_holder_margin_bottom"
+                android:text="@string/market_cap"
+                android:textSize="@dimen/medium_category_item_text"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/volume_holder" />
+
+            <TextView
+                android:id="@+id/market_cap"
+                android:text="@{uiModel.marketCap}"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/category_market_cap_margin_end"
+                android:layout_marginBottom="@dimen/category_market_cap_margin_bottom"
+                android:textSize="@dimen/medium_category_item_text"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/cap_holder"
+                app:layout_constraintTop_toBottomOf="@+id/percent_change"
+                tools:text="Market Cap" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>
