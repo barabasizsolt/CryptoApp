@@ -104,11 +104,6 @@ fun View.isVisible(isVisible: Boolean) {
     if (isVisible) this.visibility = View.VISIBLE else this.visibility = View.GONE
 }
 
-@BindingAdapter("isEnabled")
-fun View.isEnabled(isEnabled: Boolean) {
-    this.isEnabled = isEnabled
-}
-
 @BindingAdapter("loadAvatar")
 fun ImageView.loadAvatar(avatarType: UserAvatarType) = ImageLoader.Builder(context)
     .componentRegistry { add(SvgDecoder(context)) }
