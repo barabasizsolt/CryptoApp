@@ -6,6 +6,7 @@ import com.example.cryptoapp.feature.main.cryptocurrency.cryptocurrencyDetails.C
 import com.example.cryptoapp.feature.main.cryptocurrency.cryptocurrencyList.CryptoCurrencyViewModel
 import com.example.cryptoapp.feature.main.exchange.ExchangeViewModel
 import com.example.cryptoapp.feature.main.news.NewsViewModel
+import com.example.cryptoapp.feature.main.user.ProfileViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -23,4 +24,5 @@ val presentationModule = module {
     viewModel { ExchangeViewModel(useCase = get()) }
     viewModel { LoginViewModel(loginWithEmailAndPasswordUseCase = get()) }
     viewModel { SignUpViewModel(registerWithEmailAndPasswordUseCase = get()) }
+    viewModel { ProfileViewModel(getCurrentUserUseCase = get()) }
 }

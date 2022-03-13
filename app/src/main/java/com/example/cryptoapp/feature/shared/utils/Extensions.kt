@@ -1,5 +1,6 @@
 package com.example.cryptoapp.feature.shared.utils
 
+import android.icu.text.SimpleDateFormat
 import android.icu.util.CurrencyAmount
 import android.net.Uri
 import android.view.View
@@ -25,6 +26,8 @@ import java.time.Instant
 import java.time.LocalDateTime
 import java.time.Month
 import java.time.ZoneId
+import java.util.*
+import kotlin.collections.ArrayList
 
 fun ImageView.loadImage(image: Uri, placeholder: Int) = load(image) {
     placeholder(placeholder)
@@ -55,6 +58,8 @@ fun Long.getFormattedTime(withHours: Boolean = false): String {
 }
 
 fun Long.getFormattedHour(): String = hourFormatter.format(this)
+
+fun Long.formatUserRegistrationDate() = SimpleDateFormat("MMM dd, yyy", Locale.getDefault()).format(this)
 
 fun String.formatInput(): String = formatter.format(this.toDouble())
 

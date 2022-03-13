@@ -1,6 +1,7 @@
 package com.example.cryptoapp.feature.shared.utils
 
 import android.graphics.Color
+import android.net.Uri
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -10,6 +11,7 @@ import coil.ImageLoader
 import coil.decode.SvgDecoder
 import coil.request.ImageRequest
 import com.example.cryptoapp.R
+import com.example.cryptoapp.data.model.auth.UserAvatarType
 import com.example.cryptoapp.feature.main.cryptocurrency.cryptocurrencyDetails.helpers.CryptoXAxisFormatter
 import com.example.cryptoapp.feature.main.cryptocurrency.cryptocurrencyDetails.helpers.CryptoYAxisFormatter
 import com.example.cryptoapp.feature.main.cryptocurrency.cryptocurrencyDetails.helpers.UnitOfTimeType
@@ -107,3 +109,19 @@ fun View.isVisible(isVisible: Boolean) {
 fun View.isEnabled(isEnabled: Boolean) {
     this.isEnabled = isEnabled
 }
+
+@BindingAdapter("loadAvatar")
+fun ImageView.loadAvatar(avatarType: UserAvatarType) = ImageLoader.Builder(context)
+    .componentRegistry { add(SvgDecoder(context)) }
+    .build()
+    .enqueue(
+        ImageRequest.Builder(context)
+            .data(
+                when (avatarType) {
+                    is UserAvatarType.IntType -> avatarType.id
+                    is UserAvatarType.UriType -> avatarType.uri
+                }
+            )
+            .target(this)
+            .build()
+    )
