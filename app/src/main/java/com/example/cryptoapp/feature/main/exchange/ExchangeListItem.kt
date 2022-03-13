@@ -26,5 +26,6 @@ sealed class ExchangeListItem : ListItem {
     ) : ExchangeListItem() {
         override val id = "exchanges_$exchangeId"
         val formattedVolume = volume.convertToCompactPrice()
+        val exchangeTrustScore = "$trustScore/10.0"
     }
 }

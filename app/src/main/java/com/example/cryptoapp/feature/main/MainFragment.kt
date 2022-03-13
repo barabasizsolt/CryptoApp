@@ -39,7 +39,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
             when (menuItem.itemId) {
                 R.id.profile -> consume {
                     childFragmentManager.handleReplace(
-                        tag = "profile",
+                        tag = getString(R.string.profile_back_stack_tag),
                         newInstance = ProfileFragment.Companion::newInstance,
                         addToBackStack = true
                     )
@@ -53,7 +53,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
         true -> when {
             binding.bottomNavigationView.selectedItemId == R.id.market -> when {
                 getString(R.string.crypto_details_back_stack_tag).equalsTopBackStackName() -> childFragmentManager.popBackStackImmediate()
-                getString(R.string.profile_back_stack_tag).equalsTopBackStackName() -> consume { binding.bottomNavigationView.selectedItemId = R.id.market }
+                getString(R.string.profile_back_stack_tag).equalsTopBackStackName() -> childFragmentManager.popBackStackImmediate()
                 else -> false
             }
             getString(R.string.profile_back_stack_tag).equalsTopBackStackName() -> childFragmentManager.popBackStackImmediate()

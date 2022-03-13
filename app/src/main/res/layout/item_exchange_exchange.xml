@@ -49,7 +49,7 @@
                 android:layout_marginStart="@dimen/exchange_trust_score_text_view_margin_start"
                 android:layout_marginTop="@dimen/exchange_trust_score_text_view_margin_start"
                 tools:text="undefined"
-                android:text="@{uiModel.trustScore}"
+                android:text="@{uiModel.exchangeTrustScore}"
                 android:textAlignment="center"
                 android:textSize="@dimen/small_exchange_item_text"
                 app:layout_constraintStart_toEndOf="@+id/exchange_logo"

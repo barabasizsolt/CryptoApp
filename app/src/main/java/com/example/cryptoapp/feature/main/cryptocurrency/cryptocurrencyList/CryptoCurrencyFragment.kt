@@ -39,7 +39,7 @@ class CryptoCurrencyFragment : BaseFragment<FragmentCryptoCurrencyBinding>(R.lay
 
     private fun listenToEvents(event: CryptoCurrencyViewModel.Event) = when (event) {
         is CryptoCurrencyViewModel.Event.ShowDialog -> createDialog(event)
-        is CryptoCurrencyViewModel.Event.OpenDetailsPage -> parentFragment?.childFragmentManager?.handleReplace(
+        is CryptoCurrencyViewModel.Event.OpenDetailsPage -> parentFragment?.parentFragmentManager?.handleReplace(
             addToBackStack = true,
             newInstance = { CryptoCurrencyDetailsFragment.newInstance(event.cryptoCurrencyId) },
             tag = getString(R.string.crypto_details_back_stack_tag)
