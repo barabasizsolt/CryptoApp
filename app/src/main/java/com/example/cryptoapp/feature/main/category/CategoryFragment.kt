@@ -8,6 +8,7 @@ import com.example.cryptoapp.BR
 import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.FragmentCategoryBinding
 import com.example.cryptoapp.feature.shared.navigation.BaseFragment
+import com.example.cryptoapp.feature.shared.utils.createErrorSnackBar
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -20,13 +21,21 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding>(R.layout.fragment
         binding.setVariable(BR.viewModel, viewModel)
         val categoryAdapter = CategoryAdapter(
             onCategoryItemClick = {},
-            onTryAgainButtonClicked = {}
+            onTryAgainButtonClicked = { viewModel.refreshData(isForceRefresh = true) }
         )
         binding.recyclerview.let {
             it.layoutManager = LinearLayoutManager(requireContext())
             it.adapter = categoryAdapter
         }
         viewModel.listItem.onEach(categoryAdapter::submitList).launchIn(viewLifecycleOwner.lifecycleScope)
+        viewModel.event.onEach(::listenToEvents).launchIn(viewLifecycleOwner.lifecycleScope)
+        binding.swipeRefreshLayout.setOnRefreshListener { viewModel.refreshData(isForceRefresh = true) }
+    }
+
+    private fun listenToEvents(event: CategoryViewModel.Event) = when (event) {
+        is CategoryViewModel.Event.ShowErrorMessage -> binding.root.createErrorSnackBar(event.errorMessage) {
+            viewModel.refreshData(isForceRefresh = true)
+        }
     }
 
     companion object {

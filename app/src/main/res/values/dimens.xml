@@ -220,4 +220,7 @@
     <dimen name="category_market_cap_margin_end">4dp</dimen>
     <dimen name="category_market_cap_margin_bottom">8dp</dimen>
 
+    <!-- Category RecyclerView-->
+    <dimen name="category_recycler_view_padding_bottom">40dp</dimen>
+
 </resources>
