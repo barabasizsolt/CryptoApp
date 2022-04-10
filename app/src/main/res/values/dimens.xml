@@ -7,6 +7,8 @@
     <dimen name="error_state_margin">32dp</dimen>
     <dimen name="chart_error_state_margin">40dp</dimen>
 
+    <dimen name="card_corner_radius">4dp</dimen>
+
     <!-- CryptoCurrency RecyclerView -->
     <dimen name="crypto_currency_card_height">80dp</dimen>
 

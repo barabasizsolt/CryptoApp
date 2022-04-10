@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.FragmentMainBinding
+import com.example.cryptoapp.feature.main.home.HomeFragment
 import com.example.cryptoapp.feature.main.news.NewsFragment
 import com.example.cryptoapp.feature.main.user.ProfileFragment
 import com.example.cryptoapp.feature.shared.navigation.BaseFragment
@@ -15,10 +16,17 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
             when (item.itemId) {
+                R.id.home -> consume {
+                    childFragmentManager.handleReplace(
+                        tag = "home",
+                        newInstance = HomeFragment.Companion::newInstance,
+                        addToBackStack = true
+                    )
+                }
                 R.id.market -> consume {
                     childFragmentManager.handleReplace(
                         tag = "currencies",
-                        newInstance = HomeFragment.Companion::newInstance,
+                        newInstance = MarketFragment.Companion::newInstance,
                         addToBackStack = true
                     )
                 }

@@ -67,6 +67,8 @@ fun String.convertToPrice(): String = numberFormatter.format(this.toDouble())
 
 fun String.convertToCompactPrice(): String = formatter.format(CurrencyAmount(this.toDouble(), currency))
 
+fun String.isSvg(): Boolean = this.contains(".svg")
+
 fun Int.ordinalOf() = "$this" + if (this % 100 in 11..13) "th" else when (this % 10) {
     1 -> "st"
     2 -> "nd"
@@ -170,13 +172,16 @@ inline fun <reified T : Fragment> FragmentManager.handleReplace(
 ) {
     beginTransaction().apply {
         val currentFragment = findFragmentById(containerId)
-        val newFragment = findFragmentByTag(tag) ?: newInstance()
-        currentFragment?.let {
-            currentFragment.exitTransition = MaterialFadeThrough()
-            currentFragment.reenterTransition = MaterialFadeThrough()
-            newFragment.enterTransition = MaterialFadeThrough()
-            newFragment.returnTransition = MaterialFadeThrough()
-        }
+        //val newFragment = findFragmentByTag(tag) ?: newInstance()
+        val newFragment = newInstance()
+
+        // TODO [mid] add better transition -> crashes compose
+//        currentFragment?.let {
+//            currentFragment.exitTransition = MaterialFadeThrough()
+//            currentFragment.reenterTransition = MaterialFadeThrough()
+//            newFragment.enterTransition = MaterialFadeThrough()
+//            newFragment.returnTransition = MaterialFadeThrough()
+//        }
 
         replace(containerId, newFragment, tag)
         if (addToBackStack) {

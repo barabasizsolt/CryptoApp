@@ -5,14 +5,14 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.cryptoapp.R
-import com.example.cryptoapp.databinding.FragmentHomeBinding
+import com.example.cryptoapp.databinding.FragmentMarketBinding
 import com.example.cryptoapp.feature.main.category.CategoryFragment
 import com.example.cryptoapp.feature.main.cryptocurrency.cryptocurrencyList.CryptoCurrencyFragment
 import com.example.cryptoapp.feature.main.exchange.ExchangeFragment
 import com.example.cryptoapp.feature.shared.navigation.BaseFragment
 import com.google.android.material.tabs.TabLayoutMediator
 
-class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
+class MarketFragment : BaseFragment<FragmentMarketBinding>(R.layout.fragment_market) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.viewPager.adapter = ViewPagerAdapter(fragment = this)
@@ -45,6 +45,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(R.layout.fragment_home) {
     }
 
     companion object {
-        fun newInstance() = HomeFragment()
+        fun newInstance() = MarketFragment()
     }
 }
