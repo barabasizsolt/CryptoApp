@@ -59,15 +59,19 @@
 
             <TextView
                 android:id="@+id/crypto_value"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="@{uiModel.formattedPrice}"
                 android:textSize="@dimen/large_crypto_item_text"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/market_cap"
+                app:layout_constraintStart_toEndOf="@id/crypto_symbol"
                 app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginStart="@dimen/content_padding"
+                android:layout_marginEnd="@dimen/content_padding"
+                android:gravity="center"
+                android:ellipsize="end"
                 tools:text="Value" />
 
             <TextView

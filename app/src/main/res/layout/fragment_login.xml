@@ -17,6 +17,12 @@
         android:gravity="center"
         tools:context=".feature.auth.login.LoginFragment">
 
+        <androidx.compose.ui.platform.ComposeView
+            android:id="@+id/reset_password_dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"/>
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/email_layout"
             android:layout_width="match_parent"
@@ -59,15 +65,6 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
-            android:id="@+id/forgot_password"
-            android:layout_marginTop="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:textSize="18sp"
-            android:text="@string/forgot_password" />
-
         <Button
             android:layout_marginTop="10dp"
             android:id="@+id/login_button"
@@ -75,8 +72,9 @@
             android:layout_height="wrap_content"
             android:text="@string/login"
             android:textColor="#000"
-            android:layout_marginStart="70dp"
-            android:layout_marginEnd="70dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:height="70dp"
             android:textSize="23sp"
             android:enabled="@{viewModel.isLoginEnabled}"
             android:onClick="@{() -> viewModel.loginWithEmailAndPassword()}"
@@ -89,7 +87,18 @@
             android:layout_height="wrap_content"
             android:textAlignment="center"
             android:textSize="18sp"
+            android:onClick="@{() -> viewModel.onRegisterClicked()}"
             android:text="@string/sign_up" />
+
+        <TextView
+            android:id="@+id/forgot_password"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textSize="18sp"
+            android:onClick="@{() -> viewModel.onResetPasswordClicked()}"
+            android:text="@string/forgot_password" />
 
         <com.google.android.material.progressindicator.CircularProgressIndicator
             android:id="@+id/progress_bar"

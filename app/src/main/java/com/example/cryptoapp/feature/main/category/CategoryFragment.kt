@@ -8,7 +8,7 @@ import com.example.cryptoapp.BR
 import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.FragmentCategoryBinding
 import com.example.cryptoapp.feature.shared.navigation.BaseFragment
-import com.example.cryptoapp.feature.shared.utils.createErrorSnackBar
+import com.example.cryptoapp.feature.shared.utils.createSnackBar
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -33,7 +33,7 @@ class CategoryFragment : BaseFragment<FragmentCategoryBinding>(R.layout.fragment
     }
 
     private fun listenToEvents(event: CategoryViewModel.Event) = when (event) {
-        is CategoryViewModel.Event.ShowErrorMessage -> binding.root.createErrorSnackBar(event.errorMessage) {
+        is CategoryViewModel.Event.ShowErrorMessage -> binding.root.createSnackBar(event.errorMessage) {
             viewModel.refreshData(isForceRefresh = true)
         }
     }

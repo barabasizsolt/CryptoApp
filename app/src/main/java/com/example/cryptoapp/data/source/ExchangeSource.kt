@@ -1,7 +1,7 @@
 package com.example.cryptoapp.data.source
 
-import com.example.cryptoapp.data.service.ExchangeService
 import com.example.cryptoapp.data.retrofitInstance.CoinGekkoRetrofitInstance
+import com.example.cryptoapp.data.service.ExchangeService
 
 class ExchangeSource(private val retrofitInstance: CoinGekkoRetrofitInstance) {
 

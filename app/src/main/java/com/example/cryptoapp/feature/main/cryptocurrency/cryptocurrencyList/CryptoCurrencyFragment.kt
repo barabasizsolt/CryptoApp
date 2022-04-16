@@ -12,7 +12,7 @@ import com.example.cryptoapp.feature.main.cryptocurrency.cryptocurrencyDetails.C
 import com.example.cryptoapp.feature.main.cryptocurrency.cryptocurrencyList.helpers.DialogType
 import com.example.cryptoapp.feature.main.cryptocurrency.cryptocurrencyList.helpers.FilterChip
 import com.example.cryptoapp.feature.shared.navigation.BaseFragment
-import com.example.cryptoapp.feature.shared.utils.createErrorSnackBar
+import com.example.cryptoapp.feature.shared.utils.createSnackBar
 import com.example.cryptoapp.feature.shared.utils.handleReplace
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.flow.launchIn
@@ -44,7 +44,7 @@ class CryptoCurrencyFragment : BaseFragment<FragmentCryptoCurrencyBinding>(R.lay
             newInstance = { CryptoCurrencyDetailsFragment.newInstance(event.cryptoCurrencyId) },
             tag = getString(R.string.crypto_details_back_stack_tag)
         )
-        is CryptoCurrencyViewModel.Event.ShowErrorMessage -> binding.root.createErrorSnackBar(event.errorMessage) {
+        is CryptoCurrencyViewModel.Event.ShowErrorMessage -> binding.root.createSnackBar(event.errorMessage) {
             viewModel.refreshData(isForceRefresh = true)
         }
     }

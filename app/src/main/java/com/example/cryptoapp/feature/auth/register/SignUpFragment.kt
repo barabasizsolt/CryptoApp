@@ -1,4 +1,4 @@
-package com.example.cryptoapp.feature.auth.signup
+package com.example.cryptoapp.feature.auth.register
 
 import android.os.Bundle
 import android.view.View
@@ -7,7 +7,7 @@ import com.example.cryptoapp.BR
 import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.FragmentSignUpBinding
 import com.example.cryptoapp.feature.shared.navigation.BaseFragment
-import com.example.cryptoapp.feature.shared.utils.createErrorSnackBar
+import com.example.cryptoapp.feature.shared.utils.createSnackBar
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -22,7 +22,7 @@ class SignUpFragment : BaseFragment<FragmentSignUpBinding>(R.layout.fragment_sig
     }
 
     private fun listenToEvent(event: SignUpViewModel.Event) = when (event) {
-        is SignUpViewModel.Event.ShowErrorMessage -> binding.root.createErrorSnackBar(errorMessage = event.message)
+        is SignUpViewModel.Event.ShowErrorMessage -> binding.root.createSnackBar(message = event.message)
         is SignUpViewModel.Event.RegisterUser -> navigator?.navigateToMain()
     }
 

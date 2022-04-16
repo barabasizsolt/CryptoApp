@@ -9,7 +9,7 @@ import com.example.cryptoapp.BR
 import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.FragmentExchangeBinding
 import com.example.cryptoapp.feature.shared.navigation.BaseFragment
-import com.example.cryptoapp.feature.shared.utils.createErrorSnackBar
+import com.example.cryptoapp.feature.shared.utils.createSnackBar
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -33,7 +33,7 @@ class ExchangeFragment : BaseFragment<FragmentExchangeBinding>(R.layout.fragment
     }
 
     private fun listenToEvents(event: ExchangeViewModel.Event) = when (event) {
-        is ExchangeViewModel.Event.ShowErrorMessage -> binding.root.createErrorSnackBar(event.errorMessage) {
+        is ExchangeViewModel.Event.ShowErrorMessage -> binding.root.createSnackBar(event.errorMessage) {
             viewModel.refreshData(isForceRefresh = true)
         }
         is ExchangeViewModel.Event.LogExchangeId -> logExchangeDetails(event)

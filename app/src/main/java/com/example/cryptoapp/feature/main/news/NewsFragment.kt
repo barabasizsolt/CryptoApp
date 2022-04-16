@@ -10,7 +10,7 @@ import com.example.cryptoapp.BR
 import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.FragmentNewsBinding
 import com.example.cryptoapp.feature.shared.navigation.BaseFragment
-import com.example.cryptoapp.feature.shared.utils.createErrorSnackBar
+import com.example.cryptoapp.feature.shared.utils.createSnackBar
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -34,7 +34,7 @@ class NewsFragment : BaseFragment<FragmentNewsBinding>(R.layout.fragment_news) {
     }
 
     private fun listenToEvents(event: NewsViewModel.Event) = when (event) {
-        is NewsViewModel.Event.ShowErrorMessage -> binding.root.createErrorSnackBar(event.errorMessage) {
+        is NewsViewModel.Event.ShowErrorMessage -> binding.root.createSnackBar(event.errorMessage) {
             viewModel.refreshData(isForceRefresh = true)
         }
         is NewsViewModel.Event.OpenBrowser -> openBrowser(event)

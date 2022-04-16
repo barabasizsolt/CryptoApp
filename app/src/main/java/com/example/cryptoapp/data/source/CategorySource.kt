@@ -1,7 +1,7 @@
 package com.example.cryptoapp.data.source
 
-import com.example.cryptoapp.data.service.CategoryService
 import com.example.cryptoapp.data.retrofitInstance.CoinGekkoRetrofitInstance
+import com.example.cryptoapp.data.service.CategoryService
 
 class CategorySource(private val retrofitInstance: CoinGekkoRetrofitInstance) {
 

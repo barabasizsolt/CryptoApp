@@ -1,4 +1,4 @@
-package com.example.cryptoapp.feature.auth.signup
+package com.example.cryptoapp.feature.auth.register
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

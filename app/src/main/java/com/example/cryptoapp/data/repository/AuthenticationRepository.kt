@@ -1,9 +1,9 @@
 package com.example.cryptoapp.data.repository
 
 import com.example.cryptoapp.R
-import com.example.cryptoapp.data.source.AuthenticationSource
 import com.example.cryptoapp.data.model.auth.User
 import com.example.cryptoapp.data.model.auth.UserAvatarType
+import com.example.cryptoapp.data.source.AuthenticationSource
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseUser

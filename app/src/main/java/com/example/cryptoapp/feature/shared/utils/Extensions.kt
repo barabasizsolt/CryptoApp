@@ -75,13 +75,13 @@ fun Int.ordinalOf() = "$this" + if (this % 100 in 11..13) "th" else when (this %
     else -> "th"
 }
 
-fun View.createErrorSnackBar(errorMessage: String, snackBarAction: () -> Unit) =
-    Snackbar.make(this, errorMessage, Snackbar.LENGTH_LONG)
+fun View.createSnackBar(message: String, snackBarAction: () -> Unit) =
+    Snackbar.make(this, message, Snackbar.LENGTH_LONG)
         .setAction(resources.getString(R.string.retry)) { snackBarAction() }
         .show()
 
-fun View.createErrorSnackBar(errorMessage: String) =
-    Snackbar.make(this, errorMessage, Snackbar.LENGTH_LONG)
+fun View.createSnackBar(message: String) =
+    Snackbar.make(this, message, Snackbar.LENGTH_LONG)
         .show()
 
 private fun List<CryptoCurrencyHistory>.toChartArray(timePeriod: String): ArrayList<Entry> {

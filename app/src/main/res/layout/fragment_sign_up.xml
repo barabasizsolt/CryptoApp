@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.cryptoapp.feature.auth.signup.SignUpViewModel" />
+            type="com.example.cryptoapp.feature.auth.register.SignUpViewModel" />
 
     </data>
 
@@ -87,8 +87,9 @@
             android:layout_height="wrap_content"
             android:text="@string/sign_up"
             android:textColor="#000"
-            android:layout_marginStart="70dp"
-            android:layout_marginEnd="70dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:height="70dp"
             android:textSize="23sp"
             android:enabled="@{viewModel.isRegisterEnabled}"
             android:onClick="@{() -> viewModel.registerWithEmailAndPassword()}"

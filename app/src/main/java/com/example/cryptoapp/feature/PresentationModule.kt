@@ -1,7 +1,7 @@
 package com.example.cryptoapp.feature
 
 import com.example.cryptoapp.feature.auth.login.LoginViewModel
-import com.example.cryptoapp.feature.auth.signup.SignUpViewModel
+import com.example.cryptoapp.feature.auth.register.SignUpViewModel
 import com.example.cryptoapp.feature.main.category.CategoryViewModel
 import com.example.cryptoapp.feature.main.cryptocurrency.cryptocurrencyDetails.CryptoCurrencyDetailsViewModel
 import com.example.cryptoapp.feature.main.cryptocurrency.cryptocurrencyList.CryptoCurrencyViewModel
@@ -24,7 +24,12 @@ val presentationModule = module {
     viewModel { CategoryViewModel(getCategoriesUseCase = get()) }
     viewModel { NewsViewModel(useCase = get()) }
     viewModel { ExchangeViewModel(useCase = get()) }
-    viewModel { LoginViewModel(loginWithEmailAndPasswordUseCase = get()) }
+    viewModel {
+        LoginViewModel(
+            loginWithEmailAndPasswordUseCase = get(),
+            resetPasswordUseCase = get()
+        )
+    }
     viewModel { SignUpViewModel(registerWithEmailAndPasswordUseCase = get()) }
     viewModel { ProfileViewModel(getCurrentUserUseCase = get()) }
 }

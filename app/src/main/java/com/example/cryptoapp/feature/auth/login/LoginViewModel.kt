@@ -1,8 +1,12 @@
 package com.example.cryptoapp.feature.auth.login
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cryptoapp.domain.authentication.LoginWithEmailAndPasswordUseCase
+import com.example.cryptoapp.domain.authentication.ResetPasswordUseCase
 import com.example.cryptoapp.feature.shared.utils.eventFlow
 import com.example.cryptoapp.feature.shared.utils.pushEvent
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,7 +16,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 
-class LoginViewModel(private val loginWithEmailAndPasswordUseCase: LoginWithEmailAndPasswordUseCase) : ViewModel() {
+class LoginViewModel(
+    private val loginWithEmailAndPasswordUseCase: LoginWithEmailAndPasswordUseCase,
+    private val resetPasswordUseCase: ResetPasswordUseCase
+) : ViewModel() {
 
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
@@ -28,6 +35,9 @@ class LoginViewModel(private val loginWithEmailAndPasswordUseCase: LoginWithEmai
     private val _event = eventFlow<Event>()
     val event: SharedFlow<Event> = _event
 
+    var isOpen by mutableStateOf(value = false)
+    var resetPasswordEmail by mutableStateOf(value = "")
+
     fun loginWithEmailAndPassword() {
         _isLoading.value = true
         val result = loginWithEmailAndPasswordUseCase(email = email.value, password = password.value)
@@ -41,9 +51,34 @@ class LoginViewModel(private val loginWithEmailAndPasswordUseCase: LoginWithEmai
         }
     }
 
+    fun resetPassword() {
+        resetPasswordUseCase(email = resetPasswordEmail)
+        isOpen = false
+        resetPasswordEmail = ""
+        _event.pushEvent(Event.ShowAfterResetPasswordMessage(message = "An email has been sent to your email address containing a link to reset your password."))
+    }
+
+    fun onEmailChange(email: String) {
+        resetPasswordEmail = email
+    }
+
+    fun onRegisterClicked() {
+        _event.pushEvent(Event.NavigateToRegister)
+    }
+
+    fun onResetPasswordClicked() {
+        _event.pushEvent(Event.ShowResetPasswordDialog)
+    }
+
     sealed class Event {
 
         data class LoginUser(val nothing: Any? = null) : Event()
+
+        object NavigateToRegister : Event()
+
+        object ShowResetPasswordDialog : Event()
+
+        data class ShowAfterResetPasswordMessage(val message: String) : Event()
 
         data class ShowErrorMessage(val message: String) : Event()
     }

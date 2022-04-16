@@ -10,7 +10,7 @@ import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.FragmentCryptoCurrencyDetailsBinding
 import com.example.cryptoapp.feature.shared.navigation.BaseFragment
 import com.example.cryptoapp.feature.shared.utils.BundleArgumentDelegate
-import com.example.cryptoapp.feature.shared.utils.createErrorSnackBar
+import com.example.cryptoapp.feature.shared.utils.createSnackBar
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -38,7 +38,7 @@ class CryptoCurrencyDetailsFragment : BaseFragment<FragmentCryptoCurrencyDetails
     }
 
     private fun listenToEvents(event: CryptoCurrencyDetailsViewModel.Event) = when (event) {
-        is CryptoCurrencyDetailsViewModel.Event.ShowErrorMessage -> binding.root.createErrorSnackBar(event.errorMessage) {
+        is CryptoCurrencyDetailsViewModel.Event.ShowErrorMessage -> binding.root.createSnackBar(event.errorMessage) {
             viewModel.refreshData()
         }
     }
