@@ -20,7 +20,6 @@ import com.example.cryptoapp.feature.shared.utils.Constant.numberFormatter
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineDataSet
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.transition.MaterialFadeThrough
 import java.time.DayOfWeek
 import java.time.Instant
 import java.time.LocalDateTime
@@ -172,7 +171,7 @@ inline fun <reified T : Fragment> FragmentManager.handleReplace(
 ) {
     beginTransaction().apply {
         val currentFragment = findFragmentById(containerId)
-        //val newFragment = findFragmentByTag(tag) ?: newInstance()
+        // val newFragment = findFragmentByTag(tag) ?: newInstance()
         val newFragment = newInstance()
 
         // TODO [mid] add better transition -> crashes compose

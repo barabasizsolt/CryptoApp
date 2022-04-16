@@ -7,7 +7,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.FragmentHomeBinding
-import com.example.cryptoapp.feature.main.home.catalog.CryptoCurrencyCard
 import com.example.cryptoapp.feature.main.home.catalog.CryptoCurrencyCardHolder
 import com.example.cryptoapp.feature.shared.navigation.BaseFragment
 

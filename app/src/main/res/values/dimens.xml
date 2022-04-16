@@ -6,6 +6,7 @@
     <dimen name="content_padding">8dp</dimen>
     <dimen name="error_state_margin">32dp</dimen>
     <dimen name="chart_error_state_margin">40dp</dimen>
+    <dimen name="zero_elevation">0dp</dimen>
 
     <dimen name="card_corner_radius">4dp</dimen>
 
