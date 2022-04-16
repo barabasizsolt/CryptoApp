@@ -1,15 +1,15 @@
 package com.example.cryptoapp.data.repository.cryptocurrency
 
-import com.example.cryptoapp.data.manager.NetworkManager
 import com.example.cryptoapp.data.shared.toModel
+import com.example.cryptoapp.data.source.CryptoCurrencySource
 import java.lang.IllegalStateException
 
-class CryptoCurrencyHistoryRepository(private val manager: NetworkManager) {
+class CryptoCurrencyHistoryRepository(private val source: CryptoCurrencySource) {
 
     suspend fun getCryptoCurrencyHistory(
         uuid: String,
         timePeriod: String,
-    ) = manager.cryptoSource.getCryptoCurrencyHistory(
+    ) = source.cryptoCurrencySource.getCryptoCurrencyHistory(
         uuid = uuid,
         timePeriod = timePeriod
     ).body()?.data?.history?.mapNotNull {

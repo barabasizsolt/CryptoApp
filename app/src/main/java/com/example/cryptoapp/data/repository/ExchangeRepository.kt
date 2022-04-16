@@ -1,12 +1,12 @@
 package com.example.cryptoapp.data.repository
 
-import com.example.cryptoapp.data.manager.NetworkManager
 import com.example.cryptoapp.data.model.RefreshType
 import com.example.cryptoapp.data.model.exchange.Exchange
 import com.example.cryptoapp.data.shared.toModel
+import com.example.cryptoapp.data.source.ExchangeSource
 import java.lang.IllegalStateException
 
-class ExchangeRepository(private val manager: NetworkManager) {
+class ExchangeRepository(private val source: ExchangeSource) {
 
     companion object {
         const val PER_PAGE: Int = 50
@@ -32,7 +32,7 @@ class ExchangeRepository(private val manager: NetworkManager) {
     }
 
     private suspend fun loadData(page: Int) =
-        manager.exchangeSource.getExchanges(
+        source.exchangeSource.getExchanges(
             perPage = PER_PAGE,
             page = page
         ).body()?.mapNotNull { exchangeResponse ->

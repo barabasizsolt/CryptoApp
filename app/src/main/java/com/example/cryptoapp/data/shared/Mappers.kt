@@ -6,12 +6,12 @@ import com.example.cryptoapp.data.model.cryptocurrency.CryptoCurrencyDetails
 import com.example.cryptoapp.data.model.cryptocurrency.CryptoCurrencyHistory
 import com.example.cryptoapp.data.model.exchange.Exchange
 import com.example.cryptoapp.data.model.news.News
-import com.example.cryptoapp.data.model.response.categories.CategoryResponse
-import com.example.cryptoapp.data.model.response.cryptocurrency.all.CryptoCurrencyResponse
-import com.example.cryptoapp.data.model.response.cryptocurrency.detail.SingleCryptoCurrencyDetailsResponse
-import com.example.cryptoapp.data.model.response.cryptocurrency.history.SingleCryptoCurrencyHistoryResponse
-import com.example.cryptoapp.data.model.response.exchange.ExchangeResponse
-import com.example.cryptoapp.data.model.response.news.NewsResponse
+import com.example.cryptoapp.data.service.response.categories.CategoryResponse
+import com.example.cryptoapp.data.service.response.cryptocurrency.all.CryptoCurrencyResponse
+import com.example.cryptoapp.data.service.response.cryptocurrency.detail.SingleCryptoCurrencyDetailsResponse
+import com.example.cryptoapp.data.service.response.cryptocurrency.history.SingleCryptoCurrencyHistoryResponse
+import com.example.cryptoapp.data.service.response.exchange.ExchangeResponse
+import com.example.cryptoapp.data.service.response.news.NewsResponse
 
 // CryptoCurrency Mappers
 fun CryptoCurrencyResponse.toModel() = when {

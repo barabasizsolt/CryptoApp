@@ -1,12 +1,12 @@
 package com.example.cryptoapp.data.repository
 
-import com.example.cryptoapp.data.manager.NetworkManager
 import com.example.cryptoapp.data.model.RefreshType
 import com.example.cryptoapp.data.model.category.Category
 import com.example.cryptoapp.data.shared.toModel
+import com.example.cryptoapp.data.source.CategorySource
 import java.lang.IllegalStateException
 
-class CategoryRepository(private val manager: NetworkManager) {
+class CategoryRepository(private val source: CategorySource) {
 
     private var cache: MutableList<Category>? = null
 
@@ -16,7 +16,7 @@ class CategoryRepository(private val manager: NetworkManager) {
     }
 
     private suspend fun loadData() =
-        manager.categorySource.getCategories().body()?.mapNotNull {
+        source.categorySource.getCategories().body()?.mapNotNull {
             it.toModel()
         } ?: throw IllegalStateException("Invalid data returned by the server")
 }

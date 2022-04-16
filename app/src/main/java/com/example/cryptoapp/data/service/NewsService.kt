@@ -1,6 +1,6 @@
 package com.example.cryptoapp.data.service
 
-import com.example.cryptoapp.data.model.response.news.AllNewsResponse
+import com.example.cryptoapp.data.service.response.news.AllNewsResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header

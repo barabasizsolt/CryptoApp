@@ -1,11 +1,11 @@
 package com.example.cryptoapp.data.repository
 
-import com.example.cryptoapp.data.manager.NetworkManager
 import com.example.cryptoapp.data.model.RefreshType
 import com.example.cryptoapp.data.model.news.News
 import com.example.cryptoapp.data.shared.toModel
+import com.example.cryptoapp.data.source.NewsSource
 
-class NewsRepository(private val manager: NetworkManager) {
+class NewsRepository(private val source: NewsSource) {
 
     private var cache: MutableList<News>? = null
     private var lastDownloadedPage = 1
@@ -26,7 +26,7 @@ class NewsRepository(private val manager: NetworkManager) {
         }
     }
 
-    private suspend fun loadData(page: Int) = manager.newsSource.getNews(
+    private suspend fun loadData(page: Int) = source.newsSource.getNews(
         page = page.toString()
     ).body()?.data?.mapNotNull { newsResponse ->
         newsResponse.toModel()

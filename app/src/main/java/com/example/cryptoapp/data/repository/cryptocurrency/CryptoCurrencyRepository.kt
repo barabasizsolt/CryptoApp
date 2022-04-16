@@ -1,12 +1,12 @@
 package com.example.cryptoapp.data.repository.cryptocurrency
 
-import com.example.cryptoapp.data.manager.NetworkManager
 import com.example.cryptoapp.data.model.RefreshType
 import com.example.cryptoapp.data.model.cryptocurrency.CryptoCurrency
 import com.example.cryptoapp.data.shared.toModel
+import com.example.cryptoapp.data.source.CryptoCurrencySource
 import java.lang.IllegalStateException
 
-class CryptoCurrencyRepository(private val manager: NetworkManager) {
+class CryptoCurrencyRepository(private val source: CryptoCurrencySource) {
 
     companion object {
         const val LIMIT = 50
@@ -61,7 +61,7 @@ class CryptoCurrencyRepository(private val manager: NetworkManager) {
         offset: Int,
         tags: List<String>,
         timePeriod: String
-    ) = manager.cryptoSource.getAllCryptoCurrencies(
+    ) = source.cryptoCurrencySource.getAllCryptoCurrencies(
         orderBy = orderBy,
         orderDirection = orderDirection,
         offset = offset,
