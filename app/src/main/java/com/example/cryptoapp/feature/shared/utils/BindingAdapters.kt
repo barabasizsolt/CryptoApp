@@ -52,7 +52,7 @@ fun ImageView.loadImage(url: String?) = ImageLoader.Builder(context)
     )
 
 @BindingAdapter("data", "formatter", requireAll = true)
-fun LineChart.initializeChart(
+fun LineChart.initializeCryptoCurrencyDetailChart(
     dataSet: LineDataSet,
     unitOfTimeType: UnitOfTimeType
 ) = this.let {

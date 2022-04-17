@@ -171,8 +171,8 @@ inline fun <reified T : Fragment> FragmentManager.handleReplace(
 ) {
     beginTransaction().apply {
         val currentFragment = findFragmentById(containerId)
-        // val newFragment = findFragmentByTag(tag) ?: newInstance()
-        val newFragment = newInstance()
+        val newFragment = findFragmentByTag(tag) ?: newInstance()
+        // val newFragment = newInstance()
 
         // TODO [mid] add better transition -> crashes compose
 //        currentFragment?.let {

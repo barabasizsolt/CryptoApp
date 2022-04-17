@@ -42,7 +42,7 @@ class CryptoCurrencyFragment : BaseFragment<FragmentCryptoCurrencyBinding>(R.lay
         is CryptoCurrencyViewModel.Event.OpenDetailsPage -> parentFragment?.parentFragmentManager?.handleReplace(
             addToBackStack = true,
             newInstance = { CryptoCurrencyDetailsFragment.newInstance(event.cryptoCurrencyId) },
-            tag = getString(R.string.crypto_details_back_stack_tag)
+            tag = "${event.cryptoCurrencyId}_${getString(R.string.crypto_details_back_stack_tag)}"
         )
         is CryptoCurrencyViewModel.Event.ShowErrorMessage -> binding.root.createSnackBar(event.errorMessage) {
             viewModel.refreshData(isForceRefresh = true)

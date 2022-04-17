@@ -3,9 +3,9 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'com.google.gms.google-services'
-    id 'io.gitlab.arturbosch.detekt'
-    id "org.jlleitschuh.gradle.ktlint"
-    id "org.jmailen.kotlinter"
+//    id 'io.gitlab.arturbosch.detekt'
+//    id "org.jlleitschuh.gradle.ktlint"
+//    id "org.jmailen.kotlinter"
 }
 
 android {
@@ -73,9 +73,9 @@ android {
 
 }
 
-check {
-    dependsOn "installKotlinterPrePushHook"
-}
+//check {
+//    dependsOn "installKotlinterPrePushHook"
+//}
 
 dependencies {
     //Koin dependency
@@ -89,7 +89,7 @@ dependencies {
     def coil_version = "1.4.0"
     implementation "io.coil-kt:coil:$coil_version"
     implementation "io.coil-kt:coil-svg:$coil_version"
-    implementation "com.github.skydoves:landscapist-glide:1.5.1"
+    implementation "io.coil-kt:coil-compose:1.4.0"
 
     //Networking dependencies
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
@@ -146,9 +146,6 @@ dependencies {
     implementation "androidx.compose.ui:ui-tooling:$compose_version"
     // Integration with ViewModels
     implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1'
-
-    //Madrapps chart library
-    implementation 'com.github.madrapps:plot:0.1.1'
 
     /*-------------------Android Core dependencies-----------------*/
     implementation 'androidx.core:core-ktx:1.7.0'

@@ -35,7 +35,7 @@ fun ResetPasswordDialog(
     email: String,
     onEmailChange: (String) -> Unit
 ) {
-    if(!isDismissed) {
+    if (!isDismissed) {
         AlertDialog(
             onDismissRequest = onDismiss,
             buttons = {
@@ -61,7 +61,7 @@ private fun ResetPasswordCard(
 
     Card(
         modifier = modifier.fillMaxWidth(),
-        backgroundColor = if (isSystemInDarkTheme()) Color(color = 0xFF121212) else Color.White,
+        backgroundColor = if (isSystemInDarkTheme()) colorResource(id = R.color.dark_mode_background_color) else Color.White,
         elevation = if (isSystemInDarkTheme()) 24.dp else 0.dp
     ) {
         Column(
@@ -79,7 +79,7 @@ private fun ResetPasswordCard(
             OutlinedTextField(
                 value = email,
                 onValueChange = onEmailChange,
-                label = { Text(text = "Email") },
+                label = { Text(text = stringResource(id = R.string.email)) },
                 colors = TextFieldDefaults.outlinedTextFieldColors(
                     textColor = contentColor,
                     focusedBorderColor = colorResource(id = R.color.orange),

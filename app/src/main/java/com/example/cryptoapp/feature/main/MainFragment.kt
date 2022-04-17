@@ -52,17 +52,17 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
     override fun onBackPressed(): Boolean = when (currentFragment?.childFragmentManager?.backStackEntryCount ?: 0 <= 1) {
         true -> when {
             binding.bottomNavigationView.selectedItemId == R.id.market -> when {
-                getString(R.string.crypto_details_back_stack_tag).equalsTopBackStackName() -> childFragmentManager.popBackStackImmediate()
-                getString(R.string.profile_back_stack_tag).equalsTopBackStackName() -> childFragmentManager.popBackStackImmediate()
+                getString(R.string.crypto_details_back_stack_tag).containsTopBackStackName() -> childFragmentManager.popBackStackImmediate() // TODO equal just substring
+                getString(R.string.profile_back_stack_tag).containsTopBackStackName() -> childFragmentManager.popBackStackImmediate()
                 else -> false
             }
-            getString(R.string.profile_back_stack_tag).equalsTopBackStackName() -> childFragmentManager.popBackStackImmediate()
+            getString(R.string.profile_back_stack_tag).containsTopBackStackName() -> childFragmentManager.popBackStackImmediate()
             else -> consume { binding.bottomNavigationView.selectedItemId = R.id.market }
         }
         else -> super.onBackPressed()
     }
 
-    private fun String.equalsTopBackStackName() = childFragmentManager.getBackStackEntryAt(childFragmentManager.backStackEntryCount - 1).name.equals(this)
+    private fun String.containsTopBackStackName() = childFragmentManager.getBackStackEntryAt(childFragmentManager.backStackEntryCount - 1).name!!.contains(this)
 
     companion object {
         fun newInstance() = MainFragment()

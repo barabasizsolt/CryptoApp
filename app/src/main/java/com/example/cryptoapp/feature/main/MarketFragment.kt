@@ -8,7 +8,7 @@ import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.FragmentMarketBinding
 import com.example.cryptoapp.feature.main.category.CategoryFragment
 import com.example.cryptoapp.feature.main.cryptocurrency.cryptocurrencyList.CryptoCurrencyFragment
-import com.example.cryptoapp.feature.main.exchange.ExchangeFragment
+import com.example.cryptoapp.feature.main.exchange.exchangeList.ExchangeFragment
 import com.example.cryptoapp.feature.shared.navigation.BaseFragment
 import com.google.android.material.tabs.TabLayoutMediator
 

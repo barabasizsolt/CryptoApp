@@ -63,4 +63,6 @@
     <string name="categories">Categories</string>
     <string name="exchanges">Exchanges</string>
     <string name="bottom_nav_home">Home</string>
+    <string name="email">Email</string>
+    <string name="exchange_volume_changes">Exchange volume changes</string>
 </resources>

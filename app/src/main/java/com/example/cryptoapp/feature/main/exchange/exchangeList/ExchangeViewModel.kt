@@ -1,4 +1,4 @@
-package com.example.cryptoapp.feature.main.exchange
+package com.example.cryptoapp.feature.main.exchange.exchangeList
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -67,7 +67,7 @@ class ExchangeViewModel(private val useCase: GetExchangesUseCase) : ViewModel() 
         }
     }
 
-    fun onExchangeItemClicked(id: String) = _event.pushEvent(Event.LogExchangeId(id))
+    fun onExchangeItemClicked(id: String) = _event.pushEvent(Event.OpenDetailPage(id))
 
     private fun Exchange.toListItem() = ExchangeListItem.Exchange(
         exchangeId = id,
@@ -78,7 +78,7 @@ class ExchangeViewModel(private val useCase: GetExchangesUseCase) : ViewModel() 
     )
 
     sealed class Event {
-        data class LogExchangeId(val id: String) : Event()
+        data class OpenDetailPage(val id: String) : Event()
 
         data class ShowErrorMessage(val errorMessage: String) : Event()
     }

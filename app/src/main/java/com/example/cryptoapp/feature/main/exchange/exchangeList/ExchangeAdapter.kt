@@ -1,4 +1,4 @@
-package com.example.cryptoapp.feature.main.exchange
+package com.example.cryptoapp.feature.main.exchange.exchangeList
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

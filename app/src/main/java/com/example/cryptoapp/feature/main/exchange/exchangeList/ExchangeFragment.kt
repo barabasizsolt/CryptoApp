@@ -1,4 +1,4 @@
-package com.example.cryptoapp.feature.main.exchange
+package com.example.cryptoapp.feature.main.exchange.exchangeList
 
 import android.os.Bundle
 import android.util.Log
@@ -8,8 +8,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.cryptoapp.BR
 import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.FragmentExchangeBinding
+import com.example.cryptoapp.feature.main.exchange.exchangeDetail.ExchangeDetailFragment
 import com.example.cryptoapp.feature.shared.navigation.BaseFragment
 import com.example.cryptoapp.feature.shared.utils.createSnackBar
+import com.example.cryptoapp.feature.shared.utils.handleReplace
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -36,10 +38,14 @@ class ExchangeFragment : BaseFragment<FragmentExchangeBinding>(R.layout.fragment
         is ExchangeViewModel.Event.ShowErrorMessage -> binding.root.createSnackBar(event.errorMessage) {
             viewModel.refreshData(isForceRefresh = true)
         }
-        is ExchangeViewModel.Event.LogExchangeId -> logExchangeDetails(event)
+        is ExchangeViewModel.Event.OpenDetailPage -> parentFragment?.parentFragmentManager?.handleReplace(
+            addToBackStack = true,
+            newInstance = { ExchangeDetailFragment.newInstance(exchangeId = event.id) },
+            tag = getString(R.string.crypto_details_back_stack_tag)
+        )
     }
 
-    private fun logExchangeDetails(event: ExchangeViewModel.Event.LogExchangeId) {
+    private fun logExchangeDetails(event: ExchangeViewModel.Event.OpenDetailPage) {
         Log.d("Details", event.id)
     }
 

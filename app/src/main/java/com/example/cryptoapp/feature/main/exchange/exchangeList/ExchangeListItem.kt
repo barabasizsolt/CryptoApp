@@ -1,4 +1,4 @@
-package com.example.cryptoapp.feature.main.exchange
+package com.example.cryptoapp.feature.main.exchange.exchangeList
 
 import com.example.cryptoapp.feature.shared.utils.ListItem
 import com.example.cryptoapp.feature.shared.utils.convertToCompactPrice
