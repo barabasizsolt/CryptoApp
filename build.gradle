@@ -13,9 +13,9 @@ buildscript {
         maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
-//        classpath "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:$detekt_version"
-//        classpath "org.jlleitschuh.gradle:ktlint-gradle:$ktlint_version"
-//        classpath "org.jmailen.gradle:kotlinter-gradle:$kotlinter_version"
+        classpath "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:$detekt_version"
+        classpath "org.jlleitschuh.gradle:ktlint-gradle:$ktlint_version"
+        classpath "org.jmailen.gradle:kotlinter-gradle:$kotlinter_version"
 
         classpath "com.android.tools.build:gradle:7.0.4"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
