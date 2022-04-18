@@ -4,5 +4,5 @@ enum class UnitOfTimeType {
     UNIT_24H,
     UNIT_7D,
     UNIT_1Y,
-    UNIT_6Y
+    UNIT_MAX
 }

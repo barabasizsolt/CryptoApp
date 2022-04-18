@@ -39,6 +39,6 @@ class CryptoXAxisFormatter(private val unitOfTimeType: UnitOfTimeType) : ValueFo
         UnitOfTimeType.UNIT_24H -> value.formatHour()
         UnitOfTimeType.UNIT_7D -> daysOfWeek[value]
         UnitOfTimeType.UNIT_1Y -> monthsOfYear[value]
-        UnitOfTimeType.UNIT_6Y -> value.formatYear()
+        UnitOfTimeType.UNIT_MAX -> value.formatYear()
     }
 }

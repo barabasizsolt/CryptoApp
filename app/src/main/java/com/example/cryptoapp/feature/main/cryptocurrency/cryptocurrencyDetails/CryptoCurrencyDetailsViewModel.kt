@@ -9,16 +9,12 @@ import androidx.lifecycle.viewModelScope
 import com.example.cryptoapp.R
 import com.example.cryptoapp.data.model.Result
 import com.example.cryptoapp.data.model.cryptocurrency.CryptoCurrencyDetails
-import com.example.cryptoapp.data.model.cryptocurrency.CryptoCurrencyHistory
 import com.example.cryptoapp.domain.cryptocurrency.GetCryptoCurrencyDetailsUseCase
 import com.example.cryptoapp.domain.cryptocurrency.GetCryptoCurrencyHistoryUseCase
-import com.example.cryptoapp.feature.main.cryptocurrency.Constant.DAY7
-import com.example.cryptoapp.feature.main.cryptocurrency.Constant.HOUR24
 import com.example.cryptoapp.feature.main.cryptocurrency.Constant.ROTATE_180
 import com.example.cryptoapp.feature.main.cryptocurrency.Constant.ROTATE_360
-import com.example.cryptoapp.feature.main.cryptocurrency.Constant.YEAR1
-import com.example.cryptoapp.feature.main.cryptocurrency.Constant.YEAR6
 import com.example.cryptoapp.feature.main.cryptocurrency.cryptocurrencyDetails.helpers.UnitOfTimeType
+import com.example.cryptoapp.feature.shared.utils.ChartHistory
 import com.example.cryptoapp.feature.shared.utils.ChipItem
 import com.example.cryptoapp.feature.shared.utils.convertToCompactPrice
 import com.example.cryptoapp.feature.shared.utils.convertToPrice
@@ -45,11 +41,16 @@ class CryptoCurrencyDetailsViewModel(
 
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing: StateFlow<Boolean> = _isRefreshing
+
     private val shouldShowError = MutableStateFlow(false)
+
     private val details = MutableStateFlow<CryptoCurrencyDetails?>(null)
-    private val history = MutableStateFlow<List<CryptoCurrencyHistory>?>(null)
-    private var timePeriod: String = HOUR24
+    private val history = MutableStateFlow<List<ChartHistory>?>(null)
+
+    private val cryptoTimePeriods = listOf("24h", "7d", "1y", "5y")
+    private var timePeriod: String = cryptoTimePeriods[0]
     private var unitOfTimeType: UnitOfTimeType = UnitOfTimeType.UNIT_24H
+
     private var isDescriptionExpanded: Boolean = false
     private var isDetailsErrorEmitted: Boolean = false
     private var isHistoryErrorEmitted: Boolean = false
@@ -72,8 +73,8 @@ class CryptoCurrencyDetailsViewModel(
                 isChecked = false
             ),
             ChipItem.CryptoCurrencyDetailsChipItem(
-                chipItemId = UnitOfTimeType.UNIT_6Y.ordinal,
-                chipTextId = R.string.chip_6y,
+                chipItemId = UnitOfTimeType.UNIT_MAX.ordinal,
+                chipTextId = R.string.chip_max,
                 isChecked = false
             )
         )
@@ -214,20 +215,20 @@ class CryptoCurrencyDetailsViewModel(
 
     fun onChipClicked(timeType: UnitOfTimeType) = when (timeType) {
         UnitOfTimeType.UNIT_24H -> {
-            timePeriod = HOUR24
+            timePeriod = cryptoTimePeriods[0]
             unitOfTimeType = UnitOfTimeType.UNIT_24H
         }
         UnitOfTimeType.UNIT_7D -> {
-            timePeriod = DAY7
+            timePeriod = cryptoTimePeriods[1]
             unitOfTimeType = UnitOfTimeType.UNIT_7D
         }
         UnitOfTimeType.UNIT_1Y -> {
-            timePeriod = YEAR1
+            timePeriod = cryptoTimePeriods[2]
             unitOfTimeType = UnitOfTimeType.UNIT_1Y
         }
-        UnitOfTimeType.UNIT_6Y -> {
-            timePeriod = YEAR6
-            unitOfTimeType = UnitOfTimeType.UNIT_6Y
+        UnitOfTimeType.UNIT_MAX -> {
+            timePeriod = cryptoTimePeriods[3]
+            unitOfTimeType = UnitOfTimeType.UNIT_MAX
         }
     }.let {
         onChipListChanged(timeType = timeType)

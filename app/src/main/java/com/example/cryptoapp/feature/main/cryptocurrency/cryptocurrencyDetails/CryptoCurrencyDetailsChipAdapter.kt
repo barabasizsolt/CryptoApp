@@ -17,7 +17,7 @@ class CryptoCurrencyDetailsChipAdapter(
         0 -> UnitOfTimeType.UNIT_24H.ordinal
         1 -> UnitOfTimeType.UNIT_7D.ordinal
         2 -> UnitOfTimeType.UNIT_1Y.ordinal
-        3 -> UnitOfTimeType.UNIT_6Y.ordinal
+        3 -> UnitOfTimeType.UNIT_MAX.ordinal
         else -> throw IllegalStateException("Invalid chipItemId: $chipItemId.")
     }
 
@@ -37,10 +37,10 @@ class CryptoCurrencyDetailsChipAdapter(
             onChipClicked = onChipClicked,
             unitOfTimeType = UnitOfTimeType.UNIT_1Y
         )
-        UnitOfTimeType.UNIT_6Y.ordinal -> ChipViewHolder.create(
+        UnitOfTimeType.UNIT_MAX.ordinal -> ChipViewHolder.create(
             parent = parent,
             onChipClicked = onChipClicked,
-            unitOfTimeType = UnitOfTimeType.UNIT_6Y
+            unitOfTimeType = UnitOfTimeType.UNIT_MAX
         )
         else -> throw IllegalStateException("Invalid viewType: $viewType.")
     }

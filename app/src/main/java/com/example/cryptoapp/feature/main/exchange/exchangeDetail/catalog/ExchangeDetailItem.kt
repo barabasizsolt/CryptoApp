@@ -2,9 +2,11 @@ package com.example.cryptoapp.feature.main.exchange.exchangeDetail.catalog
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,14 +19,21 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Card
+import androidx.compose.material.Divider
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -42,6 +51,15 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.google.android.material.color.MaterialColors
+
+@Composable
+private fun ExchangeDetailDivider() {
+    Divider(
+        modifier = Modifier.fillMaxWidth(),
+        color = Color.Gray,
+        thickness = 0.7.dp
+    )
+}
 
 @Composable
 fun ExchangeDetailHeader(
@@ -90,23 +108,14 @@ fun ExchangeDetailHeader(
                 )
             }
         }
+        ExchangeDetailDivider()
     }
 }
 
 @Composable
 fun ExchangeDetailChart(
     modifier: Modifier = Modifier,
-    lineDataSet: LineDataSet = LineDataSet(
-        arrayListOf(
-            Entry(0f, 15f),
-            Entry(4f, 11f),
-            Entry(8f, 9f),
-            Entry(12f, 25f),
-            Entry(16f, 31f),
-            Entry(20f, 13f),
-        ),
-        "data"
-    ),
+    lineDataSet: LineDataSet,
     unitOfTimeType: UnitOfTimeType = UnitOfTimeType.UNIT_24H
 ) {
     AndroidView(
@@ -114,18 +123,10 @@ fun ExchangeDetailChart(
             LineChart(context)
         },
         update = { lineChart ->
-            lineDataSet.setDrawValues(false)
-            lineDataSet.setDrawFilled(true)
-            lineDataSet.setDrawCircles(false)
             lineDataSet.apply {
                 color = MaterialColors.getColor(lineChart.context, R.attr.app_text_color, android.graphics.Color.WHITE)
                 highLightColor = MaterialColors.getColor(lineChart.context, R.attr.crypto_chart_color, android.graphics.Color.WHITE)
                 fillColor = MaterialColors.getColor(lineChart.context, R.attr.crypto_chart_color, android.graphics.Color.WHITE)
-                lineWidth = 3f
-                circleRadius = 10f
-                mode = LineDataSet.Mode.CUBIC_BEZIER
-                cubicIntensity = 0.1f
-                fillAlpha = 255
             }
             lineChart.apply {
                 extraBottomOffset = 5f
@@ -170,6 +171,7 @@ fun ExchangeDetailChart(
             .fillMaxWidth()
             .height(height = 300.dp)
     )
+    ExchangeDetailDivider()
 }
 
 @Composable
@@ -178,8 +180,7 @@ fun ExchangeDetailCardHolder(
     backgroundColor: Color,
     contentColor: Color,
     items: List<String>,
-    horizontalArrangement: Arrangement.Horizontal = Arrangement.Center,
-    fontWeight: FontWeight = FontWeight.Bold
+    horizontalArrangement: Arrangement.Horizontal = Arrangement.Center
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
         Row(
@@ -194,11 +195,11 @@ fun ExchangeDetailCardHolder(
                     modifier = Modifier.padding(all = 4.dp),
                     text = items[index],
                     backgroundColor = backgroundColor,
-                    contentColor = contentColor,
-                    fontWeight = fontWeight
+                    contentColor = contentColor
                 )
             })
         }
+        ExchangeDetailDivider()
     }
 }
 
@@ -207,14 +208,96 @@ private fun ExchangeDetailCard(
     modifier: Modifier = Modifier,
     text: String,
     backgroundColor: Color,
+    contentColor: Color
+) {
+    CardHolder(
+        modifier = modifier,
+        backgroundColor = backgroundColor,
+        contentColor = contentColor
+    ) {
+        Text(
+            text = text,
+            style = MaterialTheme.typography.subtitle1,
+            fontWeight = FontWeight.Bold
+        )
+    }
+}
+
+@Composable
+fun ExchangeDetailChipGroup(
+    modifier: Modifier = Modifier,
+    backgroundColor: Color,
     contentColor: Color,
-    fontWeight: FontWeight
+    items: List<String>,
+    onClick: (Int) -> Unit
+) {
+    var isSelected by remember { mutableStateOf(0) }
+
+    Column(modifier = modifier.fillMaxWidth()) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(all = 4.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            repeat(times = items.size, action = { index ->
+                ExchangeDetailChip(
+                    modifier = Modifier.padding(all = 4.dp),
+                    text = items[index],
+                    backgroundColor = backgroundColor,
+                    contentColor = contentColor,
+                    isSelected = index == isSelected,
+                    onClick = {
+                        if (isSelected != index) {
+                            isSelected = index
+                            onClick(index)
+                        }
+                    }
+                )
+            })
+        }
+        ExchangeDetailDivider()
+    }
+}
+
+@Composable
+private fun ExchangeDetailChip(
+    modifier: Modifier = Modifier,
+    text: String,
+    backgroundColor: Color,
+    contentColor: Color,
+    onClick: () -> Unit,
+    isSelected: Boolean
+) {
+    CardHolder(
+        modifier = modifier,
+        backgroundColor = if (isSelected) colorResource(id = R.color.orange) else backgroundColor,
+        contentColor = if (isSelected) Color.Black else contentColor,
+        onClick = onClick
+    ) {
+        Text(
+            text = text,
+            style = MaterialTheme.typography.subtitle1
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+private fun CardHolder(
+    modifier: Modifier = Modifier,
+    backgroundColor: Color,
+    contentColor: Color,
+    onClick: () -> Unit = {},
+    content: @Composable ColumnScope.() -> Unit,
 ) {
     Card(
         elevation = 0.dp,
         backgroundColor = backgroundColor,
         contentColor = contentColor,
-        modifier = modifier.wrapContentSize()
+        modifier = modifier.wrapContentSize(),
+        onClick = onClick
     ) {
         Column(
             modifier = Modifier
@@ -223,12 +306,7 @@ private fun ExchangeDetailCard(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                text = text,
-                style = MaterialTheme.typography.subtitle1,
-                fontWeight = fontWeight,
-                color = contentColor
-            )
+            content()
         }
     }
 }
@@ -275,6 +353,7 @@ fun ExchangeDetailBody(
             )
         }
     }
+    ExchangeDetailDivider()
 }
 
 @Composable
@@ -282,28 +361,31 @@ fun ExchangeDetailItem(
     modifier: Modifier = Modifier,
     title: String,
     text: String,
-    contentColor: Color
+    contentColor: Color,
+    onClick: () -> Unit
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(all = 8.dp),
+                .padding(all = 8.dp)
+                .clickable { onClick() },
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
                 text = title,
-                style = MaterialTheme.typography.subtitle1,
+                style = MaterialTheme.typography.subtitle2,
                 fontWeight = FontWeight.Bold,
                 color = contentColor
             )
             Text(
                 text = text,
-                style = MaterialTheme.typography.subtitle2,
+                style = MaterialTheme.typography.caption,
                 color = contentColor,
                 overflow = TextOverflow.Ellipsis
             )
         }
+        ExchangeDetailDivider()
     }
 }

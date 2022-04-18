@@ -1,17 +1,17 @@
 package com.example.cryptoapp.feature.main.exchange.exchangeDetail
 
 import com.example.cryptoapp.data.model.exchange.ExchangeDetail
-import com.example.cryptoapp.data.model.exchange.SingleExchangeDetailHistory
 import com.example.cryptoapp.data.model.exchange.Ticker
+import com.example.cryptoapp.feature.shared.utils.ChartHistory
 import com.example.cryptoapp.feature.shared.utils.convertToPrice
-import com.example.cryptoapp.feature.shared.utils.formatInput
-import com.example.cryptoapp.feature.shared.utils.getValue
+import com.example.cryptoapp.feature.shared.utils.toChartDataSet
+import com.github.mikephil.charting.data.LineDataSet
 
 sealed class ExchangeDetailUiModel {
 
     data class ExchangeDetail(
         val name: String,
-        val yearEstablished: Long,
+        val yearEstablished: String,
         val country: String,
         val url: String,
         val image: String,
@@ -27,7 +27,7 @@ sealed class ExchangeDetailUiModel {
     ) : ExchangeDetailUiModel()
 
     data class ExchangeDetailHistory(
-        val history: List<SingleExchangeDetailHistory>
+        val dataSet: LineDataSet
     )
 
     data class Ticker(
@@ -41,23 +41,18 @@ sealed class ExchangeDetailUiModel {
         val coinID: String,
         val targetCoinID: String
     )
-
-    data class SingleExchangeDetailHistory(
-        val timestamp: Long,
-        val price: String
-    )
 }
 
 fun ExchangeDetail.toUiModel() = ExchangeDetailUiModel.ExchangeDetail(
     name = name,
-    yearEstablished = yearEstablished,
+    yearEstablished = yearEstablished.toString(),
     country = country,
     url = url,
     image = image,
-    facebookURL = facebookURL.getValue(),
-    redditURL = redditURL.getValue(),
-    otherURL1 = otherURL1.getValue(),
-    otherURL2 = otherURL2.getValue(),
+    facebookURL = facebookURL,
+    redditURL = redditURL,
+    otherURL1 = otherURL1,
+    otherURL2 = otherURL2,
     centralized = if (centralized) "Centralized" else "Decentralized",
     trustScore = "10/$trustScore",
     trustScoreRank = "Rank #$trustScoreRank",
@@ -77,12 +72,6 @@ fun Ticker.toUiModel() = ExchangeDetailUiModel.Ticker(
     targetCoinID = targetCoinID
 )
 
-fun List<SingleExchangeDetailHistory>.toUiModel() = ExchangeDetailUiModel.ExchangeDetailHistory(
-    history = map { history -> history.toUiModel() }
+fun List<ChartHistory>.toUiModel(timePeriod: String) = ExchangeDetailUiModel.ExchangeDetailHistory(
+    dataSet = this.toChartDataSet(timePeriod = timePeriod)
 )
-
-fun SingleExchangeDetailHistory.toUiModel() = ExchangeDetailUiModel.SingleExchangeDetailHistory(
-    timestamp = timestamp.div(other = 1000).toLong(),
-    price = price
-)
-

@@ -19,11 +19,6 @@ object Constant {
     const val CURRENCY_FIRE_STORE_PATH = "currencies"
     const val COIN_ID: String = "coin_id"
 
-    const val HOUR24 = "24h"
-    const val DAY7 = "7d"
-    const val YEAR1 = "1y"
-    const val YEAR6 = "5y"
-
     val tags = listOf(
         "defi",
         "stablecoin",

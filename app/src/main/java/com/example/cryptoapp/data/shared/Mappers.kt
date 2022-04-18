@@ -3,10 +3,8 @@ package com.example.cryptoapp.data.shared
 import com.example.cryptoapp.data.model.category.Category
 import com.example.cryptoapp.data.model.cryptocurrency.CryptoCurrency
 import com.example.cryptoapp.data.model.cryptocurrency.CryptoCurrencyDetails
-import com.example.cryptoapp.data.model.cryptocurrency.CryptoCurrencyHistory
 import com.example.cryptoapp.data.model.exchange.Exchange
 import com.example.cryptoapp.data.model.exchange.ExchangeDetail
-import com.example.cryptoapp.data.model.exchange.SingleExchangeDetailHistory
 import com.example.cryptoapp.data.model.exchange.Ticker
 import com.example.cryptoapp.data.model.news.News
 import com.example.cryptoapp.data.service.response.categories.CategoryResponse
@@ -17,6 +15,7 @@ import com.example.cryptoapp.data.service.response.exchange.ExchangeDetailRespon
 import com.example.cryptoapp.data.service.response.exchange.ExchangeResponse
 import com.example.cryptoapp.data.service.response.exchange.TickerResponse
 import com.example.cryptoapp.data.service.response.news.NewsResponse
+import com.example.cryptoapp.feature.shared.utils.ChartHistory
 
 // CryptoCurrency Mappers
 fun CryptoCurrencyResponse.toModel() = when {
@@ -73,7 +72,7 @@ fun SingleCryptoCurrencyDetailsResponse.toModel() = when {
 
 fun SingleCryptoCurrencyHistoryResponse.toModel() = when {
     price == null || timestamp == null -> null
-    else -> CryptoCurrencyHistory(
+    else -> ChartHistory(
         price = price,
         timestamp = timestamp
     )
@@ -184,8 +183,8 @@ fun TickerResponse.toModel() = when {
 
 fun List<Any?>.toModel() = when {
     this.size != 2 || this[0] == null || this[1] == null -> null
-    else -> SingleExchangeDetailHistory(
-        timestamp = this[0] as Double,
+    else -> ChartHistory(
+        timestamp = (this[0] as Double).div(other = 1000).toLong(),
         price = this[1] as String
     )
 }
