@@ -51,6 +51,7 @@
     <string name="general_close_confirmation_positive">Leave</string>
     <string name="general_close_confirmation_negative">Cancel</string>
     <string name="crypto_details_back_stack_tag">crypto_details_tag</string>
+    <string name="exchange_details_back_stack_tag">exchange_details_tag</string>
     <string name="profile_back_stack_tag">profile</string>
     <string name="sign_out">Sign out</string>
     <string name="general_sign_out_confirmation_message">Do you want to sing out?</string>

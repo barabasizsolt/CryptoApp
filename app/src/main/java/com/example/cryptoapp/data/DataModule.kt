@@ -2,11 +2,13 @@ package com.example.cryptoapp.data
 
 import com.example.cryptoapp.data.repository.AuthenticationRepository
 import com.example.cryptoapp.data.repository.CategoryRepository
-import com.example.cryptoapp.data.repository.ExchangeRepository
+import com.example.cryptoapp.data.repository.exchange.ExchangeRepository
 import com.example.cryptoapp.data.repository.NewsRepository
 import com.example.cryptoapp.data.repository.cryptocurrency.CryptoCurrencyDetailsRepository
 import com.example.cryptoapp.data.repository.cryptocurrency.CryptoCurrencyHistoryRepository
 import com.example.cryptoapp.data.repository.cryptocurrency.CryptoCurrencyRepository
+import com.example.cryptoapp.data.repository.exchange.ExchangeDetailRepository
+import com.example.cryptoapp.data.repository.exchange.ExchangeHistoryRepository
 import com.example.cryptoapp.data.retrofitInstance.CoinGekkoRetrofitInstance
 import com.example.cryptoapp.data.retrofitInstance.CoinRankingRetrofitInstance
 import com.example.cryptoapp.data.source.AuthenticationSource
@@ -38,6 +40,8 @@ private fun createRepositories() = module {
     single { CryptoCurrencyHistoryRepository(source = get()) }
     single { CategoryRepository(source = get()) }
     single { ExchangeRepository(source = get()) }
+    single { ExchangeDetailRepository(source = get()) }
+    single { ExchangeHistoryRepository(source = get()) }
     single { NewsRepository(source = get()) }
 }
 

@@ -11,8 +11,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.cryptoapp.BR
 import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.FragmentExchangeDetailBinding
+import com.example.cryptoapp.feature.main.cryptocurrency.cryptocurrencyDetails.CryptoCurrencyDetailsViewModel
 import com.example.cryptoapp.feature.main.exchange.exchangeDetail.catalog.ExchangeDetailBody
 import com.example.cryptoapp.feature.main.exchange.exchangeDetail.catalog.ExchangeDetailCardHolder
 import com.example.cryptoapp.feature.main.exchange.exchangeDetail.catalog.ExchangeDetailChart
@@ -20,10 +22,14 @@ import com.example.cryptoapp.feature.main.exchange.exchangeDetail.catalog.Exchan
 import com.example.cryptoapp.feature.main.exchange.exchangeDetail.catalog.ExchangeDetailItem
 import com.example.cryptoapp.feature.shared.navigation.BaseFragment
 import com.example.cryptoapp.feature.shared.utils.BundleArgumentDelegate
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 
 class ExchangeDetailFragment : BaseFragment<FragmentExchangeDetailBinding>(R.layout.fragment_exchange_detail) {
+    private val viewModel: ExchangeDetailViewModel by viewModel { parametersOf(arguments?.exchangeId) }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        binding.setVariable(BR.viewModel, viewModel)
         binding.fragmentExchangeDetail.setContent {
 
             LazyColumn() {

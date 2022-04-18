@@ -40,13 +40,9 @@ class ExchangeFragment : BaseFragment<FragmentExchangeBinding>(R.layout.fragment
         }
         is ExchangeViewModel.Event.OpenDetailPage -> parentFragment?.parentFragmentManager?.handleReplace(
             addToBackStack = true,
-            newInstance = { ExchangeDetailFragment.newInstance(exchangeId = event.id) },
-            tag = getString(R.string.crypto_details_back_stack_tag)
+            newInstance = { ExchangeDetailFragment.newInstance(exchangeId = event.id.substringAfter("_")) },
+            tag = "${event.id}_${getString(R.string.exchange_details_back_stack_tag)}"
         )
-    }
-
-    private fun logExchangeDetails(event: ExchangeViewModel.Event.OpenDetailPage) {
-        Log.d("Details", event.id)
     }
 
     companion object {

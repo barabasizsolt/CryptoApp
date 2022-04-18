@@ -52,7 +52,8 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
     override fun onBackPressed(): Boolean = when (currentFragment?.childFragmentManager?.backStackEntryCount ?: 0 <= 1) {
         true -> when {
             binding.bottomNavigationView.selectedItemId == R.id.market -> when {
-                getString(R.string.crypto_details_back_stack_tag).containsTopBackStackName() -> childFragmentManager.popBackStackImmediate() // TODO equal just substring
+                getString(R.string.crypto_details_back_stack_tag).containsTopBackStackName() -> childFragmentManager.popBackStackImmediate()
+                getString(R.string.exchange_details_back_stack_tag).containsTopBackStackName() -> childFragmentManager.popBackStackImmediate()
                 getString(R.string.profile_back_stack_tag).containsTopBackStackName() -> childFragmentManager.popBackStackImmediate()
                 else -> false
             }

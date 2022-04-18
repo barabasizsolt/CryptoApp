@@ -68,6 +68,8 @@ fun String.convertToCompactPrice(): String = formatter.format(CurrencyAmount(thi
 
 fun String.isSvg(): Boolean = this.contains(".svg")
 
+fun String.getValue(): String = this.ifEmpty { "Undefined" }
+
 fun Int.ordinalOf() = "$this" + if (this % 100 in 11..13) "th" else when (this % 10) {
     1 -> "st"
     2 -> "nd"
