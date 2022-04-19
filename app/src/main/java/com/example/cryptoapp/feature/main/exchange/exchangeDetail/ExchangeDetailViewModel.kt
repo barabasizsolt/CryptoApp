@@ -9,12 +9,7 @@ import com.example.cryptoapp.domain.exchange.GetExchangeDetailsUseCase
 import kotlinx.coroutines.launch
 import com.example.cryptoapp.data.model.Result
 import com.example.cryptoapp.domain.exchange.GetExchangeHistoryUseCase
-import com.example.cryptoapp.feature.shared.utils.pushEvent
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancelChildren
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 
 class ExchangeDetailViewModel (
     private val exchangeId: String,
@@ -22,14 +17,10 @@ class ExchangeDetailViewModel (
     private val getExchangeHistory: GetExchangeHistoryUseCase,
 ) : ViewModel() {
 
-    private val _isRefreshing = MutableStateFlow(false)
-    val isRefreshing: StateFlow<Boolean> = _isRefreshing
-
     var exchangeDetails by mutableStateOf<ExchangeDetailUiModel.ExchangeDetail?>(value = null)
         private set
     var exchangeHistory by mutableStateOf<ExchangeDetailUiModel.ExchangeDetailHistory?>(value = null)
         private set
-    private var firstLoad: Boolean = true
 
     var screenState by mutableStateOf<ScreenState?>(value = null)
 
@@ -42,28 +33,29 @@ class ExchangeDetailViewModel (
     }
 
     fun refreshData() {
-        if(!_isRefreshing.value) {
-            _isRefreshing.value = true
-            viewModelScope.launch(Dispatchers.Default) {
-                when (val result = getExchangeDetail(id = exchangeId)) {
-                    is Result.Success -> {
-                        screenState = ScreenState.Normal
-                        exchangeDetails = result.data.toUiModel()
-                    }
-                    is Result.Failure -> showError(message = result.exception.message.toString())
-                }
-                getExchangeHistory()
+        screenState = ScreenState.Loading
+        viewModelScope.launch(Dispatchers.Default) {
+            getExchangeDetail()
+            getExchangeHistory()
+        }
+    }
+
+    private suspend fun getExchangeDetail() {
+        when (val result = getExchangeDetail(id = exchangeId)) {
+            is Result.Success -> {
+                exchangeDetails = result.data.toUiModel()
+                screenState = ScreenState.Normal
             }
-            _isRefreshing.value = false
-            if (firstLoad) {
-                firstLoad = false
-            }
+            is Result.Failure -> showError(message = result.exception.message.toString())
         }
     }
 
     private suspend fun getExchangeHistory(){
         when (val result = getExchangeHistory(id = exchangeId, days = timePeriods[selectedChip])) {
-            is Result.Success -> exchangeHistory = result.data.toUiModel(timePeriod = exchangeTimePeriods[selectedChip])
+            is Result.Success -> {
+                exchangeHistory = result.data.toUiModel(timePeriod = exchangeTimePeriods[selectedChip])
+                screenState = ScreenState.Normal
+            }
             is Result.Failure -> showError(message = result.exception.message.toString())
         }
     }
@@ -73,19 +65,15 @@ class ExchangeDetailViewModel (
         refreshExchangeHistory()
     }
 
-    fun clearContent() {
-        viewModelScope.coroutineContext.cancelChildren()
-    }
-
     private fun refreshExchangeHistory() {
-        viewModelScope.launch { getExchangeHistory() }
+        screenState = ScreenState.Loading
+        viewModelScope.launch {
+            getExchangeHistory()
+        }
     }
 
     private fun showError(message: String) {
-        _isRefreshing.pushEvent(event = false)
-        viewModelScope.coroutineContext.cancelChildren()
-        if (firstLoad)
-            screenState = ScreenState.ShowFirstErrorMessage else ScreenState.ShowSnackBarError(message = message)
+        screenState = if (exchangeDetails == null) ScreenState.ShowFirstErrorMessage else ScreenState.ShowSnackBarError(message = message)
     }
 
     sealed class ScreenState {

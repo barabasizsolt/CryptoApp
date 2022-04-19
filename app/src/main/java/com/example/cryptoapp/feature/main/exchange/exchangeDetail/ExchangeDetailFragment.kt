@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Button
@@ -53,6 +54,9 @@ import com.example.cryptoapp.feature.shared.navigation.BaseFragment
 import com.example.cryptoapp.feature.shared.utils.BundleArgumentDelegate
 import com.example.cryptoapp.feature.shared.utils.createSnackBar
 import com.example.cryptoapp.feature.shared.utils.getFormattedHour
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.SwipeRefreshIndicator
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -61,7 +65,6 @@ class ExchangeDetailFragment : BaseFragment<FragmentExchangeDetailBinding>(R.lay
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.setVariable(BR.viewModel, viewModel)
-        binding.swipeRefreshLayout.setOnRefreshListener(viewModel::refreshData)
         binding.fragmentExchangeDetail.setContent {
             ExchangeDetailScreen()
         }
@@ -74,22 +77,21 @@ class ExchangeDetailFragment : BaseFragment<FragmentExchangeDetailBinding>(R.lay
         val contentColor = if (isSystemInDarkTheme()) colorResource(id = R.color.dark_mode_text_color) else Color.Black
         val backgroundColor = if (isSystemInDarkTheme()) colorResource(id = R.color.dark_mode_background_color) else Color.White
 
-        DisposableEffect(
-            key1 = LocalLifecycleOwner.current,
-            effect = {
-                onDispose {
-                    viewModel.clearContent()
-                }
-            }
-        )
-
-        when (viewModel.screenState) {
-            is ExchangeDetailViewModel.ScreenState.Normal -> ScreenContent(
+        if(viewModel.exchangeDetails != null ){
+            ScreenContent(
                 backgroundColor = backgroundColor,
                 contentColor = contentColor
             )
-            else -> Unit
+        } else {
+            Box(modifier = Modifier.fillMaxSize()) {
+                SwipeRefreshIndicator(
+                    state = rememberSwipeRefreshState(isRefreshing = viewModel.exchangeDetails == null),
+                    refreshTriggerDistance = 80.dp,
+                    modifier = Modifier.align(alignment = Alignment.TopCenter)
+                )
+            }
         }
+
         when (val event = viewModel.screenState) {
             is ExchangeDetailViewModel.ScreenState.ShowFirstErrorMessage -> ErrorContent(
                 backgroundColor = backgroundColor,
@@ -103,10 +105,7 @@ class ExchangeDetailFragment : BaseFragment<FragmentExchangeDetailBinding>(R.lay
     }
 
     @Composable
-    private fun ErrorContent(
-        backgroundColor: Color,
-        contentColor: Color
-    ) {
+    private fun ErrorContent(backgroundColor: Color, contentColor: Color) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
@@ -151,115 +150,120 @@ class ExchangeDetailFragment : BaseFragment<FragmentExchangeDetailBinding>(R.lay
     ) {
         val detail = viewModel.exchangeDetails!!
 
-        LazyColumn {
-            item {
-                ExchangeDetailHeader(
-                    title = detail.name,
-                    url = detail.image,
-                    contentColor = contentColor
-                )
-            }
-            item {
-                ExchangeDetailCardHolder(
-                    backgroundColor = colorResource(id = R.color.dark_mode_background_color),
-                    contentColor = contentColor,
-                    items = listOf(detail.trustScoreRank, detail.centralized, detail.trustScore)
-                )
-            }
-            item {
-                if (viewModel.exchangeHistory == null) {
-                    ExchangeChartPlaceHolder(
-                        backgroundColor = backgroundColor,
+        SwipeRefresh(
+            state = rememberSwipeRefreshState(viewModel.screenState is ExchangeDetailViewModel.ScreenState.Loading),
+            onRefresh = { viewModel.refreshData() },
+        ) {
+            LazyColumn {
+                item {
+                    ExchangeDetailHeader(
+                        title = detail.name,
+                        url = detail.image,
                         contentColor = contentColor
                     )
-                } else {
-                    ExchangeDetailChart(lineDataSet = viewModel.exchangeHistory!!.dataSet)
                 }
-            }
-            item {
-                ExchangeDetailChipGroup(
-                    backgroundColor = backgroundColor,
-                    contentColor = contentColor,
-                    items = listOf(stringResource(id = R.string.chip_24hr), stringResource(id = R.string.chip_1w)),
-                    onClick = viewModel::onChipClicked
-                )
-            }
-            item {
-                ExchangeDetailBody(
-                    tradeVolume = detail.tradeVolume24HBtc,
-                    time = System.currentTimeMillis().getFormattedHour(),
-                    tickers = detail.tickers.size.toString(),
-                    contentColor = Color.LightGray
-                )
-            }
-            if (detail.yearEstablished.isNotEmpty()) {
                 item {
-                    ExchangeDetailItem(
-                        title = "Year established",
-                        text = detail.yearEstablished,
+                    ExchangeDetailCardHolder(
+                        backgroundColor = colorResource(id = R.color.dark_mode_background_color),
                         contentColor = contentColor,
-                        onClick = {}
+                        items = listOf(detail.trustScoreRank, detail.centralized, detail.trustScore)
                     )
                 }
-            }
-            if (detail.country.isNotEmpty()) {
                 item {
-                    ExchangeDetailItem(
-                        title = "Country",
-                        text = detail.country,
+                    if (viewModel.exchangeHistory == null) {
+                        ExchangeChartPlaceHolder(
+                            backgroundColor = backgroundColor,
+                            contentColor = contentColor
+                        )
+                    } else {
+                        ExchangeDetailChart(lineDataSet = viewModel.exchangeHistory!!.dataSet)
+                    }
+                }
+                item {
+                    ExchangeDetailChipGroup(
+                        backgroundColor = backgroundColor,
                         contentColor = contentColor,
-                        onClick = {}
+                        items = listOf(stringResource(id = R.string.chip_24hr), stringResource(id = R.string.chip_1w)),
+                        onClick = viewModel::onChipClicked
                     )
                 }
-            }
-            if (detail.url.isNotEmpty()) {
                 item {
-                    ExchangeDetailItem(
-                        title = "Homepage",
-                        text = detail.url,
-                        contentColor = contentColor,
-                        onClick = {}
+                    ExchangeDetailBody(
+                        tradeVolume = detail.tradeVolume24HBtc,
+                        time = System.currentTimeMillis().getFormattedHour(),
+                        tickers = detail.tickers.size.toString(),
+                        contentColor = Color.LightGray
                     )
                 }
-            }
-            if (detail.facebookURL.isNotEmpty()) {
-                item {
-                    ExchangeDetailItem(
-                        title = "Facebook",
-                        text = detail.facebookURL,
-                        contentColor = contentColor,
-                        onClick = {}
-                    )
+                if (detail.yearEstablished.isNotEmpty()) {
+                    item {
+                        ExchangeDetailItem(
+                            title = "Year established",
+                            text = detail.yearEstablished,
+                            contentColor = contentColor,
+                            onClick = {}
+                        )
+                    }
                 }
-            }
-            if (detail.redditURL.isNotEmpty()) {
-                item {
-                    ExchangeDetailItem(
-                        title = "Reddit",
-                        text = detail.redditURL,
-                        contentColor = contentColor,
-                        onClick = {}
-                    )
+                if (detail.country.isNotEmpty()) {
+                    item {
+                        ExchangeDetailItem(
+                            title = "Country",
+                            text = detail.country,
+                            contentColor = contentColor,
+                            onClick = {}
+                        )
+                    }
                 }
-            }
-            if (detail.otherURL1.isNotEmpty()) {
-                item {
-                    ExchangeDetailItem(
-                        title = "Other URL",
-                        text = detail.otherURL1,
-                        contentColor = contentColor,
-                        onClick = {}
-                    )
+                if (detail.url.isNotEmpty()) {
+                    item {
+                        ExchangeDetailItem(
+                            title = "Homepage",
+                            text = detail.url,
+                            contentColor = contentColor,
+                            onClick = {}
+                        )
+                    }
                 }
-            }
-            if (detail.otherURL2.isNotEmpty()) {
-                item {
-                    ExchangeDetailItem(
-                        title = "Other URL",
-                        text = detail.otherURL2,
-                        contentColor = contentColor,
-                        onClick = {}
-                    )
+                if (detail.facebookURL.isNotEmpty()) {
+                    item {
+                        ExchangeDetailItem(
+                            title = "Facebook",
+                            text = detail.facebookURL,
+                            contentColor = contentColor,
+                            onClick = {}
+                        )
+                    }
+                }
+                if (detail.redditURL.isNotEmpty()) {
+                    item {
+                        ExchangeDetailItem(
+                            title = "Reddit",
+                            text = detail.redditURL,
+                            contentColor = contentColor,
+                            onClick = {}
+                        )
+                    }
+                }
+                if (detail.otherURL1.isNotEmpty()) {
+                    item {
+                        ExchangeDetailItem(
+                            title = "Other URL",
+                            text = detail.otherURL1,
+                            contentColor = contentColor,
+                            onClick = {}
+                        )
+                    }
+                }
+                if (detail.otherURL2.isNotEmpty()) {
+                    item {
+                        ExchangeDetailItem(
+                            title = "Other URL",
+                            text = detail.otherURL2,
+                            contentColor = contentColor,
+                            onClick = {}
+                        )
+                    }
                 }
             }
         }
