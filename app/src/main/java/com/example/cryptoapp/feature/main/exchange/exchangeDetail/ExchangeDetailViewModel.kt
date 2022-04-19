@@ -9,10 +9,12 @@ import com.example.cryptoapp.domain.exchange.GetExchangeDetailsUseCase
 import kotlinx.coroutines.launch
 import com.example.cryptoapp.data.model.Result
 import com.example.cryptoapp.domain.exchange.GetExchangeHistoryUseCase
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
+import com.example.cryptoapp.feature.shared.utils.pushEvent
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancelChildren
-import kotlinx.coroutines.isActive
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 class ExchangeDetailViewModel (
     private val exchangeId: String,
@@ -20,14 +22,16 @@ class ExchangeDetailViewModel (
     private val getExchangeHistory: GetExchangeHistoryUseCase,
 ) : ViewModel() {
 
+    private val _isRefreshing = MutableStateFlow(false)
+    val isRefreshing: StateFlow<Boolean> = _isRefreshing
+
     var exchangeDetails by mutableStateOf<ExchangeDetailUiModel.ExchangeDetail?>(value = null)
         private set
     var exchangeHistory by mutableStateOf<ExchangeDetailUiModel.ExchangeDetailHistory?>(value = null)
         private set
-    var firstRefresh: Boolean = true
+    private var firstLoad: Boolean = true
 
     var screenState by mutableStateOf<ScreenState?>(value = null)
-    var event by mutableStateOf<Event?>(value = null)
 
     private var selectedChip: Int = 0
     private val exchangeTimePeriods = listOf("24h", "7d")
@@ -35,29 +39,32 @@ class ExchangeDetailViewModel (
 
     init {
         refreshData()
-        firstRefresh = false
     }
 
     fun refreshData() {
-        viewModelScope.launch {
-            screenState = ScreenState.Loading
-            listOf(
-                async {
-                    when (val result = getExchangeDetail(id = exchangeId)) {
-                        is Result.Success -> exchangeDetails = result.data.toUiModel()
-                        is Result.Failure -> showError(message = result.exception.message.toString())
+        if(!_isRefreshing.value) {
+            _isRefreshing.value = true
+            viewModelScope.launch(Dispatchers.Default) {
+                when (val result = getExchangeDetail(id = exchangeId)) {
+                    is Result.Success -> {
+                        screenState = ScreenState.Normal
+                        exchangeDetails = result.data.toUiModel()
                     }
-                },
-                async {
-                    when (val result = getExchangeHistory(id = exchangeId, days = timePeriods[selectedChip])) {
-                        is Result.Success -> exchangeHistory = result.data.toUiModel(timePeriod = exchangeTimePeriods[selectedChip])
-                        is Result.Failure -> showError(message = result.exception.message.toString())
-                    }
+                    is Result.Failure -> showError(message = result.exception.message.toString())
                 }
-            ).awaitAll()
-            if (viewModelScope.coroutineContext.isActive) {
-                screenState = ScreenState.Normal
+                getExchangeHistory()
             }
+            _isRefreshing.value = false
+            if (firstLoad) {
+                firstLoad = false
+            }
+        }
+    }
+
+    private suspend fun getExchangeHistory(){
+        when (val result = getExchangeHistory(id = exchangeId, days = timePeriods[selectedChip])) {
+            is Result.Success -> exchangeHistory = result.data.toUiModel(timePeriod = exchangeTimePeriods[selectedChip])
+            is Result.Failure -> showError(message = result.exception.message.toString())
         }
     }
 
@@ -66,21 +73,19 @@ class ExchangeDetailViewModel (
         refreshExchangeHistory()
     }
 
-
+    fun clearContent() {
+        viewModelScope.coroutineContext.cancelChildren()
+    }
 
     private fun refreshExchangeHistory() {
-        viewModelScope.launch {
-            when (val result = getExchangeHistory(id = exchangeId, days = timePeriods[selectedChip])) {
-                is Result.Success -> exchangeHistory = result.data.toUiModel(timePeriod = exchangeTimePeriods[selectedChip])
-                is Result.Failure -> showError(message = result.exception.message.toString())
-            }
-        }
+        viewModelScope.launch { getExchangeHistory() }
     }
 
     private fun showError(message: String) {
+        _isRefreshing.pushEvent(event = false)
         viewModelScope.coroutineContext.cancelChildren()
-        if (firstRefresh)
-            event = Event.ShowFirstErrorMessage else Event.ShowSnackBarError(message = message)
+        if (firstLoad)
+            screenState = ScreenState.ShowFirstErrorMessage else ScreenState.ShowSnackBarError(message = message)
     }
 
     sealed class ScreenState {
@@ -88,12 +93,9 @@ class ExchangeDetailViewModel (
         object Loading: ScreenState()
 
         object Normal: ScreenState()
-    }
 
-    sealed class Event {
+        data class ShowSnackBarError(val message: String) : ScreenState()
 
-        data class ShowSnackBarError(val message: String) : Event()
-
-        object ShowFirstErrorMessage : Event()
+        object ShowFirstErrorMessage : ScreenState()
     }
 }

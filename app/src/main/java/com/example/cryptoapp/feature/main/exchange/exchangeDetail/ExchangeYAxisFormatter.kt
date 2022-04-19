@@ -1,4 +1,4 @@
-package com.example.cryptoapp.feature.main.exchange.exchangeDetail.catalog
+package com.example.cryptoapp.feature.main.exchange.exchangeDetail
 
 import com.example.cryptoapp.feature.shared.utils.Constant
 import com.github.mikephil.charting.components.AxisBase

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -19,6 +20,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Card
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
@@ -35,6 +37,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -42,11 +45,11 @@ import coil.compose.rememberImagePainter
 import com.example.cryptoapp.R
 import com.example.cryptoapp.feature.main.cryptocurrency.cryptocurrencyDetails.helpers.CryptoXAxisFormatter
 import com.example.cryptoapp.feature.main.cryptocurrency.cryptocurrencyDetails.helpers.UnitOfTimeType
+import com.example.cryptoapp.feature.main.exchange.exchangeDetail.ExchangeYAxisFormatter
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.LegendEntry
 import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
@@ -172,6 +175,29 @@ fun ExchangeDetailChart(
             .height(height = 300.dp)
     )
     ExchangeDetailDivider()
+}
+
+@Composable
+fun ExchangeChartPlaceHolder(
+    modifier: Modifier = Modifier,
+    backgroundColor: Color,
+    contentColor: Color
+){
+    Card(
+        modifier = modifier
+            .padding(all = 8.dp)
+            .height(height = 300.dp),
+        backgroundColor = backgroundColor,
+        contentColor = contentColor
+    ) {
+        Column {
+            Box(modifier = Modifier.fillMaxSize()){
+                CircularProgressIndicator(modifier = Modifier.align(alignment = Alignment.Center), color = contentColor)
+            }
+            ExchangeDetailDivider()
+        }
+
+    }
 }
 
 @Composable
@@ -383,7 +409,10 @@ fun ExchangeDetailItem(
                 text = text,
                 style = MaterialTheme.typography.caption,
                 color = contentColor,
-                overflow = TextOverflow.Ellipsis
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.weight(weight = 1f),
+                textAlign = TextAlign.End,
+                maxLines = 1
             )
         }
         ExchangeDetailDivider()
