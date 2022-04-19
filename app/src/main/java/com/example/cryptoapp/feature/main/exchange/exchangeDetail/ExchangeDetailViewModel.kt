@@ -22,7 +22,7 @@ class ExchangeDetailViewModel (
     var exchangeHistory by mutableStateOf<ExchangeDetailUiModel.ExchangeDetailHistory?>(value = null)
         private set
 
-    var screenState by mutableStateOf<ScreenState?>(value = null)
+    var screenState by mutableStateOf<ScreenState>(value = ScreenState.Loading)
 
     private var selectedChip: Int = 0
     private val exchangeTimePeriods = listOf("24h", "7d")
