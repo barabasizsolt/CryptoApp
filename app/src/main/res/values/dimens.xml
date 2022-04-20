@@ -4,11 +4,15 @@
     <!-- Keylines / dimensions -->
     <dimen name="content_padding_half">4dp</dimen>
     <dimen name="content_padding">8dp</dimen>
+    <dimen name="screen_padding">20dp</dimen>
     <dimen name="error_state_margin">32dp</dimen>
     <dimen name="chart_error_state_margin">40dp</dimen>
     <dimen name="zero_elevation">0dp</dimen>
     <dimen name="card_corner_radius">4dp</dimen>
     <dimen name="chart_height">300dp</dimen>
+    <dimen name="button_height">40dp</dimen>
+    <dimen name="indicator_padding">80dp</dimen>
+    <dimen name="dark_mode_card_elevation">24dp</dimen>
 
     <!-- CryptoCurrency RecyclerView -->
     <dimen name="crypto_currency_card_height">80dp</dimen>

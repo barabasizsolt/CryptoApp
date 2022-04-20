@@ -18,11 +18,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.toUpperCase
-import androidx.compose.ui.unit.dp
 import com.example.cryptoapp.R
 import com.example.cryptoapp.feature.shared.theme.getBackgroundColor
 import com.example.cryptoapp.feature.shared.theme.getPrimaryColor
@@ -63,13 +63,14 @@ private fun ResetPasswordCard(
     Card(
         modifier = modifier.fillMaxWidth(),
         backgroundColor = getBackgroundColor(),
-        elevation = if (isSystemInDarkTheme()) 24.dp else 0.dp
+        elevation = if (isSystemInDarkTheme())
+            dimensionResource(id = R.dimen.dark_mode_card_elevation) else dimensionResource(id = R.dimen.zero_elevation)
     ) {
         Column(
-            verticalArrangement = Arrangement.spacedBy(space = 8.dp),
+            verticalArrangement = Arrangement.spacedBy(space = dimensionResource(id = R.dimen.content_padding)),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(all = 20.dp)
+                .padding(all = dimensionResource(id = R.dimen.screen_padding))
         ) {
             Text(
                 text = stringResource(id = R.string.reset_password_dialog_title),
@@ -99,7 +100,7 @@ private fun ResetPasswordCard(
                 Button(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(height = 40.dp),
+                        .height(height = dimensionResource(id = R.dimen.button_height)),
                     onClick = onAccess,
                     content = {
                         Text(text = stringResource(id = R.string.reset_password).toUpperCase(locale = Locale.current))

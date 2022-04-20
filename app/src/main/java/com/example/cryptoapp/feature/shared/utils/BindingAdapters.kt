@@ -83,6 +83,7 @@ fun LineChart.initializeCryptoCurrencyDetailChart(
     xAxis.position = XAxis.XAxisPosition.BOTTOM
     xAxis.setDrawGridLines(true)
     xAxis.isGranularityEnabled = true
+    xAxis.valueFormatter = CryptoXAxisFormatter(unitOfTimeType = unitOfTimeType)
     axisLeft.textColor = MaterialColors.getColor(context, R.attr.app_text_color, Color.WHITE)
     axisLeft.valueFormatter = CryptoYAxisFormatter()
     axisLeft.setDrawGridLines(true)
@@ -93,7 +94,6 @@ fun LineChart.initializeCryptoCurrencyDetailChart(
         it.highLightColor = MaterialColors.getColor(context, R.attr.crypto_chart_color, Color.WHITE)
         it.fillColor = MaterialColors.getColor(context, R.attr.crypto_chart_color, Color.WHITE)
     }
-    xAxis.valueFormatter = CryptoXAxisFormatter(unitOfTimeType = unitOfTimeType)
     data = LineData(arrayListOf<ILineDataSet>(dataSet))
     notifyDataSetChanged()
     invalidate()

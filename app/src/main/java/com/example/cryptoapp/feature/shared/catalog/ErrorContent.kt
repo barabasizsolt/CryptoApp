@@ -17,10 +17,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import com.example.cryptoapp.R
 import com.example.cryptoapp.feature.shared.theme.getBackgroundColor
 import com.example.cryptoapp.feature.shared.theme.getContentColor
@@ -34,8 +33,8 @@ fun ErrorContent(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .height(height = 150.dp)
-            .padding(all = 8.dp),
+            .height(height = dimensionResource(id = R.dimen.chart_height).div(other = 2))
+            .padding(all = dimensionResource(id = R.dimen.content_padding)),
         backgroundColor = getBackgroundColor()
     ) {
         Column(
@@ -49,11 +48,11 @@ fun ErrorContent(
                 fontWeight = FontWeight.Bold,
                 color = getContentColor()
             )
-            Spacer(modifier = Modifier.height(height = 8.dp))
+            Spacer(modifier = Modifier.height(height = dimensionResource(id = R.dimen.content_padding)))
             Button(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(height = 40.dp)
+                    .height(height = dimensionResource(id = R.dimen.button_height))
                     .wrapContentWidth(),
                 onClick = onClick,
                 content = {
