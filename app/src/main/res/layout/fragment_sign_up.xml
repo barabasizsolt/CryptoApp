@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.cryptoapp.feature.auth.register.SignUpViewModel" />
+            type="com.example.cryptoapp.feature.screen.auth.register.SignUpViewModel" />
 
     </data>
 
@@ -15,7 +15,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center"
-        tools:context=".feature.auth.login.LoginFragment">
+        tools:context=".feature.screen.auth.login.LoginFragment">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/email_layout"

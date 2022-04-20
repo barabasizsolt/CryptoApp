@@ -11,7 +11,7 @@ import androidx.fragment.app.FragmentManager
 import coil.load
 import coil.transform.CircleCropTransformation
 import com.example.cryptoapp.R
-import com.example.cryptoapp.feature.main.cryptocurrency.Constant.timePeriods
+import com.example.cryptoapp.feature.screen.main.cryptocurrency.Constant.timePeriods
 import com.example.cryptoapp.feature.shared.utils.Constant.currency
 import com.example.cryptoapp.feature.shared.utils.Constant.formatter
 import com.example.cryptoapp.feature.shared.utils.Constant.hourFormatter
@@ -26,6 +26,7 @@ import java.time.Month
 import java.time.ZoneId
 import java.util.Locale
 import kotlin.collections.ArrayList
+import kotlin.math.roundToInt
 
 fun ImageView.loadImage(image: Uri, placeholder: Int) = load(image) {
     placeholder(placeholder)
@@ -67,12 +68,18 @@ fun String.convertToCompactPrice(): String = formatter.format(CurrencyAmount(thi
 
 fun String.isSvg(): Boolean = this.contains(".svg")
 
+fun String.getExchangeItemValue(): String = this.ifEmpty { "Undefined" }
+
 fun Int.ordinalOf() = "$this" + if (this % 100 in 11..13) "th" else when (this % 10) {
     1 -> "st"
     2 -> "nd"
     3 -> "rd"
     else -> "th"
 }
+
+fun Float.formatHour() = if (this < 10f) "0${this.toInt()}:00" else "${this.toInt()}:00"
+
+fun Float.formatYear() = this.roundToInt().toString()
 
 fun View.createSnackBar(message: String, snackBarAction: () -> Unit) =
     Snackbar.make(this, message, Snackbar.LENGTH_LONG)
@@ -83,7 +90,7 @@ fun View.createSnackBar(message: String) =
     Snackbar.make(this, message, Snackbar.LENGTH_LONG)
         .show()
 
-private fun List<ChartHistory>.toChartArray(timePeriod: String, ): ArrayList<Entry> {
+private fun List<ChartHistory>.toChartArray(timePeriod: String): ArrayList<Entry> {
     val chartHistory: ArrayList<Entry> = ArrayList()
     when (timePeriod) {
         timePeriods[1] -> {
@@ -171,16 +178,13 @@ inline fun <reified T : Fragment> FragmentManager.handleReplace(
     beginTransaction().apply {
         val currentFragment = findFragmentById(containerId)
         val newFragment = findFragmentByTag(tag) ?: newInstance()
-        // val newFragment = newInstance()
-
-        // TODO [mid] add better transition -> crashes compose
+        // TODO [high] make compose crash
 //        currentFragment?.let {
 //            currentFragment.exitTransition = MaterialFadeThrough()
 //            currentFragment.reenterTransition = MaterialFadeThrough()
 //            newFragment.enterTransition = MaterialFadeThrough()
 //            newFragment.returnTransition = MaterialFadeThrough()
 //        }
-
         replace(containerId, newFragment, tag)
         if (addToBackStack) {
             addToBackStack(tag)

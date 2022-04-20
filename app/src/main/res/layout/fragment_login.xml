@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.cryptoapp.feature.auth.login.LoginViewModel" />
+            type="com.example.cryptoapp.feature.screen.auth.login.LoginViewModel" />
 
     </data>
 
@@ -15,7 +15,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center"
-        tools:context=".feature.auth.login.LoginFragment">
+        tools:context=".feature.screen.auth.login.LoginFragment">
 
         <androidx.compose.ui.platform.ComposeView
             android:id="@+id/reset_password_dialog"

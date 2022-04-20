@@ -69,4 +69,5 @@
     <string name="email">Email</string>
     <string name="exchange_volume_changes">Exchange volume changes</string>
     <string name="chip_max">Max</string>
+    <string name="exchange">Exchange</string>
 </resources>

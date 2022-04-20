@@ -7,8 +7,8 @@
     <dimen name="error_state_margin">32dp</dimen>
     <dimen name="chart_error_state_margin">40dp</dimen>
     <dimen name="zero_elevation">0dp</dimen>
-
     <dimen name="card_corner_radius">4dp</dimen>
+    <dimen name="chart_height">300dp</dimen>
 
     <!-- CryptoCurrency RecyclerView -->
     <dimen name="crypto_currency_card_height">80dp</dimen>
@@ -225,5 +225,9 @@
 
     <!-- Category RecyclerView-->
     <dimen name="category_recycler_view_padding_bottom">40dp</dimen>
+
+    <!-- Exchange Details-->
+    <dimen name="exchange_header_offset">25dp</dimen>
+    <dimen name="exchange_header_img_size">50dp</dimen>
 
 </resources>

@@ -16,7 +16,6 @@ import com.example.cryptoapp.domain.news.GetNewsUseCase
 import org.koin.dsl.module
 
 val domainModule = module {
-    // Use case
     factory { GetCryptoCurrenciesUseCase(repository = get()) }
     factory { GetCryptoCurrencyDetailsUseCase(repository = get()) }
     factory { GetCryptoCurrencyHistoryUseCase(repository = get()) }

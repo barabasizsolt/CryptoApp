@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.cryptoapp.feature.main.cryptocurrency.cryptocurrencyList.CryptoCurrencyViewModel" />
+            type="com.example.cryptoapp.feature.screen.main.cryptocurrency.cryptocurrencyList.CryptoCurrencyViewModel" />
 
     </data>
 

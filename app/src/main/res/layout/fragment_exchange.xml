@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.cryptoapp.feature.main.exchange.exchangeList.ExchangeViewModel" />
+            type="com.example.cryptoapp.feature.screen.main.exchange.exchangeList.ExchangeViewModel" />
 
     </data>
 

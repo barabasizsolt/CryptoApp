@@ -6,8 +6,8 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import com.example.cryptoapp.databinding.ActivityMainBinding
-import com.example.cryptoapp.feature.auth.AuthenticationFragment
-import com.example.cryptoapp.feature.main.MainFragment
+import com.example.cryptoapp.feature.screen.auth.AuthenticationFragment
+import com.example.cryptoapp.feature.screen.main.MainFragment
 import com.example.cryptoapp.feature.shared.navigation.BaseFragment
 import com.example.cryptoapp.feature.shared.navigation.Navigator
 import com.example.cryptoapp.feature.shared.utils.handleReplace

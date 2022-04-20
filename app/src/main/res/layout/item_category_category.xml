@@ -7,7 +7,7 @@
     <data>
         <variable
             name="uiModel"
-            type="com.example.cryptoapp.feature.main.category.CategoryListItem.Category" />
+            type="com.example.cryptoapp.feature.screen.main.category.CategoryListItem.Category" />
     </data>
 
     <androidx.cardview.widget.CardView

@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.cryptoapp.feature.main.user.ProfileViewModel" />
+            type="com.example.cryptoapp.feature.screen.main.user.ProfileViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
