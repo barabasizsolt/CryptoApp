@@ -35,6 +35,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
@@ -132,22 +133,13 @@ private fun ExchangeDetailLineChart(
     history: ExchangeDetailUiModel.ExchangeDetailHistory,
     unitOfTimeType: UnitOfTimeType
 ) {
+    val textColor = MaterialColors.getColor(LocalContext.current, R.attr.app_text_color, android.graphics.Color.WHITE)
+    val backgroundColor = MaterialColors.getColor(LocalContext.current, R.attr.app_background_color, android.graphics.Color.WHITE)
+    val chartColor = MaterialColors.getColor(LocalContext.current, R.attr.crypto_chart_color, android.graphics.Color.WHITE)
+
     AndroidView(
         factory = { context ->
-            LineChart(context)
-        },
-        update = { lineChart ->
-
-            val textColor = MaterialColors.getColor(lineChart.context, R.attr.app_text_color, android.graphics.Color.WHITE)
-            val backgroundColor = MaterialColors.getColor(lineChart.context, R.attr.app_background_color, android.graphics.Color.WHITE)
-            val chartColor = MaterialColors.getColor(lineChart.context, R.attr.crypto_chart_color, android.graphics.Color.WHITE)
-
-            history.dataSet.apply {
-                color = textColor
-                highLightColor = chartColor
-                fillColor = chartColor
-            }
-            lineChart.apply {
+            LineChart(context).apply {
                 extraBottomOffset = 5f
                 setTouchEnabled(false)
                 isDragEnabled = true
@@ -180,6 +172,15 @@ private fun ExchangeDetailLineChart(
                 axisLeft.setDrawGridLines(true)
                 axisRight.isEnabled = false
                 setBackgroundColor(backgroundColor)
+            }
+        },
+        update = { lineChart ->
+            history.dataSet.apply {
+                color = textColor
+                highLightColor = chartColor
+                fillColor = chartColor
+            }
+            lineChart.apply {
                 xAxis.valueFormatter = ExchangeXAxisFormatter(unitOfTimeType = unitOfTimeType)
                 data = LineData(arrayListOf<ILineDataSet>(history.dataSet))
                 notifyDataSetChanged()
