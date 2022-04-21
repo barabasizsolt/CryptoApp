@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.dimensionResource
 import com.example.cryptoapp.BR
 import com.example.cryptoapp.R
@@ -32,8 +33,12 @@ class ExchangeDetailFragment : BaseFragment<FragmentExchangeDetailBinding>(R.lay
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.setVariable(BR.viewModel, viewModel)
-        binding.fragmentExchangeDetail.setContent {
-            ExchangeDetailScreen()
+        binding.fragmentExchangeDetail.apply {
+            // Dispose of the Composition when the view's LifecycleOwner is destroyed
+            setViewCompositionStrategy(strategy = ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setContent {
+                ExchangeDetailScreen()
+            }
         }
     }
 
