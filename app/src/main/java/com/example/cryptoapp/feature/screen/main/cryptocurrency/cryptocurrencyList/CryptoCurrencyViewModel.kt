@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.cryptoapp.data.model.RefreshType
 import com.example.cryptoapp.data.model.Result
 import com.example.cryptoapp.data.model.cryptocurrency.CryptoCurrency
-import com.example.cryptoapp.domain.cryptocurrency.GetCryptoCurrenciesUseCase
+import com.example.cryptoapp.domain.useCase.cryptocurrency.GetCryptoCurrenciesUseCase
 import com.example.cryptoapp.feature.screen.main.cryptocurrency.Constant.sortingParams
 import com.example.cryptoapp.feature.screen.main.cryptocurrency.Constant.sortingTypes
 import com.example.cryptoapp.feature.screen.main.cryptocurrency.Constant.tags

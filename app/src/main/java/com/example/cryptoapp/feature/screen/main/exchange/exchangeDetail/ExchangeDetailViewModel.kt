@@ -5,10 +5,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.cryptoapp.domain.exchange.GetExchangeDetailsUseCase
+import com.example.cryptoapp.domain.useCase.exchange.GetExchangeDetailsUseCase
 import kotlinx.coroutines.launch
 import com.example.cryptoapp.data.model.Result
-import com.example.cryptoapp.domain.exchange.GetExchangeHistoryUseCase
+import com.example.cryptoapp.domain.useCase.exchange.GetExchangeHistoryUseCase
 import com.example.cryptoapp.feature.screen.main.cryptocurrency.cryptocurrencyDetails.helpers.UnitOfTimeType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async

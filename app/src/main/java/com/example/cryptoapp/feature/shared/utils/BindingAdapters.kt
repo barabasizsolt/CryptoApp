@@ -10,7 +10,7 @@ import coil.ImageLoader
 import coil.decode.SvgDecoder
 import coil.request.ImageRequest
 import com.example.cryptoapp.R
-import com.example.cryptoapp.data.model.auth.UserAvatarType
+import com.hackathon.auth.data.UserAvatarType
 import com.example.cryptoapp.feature.screen.main.cryptocurrency.cryptocurrencyDetails.helpers.CryptoXAxisFormatter
 import com.example.cryptoapp.feature.screen.main.cryptocurrency.cryptocurrencyDetails.helpers.CryptoYAxisFormatter
 import com.example.cryptoapp.feature.screen.main.cryptocurrency.cryptocurrencyDetails.helpers.UnitOfTimeType

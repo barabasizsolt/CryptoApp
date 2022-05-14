@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentManager
 import coil.load
 import coil.transform.CircleCropTransformation
 import com.example.cryptoapp.R
+import com.example.cryptoapp.data.shared.ChartHistory
 import com.example.cryptoapp.feature.screen.main.cryptocurrency.Constant.timePeriods
 import com.example.cryptoapp.feature.shared.utils.Constant.currency
 import com.example.cryptoapp.feature.shared.utils.Constant.formatter

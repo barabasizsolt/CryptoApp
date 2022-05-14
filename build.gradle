@@ -5,6 +5,8 @@ buildscript {
         detekt_version = '1.19.0'
         ktlint_version = '10.2.0'
         kotlinter_version = '3.7.0'
+        koin_version = "3.1.4"
+        retrofit_version = "2.9.0"
     }
     repositories {
         google()
@@ -26,11 +28,3 @@ buildscript {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
-
-//task installGitHook(type: Copy) {
-//    from new File(rootProject.rootDir, 'pre-commit')
-//    into { new File(rootProject.rootDir, '.git/hooks') }
-//    fileMode 0777
-//}
-
-//tasks.getByPath(':app:preBuild').dependsOn installGitHook

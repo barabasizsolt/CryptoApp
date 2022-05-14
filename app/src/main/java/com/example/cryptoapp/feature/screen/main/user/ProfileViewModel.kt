@@ -2,12 +2,11 @@ package com.example.cryptoapp.feature.screen.main.user
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.cryptoapp.data.model.Result
-import com.example.cryptoapp.data.model.auth.User
-import com.example.cryptoapp.domain.authentication.GetCurrentUserUseCase
+import com.hackathon.auth.data.User
 import com.example.cryptoapp.feature.shared.utils.eventFlow
 import com.example.cryptoapp.feature.shared.utils.formatUserRegistrationDate
 import com.example.cryptoapp.feature.shared.utils.pushEvent
+import com.hackathon.auth.domain.GetCurrentUserUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -39,13 +38,13 @@ class ProfileViewModel(getCurrentUserUseCase: GetCurrentUserUseCase) : ViewModel
             _isLoading.value = true
             shouldShowError.value = false
             when (val result = getCurrentUserUseCase()) {
-                is Result.Success -> {
-                    user.value = result.data
+                null -> {
+                    shouldShowError.value = true
+                    _event.pushEvent(event = Event.ShowErrorMessage(message = "Unable to get the user's data."))
                     _isLoading.value = false
                 }
-                is Result.Failure -> {
-                    shouldShowError.value = true
-                    _event.pushEvent(event = Event.ShowErrorMessage(message = result.exception.message.toString()))
+                else -> {
+                    user.value = result
                     _isLoading.value = false
                 }
             }

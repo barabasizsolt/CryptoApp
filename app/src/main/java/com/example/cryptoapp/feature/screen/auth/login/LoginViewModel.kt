@@ -5,8 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.cryptoapp.domain.authentication.LoginWithEmailAndPasswordUseCase
-import com.example.cryptoapp.domain.authentication.ResetPasswordUseCase
+import com.hackathon.auth.domain.LoginWithEmailAndPasswordUseCase
+import com.hackathon.auth.domain.ResetPasswordUseCase
 import com.example.cryptoapp.feature.shared.utils.eventFlow
 import com.example.cryptoapp.feature.shared.utils.pushEvent
 import kotlinx.coroutines.flow.MutableStateFlow

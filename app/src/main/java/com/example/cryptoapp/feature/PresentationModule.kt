@@ -1,5 +1,6 @@
 package com.example.cryptoapp.feature
 
+import com.example.cryptoapp.feature.activity.MainActivityViewModel
 import com.example.cryptoapp.feature.screen.auth.login.LoginViewModel
 import com.example.cryptoapp.feature.screen.auth.register.SignUpViewModel
 import com.example.cryptoapp.feature.screen.main.category.CategoryViewModel
@@ -13,6 +14,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val presentationModule = module {
+    viewModel { MainActivityViewModel(getCurrentUserUseCase = get()) }
     viewModel {
         LoginViewModel(
             loginWithEmailAndPasswordUseCase = get(),

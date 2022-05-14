@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.cryptoapp.data.model.RefreshType
 import com.example.cryptoapp.data.model.Result
 import com.example.cryptoapp.data.model.exchange.Exchange
-import com.example.cryptoapp.domain.exchange.GetExchangesUseCase
+import com.example.cryptoapp.domain.useCase.exchange.GetExchangesUseCase
 import com.example.cryptoapp.feature.shared.utils.eventFlow
 import com.example.cryptoapp.feature.shared.utils.pushEvent
 import kotlinx.coroutines.flow.MutableStateFlow
