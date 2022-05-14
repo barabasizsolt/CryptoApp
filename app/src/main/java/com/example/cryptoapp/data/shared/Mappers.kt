@@ -3,15 +3,19 @@ package com.example.cryptoapp.data.shared
 import com.example.cryptoapp.data.model.category.Category
 import com.example.cryptoapp.data.model.cryptocurrency.CryptoCurrency
 import com.example.cryptoapp.data.model.cryptocurrency.CryptoCurrencyDetails
-import com.example.cryptoapp.data.model.cryptocurrency.CryptoCurrencyHistory
 import com.example.cryptoapp.data.model.exchange.Exchange
+import com.example.cryptoapp.data.model.exchange.ExchangeDetail
+import com.example.cryptoapp.data.model.exchange.Ticker
 import com.example.cryptoapp.data.model.news.News
-import com.example.cryptoapp.data.model.response.categories.CategoryResponse
-import com.example.cryptoapp.data.model.response.cryptocurrency.all.CryptoCurrencyResponse
-import com.example.cryptoapp.data.model.response.cryptocurrency.detail.SingleCryptoCurrencyDetailsResponse
-import com.example.cryptoapp.data.model.response.cryptocurrency.history.SingleCryptoCurrencyHistoryResponse
-import com.example.cryptoapp.data.model.response.exchange.ExchangeResponse
-import com.example.cryptoapp.data.model.response.news.NewsResponse
+import com.example.cryptoapp.data.service.response.categories.CategoryResponse
+import com.example.cryptoapp.data.service.response.cryptocurrency.all.CryptoCurrencyResponse
+import com.example.cryptoapp.data.service.response.cryptocurrency.detail.SingleCryptoCurrencyDetailsResponse
+import com.example.cryptoapp.data.service.response.cryptocurrency.history.SingleCryptoCurrencyHistoryResponse
+import com.example.cryptoapp.data.service.response.exchange.ExchangeDetailResponse
+import com.example.cryptoapp.data.service.response.exchange.ExchangeResponse
+import com.example.cryptoapp.data.service.response.exchange.TickerResponse
+import com.example.cryptoapp.data.service.response.news.NewsResponse
+import com.example.cryptoapp.feature.shared.utils.ChartHistory
 
 // CryptoCurrency Mappers
 fun CryptoCurrencyResponse.toModel() = when {
@@ -68,7 +72,7 @@ fun SingleCryptoCurrencyDetailsResponse.toModel() = when {
 
 fun SingleCryptoCurrencyHistoryResponse.toModel() = when {
     price == null || timestamp == null -> null
-    else -> CryptoCurrencyHistory(
+    else -> ChartHistory(
         price = price,
         timestamp = timestamp
     )
@@ -117,6 +121,71 @@ fun ExchangeResponse.toModel() = when {
         image = image,
         trustScore = trustScore,
         volume = tradeVolume24HBtc
+    )
+}
+
+fun ExchangeDetailResponse.toModel() = when {
+    name == null ||
+            yearEstablished == null ||
+            country == null ||
+            url == null ||
+            image == null ||
+            facebookURL == null ||
+            redditURL == null ||
+            otherURL1 == null ||
+            otherURL2 == null ||
+            centralized == null ||
+            trustScore == null ||
+            trustScoreRank == null ||
+            tradeVolume24HBtc == null ||
+            tickers == null -> null
+    else -> ExchangeDetail(
+        name = name,
+        yearEstablished = yearEstablished,
+        country = country,
+        url = url,
+        image = image,
+        facebookURL = facebookURL,
+        redditURL = redditURL,
+        otherURL1 = otherURL1,
+        otherURL2 = otherURL2,
+        centralized = centralized,
+        trustScore = trustScore,
+        trustScoreRank = trustScoreRank,
+        tradeVolume24HBtc = tradeVolume24HBtc,
+        tickers = tickers.mapNotNull { ticker -> ticker.toModel() }
+    )
+
+}
+
+fun TickerResponse.toModel() = when {
+    base == null ||
+            target == null ||
+            volume == null ||
+            trustScore == null ||
+            isAnomaly == null ||
+            isStale == null ||
+            tradeURL == null ||
+            coinID == null ||
+            targetCoinID == null -> null
+    else -> Ticker(
+        base = base,
+        target = target,
+        volume = volume,
+        trustScore = trustScore,
+        isAnomaly = isAnomaly,
+        isStale = isStale,
+        tradeURL = tradeURL,
+        coinID = coinID,
+        targetCoinID = targetCoinID
+    )
+}
+
+fun List<Any?>.toModel() = when {
+    this.size != 2 || this[0] == null || this[1] == null -> null
+    else -> ChartHistory(
+        timestamp = (this[0] as Double).div(other = 1000).toLong(),
+        price = this[1] as String
     )
 }
 

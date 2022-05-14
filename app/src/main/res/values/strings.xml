@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">CryptoApp</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
@@ -8,6 +7,7 @@
     <string name="tags_title">Set filter tags</string>
     <string name="time_period_title">Set Time Period</string>
     <string name="reset_password">Reset password</string>
+    <string name="reset_password_dialog_title">Enter your email address</string>
     <string name="reset">Reset</string>
     <string name="update">Update</string>
     <string name="update_password">Update Password</string>
@@ -18,6 +18,8 @@
     <string name="crypto_default_currency">BTC/USD</string>
     <string name="chip_24hr">24 Hours</string>
     <string name="chip_7d">7 Days</string>
+    <string name="chip_1w">1 Week</string>
+    <string name="chip_1m">1 Month</string>
     <string name="chip_1y">1 Year</string>
     <string name="chip_6y">6 Year</string>
     <string name="coin_rank">Rank</string>
@@ -51,6 +53,7 @@
     <string name="general_close_confirmation_positive">Leave</string>
     <string name="general_close_confirmation_negative">Cancel</string>
     <string name="crypto_details_back_stack_tag">crypto_details_tag</string>
+    <string name="exchange_details_back_stack_tag">exchange_details_tag</string>
     <string name="profile_back_stack_tag">profile</string>
     <string name="sign_out">Sign out</string>
     <string name="general_sign_out_confirmation_message">Do you want to sing out?</string>
@@ -62,4 +65,9 @@
     <string name="crypto_currency">Cryptocurrency</string>
     <string name="categories">Categories</string>
     <string name="exchanges">Exchanges</string>
+    <string name="bottom_nav_home">Home</string>
+    <string name="email">Email</string>
+    <string name="exchange_volume_changes">Exchange volume changes</string>
+    <string name="chip_max">Max</string>
+    <string name="exchange">Exchange</string>
 </resources>

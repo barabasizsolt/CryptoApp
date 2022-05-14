@@ -11,9 +11,9 @@ import coil.decode.SvgDecoder
 import coil.request.ImageRequest
 import com.example.cryptoapp.R
 import com.example.cryptoapp.data.model.auth.UserAvatarType
-import com.example.cryptoapp.feature.main.cryptocurrency.cryptocurrencyDetails.helpers.CryptoXAxisFormatter
-import com.example.cryptoapp.feature.main.cryptocurrency.cryptocurrencyDetails.helpers.CryptoYAxisFormatter
-import com.example.cryptoapp.feature.main.cryptocurrency.cryptocurrencyDetails.helpers.UnitOfTimeType
+import com.example.cryptoapp.feature.screen.main.cryptocurrency.cryptocurrencyDetails.helpers.CryptoXAxisFormatter
+import com.example.cryptoapp.feature.screen.main.cryptocurrency.cryptocurrencyDetails.helpers.CryptoYAxisFormatter
+import com.example.cryptoapp.feature.screen.main.cryptocurrency.cryptocurrencyDetails.helpers.UnitOfTimeType
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.LegendEntry
@@ -52,7 +52,7 @@ fun ImageView.loadImage(url: String?) = ImageLoader.Builder(context)
     )
 
 @BindingAdapter("data", "formatter", requireAll = true)
-fun LineChart.initializeChart(
+fun LineChart.initializeCryptoCurrencyDetailChart(
     dataSet: LineDataSet,
     unitOfTimeType: UnitOfTimeType
 ) = this.let {
@@ -83,6 +83,7 @@ fun LineChart.initializeChart(
     xAxis.position = XAxis.XAxisPosition.BOTTOM
     xAxis.setDrawGridLines(true)
     xAxis.isGranularityEnabled = true
+    xAxis.valueFormatter = CryptoXAxisFormatter(unitOfTimeType = unitOfTimeType)
     axisLeft.textColor = MaterialColors.getColor(context, R.attr.app_text_color, Color.WHITE)
     axisLeft.valueFormatter = CryptoYAxisFormatter()
     axisLeft.setDrawGridLines(true)
@@ -93,7 +94,6 @@ fun LineChart.initializeChart(
         it.highLightColor = MaterialColors.getColor(context, R.attr.crypto_chart_color, Color.WHITE)
         it.fillColor = MaterialColors.getColor(context, R.attr.crypto_chart_color, Color.WHITE)
     }
-    xAxis.valueFormatter = CryptoXAxisFormatter(unitOfTimeType = unitOfTimeType)
     data = LineData(arrayListOf<ILineDataSet>(dataSet))
     notifyDataSetChanged()
     invalidate()

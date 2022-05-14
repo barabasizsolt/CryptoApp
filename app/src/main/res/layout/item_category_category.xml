@@ -7,7 +7,7 @@
     <data>
         <variable
             name="uiModel"
-            type="com.example.cryptoapp.feature.main.category.CategoryListItem.Category" />
+            type="com.example.cryptoapp.feature.screen.main.category.CategoryListItem.Category" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -20,55 +20,87 @@
             android:layout_height="match_parent"
             android:padding="@dimen/content_padding">
 
-            <ImageView
-                android:id="@+id/coin_1"
-                app:url="@{uiModel.top3CoinLogos[0]}"
-                tools:srcCompat="@tools:sample/avatars"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/coin_holder_1"
                 android:layout_width="@dimen/category_imageview_size"
                 android:layout_height="@dimen/category_imageview_size"
+                app:cardCornerRadius="@dimen/category_imageview_size"
+                app:cardElevation="@dimen/zero_elevation"
+                android:layout_gravity="center"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:id="@+id/coin_2"
-                app:url="@{uiModel.top3CoinLogos[1]}"
-                tools:srcCompat="@tools:sample/avatars"
+                <ImageView
+                    android:id="@+id/coin_1"
+                    app:url="@{uiModel.top3CoinLogos[0]}"
+                    tools:srcCompat="@tools:sample/avatars"
+                    android:layout_width="@dimen/category_imageview_size"
+                    android:layout_height="@dimen/category_imageview_size" />
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/coin_holder_2"
                 android:layout_width="@dimen/category_imageview_size"
                 android:layout_height="@dimen/category_imageview_size"
+                app:cardCornerRadius="@dimen/category_imageview_size"
+                app:cardElevation="@dimen/zero_elevation"
+                android:layout_gravity="center"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/coin_1"
+                app:layout_constraintStart_toEndOf="@+id/coin_holder_1"
                 android:layout_marginStart="@dimen/category_imageview_margin_start"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent" >
 
-            <ImageView
-                android:id="@+id/coin_3"
-                app:url="@{uiModel.top3CoinLogos[2]}"
-                tools:srcCompat="@tools:sample/avatars"
+                <ImageView
+                    android:id="@+id/coin_2"
+                    app:url="@{uiModel.top3CoinLogos[1]}"
+                    tools:srcCompat="@tools:sample/avatars"
+                    android:layout_width="@dimen/category_imageview_size"
+                    android:layout_height="@dimen/category_imageview_size" />
+
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/coin_holder_3"
                 android:layout_width="@dimen/category_imageview_size"
                 android:layout_height="@dimen/category_imageview_size"
+                app:cardCornerRadius="@dimen/category_imageview_size"
+                app:cardElevation="@dimen/zero_elevation"
+                android:layout_gravity="center"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/coin_2"
+                app:layout_constraintStart_toEndOf="@+id/coin_holder_2"
                 android:layout_marginStart="@dimen/category_imageview_margin_start"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent" >
+
+                <ImageView
+                    android:id="@+id/coin_3"
+                    app:url="@{uiModel.top3CoinLogos[2]}"
+                    tools:srcCompat="@tools:sample/avatars"
+                    android:layout_width="@dimen/category_imageview_size"
+                    android:layout_height="@dimen/category_imageview_size" />
+
+            </androidx.cardview.widget.CardView>
 
             <TextView
                 android:id="@+id/category_name"
                 android:text="@{uiModel.name}"
-                android:layout_width="@dimen/category_name_width"
+                android:layout_weight="1"
+                android:layout_width="@dimen/zero_elevation"
                 android:layout_height="match_parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/coin_3"
-                android:layout_marginStart="@dimen/category_name_margin_start"
-                android:textAlignment="textStart"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/coin_holder_3"
+                app:layout_constraintEnd_toStartOf="@id/market_cap"
+                android:layout_marginStart="@dimen/content_padding"
+                android:layout_marginEnd="@dimen/content_padding"
                 android:textSize="@dimen/medium_category_item_text"
                 android:textStyle="bold"
                 android:gravity="center"
                 tools:text="Centralized Exchnage Token (CEX)"
                 android:maxLines="3"
-                android:ellipsize="end"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="RtlCompat" />
+                android:ellipsize="end" />
 
             <TextView
                 android:id="@+id/volume_holder"

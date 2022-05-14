@@ -11,8 +11,7 @@ import androidx.fragment.app.FragmentManager
 import coil.load
 import coil.transform.CircleCropTransformation
 import com.example.cryptoapp.R
-import com.example.cryptoapp.data.model.cryptocurrency.CryptoCurrencyHistory
-import com.example.cryptoapp.feature.main.cryptocurrency.Constant
+import com.example.cryptoapp.feature.screen.main.cryptocurrency.Constant.timePeriods
 import com.example.cryptoapp.feature.shared.utils.Constant.currency
 import com.example.cryptoapp.feature.shared.utils.Constant.formatter
 import com.example.cryptoapp.feature.shared.utils.Constant.hourFormatter
@@ -20,7 +19,6 @@ import com.example.cryptoapp.feature.shared.utils.Constant.numberFormatter
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineDataSet
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.transition.MaterialFadeThrough
 import java.time.DayOfWeek
 import java.time.Instant
 import java.time.LocalDateTime
@@ -28,6 +26,7 @@ import java.time.Month
 import java.time.ZoneId
 import java.util.Locale
 import kotlin.collections.ArrayList
+import kotlin.math.roundToInt
 
 fun ImageView.loadImage(image: Uri, placeholder: Int) = load(image) {
     placeholder(placeholder)
@@ -67,6 +66,10 @@ fun String.convertToPrice(): String = numberFormatter.format(this.toDouble())
 
 fun String.convertToCompactPrice(): String = formatter.format(CurrencyAmount(this.toDouble(), currency))
 
+fun String.isSvg(): Boolean = this.contains(".svg")
+
+fun String.getExchangeItemValue(): String = this.ifEmpty { "Undefined" }
+
 fun Int.ordinalOf() = "$this" + if (this % 100 in 11..13) "th" else when (this % 10) {
     1 -> "st"
     2 -> "nd"
@@ -74,19 +77,23 @@ fun Int.ordinalOf() = "$this" + if (this % 100 in 11..13) "th" else when (this %
     else -> "th"
 }
 
-fun View.createErrorSnackBar(errorMessage: String, snackBarAction: () -> Unit) =
-    Snackbar.make(this, errorMessage, Snackbar.LENGTH_LONG)
+fun Float.formatHour() = if (this < 10f) "0${this.toInt()}:00" else "${this.toInt()}:00"
+
+fun Float.formatYear() = this.roundToInt().toString()
+
+fun View.createSnackBar(message: String, snackBarAction: () -> Unit) =
+    Snackbar.make(this, message, Snackbar.LENGTH_LONG)
         .setAction(resources.getString(R.string.retry)) { snackBarAction() }
         .show()
 
-fun View.createErrorSnackBar(errorMessage: String) =
-    Snackbar.make(this, errorMessage, Snackbar.LENGTH_LONG)
+fun View.createSnackBar(message: String) =
+    Snackbar.make(this, message, Snackbar.LENGTH_LONG)
         .show()
 
-private fun List<CryptoCurrencyHistory>.toChartArray(timePeriod: String): ArrayList<Entry> {
-    val currencyHistory: ArrayList<Entry> = ArrayList()
+private fun List<ChartHistory>.toChartArray(timePeriod: String): ArrayList<Entry> {
+    val chartHistory: ArrayList<Entry> = ArrayList()
     when (timePeriod) {
-        Constant.HOUR24 -> {
+        timePeriods[1] -> {
             val groupedHistory = sortedMapOf<Int, MutableList<Double>>()
 
             this.forEach { curr ->
@@ -98,10 +105,10 @@ private fun List<CryptoCurrencyHistory>.toChartArray(timePeriod: String): ArrayL
             }
 
             groupedHistory.forEach { elem ->
-                currencyHistory.add(Entry(elem.key.toFloat(), elem.value.average().toFloat()))
+                chartHistory.add(Entry(elem.key.toFloat(), elem.value.average().toFloat()))
             }
         }
-        Constant.DAY7 -> {
+        timePeriods[2] -> {
             val groupedHistory = mutableMapOf<DayOfWeek, MutableList<Double>>()
 
             this.forEach { curr ->
@@ -113,10 +120,10 @@ private fun List<CryptoCurrencyHistory>.toChartArray(timePeriod: String): ArrayL
             }
 
             groupedHistory.toSortedMap(compareBy { it.ordinal }).forEach { elem ->
-                currencyHistory.add(Entry(elem.key.value.toFloat(), elem.value.average().toFloat()))
+                chartHistory.add(Entry(elem.key.value.toFloat(), elem.value.average().toFloat()))
             }
         }
-        Constant.YEAR1 -> {
+        timePeriods[5] -> {
             val groupedHistory = mutableMapOf<Month, MutableList<Double>>()
 
             this.forEach { curr ->
@@ -128,10 +135,10 @@ private fun List<CryptoCurrencyHistory>.toChartArray(timePeriod: String): ArrayL
             }
 
             groupedHistory.toSortedMap(compareBy { it.ordinal }).forEach { elem ->
-                currencyHistory.add(Entry(elem.key.value.toFloat(), elem.value.average().toFloat()))
+                chartHistory.add(Entry(elem.key.value.toFloat(), elem.value.average().toFloat()))
             }
         }
-        Constant.YEAR6 -> {
+        timePeriods[7] -> {
             val groupedHistory = mutableMapOf<Int, MutableList<Double>>()
 
             this.forEach { curr ->
@@ -142,15 +149,15 @@ private fun List<CryptoCurrencyHistory>.toChartArray(timePeriod: String): ArrayL
                 groupedHistory[year]?.add(curr.price.toDouble())
             }
             groupedHistory.toSortedMap(compareBy { it }).forEach { elem ->
-                currencyHistory.add(Entry(elem.key.toFloat(), elem.value.average().toFloat()))
+                chartHistory.add(Entry(elem.key.toFloat(), elem.value.average().toFloat()))
             }
         }
     }
 
-    return currencyHistory
+    return chartHistory
 }
 
-fun List<CryptoCurrencyHistory>.toChartDataSet(timePeriod: String) = LineDataSet(this.toChartArray(timePeriod = timePeriod), "data")
+fun List<ChartHistory>.toChartDataSet(timePeriod: String) = LineDataSet(this.toChartArray(timePeriod = timePeriod), "data")
     .also { lineDataSet ->
         lineDataSet.lineWidth = 3f
         lineDataSet.setDrawValues(false)
@@ -171,13 +178,13 @@ inline fun <reified T : Fragment> FragmentManager.handleReplace(
     beginTransaction().apply {
         val currentFragment = findFragmentById(containerId)
         val newFragment = findFragmentByTag(tag) ?: newInstance()
-        currentFragment?.let {
-            currentFragment.exitTransition = MaterialFadeThrough()
-            currentFragment.reenterTransition = MaterialFadeThrough()
-            newFragment.enterTransition = MaterialFadeThrough()
-            newFragment.returnTransition = MaterialFadeThrough()
-        }
-
+        // TODO [high] make compose crash
+//        currentFragment?.let {
+//            currentFragment.exitTransition = MaterialFadeThrough()
+//            currentFragment.reenterTransition = MaterialFadeThrough()
+//            newFragment.enterTransition = MaterialFadeThrough()
+//            newFragment.returnTransition = MaterialFadeThrough()
+//        }
         replace(containerId, newFragment, tag)
         if (addToBackStack) {
             addToBackStack(tag)

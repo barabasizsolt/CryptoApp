@@ -6,7 +6,7 @@
 
         <variable
             name="uiModel"
-            type="com.example.cryptoapp.feature.main.user.ProfileListItem.User" />
+            type="com.example.cryptoapp.feature.screen.main.user.ProfileListItem.User" />
 
     </data>
 
@@ -15,7 +15,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center_horizontal"
-        tools:context=".feature.main.user.ProfileFragment">
+        tools:context=".feature.screen.main.user.ProfileFragment">
 
         <ImageView
             android:id="@+id/user_logo"

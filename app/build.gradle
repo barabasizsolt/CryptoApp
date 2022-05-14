@@ -60,14 +60,22 @@ android {
     buildFeatures {
         viewBinding true
         dataBinding true
+        compose true
     }
 
-    kotlinOptions.jvmTarget = '1.8'
+    kotlinOptions{
+        jvmTarget = '1.8'
+    }
+
+    composeOptions {
+        kotlinCompilerExtensionVersion '1.1.1'
+    }
+
 }
 
-check {
-    dependsOn "installKotlinterPrePushHook"
-}
+//check {
+//    dependsOn "installKotlinterPrePushHook"
+//}
 
 dependencies {
     //Koin dependency
@@ -81,6 +89,7 @@ dependencies {
     def coil_version = "1.4.0"
     implementation "io.coil-kt:coil:$coil_version"
     implementation "io.coil-kt:coil-svg:$coil_version"
+    implementation "io.coil-kt:coil-compose:1.4.0"
 
     //Networking dependencies
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
@@ -123,13 +132,25 @@ dependencies {
     //MPAndroidChart dependency
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
+    //Compose dependencies
+    def android_activity_version = "1.4.0"
+    def compose_version = "1.1.1"
+
+    // Integration with activities
+    implementation "androidx.activity:activity-compose:$android_activity_version"
+    // Compose Material Design
+    implementation "androidx.compose.material:material:$compose_version"
+    // Animations
+    implementation "androidx.compose.animation:animation:$compose_version"
+    // Tooling support (Previews, etc.)
+    implementation "androidx.compose.ui:ui-tooling:$compose_version"
+    // Integration with ViewModels
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1'
+    // Compose Swipe Refresh
+    implementation "com.google.accompanist:accompanist-swiperefresh:0.24.6-alpha"
+
     /*-------------------Android Core dependencies-----------------*/
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'
-    implementation 'androidx.activity:activity-ktx:1.4.0'
-
-    /*-------------------Android Test dependencies-----------------*/
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    implementation "androidx.activity:activity-ktx:$android_activity_version"
 }

@@ -4,7 +4,7 @@
 
         <variable
             name="uiModel"
-            type="com.example.cryptoapp.feature.main.cryptocurrency.cryptocurrencyList.CryptoCurrencyListItem.LoadMore" />
+            type="com.example.cryptoapp.feature.screen.main.cryptocurrency.cryptocurrencyList.CryptoCurrencyListItem.LoadMore" />
 
     </data>
 
