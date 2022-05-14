@@ -1,9 +1,8 @@
 package com.example.cryptoapp.data
 
-import com.example.cryptoapp.data.repository.AuthenticationRepository
-import com.example.cryptoapp.data.repository.CategoryRepository
+import com.example.cryptoapp.data.repository.category.CategoryRepository
 import com.example.cryptoapp.data.repository.exchange.ExchangeRepository
-import com.example.cryptoapp.data.repository.NewsRepository
+import com.example.cryptoapp.data.repository.news.NewsRepository
 import com.example.cryptoapp.data.repository.cryptocurrency.CryptoCurrencyDetailsRepository
 import com.example.cryptoapp.data.repository.cryptocurrency.CryptoCurrencyHistoryRepository
 import com.example.cryptoapp.data.repository.cryptocurrency.CryptoCurrencyRepository
@@ -11,7 +10,6 @@ import com.example.cryptoapp.data.repository.exchange.ExchangeDetailRepository
 import com.example.cryptoapp.data.repository.exchange.ExchangeHistoryRepository
 import com.example.cryptoapp.data.retrofitInstance.CoinGekkoRetrofitInstance
 import com.example.cryptoapp.data.retrofitInstance.CoinRankingRetrofitInstance
-import com.example.cryptoapp.data.source.AuthenticationSource
 import com.example.cryptoapp.data.source.CategorySource
 import com.example.cryptoapp.data.source.CryptoCurrencySource
 import com.example.cryptoapp.data.source.ExchangeSource
@@ -19,17 +17,8 @@ import com.example.cryptoapp.data.source.NewsSource
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
-fun createDataModules(): List<Module> =
-    listOf(createAuthenticationModule())
-        .plus(createContentModules())
-
-private fun createAuthenticationModule() = module {
-    single { AuthenticationSource() }
-    single { AuthenticationRepository(source = get()) }
-}
-
-private fun createContentModules(): List<Module> = listOf(
-    createRetrofitInstances(),
+fun createDataModules(coinRankingUrl: String, coinGekkoUrl: String): List<Module> = listOf(
+    createRetrofitInstances(coinRankingUrl = coinRankingUrl, coinGekkoUrl = coinGekkoUrl),
     createSources(),
     createRepositories()
 )
@@ -52,7 +41,7 @@ private fun createSources() = module {
     single { NewsSource(retrofitInstance = get()) }
 }
 
-private fun createRetrofitInstances() = module {
-    single { CoinRankingRetrofitInstance() }
-    single { CoinGekkoRetrofitInstance() }
+private fun createRetrofitInstances(coinRankingUrl: String, coinGekkoUrl: String) = module {
+    single { CoinRankingRetrofitInstance(baseUrl = coinRankingUrl) }
+    single { CoinGekkoRetrofitInstance(baseUrl = coinGekkoUrl) }
 }

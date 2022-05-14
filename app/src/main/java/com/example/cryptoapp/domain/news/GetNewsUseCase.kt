@@ -1,7 +1,7 @@
 package com.example.cryptoapp.domain.news
 
 import com.example.cryptoapp.data.model.RefreshType
-import com.example.cryptoapp.data.repository.NewsRepository
+import com.example.cryptoapp.data.repository.news.NewsRepository
 import com.example.cryptoapp.domain.resultOf
 
 class GetNewsUseCase(private val repository: NewsRepository) {

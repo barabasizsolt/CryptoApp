@@ -15,7 +15,6 @@ import com.example.cryptoapp.data.service.response.exchange.ExchangeDetailRespon
 import com.example.cryptoapp.data.service.response.exchange.ExchangeResponse
 import com.example.cryptoapp.data.service.response.exchange.TickerResponse
 import com.example.cryptoapp.data.service.response.news.NewsResponse
-import com.example.cryptoapp.feature.shared.utils.ChartHistory
 
 // CryptoCurrency Mappers
 fun CryptoCurrencyResponse.toModel() = when {

@@ -2,7 +2,7 @@ package com.example.cryptoapp.feature.screen.main.exchange.exchangeDetail
 
 import com.example.cryptoapp.data.model.exchange.ExchangeDetail
 import com.example.cryptoapp.data.model.exchange.Ticker
-import com.example.cryptoapp.feature.shared.utils.ChartHistory
+import com.example.cryptoapp.data.shared.ChartHistory
 import com.example.cryptoapp.feature.shared.utils.convertToPrice
 import com.example.cryptoapp.feature.shared.utils.getExchangeItemValue
 import com.example.cryptoapp.feature.shared.utils.toChartDataSet

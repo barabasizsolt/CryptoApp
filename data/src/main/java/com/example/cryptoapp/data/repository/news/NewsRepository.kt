@@ -1,4 +1,4 @@
-package com.example.cryptoapp.data.repository
+package com.example.cryptoapp.data.repository.news
 
 import com.example.cryptoapp.data.model.RefreshType
 import com.example.cryptoapp.data.model.news.News

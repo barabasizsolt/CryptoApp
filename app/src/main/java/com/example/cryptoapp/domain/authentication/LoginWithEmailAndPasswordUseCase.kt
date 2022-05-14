@@ -1,6 +1,6 @@
 package com.example.cryptoapp.domain.authentication
 
-import com.example.cryptoapp.data.repository.AuthenticationRepository
+import com.example.cryptoapp.auth.AuthenticationRepository
 
 class LoginWithEmailAndPasswordUseCase(private val repository: AuthenticationRepository) {
 

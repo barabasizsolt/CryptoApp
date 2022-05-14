@@ -1,4 +1,4 @@
-package com.example.cryptoapp.data.model.auth
+package com.example.cryptoapp.auth
 
 import android.net.Uri
 

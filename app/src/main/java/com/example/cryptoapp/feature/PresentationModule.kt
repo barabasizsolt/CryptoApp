@@ -1,5 +1,7 @@
 package com.example.cryptoapp.feature
 
+import com.example.cryptoapp.auth.AuthenticationRepository
+import com.example.cryptoapp.auth.AuthenticationSource
 import com.example.cryptoapp.feature.screen.auth.login.LoginViewModel
 import com.example.cryptoapp.feature.screen.auth.register.SignUpViewModel
 import com.example.cryptoapp.feature.screen.main.category.CategoryViewModel
@@ -39,4 +41,7 @@ val presentationModule = module {
         )
     }
     viewModel { ProfileViewModel(getCurrentUserUseCase = get()) }
+
+    single { AuthenticationSource() }
+    single { AuthenticationRepository(source = get()) }
 }

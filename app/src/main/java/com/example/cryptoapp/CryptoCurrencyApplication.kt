@@ -15,7 +15,8 @@ class CryptoCurrencyApplication : Application() {
         startKoin {
             androidContext(this@CryptoCurrencyApplication)
             modules(
-                modules = createDataModules().plus(listOf(domainModule, presentationModule, mainActivityModule))
+                modules = createDataModules(coinRankingUrl = BuildConfig.COINRANKING_URL, coinGekkoUrl = BuildConfig.COINGEKKO_URL)
+                    .plus(listOf(domainModule, presentationModule, mainActivityModule))
             )
         }
     }

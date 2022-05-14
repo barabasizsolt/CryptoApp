@@ -1,4 +1,4 @@
-package com.example.cryptoapp.feature.shared.utils
+package com.example.cryptoapp.data.shared
 
 data class ChartHistory(
     val price: String,

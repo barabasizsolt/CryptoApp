@@ -14,7 +14,7 @@ import com.example.cryptoapp.domain.cryptocurrency.GetCryptoCurrencyHistoryUseCa
 import com.example.cryptoapp.feature.screen.main.cryptocurrency.Constant.ROTATE_180
 import com.example.cryptoapp.feature.screen.main.cryptocurrency.Constant.ROTATE_360
 import com.example.cryptoapp.feature.screen.main.cryptocurrency.cryptocurrencyDetails.helpers.UnitOfTimeType
-import com.example.cryptoapp.feature.shared.utils.ChartHistory
+import com.example.cryptoapp.data.shared.ChartHistory
 import com.example.cryptoapp.feature.shared.utils.ChipItem
 import com.example.cryptoapp.feature.shared.utils.convertToCompactPrice
 import com.example.cryptoapp.feature.shared.utils.convertToPrice
