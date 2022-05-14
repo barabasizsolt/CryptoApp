@@ -1,4 +1,4 @@
-package com.example.cryptoapp.auth.data
+package com.hackathon.auth.data
 
 import android.net.Uri
 
