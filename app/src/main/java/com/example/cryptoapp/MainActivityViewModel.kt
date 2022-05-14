@@ -1,8 +1,8 @@
 package com.example.cryptoapp
 
 import androidx.lifecycle.ViewModel
+import com.example.cryptoapp.auth.domain.authentication.GetCurrentUserUseCase
 import com.example.cryptoapp.data.model.Result
-import com.example.cryptoapp.domain.authentication.GetCurrentUserUseCase
 import com.example.cryptoapp.feature.shared.utils.eventFlow
 import com.example.cryptoapp.feature.shared.utils.pushEvent
 import kotlinx.coroutines.flow.SharedFlow

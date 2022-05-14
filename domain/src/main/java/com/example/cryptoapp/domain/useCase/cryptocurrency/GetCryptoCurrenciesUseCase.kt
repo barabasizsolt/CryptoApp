@@ -1,4 +1,4 @@
-package com.example.cryptoapp.domain.cryptocurrency
+package com.example.cryptoapp.domain.useCase.cryptocurrency
 
 import com.example.cryptoapp.data.model.RefreshType
 import com.example.cryptoapp.data.repository.cryptocurrency.CryptoCurrencyRepository

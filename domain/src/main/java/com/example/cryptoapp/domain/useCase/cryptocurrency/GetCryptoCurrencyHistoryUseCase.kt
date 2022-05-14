@@ -1,4 +1,4 @@
-package com.example.cryptoapp.domain.cryptocurrency
+package com.example.cryptoapp.domain.useCase.cryptocurrency
 
 import com.example.cryptoapp.data.repository.cryptocurrency.CryptoCurrencyHistoryRepository
 import com.example.cryptoapp.domain.resultOf

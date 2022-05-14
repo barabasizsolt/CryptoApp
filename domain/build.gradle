@@ -9,14 +9,8 @@ java {
 }
 
 dependencies {
+    implementation(project(":data"))
 
     //Koin
     implementation "io.insert-koin:koin-core:$koin_version"
-
-    //Serialization
-    implementation 'com.google.code.gson:gson:2.8.9'
-
-    //Networking
-    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
-    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
 }

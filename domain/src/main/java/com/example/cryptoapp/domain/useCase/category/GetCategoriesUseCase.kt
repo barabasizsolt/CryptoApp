@@ -1,4 +1,4 @@
-package com.example.cryptoapp.domain.category
+package com.example.cryptoapp.domain.useCase.category
 
 import com.example.cryptoapp.data.model.RefreshType
 import com.example.cryptoapp.data.repository.category.CategoryRepository

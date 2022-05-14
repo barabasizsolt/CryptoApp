@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.cryptoapp.data.model.RefreshType
 import com.example.cryptoapp.data.model.Result
 import com.example.cryptoapp.data.model.category.Category
-import com.example.cryptoapp.domain.category.GetCategoriesUseCase
+import com.example.cryptoapp.domain.useCase.category.GetCategoriesUseCase
 import com.example.cryptoapp.feature.shared.utils.convertToCompactPrice
 import com.example.cryptoapp.feature.shared.utils.eventFlow
 import com.example.cryptoapp.feature.shared.utils.pushEvent

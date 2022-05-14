@@ -1,7 +1,12 @@
 package com.example.cryptoapp.feature
 
-import com.example.cryptoapp.auth.AuthenticationRepository
-import com.example.cryptoapp.auth.AuthenticationSource
+import com.example.cryptoapp.auth.data.AuthenticationRepository
+import com.example.cryptoapp.auth.data.AuthenticationSource
+import com.example.cryptoapp.auth.domain.authentication.GetCurrentUserUseCase
+import com.example.cryptoapp.auth.domain.authentication.LogOutUseCase
+import com.example.cryptoapp.auth.domain.authentication.LoginWithEmailAndPasswordUseCase
+import com.example.cryptoapp.auth.domain.authentication.RegisterWithEmailAndPasswordUseCase
+import com.example.cryptoapp.auth.domain.authentication.ResetPasswordUseCase
 import com.example.cryptoapp.feature.screen.auth.login.LoginViewModel
 import com.example.cryptoapp.feature.screen.auth.register.SignUpViewModel
 import com.example.cryptoapp.feature.screen.main.category.CategoryViewModel
@@ -42,6 +47,14 @@ val presentationModule = module {
     }
     viewModel { ProfileViewModel(getCurrentUserUseCase = get()) }
 
+    // auth data
     single { AuthenticationSource() }
     single { AuthenticationRepository(source = get()) }
+
+    // auth domain
+    factory { LoginWithEmailAndPasswordUseCase(repository = get()) }
+    factory { LogOutUseCase(repository = get()) }
+    factory { RegisterWithEmailAndPasswordUseCase(repository = get()) }
+    factory { ResetPasswordUseCase(repository = get()) }
+    factory { GetCurrentUserUseCase(repository = get()) }
 }

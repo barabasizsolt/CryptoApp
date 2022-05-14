@@ -9,8 +9,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.cryptoapp.R
 import com.example.cryptoapp.data.model.Result
 import com.example.cryptoapp.data.model.cryptocurrency.CryptoCurrencyDetails
-import com.example.cryptoapp.domain.cryptocurrency.GetCryptoCurrencyDetailsUseCase
-import com.example.cryptoapp.domain.cryptocurrency.GetCryptoCurrencyHistoryUseCase
+import com.example.cryptoapp.domain.useCase.cryptocurrency.GetCryptoCurrencyDetailsUseCase
+import com.example.cryptoapp.domain.useCase.cryptocurrency.GetCryptoCurrencyHistoryUseCase
 import com.example.cryptoapp.feature.screen.main.cryptocurrency.Constant.ROTATE_180
 import com.example.cryptoapp.feature.screen.main.cryptocurrency.Constant.ROTATE_360
 import com.example.cryptoapp.feature.screen.main.cryptocurrency.cryptocurrencyDetails.helpers.UnitOfTimeType

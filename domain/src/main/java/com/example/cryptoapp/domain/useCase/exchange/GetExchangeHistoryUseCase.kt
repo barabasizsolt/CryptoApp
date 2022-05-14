@@ -1,4 +1,4 @@
-package com.example.cryptoapp.domain.exchange
+package com.example.cryptoapp.domain.useCase.exchange
 
 import com.example.cryptoapp.data.repository.exchange.ExchangeHistoryRepository
 import com.example.cryptoapp.domain.resultOf

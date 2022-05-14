@@ -3,8 +3,8 @@ package com.example.cryptoapp.feature.screen.main.user
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cryptoapp.data.model.Result
-import com.example.cryptoapp.auth.User
-import com.example.cryptoapp.domain.authentication.GetCurrentUserUseCase
+import com.example.cryptoapp.auth.data.User
+import com.example.cryptoapp.auth.domain.authentication.GetCurrentUserUseCase
 import com.example.cryptoapp.feature.shared.utils.eventFlow
 import com.example.cryptoapp.feature.shared.utils.formatUserRegistrationDate
 import com.example.cryptoapp.feature.shared.utils.pushEvent
