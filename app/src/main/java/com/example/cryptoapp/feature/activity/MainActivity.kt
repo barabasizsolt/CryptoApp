@@ -1,10 +1,11 @@
-package com.example.cryptoapp
+package com.example.cryptoapp.feature.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
+import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.ActivityMainBinding
 import com.example.cryptoapp.feature.screen.auth.AuthenticationFragment
 import com.example.cryptoapp.feature.screen.main.MainFragment

@@ -1,4 +1,4 @@
-package com.example.cryptoapp
+package com.example.cryptoapp.feature.activity
 
 import androidx.lifecycle.ViewModel
 import com.example.cryptoapp.auth.domain.authentication.GetCurrentUserUseCase
