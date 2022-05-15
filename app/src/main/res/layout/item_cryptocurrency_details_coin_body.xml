@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:text="@string/coin_rank"
-            android:textSize="@dimen/large_crypto_details_coin_body_text"
+            style="@style/TextAppearance.CryptoApp.Subtitle1"
             android:layout_marginStart="@dimen/crypto_details_coin_body_margin_start"
             android:layout_marginTop="@dimen/crypto_details_coin_body_crypto_rank_margin_top"
             app:layout_constraintStart_toStartOf="parent"
@@ -43,7 +43,7 @@
             android:textStyle="bold"
             android:layout_marginStart="@dimen/crypto_details_coin_body_margin_start"
             android:text="@string/coin_supply"
-            android:textSize="@dimen/large_crypto_details_coin_body_text"
+            style="@style/TextAppearance.CryptoApp.Subtitle1"
             android:layout_marginTop="@dimen/crypto_details_coin_body_crypto_supply_margin_top"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/delimiter_1" />
@@ -54,7 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/crypto_details_coin_body_margin_start2"
             android:text="@string/coin_circulating"
-            android:textSize="@dimen/medium_crypto_details_coin_body_text"
+            style="@style/TextAppearance.CryptoApp.Subtitle2"
             android:layout_marginTop="@dimen/crypto_details_coin_body_crypto_circulating_margin_top"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/crypto_supply" />
@@ -75,7 +75,7 @@
             android:textStyle="bold"
             android:layout_marginStart="@dimen/crypto_details_coin_body_margin_start"
             android:text="@string/coin_btc_price"
-            android:textSize="@dimen/large_crypto_details_coin_body_text"
+            style="@style/TextAppearance.CryptoApp.Subtitle1"
             android:layout_marginTop="@dimen/crypto_details_coin_body_crypto_btc_price_margin_top"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/delimiter_2" />
@@ -96,7 +96,7 @@
             android:textStyle="bold"
             android:layout_marginStart="@dimen/crypto_details_coin_body_margin_start"
             android:text="@string/coin_all_time_high"
-            android:textSize="@dimen/large_crypto_details_coin_body_text"
+            style="@style/TextAppearance.CryptoApp.Subtitle1"
             android:layout_marginTop="@dimen/crypto_details_coin_body_crypto_all_time_high_margin_top"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/delimiter_3" />
@@ -107,7 +107,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/crypto_details_coin_body_margin_start2"
             android:text="@string/coin_ath_date"
-            android:textSize="@dimen/medium_crypto_details_coin_body_text"
+            style="@style/TextAppearance.CryptoApp.Subtitle2"
             android:layout_marginTop="@dimen/crypto_details_coin_body_crypto_all_time_high_date_margin_top"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/crypto_all_time_high" />
@@ -128,7 +128,7 @@
             android:layout_marginStart="@dimen/crypto_details_coin_body_margin_start"
             android:text="@string/coin_description"
             android:textStyle="bold"
-            android:textSize="@dimen/large_crypto_details_coin_body_text"
+            style="@style/TextAppearance.CryptoApp.Subtitle1"
             android:layout_marginTop="@dimen/crypto_details_coin_body_crypto_description_margin_top"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/delimiter_4" />
@@ -139,7 +139,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/crypto_details_coin_body_margin_end"
             android:text="@{uiModel.rank}"
-            android:textSize="@dimen/large_crypto_details_coin_body_text"
+            style="@style/TextAppearance.CryptoApp.Subtitle1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/crypto_rank"
             tools:text="Undefined" />
@@ -150,7 +150,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/crypto_details_coin_body_margin_end"
             android:text="@{uiModel.supply}"
-            android:textSize="@dimen/large_crypto_details_coin_body_text"
+            style="@style/TextAppearance.CryptoApp.Subtitle1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/crypto_supply"
             tools:text="Undefined" />
@@ -161,7 +161,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/crypto_details_coin_body_margin_end"
             android:text="@{uiModel.circulating}"
-            android:textSize="@dimen/small_crypto_details_coin_body_text"
+            style="@style/TextAppearance.CryptoApp.Subtitle2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/crypto_circulating"
             tools:text="Undefined" />
@@ -172,7 +172,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/crypto_details_coin_body_margin_end"
             android:text="@{uiModel.btcPrice}"
-            android:textSize="@dimen/large_crypto_details_coin_body_text"
+            style="@style/TextAppearance.CryptoApp.Subtitle1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/crypto_btc_price"
             tools:text="Undefined" />
@@ -183,7 +183,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/crypto_details_coin_body_margin_end"
             android:text="@{uiModel.allTimeHighPrice}"
-            android:textSize="@dimen/large_crypto_details_coin_body_text"
+            style="@style/TextAppearance.CryptoApp.Subtitle1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/crypto_all_time_high"
             tools:text="Undefined" />
@@ -194,7 +194,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/crypto_details_coin_body_margin_end"
             android:text="@{uiModel.allTimeHighDate}"
-            android:textSize="@dimen/small_crypto_details_coin_body_text"
+            style="@style/TextAppearance.CryptoApp.Subtitle2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/crypto_all_time_high_date"
             tools:text="Undefined" />
@@ -219,7 +219,7 @@
             android:layout_marginTop="@dimen/crypto_details_coin_body_description_box_margin_top"
             android:text="@{uiModel.description}"
             tools:text="Description"
-            android:textSize="@dimen/small_crypto_details_coin_body_text"
+            style="@style/TextAppearance.CryptoApp.Subtitle2"
             android:textAlignment="center"
             android:ellipsize="end"
             android:inputType="none"

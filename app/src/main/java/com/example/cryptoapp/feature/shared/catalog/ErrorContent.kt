@@ -21,21 +21,19 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import com.example.cryptoapp.R
-import com.example.cryptoapp.feature.shared.theme.getBackgroundColor
-import com.example.cryptoapp.feature.shared.theme.getContentColor
-import com.example.cryptoapp.feature.shared.theme.getPrimaryColor
+import com.google.android.material.composethemeadapter.MdcTheme
 
 @Composable
 fun ErrorContent(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
-) {
+) = MdcTheme {
     Card(
         modifier = modifier
             .fillMaxWidth()
             .height(height = dimensionResource(id = R.dimen.chart_height).div(other = 2))
             .padding(all = dimensionResource(id = R.dimen.content_padding)),
-        backgroundColor = getBackgroundColor()
+        backgroundColor = MaterialTheme.colors.surface
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
@@ -46,7 +44,7 @@ fun ErrorContent(
                 text = stringResource(id = R.string.something_went_wrong),
                 style = MaterialTheme.typography.subtitle1,
                 fontWeight = FontWeight.Bold,
-                color = getContentColor()
+                color = MaterialTheme.colors.onSurface
             )
             Spacer(modifier = Modifier.height(height = dimensionResource(id = R.dimen.content_padding)))
             Button(
@@ -60,7 +58,7 @@ fun ErrorContent(
                 },
                 colors = ButtonDefaults.buttonColors(
                     contentColor = Color.Black,
-                    backgroundColor = getPrimaryColor()
+                    backgroundColor = MaterialTheme.colors.primary
                 )
             )
         }

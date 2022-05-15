@@ -41,7 +41,7 @@
                 android:layout_marginTop="@dimen/event_text_view_margin"
                 android:text="@{uiModel.title}"
                 android:textAlignment="textStart"
-                android:textSize="@dimen/large_event_item_text"
+                style="@style/TextAppearance.CryptoApp.Body1"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/news_logo"
@@ -55,7 +55,7 @@
                 android:paddingBottom="@dimen/event_text_view_margin"
                 android:text="@{uiModel.source}"
                 android:textAlignment="textStart"
-                android:textSize="@dimen/small_event_item_text"
+                style="@style/TextAppearance.CryptoApp.Caption"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/news_title"
                 tools:text="CoinGape (1 hours ago)" />

@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/crypto_details_coin_header_margin_start"
-            android:textSize="@dimen/large_crypto_details_item_text"
+            style="@style/TextAppearance.CryptoApp.Headline5"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -37,7 +37,7 @@
             android:layout_marginStart="@dimen/crypto_details_coin_header_margin_start"
             android:layout_marginTop="@dimen/crypto_details_coin_header_value_symbol_margin_top"
             tools:text="BTC/USD"
-            android:textSize="@dimen/small_crypto_details_item_text"
+            style="@style/TextAppearance.CryptoApp.Subtitle2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/crypto_price"
             android:text="@{uiModel.symbolWithValue}" />
@@ -48,7 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/crypto_details_coin_header_margin_end"
             android:layout_marginTop="1dp"
-            android:textSize="@dimen/small_crypto_details_item_text"
+            style="@style/TextAppearance.CryptoApp.Subtitle2"
             app:layout_constraintEnd_toStartOf="@+id/daily_change_text"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="+0.53%"
@@ -60,7 +60,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/crypto_details_coin_header_margin_end"
             tools:text="+0.53%"
-            android:textSize="@dimen/small_crypto_details_item_text"
+            style="@style/TextAppearance.CryptoApp.Subtitle2"
             app:layout_constraintEnd_toStartOf="@+id/market_cap_text"
             app:layout_constraintTop_toBottomOf="@+id/percent_change_24h"
             android:text="@{uiModel.marketCap}" />
@@ -71,7 +71,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/crypto_details_coin_header_margin_end"
             tools:text="+12.19%"
-            android:textSize="@dimen/small_crypto_details_item_text"
+            style="@style/TextAppearance.CryptoApp.Subtitle2"
             app:layout_constraintEnd_toStartOf="@+id/volume_text"
             app:layout_constraintTop_toBottomOf="@+id/market_cap"
             android:text="@{uiModel.volume}" />
@@ -82,7 +82,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/crypto_details_coin_header_daily_change_text_margin_end"
             android:text="@string/daily_change"
-            android:textSize="@dimen/small_crypto_details_item_text"
+            style="@style/TextAppearance.CryptoApp.Subtitle2"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/percent_change_24h" />
@@ -93,7 +93,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/crypto_details_coin_header_market_cap_text_margin_end"
             android:text="@string/market_cap"
-            android:textSize="@dimen/small_crypto_details_item_text"
+            style="@style/TextAppearance.CryptoApp.Subtitle2"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/daily_change_text" />
@@ -104,7 +104,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/crypto_details_coin_header_volume_text_margin_end"
             android:text="@string/market_volume"
-            android:textSize="@dimen/small_crypto_details_item_text"
+            style="@style/TextAppearance.CryptoApp.Subtitle2"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/market_cap_text" />

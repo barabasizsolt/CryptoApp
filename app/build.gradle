@@ -44,6 +44,7 @@ android {
             minifyEnabled true
             shrinkResources true
             zipAlignEnabled true
+
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.internal
 
@@ -133,6 +134,8 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1'
     // Compose Swipe Refresh
     implementation "com.google.accompanist:accompanist-swiperefresh:0.24.6-alpha"
+    // MDC Adapter
+    implementation "com.google.android.material:compose-theme-adapter:1.1.9"
 
     /*-------------------Android Core dependencies-----------------*/
     implementation 'androidx.core:core-ktx:1.7.0'

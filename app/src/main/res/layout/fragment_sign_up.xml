@@ -89,8 +89,7 @@
             android:textColor="#000"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
-            android:height="70dp"
-            android:textSize="23sp"
+            style="@style/TextAppearance.CryptoApp.Button"
             android:enabled="@{viewModel.isRegisterEnabled}"
             android:onClick="@{() -> viewModel.registerWithEmailAndPassword()}"
             />

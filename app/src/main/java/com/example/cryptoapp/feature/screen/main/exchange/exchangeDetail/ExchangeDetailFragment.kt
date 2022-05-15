@@ -12,6 +12,7 @@ import androidx.compose.ui.res.dimensionResource
 import com.example.cryptoapp.BR
 import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.FragmentExchangeDetailBinding
+import com.example.cryptoapp.feature.screen.main.MainFragment
 import com.example.cryptoapp.feature.screen.main.exchange.exchangeDetail.catalog.ExchangeDetailBody
 import com.example.cryptoapp.feature.screen.main.exchange.exchangeDetail.catalog.ExchangeDetailCardHolder
 import com.example.cryptoapp.feature.screen.main.exchange.exchangeDetail.catalog.ExchangeDetailChart
@@ -25,6 +26,7 @@ import com.example.cryptoapp.feature.shared.utils.BundleArgumentDelegate
 import com.example.cryptoapp.feature.shared.utils.createSnackBar
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import com.google.android.material.composethemeadapter.MdcTheme
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -33,11 +35,14 @@ class ExchangeDetailFragment : BaseFragment<FragmentExchangeDetailBinding>(R.lay
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.setVariable(BR.viewModel, viewModel)
+        (parentFragment as MainFragment).setAppBarTitle(title = view.context.getString(R.string.detail))
         binding.fragmentExchangeDetail.apply {
             // Dispose of the Composition when the view's LifecycleOwner is destroyed
             setViewCompositionStrategy(strategy = ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                ExchangeDetailScreen()
+                MdcTheme {
+                    ExchangeDetailScreen()
+                }
             }
         }
     }

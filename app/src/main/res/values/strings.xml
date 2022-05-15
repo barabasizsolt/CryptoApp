@@ -70,4 +70,8 @@
     <string name="exchange_volume_changes">Exchange volume changes</string>
     <string name="chip_max">Max</string>
     <string name="exchange">Exchange</string>
+    <string name="profile">Profile</string>
+    <string name="news">News</string>
+    <string name="market">Market</string>
+    <string name="detail">Detail</string>
 </resources>

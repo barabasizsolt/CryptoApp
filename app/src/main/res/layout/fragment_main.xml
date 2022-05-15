@@ -17,9 +17,8 @@
                 android:layout_height="@dimen/app_bar_height"
                 app:title="@string/app_name"
                 app:menu="@menu/top_app_bar"
-                style="@style/Widget.MaterialComponents.Toolbar.PrimarySurface"
-                android:background="@android:color/transparent"
-                android:elevation="0dp" />
+                app:titleTextAppearance="@style/AppBarText"
+                style="@style/Widget.MaterialComponents.Toolbar.Surface" />
 
         </com.google.android.material.appbar.AppBarLayout>
 
@@ -33,7 +32,6 @@
                 android:id="@+id/fragment_container"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:background="?attr/app_background_color"
                 app:layout_constraintBottom_toTopOf="@+id/bottom_navigation_view"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -49,6 +47,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                android:elevation="16dp"
                 app:menu="@menu/bottom_navigation_menu" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

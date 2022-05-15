@@ -8,23 +8,62 @@
         <item name="postSplashScreenTheme">@style/CryptoApp</item>
     </style>
 
-    <!-- Base application theme. -->
+    <!-- Top App Bar Style -->
+    <style name="AppBarText" parent="Widget.MaterialComponents.Toolbar.Surface">
+        <item name="android:textStyle">bold</item>
+        <item name="fontFamily">sans-serif</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">21sp</item>
+    </style>
+
+    <!-- Base application theme -->
     <style name="CryptoAppBase" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="colorPrimary">@color/orange</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_700</item>
-        <item name="colorOnSecondary">@color/black</item>
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+
         <item name="android:windowTranslucentStatus">true</item>
-        <item name="android:textColor">?attr/app_text_color</item>
-        <item name="app_background_color">@color/white</item>
-        <item name="app_text_color">@color/black</item>
-        <item name="crypto_chart_color">@color/orange</item>
+
+        <!-- Primary Color variants-->
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorPrimaryVariant">@color/color_primary_variant</item>
+        <item name="colorOnPrimary">@color/color_on_primary</item>
+
+        <!-- Secondary Color variants-->
+        <item name="colorSecondary">@color/color_secondary</item>
+        <item name="colorSecondaryVariant">@color/color_secondary_variant</item>
+        <item name="colorOnSecondary">@color/color_on_secondary</item>
+
+        <!-- Error Color-->
+        <item name="colorError">@color/error_color</item>
+
+        <!-- Chart Color-->
+        <item name="colorOnChart">@color/color_primary</item>
+
+        <!-- Typography theming-->
+        <item name="textAppearanceHeadline1">@style/TextAppearance.CryptoApp.Headline1</item>
+        <item name="textAppearanceHeadline2">@style/TextAppearance.CryptoApp.Headline2</item>
+        <item name="textAppearanceHeadline3">@style/TextAppearance.CryptoApp.Headline3</item>
+        <item name="textAppearanceHeadline4">@style/TextAppearance.CryptoApp.Headline4</item>
+        <item name="textAppearanceHeadline5">@style/TextAppearance.CryptoApp.Headline5</item>
+        <item name="textAppearanceHeadline6">@style/TextAppearance.CryptoApp.Headline6</item>
+        <item name="textAppearanceSubtitle1">@style/TextAppearance.CryptoApp.Subtitle1</item>
+        <item name="textAppearanceSubtitle2">@style/TextAppearance.CryptoApp.Subtitle2</item>
+        <item name="textAppearanceBody1">@style/TextAppearance.CryptoApp.Body1</item>
+        <item name="textAppearanceBody2">@style/TextAppearance.CryptoApp.Body2</item>
+        <item name="textAppearanceButton">@style/TextAppearance.CryptoApp.Button</item>
+        <item name="textAppearanceCaption">@style/TextAppearance.CryptoApp.Caption</item>
+        <item name="textAppearanceOverline">@style/TextAppearance.CryptoApp.Overline</item>
+
+        <!-- Shape theming-->
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.CryptoApp.Small</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.CryptoApp.Medium</item>
+        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.CryptoApp.Large</item>
+
     </style>
 
     <!-- Application theme. -->
-    <style name="CryptoApp" parent="CryptoAppBase" />
+    <style name="CryptoApp" parent="CryptoAppBase" >
+        <item name="colorSurface">@color/white</item>
+        <item name="colorOnSurface">@color/black</item>
+        <item name="colorChart">@color/white</item>
+    </style>
 
 </resources>

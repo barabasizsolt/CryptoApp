@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.cryptoapp.BR
 import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.FragmentProfileBinding
+import com.example.cryptoapp.feature.screen.main.MainFragment
 import com.example.cryptoapp.feature.shared.navigation.BaseFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
@@ -20,6 +21,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_p
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.setVariable(BR.viewModel, viewModel)
+        (parentFragment as MainFragment).setAppBarTitle(title = view.context.getString(R.string.profile))
         val profileAdapter = ProfileAdapter(
             onChangePasswordClicked = {},
             onSignOutClicked = { signOutAfterConfirmation() },

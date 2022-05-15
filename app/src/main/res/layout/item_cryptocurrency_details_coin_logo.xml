@@ -34,7 +34,7 @@
             android:layout_marginStart="@dimen/crypto_details_coin_logo_text_view_margin_start"
             tools:text="BTC"
             android:textAlignment="center"
-            android:textSize="@dimen/small_crypto_details_item_text"
+            style="@style/TextAppearance.CryptoApp.Subtitle2"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/crypto_logo"
             app:layout_constraintTop_toTopOf="parent"
@@ -47,7 +47,7 @@
             android:layout_marginStart="@dimen/crypto_details_coin_logo_text_view_margin_start"
             tools:text="Bitcoin"
             android:textAlignment="center"
-            android:textSize="@dimen/small_crypto_details_item_text"
+            style="@style/TextAppearance.CryptoApp.Subtitle2"
             app:layout_constraintBottom_toBottomOf="@+id/crypto_logo"
             app:layout_constraintStart_toEndOf="@+id/crypto_logo"
             android:text="@{uiModel.name}"/>

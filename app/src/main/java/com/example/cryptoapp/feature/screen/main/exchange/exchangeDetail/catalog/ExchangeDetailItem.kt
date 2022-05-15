@@ -36,7 +36,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -48,8 +47,6 @@ import coil.compose.rememberImagePainter
 import com.example.cryptoapp.R
 import com.example.cryptoapp.feature.screen.main.cryptocurrency.cryptocurrencyDetails.helpers.UnitOfTimeType
 import com.example.cryptoapp.feature.screen.main.exchange.exchangeDetail.ExchangeDetailUiModel
-import com.example.cryptoapp.feature.shared.theme.getBackgroundColor
-import com.example.cryptoapp.feature.shared.theme.getContentColor
 import com.example.cryptoapp.feature.shared.utils.getFormattedHour
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.Legend
@@ -82,7 +79,7 @@ fun ExchangeDetailHeader(
                     .clip(shape = CircleShape)
                     .border(
                         width = 1.dp,
-                        color = getContentColor(),
+                        color = MaterialTheme.colors.onSurface,
                         shape = CircleShape
                     ),
                 contentScale = ContentScale.Crop
@@ -92,14 +89,14 @@ fun ExchangeDetailHeader(
                 Text(
                     text = title,
                     style = MaterialTheme.typography.h6,
-                    color = getContentColor(),
+                    color = MaterialTheme.colors.onSurface,
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier.align(alignment = Alignment.TopStart)
                 )
                 Text(
                     text = stringResource(id = R.string.exchange),
                     style = MaterialTheme.typography.body2,
-                    color = getContentColor(),
+                    color = MaterialTheme.colors.onSurface,
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier.align(alignment = Alignment.BottomStart)
                 )
@@ -133,9 +130,9 @@ private fun ExchangeDetailLineChart(
     history: ExchangeDetailUiModel.ExchangeDetailHistory,
     unitOfTimeType: UnitOfTimeType
 ) {
-    val textColor = MaterialColors.getColor(LocalContext.current, R.attr.app_text_color, android.graphics.Color.WHITE)
-    val backgroundColor = MaterialColors.getColor(LocalContext.current, R.attr.app_background_color, android.graphics.Color.WHITE)
-    val chartColor = MaterialColors.getColor(LocalContext.current, R.attr.crypto_chart_color, android.graphics.Color.WHITE)
+    val textColor = MaterialColors.getColor(LocalContext.current, R.attr.colorOnSurface, android.graphics.Color.WHITE)
+    val backgroundColor = MaterialColors.getColor(LocalContext.current, R.attr.colorChart, android.graphics.Color.WHITE)
+    val chartFillColor = MaterialColors.getColor(LocalContext.current, R.attr.colorPrimary, android.graphics.Color.WHITE)
 
     AndroidView(
         factory = { context ->
@@ -158,7 +155,7 @@ private fun ExchangeDetailLineChart(
                     arrayListOf(
                         LegendEntry().also {
                             it.label = resources.getString(R.string.exchange_volume_changes)
-                            it.formColor = chartColor
+                            it.formColor = chartFillColor
                         }
                     )
                 )
@@ -177,8 +174,8 @@ private fun ExchangeDetailLineChart(
         update = { lineChart ->
             history.dataSet.apply {
                 color = textColor
-                highLightColor = chartColor
-                fillColor = chartColor
+                highLightColor = chartFillColor
+                fillColor = chartFillColor
             }
             lineChart.apply {
                 xAxis.valueFormatter = ExchangeXAxisFormatter(unitOfTimeType = unitOfTimeType)
@@ -199,11 +196,11 @@ private fun ExchangeDetailChartPlaceHolder(modifier: Modifier = Modifier){
         modifier = modifier
             .padding(all = dimensionResource(id = R.dimen.content_padding))
             .height(height = dimensionResource(id = R.dimen.chart_height)),
-        backgroundColor = getBackgroundColor()
+        backgroundColor = MaterialTheme.colors.surface,
     ) {
         Column {
             Box(modifier = Modifier.fillMaxSize()){
-                CircularProgressIndicator(modifier = Modifier.align(alignment = Alignment.Center), color = getContentColor())
+                CircularProgressIndicator(modifier = Modifier.align(alignment = Alignment.Center), color = MaterialTheme.colors.onSurface)
             }
             ExchangeDetailDivider()
         }
@@ -227,9 +224,7 @@ fun ExchangeDetailCardHolder(
             repeat(times = items.size, action = { index ->
                 ExchangeDetailCard(
                     modifier = Modifier.padding(all = dimensionResource(id = R.dimen.content_padding_half)),
-                    text = items[index],
-                    backgroundColor = getBackgroundColor(),
-                    contentColor = getContentColor()
+                    text = items[index]
                 )
             })
         }
@@ -240,14 +235,12 @@ fun ExchangeDetailCardHolder(
 @Composable
 private fun ExchangeDetailCard(
     modifier: Modifier = Modifier,
-    text: String,
-    backgroundColor: Color,
-    contentColor: Color
+    text: String
 ) {
     CardHolder(
         modifier = modifier,
-        backgroundColor = backgroundColor,
-        contentColor = contentColor
+        backgroundColor = MaterialTheme.colors.surface,
+        contentColor = MaterialTheme.colors.onSurface
     ) {
         Text(
             text = text,
@@ -277,8 +270,6 @@ fun ExchangeDetailChipGroup(
                 ExchangeDetailChip(
                     modifier = Modifier.padding(all = dimensionResource(id = R.dimen.content_padding_half)),
                     text = items[index],
-                    backgroundColor = getBackgroundColor(),
-                    contentColor = getContentColor(),
                     isSelected = index == isSelected,
                     onClick = {
                         if (isSelected != index) {
@@ -297,15 +288,13 @@ fun ExchangeDetailChipGroup(
 private fun ExchangeDetailChip(
     modifier: Modifier = Modifier,
     text: String,
-    backgroundColor: Color,
-    contentColor: Color,
     onClick: () -> Unit,
     isSelected: Boolean
 ) {
     CardHolder(
         modifier = modifier,
-        backgroundColor = if (isSelected) colorResource(id = R.color.orange) else backgroundColor,
-        contentColor = if (isSelected) Color.Black else contentColor,
+        backgroundColor = if (isSelected) MaterialTheme.colors.primary else MaterialTheme.colors.surface,
+        contentColor = if (isSelected) MaterialTheme.colors.onPrimary else MaterialTheme.colors.onSurface,
         onClick = onClick
     ) {
         Text(
@@ -363,7 +352,7 @@ fun ExchangeDetailBody(
                 Text(
                     text = tradeVolume,
                     style = MaterialTheme.typography.h5,
-                    color = getContentColor(),
+                    color = MaterialTheme.colors.onSurface,
                     overflow = TextOverflow.Ellipsis,
                     fontWeight = FontWeight.Bold
                 )
@@ -371,7 +360,7 @@ fun ExchangeDetailBody(
                 Text(
                     text = "VOL/BTC/24H - AVG - ${System.currentTimeMillis().getFormattedHour()}",
                     style = MaterialTheme.typography.caption,
-                    color = getContentColor(),
+                    color = MaterialTheme.colors.onSurface,
                     overflow = TextOverflow.Ellipsis
                 )
             }
@@ -379,7 +368,7 @@ fun ExchangeDetailBody(
                 text = "$tickers available tickers",
                 style = MaterialTheme.typography.subtitle1,
                 fontWeight = FontWeight.Bold,
-                color = getContentColor()
+                color = MaterialTheme.colors.onSurface
             )
         }
     }
@@ -406,12 +395,12 @@ fun ExchangeDetailItem(
                 text = title,
                 style = MaterialTheme.typography.subtitle2,
                 fontWeight = FontWeight.Bold,
-                color = getContentColor()
+                color = MaterialTheme.colors.onSurface
             )
             Text(
                 text = text,
                 style = MaterialTheme.typography.caption,
-                color = getContentColor(),
+                color = MaterialTheme.colors.onSurface,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.weight(weight = 1f),
                 textAlign = TextAlign.End,

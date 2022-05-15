@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.cryptoapp.BR
 import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.FragmentNewsBinding
+import com.example.cryptoapp.feature.screen.main.MainFragment
 import com.example.cryptoapp.feature.shared.navigation.BaseFragment
 import com.example.cryptoapp.feature.shared.utils.createSnackBar
 import kotlinx.coroutines.flow.launchIn
@@ -21,6 +22,7 @@ class NewsFragment : BaseFragment<FragmentNewsBinding>(R.layout.fragment_news) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.setVariable(BR.viewModel, viewModel)
+        (parentFragment as MainFragment).setAppBarTitle(title = view.context.getString(R.string.news))
         binding.recyclerview.layoutManager = LinearLayoutManager(requireContext())
         val newsAdapter = NewsAdapter(
             onNewsItemClicked = viewModel::onNewsItemClicked,

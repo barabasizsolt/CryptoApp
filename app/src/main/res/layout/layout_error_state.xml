@@ -17,7 +17,7 @@
             android:gravity="center"
             android:padding="@dimen/error_state_margin"
             android:text="@string/something_went_wrong"
-            android:textSize="@dimen/large_event_item_text"
+            style="@style/TextAppearance.CryptoApp.Body1"
             android:textStyle="bold" />
 
         <Button
@@ -25,6 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            style="@style/TextAppearance.CryptoApp.Button"
             android:text="@string/try_again" />
 
     </LinearLayout>
