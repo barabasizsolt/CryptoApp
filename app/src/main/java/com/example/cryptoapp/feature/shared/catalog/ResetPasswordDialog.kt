@@ -57,8 +57,6 @@ private fun ResetPasswordCard(
     email: String,
     onEmailChange: (String) -> Unit
 ) {
-    //val contentColor: Color = if (isSystemInDarkTheme()) Color.Gray else Color.Black
-
     Card(
         modifier = modifier.fillMaxWidth(),
         backgroundColor = MaterialTheme.colors.surface,
