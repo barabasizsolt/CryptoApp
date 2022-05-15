@@ -74,8 +74,7 @@
             android:textColor="#000"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
-            android:height="70dp"
-            android:textSize="23sp"
+            style="@style/TextAppearance.CryptoApp.Button"
             android:enabled="@{viewModel.isLoginEnabled}"
             android:onClick="@{() -> viewModel.loginWithEmailAndPassword()}"
             />
@@ -86,7 +85,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAlignment="center"
-            android:textSize="18sp"
+            style="@style/TextAppearance.CryptoApp.Body1"
             android:onClick="@{() -> viewModel.onRegisterClicked()}"
             android:text="@string/sign_up" />
 
@@ -96,7 +95,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAlignment="center"
-            android:textSize="18sp"
+            style="@style/TextAppearance.CryptoApp.Body1"
             android:onClick="@{() -> viewModel.onResetPasswordClicked()}"
             android:text="@string/forgot_password" />
 

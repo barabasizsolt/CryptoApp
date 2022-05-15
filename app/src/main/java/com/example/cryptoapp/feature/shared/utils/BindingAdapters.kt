@@ -64,7 +64,7 @@ fun LineChart.initializeCryptoCurrencyDetailChart(
     setDrawGridBackground(false)
     description.isEnabled = false
     legend.isEnabled = true
-    legend.textColor = MaterialColors.getColor(context, R.attr.app_text_color, Color.WHITE)
+    legend.textColor = MaterialColors.getColor(context, R.attr.colorOnSurface, Color.WHITE)
     legend.textSize = 13f
     legend.verticalAlignment = Legend.LegendVerticalAlignment.TOP
     legend.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
@@ -74,25 +74,25 @@ fun LineChart.initializeCryptoCurrencyDetailChart(
         arrayListOf(
             LegendEntry().also {
                 it.label = resources.getString(R.string.crypto_value_changes)
-                it.formColor = MaterialColors.getColor(context, R.attr.crypto_chart_color, Color.WHITE)
+                it.formColor = MaterialColors.getColor(context, R.attr.colorOnChart, Color.WHITE)
             }
         )
     )
-    xAxis.textColor = MaterialColors.getColor(context, R.attr.app_text_color, Color.WHITE)
+    xAxis.textColor = MaterialColors.getColor(context, R.attr.colorOnSurface, Color.WHITE)
     xAxis.textSize = 12f
     xAxis.position = XAxis.XAxisPosition.BOTTOM
     xAxis.setDrawGridLines(true)
     xAxis.isGranularityEnabled = true
     xAxis.valueFormatter = CryptoXAxisFormatter(unitOfTimeType = unitOfTimeType)
-    axisLeft.textColor = MaterialColors.getColor(context, R.attr.app_text_color, Color.WHITE)
+    axisLeft.textColor = MaterialColors.getColor(context, R.attr.colorOnSurface, Color.WHITE)
     axisLeft.valueFormatter = CryptoYAxisFormatter()
     axisLeft.setDrawGridLines(true)
     axisRight.isEnabled = false
-    setBackgroundColor(MaterialColors.getColor(context, R.attr.app_background_color, Color.WHITE))
+    setBackgroundColor(MaterialColors.getColor(context, R.attr.colorSurface, Color.WHITE))
     dataSet.let {
-        it.color = MaterialColors.getColor(context, R.attr.app_text_color, Color.WHITE)
-        it.highLightColor = MaterialColors.getColor(context, R.attr.crypto_chart_color, Color.WHITE)
-        it.fillColor = MaterialColors.getColor(context, R.attr.crypto_chart_color, Color.WHITE)
+        it.color = MaterialColors.getColor(context, R.attr.colorOnSurface, Color.WHITE)
+        it.highLightColor = MaterialColors.getColor(context, R.attr.colorOnChart, Color.WHITE)
+        it.fillColor = MaterialColors.getColor(context, R.attr.colorOnChart, Color.WHITE)
     }
     data = LineData(arrayListOf<ILineDataSet>(dataSet))
     notifyDataSetChanged()

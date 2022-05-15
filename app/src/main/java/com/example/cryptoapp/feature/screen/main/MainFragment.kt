@@ -49,6 +49,10 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
         }
     }
 
+    fun setAppBarTitle(title: String) {
+        binding.topBar.title = title
+    }
+
     override fun onBackPressed(): Boolean = when (currentFragment?.childFragmentManager?.backStackEntryCount ?: 0 <= 1) {
         true -> when {
             binding.bottomNavigationView.selectedItemId == R.id.market -> when {

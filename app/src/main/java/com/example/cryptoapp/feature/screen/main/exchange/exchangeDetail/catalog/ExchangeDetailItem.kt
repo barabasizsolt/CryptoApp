@@ -133,9 +133,9 @@ private fun ExchangeDetailLineChart(
     history: ExchangeDetailUiModel.ExchangeDetailHistory,
     unitOfTimeType: UnitOfTimeType
 ) {
-    val textColor = MaterialColors.getColor(LocalContext.current, R.attr.app_text_color, android.graphics.Color.WHITE)
-    val backgroundColor = MaterialColors.getColor(LocalContext.current, R.attr.app_background_color, android.graphics.Color.WHITE)
-    val chartColor = MaterialColors.getColor(LocalContext.current, R.attr.crypto_chart_color, android.graphics.Color.WHITE)
+    val textColor = MaterialColors.getColor(LocalContext.current, R.attr.colorOnSurface, android.graphics.Color.WHITE)
+    val backgroundColor = MaterialColors.getColor(LocalContext.current, R.attr.colorChart, android.graphics.Color.WHITE)
+    val chartFillColor = MaterialColors.getColor(LocalContext.current, R.attr.colorPrimary, android.graphics.Color.WHITE)
 
     AndroidView(
         factory = { context ->
@@ -158,7 +158,7 @@ private fun ExchangeDetailLineChart(
                     arrayListOf(
                         LegendEntry().also {
                             it.label = resources.getString(R.string.exchange_volume_changes)
-                            it.formColor = chartColor
+                            it.formColor = chartFillColor
                         }
                     )
                 )
@@ -177,8 +177,8 @@ private fun ExchangeDetailLineChart(
         update = { lineChart ->
             history.dataSet.apply {
                 color = textColor
-                highLightColor = chartColor
-                fillColor = chartColor
+                highLightColor = chartFillColor
+                fillColor = chartFillColor
             }
             lineChart.apply {
                 xAxis.valueFormatter = ExchangeXAxisFormatter(unitOfTimeType = unitOfTimeType)

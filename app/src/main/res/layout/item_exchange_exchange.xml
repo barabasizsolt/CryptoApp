@@ -48,7 +48,7 @@
                 tools:text="undefined"
                 android:text="@{uiModel.name}"
                 android:textAlignment="center"
-                android:textSize="@dimen/medium_exchange_item_text"
+                style="@style/TextAppearance.CryptoApp.Subtitle1"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/exchange_logo_holder"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -62,7 +62,7 @@
                 tools:text="undefined"
                 android:text="@{uiModel.exchangeTrustScore}"
                 android:textAlignment="center"
-                android:textSize="@dimen/small_exchange_item_text"
+                style="@style/TextAppearance.CryptoApp.Subtitle2"
                 app:layout_constraintStart_toEndOf="@+id/exchange_logo_holder"
                 app:layout_constraintTop_toBottomOf="@+id/exchange_name" />
 
@@ -73,7 +73,7 @@
                 android:layout_marginEnd="@dimen/exchange_volume_text_view_margin_end"
                 tools:text="undefined"
                 android:text="@{uiModel.formattedVolume}"
-                android:textSize="@dimen/large_exchange_item_text"
+                style="@style/TextAppearance.CryptoApp.Subtitle1"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/volume_change"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -84,7 +84,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/exchange_volume_change_text_view_margin_end"
                 android:text="@string/exchange_volume"
-                android:textSize="@dimen/large_exchange_item_text"
+                style="@style/TextAppearance.CryptoApp.Subtitle1"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

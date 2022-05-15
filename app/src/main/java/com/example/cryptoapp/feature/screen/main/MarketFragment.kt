@@ -16,6 +16,7 @@ class MarketFragment : BaseFragment<FragmentMarketBinding>(R.layout.fragment_mar
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.viewPager.adapter = ViewPagerAdapter(fragment = this)
+        (parentFragment as MainFragment).setAppBarTitle(title = view.context.getString(R.string.market))
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             when (position) {
                 0 -> {

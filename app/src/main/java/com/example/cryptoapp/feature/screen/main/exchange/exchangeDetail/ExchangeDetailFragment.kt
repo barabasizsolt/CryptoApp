@@ -12,6 +12,7 @@ import androidx.compose.ui.res.dimensionResource
 import com.example.cryptoapp.BR
 import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.FragmentExchangeDetailBinding
+import com.example.cryptoapp.feature.screen.main.MainFragment
 import com.example.cryptoapp.feature.screen.main.exchange.exchangeDetail.catalog.ExchangeDetailBody
 import com.example.cryptoapp.feature.screen.main.exchange.exchangeDetail.catalog.ExchangeDetailCardHolder
 import com.example.cryptoapp.feature.screen.main.exchange.exchangeDetail.catalog.ExchangeDetailChart
@@ -33,6 +34,7 @@ class ExchangeDetailFragment : BaseFragment<FragmentExchangeDetailBinding>(R.lay
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.setVariable(BR.viewModel, viewModel)
+        (parentFragment as MainFragment).setAppBarTitle(title = view.context.getString(R.string.detail))
         binding.fragmentExchangeDetail.apply {
             // Dispose of the Composition when the view's LifecycleOwner is destroyed
             setViewCompositionStrategy(strategy = ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)

@@ -7,10 +7,10 @@ import androidx.compose.ui.res.colorResource
 import com.example.cryptoapp.R
 
 @Composable
-fun getPrimaryColor() = colorResource(id = R.color.orange)
+fun getPrimaryColor() = colorResource(id = R.color.color_primary)
 
 @Composable
-fun getBackgroundColor() = if (isSystemInDarkTheme()) colorResource(id = R.color.dark_mode_background_color) else Color.White
+fun getBackgroundColor() = if (isSystemInDarkTheme()) Color.Black else Color.White
 
 @Composable
-fun getContentColor() = if (isSystemInDarkTheme()) colorResource(id = R.color.dark_mode_text_color) else Color.Black
+fun getContentColor() = if (isSystemInDarkTheme()) Color.White else Color.Black
