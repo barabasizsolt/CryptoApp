@@ -8,7 +8,15 @@
         <item name="postSplashScreenTheme">@style/CryptoApp</item>
     </style>
 
-    <!-- Base application theme. -->
+    <!-- Top App Bar Style -->
+    <style name="AppBarText" parent="Widget.MaterialComponents.Toolbar.Surface">
+        <item name="android:textStyle">bold</item>
+        <item name="fontFamily">sans-serif</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">21sp</item>
+    </style>
+
+    <!-- Base application theme -->
     <style name="CryptoAppBase" parent="Theme.MaterialComponents.DayNight.NoActionBar">
 
         <item name="android:windowTranslucentStatus">true</item>
@@ -29,7 +37,7 @@
         <!-- Chart Color-->
         <item name="colorOnChart">@color/color_primary</item>
 
-        <!--Typography theming-->
+        <!-- Typography theming-->
         <item name="textAppearanceHeadline1">@style/TextAppearance.CryptoApp.Headline1</item>
         <item name="textAppearanceHeadline2">@style/TextAppearance.CryptoApp.Headline2</item>
         <item name="textAppearanceHeadline3">@style/TextAppearance.CryptoApp.Headline3</item>
@@ -43,6 +51,11 @@
         <item name="textAppearanceButton">@style/TextAppearance.CryptoApp.Button</item>
         <item name="textAppearanceCaption">@style/TextAppearance.CryptoApp.Caption</item>
         <item name="textAppearanceOverline">@style/TextAppearance.CryptoApp.Overline</item>
+
+        <!-- Shape theming-->
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.CryptoApp.Small</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.CryptoApp.Medium</item>
+        <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.CryptoApp.Large</item>
 
     </style>
 

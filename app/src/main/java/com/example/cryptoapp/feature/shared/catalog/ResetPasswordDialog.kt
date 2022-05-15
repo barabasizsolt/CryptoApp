@@ -24,8 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.toUpperCase
 import com.example.cryptoapp.R
-import com.example.cryptoapp.feature.shared.theme.getBackgroundColor
-import com.example.cryptoapp.feature.shared.theme.getPrimaryColor
+import com.google.android.material.composethemeadapter.MdcTheme
 
 @Composable
 fun ResetPasswordDialog(
@@ -35,7 +34,7 @@ fun ResetPasswordDialog(
     isDismissed: Boolean,
     email: String,
     onEmailChange: (String) -> Unit
-) {
+) = MdcTheme {
     if (!isDismissed) {
         AlertDialog(
             onDismissRequest = onDismiss,
@@ -58,11 +57,11 @@ private fun ResetPasswordCard(
     email: String,
     onEmailChange: (String) -> Unit
 ) {
-    val contentColor: Color = if (isSystemInDarkTheme()) Color.Gray else Color.Black
+    //val contentColor: Color = if (isSystemInDarkTheme()) Color.Gray else Color.Black
 
     Card(
         modifier = modifier.fillMaxWidth(),
-        backgroundColor = getBackgroundColor(),
+        backgroundColor = MaterialTheme.colors.surface,
         elevation = if (isSystemInDarkTheme())
             dimensionResource(id = R.dimen.dark_mode_card_elevation) else dimensionResource(id = R.dimen.zero_elevation)
     ) {
@@ -76,19 +75,19 @@ private fun ResetPasswordCard(
                 text = stringResource(id = R.string.reset_password_dialog_title),
                 style = MaterialTheme.typography.body1,
                 fontWeight = FontWeight.Bold,
-                color = contentColor
+                color = MaterialTheme.colors.onSurface
             )
             OutlinedTextField(
                 value = email,
                 onValueChange = onEmailChange,
                 label = { Text(text = stringResource(id = R.string.email)) },
                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                    textColor = contentColor,
-                    focusedBorderColor = getPrimaryColor(),
-                    unfocusedBorderColor = contentColor,
-                    focusedLabelColor = getPrimaryColor(),
-                    unfocusedLabelColor = contentColor,
-                    cursorColor = contentColor
+                    textColor = MaterialTheme.colors.onSurface,
+                    focusedBorderColor = MaterialTheme.colors.primary,
+                    unfocusedBorderColor = MaterialTheme.colors.onSurface,
+                    focusedLabelColor = MaterialTheme.colors.primary,
+                    unfocusedLabelColor = MaterialTheme.colors.onSurface,
+                    cursorColor = MaterialTheme.colors.onSurface
                 ),
                 textStyle = MaterialTheme.typography.subtitle1,
                 modifier = Modifier.fillMaxWidth()
@@ -108,9 +107,9 @@ private fun ResetPasswordCard(
                     enabled = email.isNotEmpty(),
                     colors = ButtonDefaults.buttonColors(
                         contentColor = Color.Black,
-                        backgroundColor = getPrimaryColor(),
+                        backgroundColor = MaterialTheme.colors.primary,
                         disabledBackgroundColor = if (isSystemInDarkTheme()) Color.DarkGray else Color.LightGray,
-                        disabledContentColor = contentColor
+                        disabledContentColor = MaterialTheme.colors.surface
                     )
                 )
             }

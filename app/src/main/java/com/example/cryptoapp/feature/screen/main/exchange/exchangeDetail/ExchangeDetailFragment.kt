@@ -26,6 +26,7 @@ import com.example.cryptoapp.feature.shared.utils.BundleArgumentDelegate
 import com.example.cryptoapp.feature.shared.utils.createSnackBar
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import com.google.android.material.composethemeadapter.MdcTheme
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -39,7 +40,9 @@ class ExchangeDetailFragment : BaseFragment<FragmentExchangeDetailBinding>(R.lay
             // Dispose of the Composition when the view's LifecycleOwner is destroyed
             setViewCompositionStrategy(strategy = ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                ExchangeDetailScreen()
+                MdcTheme {
+                    ExchangeDetailScreen()
+                }
             }
         }
     }
