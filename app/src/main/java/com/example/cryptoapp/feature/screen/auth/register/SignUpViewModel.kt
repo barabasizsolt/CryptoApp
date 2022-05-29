@@ -2,7 +2,7 @@ package com.example.cryptoapp.feature.screen.auth.register
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.cryptoapp.firebase.domain.RegisterWithEmailAndPasswordUseCase
+import com.example.cryptoapp.firebase.domain.auth.RegisterWithEmailAndPasswordUseCase
 import com.example.cryptoapp.feature.shared.utils.eventFlow
 import com.example.cryptoapp.feature.shared.utils.pushEvent
 import kotlinx.coroutines.flow.MutableStateFlow

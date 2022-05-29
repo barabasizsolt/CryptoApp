@@ -25,7 +25,6 @@ class CryptoCurrencyDetailsFragment : BaseFragment<FragmentCryptoCurrencyDetails
         (parentFragment as MainFragment).setAppBarTitle(title = view.context.getString(R.string.detail))
         val detailsAdapter = CryptoCurrencyDetailsAdapter(
             onChipClicked = viewModel::onChipClicked,
-            onDescriptionArrowClicked = viewModel::onDescriptionArrowClicked,
             onTryAgainButtonClicked = viewModel::refreshData
         )
         val layoutManager = LinearLayoutManager(requireContext())

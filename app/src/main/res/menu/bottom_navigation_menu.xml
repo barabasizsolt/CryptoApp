@@ -9,4 +9,9 @@
         android:enabled="true"
         android:icon="@drawable/ic_news"
         android:title="@string/bottom_nav_news"/>
+    <item
+        android:id="@+id/watch_list"
+        android:enabled="true"
+        android:icon="@drawable/ic_watchlist"
+        android:title="@string/bottom_nav_watch_lists"/>
 </menu>

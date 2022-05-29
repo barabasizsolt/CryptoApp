@@ -1,4 +1,4 @@
-package com.example.cryptoapp.firebase.data
+package com.example.cryptoapp.firebase.data.auth
 
 import com.example.cryptoapp.firebase.R
 import com.google.android.gms.tasks.Task

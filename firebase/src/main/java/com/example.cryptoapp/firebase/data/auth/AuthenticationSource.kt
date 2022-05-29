@@ -1,6 +1,5 @@
-package com.example.cryptoapp.firebase.data
+package com.example.cryptoapp.firebase.data.auth
 
-import com.example.cryptoapp.firebase.data.AuthenticationService
 import com.google.firebase.auth.FirebaseAuth
 
 class AuthenticationSource : AuthenticationService {

@@ -199,15 +199,6 @@
             app:layout_constraintTop_toTopOf="@+id/crypto_all_time_high_date"
             tools:text="Undefined" />
 
-        <ImageView
-            android:id="@+id/description_drop_down"
-            android:layout_width="@dimen/crypto_details_coin_body_drop_down_size"
-            android:layout_height="@dimen/crypto_details_coin_body_drop_down_size"
-            android:layout_marginEnd="@dimen/crypto_details_coin_body_drop_down_margin_end"
-            android:src="@drawable/ic_default_drop_down_arrow"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/delimiter_4" />
-
         <TextView
             android:id="@+id/crypto_description_text"
             android:scrollbars = "vertical"
@@ -223,7 +214,7 @@
             android:textAlignment="center"
             android:ellipsize="end"
             android:inputType="none"
-            android:maxLines="3"
+            android:maxLines="300"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/crypto_description" />

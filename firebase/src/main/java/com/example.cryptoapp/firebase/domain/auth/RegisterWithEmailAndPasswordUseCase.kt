@@ -1,6 +1,6 @@
-package com.example.cryptoapp.firebase.domain
+package com.example.cryptoapp.firebase.domain.auth
 
-import com.example.cryptoapp.firebase.data.AuthenticationRepository
+import com.example.cryptoapp.firebase.data.auth.AuthenticationRepository
 
 class RegisterWithEmailAndPasswordUseCase(private val repository: AuthenticationRepository) {
 

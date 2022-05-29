@@ -1,8 +1,6 @@
 package com.example.cryptoapp.feature.screen.main.cryptocurrency.cryptocurrencyDetails
 
 import android.text.Html
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.core.text.HtmlCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,8 +9,6 @@ import com.example.cryptoapp.data.model.Result
 import com.example.cryptoapp.data.model.cryptocurrency.CryptoCurrencyDetails
 import com.example.cryptoapp.domain.useCase.cryptocurrency.GetCryptoCurrencyDetailsUseCase
 import com.example.cryptoapp.domain.useCase.cryptocurrency.GetCryptoCurrencyHistoryUseCase
-import com.example.cryptoapp.feature.screen.main.cryptocurrency.Constant.ROTATE_180
-import com.example.cryptoapp.feature.screen.main.cryptocurrency.Constant.ROTATE_360
 import com.example.cryptoapp.feature.screen.main.cryptocurrency.cryptocurrencyDetails.helpers.UnitOfTimeType
 import com.example.cryptoapp.data.shared.ChartHistory
 import com.example.cryptoapp.feature.shared.utils.ChipItem
@@ -25,6 +21,10 @@ import com.example.cryptoapp.feature.shared.utils.getFormattedTime
 import com.example.cryptoapp.feature.shared.utils.ordinalOf
 import com.example.cryptoapp.feature.shared.utils.pushEvent
 import com.example.cryptoapp.feature.shared.utils.toChartDataSet
+import com.example.cryptoapp.firebase.domain.auth.GetCurrentUserUseCase
+import com.example.cryptoapp.firestore.domain.AddCryptoCurrencyToWatchListUseCase
+import com.example.cryptoapp.firestore.domain.DeleteCryptoCurrencyFromWatchList
+import com.example.cryptoapp.firestore.domain.GetCryptoCurrencyUseCase
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,15 +32,25 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
+import com.google.firebase.firestore.DocumentSnapshot
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 class CryptoCurrencyDetailsViewModel(
     private val uuid: String,
     private val detailsUseCase: GetCryptoCurrencyDetailsUseCase,
-    private val historyUseCase: GetCryptoCurrencyHistoryUseCase
+    private val historyUseCase: GetCryptoCurrencyHistoryUseCase,
+    private val addCryptoCurrencyToWatchListUseCase: AddCryptoCurrencyToWatchListUseCase,
+    private val deleteCryptoCurrencyFromWatchList: DeleteCryptoCurrencyFromWatchList,
+    private val getCryptoCurrencyUseCase: GetCryptoCurrencyUseCase,
+    private val getCurrentUserUseCase: GetCurrentUserUseCase
 ) : ViewModel() {
 
     private val _isRefreshing = MutableStateFlow(false)
     val isRefreshing: StateFlow<Boolean> = _isRefreshing
+
+    private val _isAddedToWatchList = MutableStateFlow(false)
+    val isAddedToWatchList: StateFlow<Boolean> = _isAddedToWatchList
 
     private val shouldShowError = MutableStateFlow(false)
 
@@ -51,7 +61,6 @@ class CryptoCurrencyDetailsViewModel(
     private var timePeriod: String = cryptoTimePeriods[0]
     private var unitOfTimeType: UnitOfTimeType = UnitOfTimeType.UNIT_24H
 
-    private var isDescriptionExpanded: Boolean = false
     private var isDetailsErrorEmitted: Boolean = false
     private var isHistoryErrorEmitted: Boolean = false
 
@@ -112,6 +121,11 @@ class CryptoCurrencyDetailsViewModel(
 
     init {
         refreshData()
+        val userId = getCurrentUserUseCase()?.userId.orEmpty()
+        getCryptoCurrencyUseCase(id = uuid, userId = userId).onEach {
+            println("List: $it")
+            _isAddedToWatchList.value = it.isNotEmpty()
+        }.launchIn(scope = viewModelScope)
     }
 
     fun refreshData() {
@@ -254,16 +268,11 @@ class CryptoCurrencyDetailsViewModel(
         }
     }
 
-    fun onDescriptionArrowClicked(arrow: ImageView, description: TextView) = when (isDescriptionExpanded) {
-        true -> {
-            arrow.animate().rotation(ROTATE_360).start()
-            description.maxLines = 3
-            isDescriptionExpanded = false
-        }
-        false -> {
-            arrow.animate().rotation(ROTATE_180).start()
-            description.maxLines = 100
-            isDescriptionExpanded = true
+    fun addOrRemoveFromWatchList() {
+        if (isAddedToWatchList.value) {
+            deleteCryptoCurrencyFromWatchList(id = uuid, userId = getCurrentUserUseCase()?.userId.orEmpty())
+        } else {
+            addCryptoCurrencyToWatchListUseCase(id = uuid, userId = getCurrentUserUseCase()?.userId.orEmpty())
         }
     }
 

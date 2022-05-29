@@ -27,7 +27,11 @@ val presentationModule = module {
         CryptoCurrencyDetailsViewModel(
             uuid = params[0],
             detailsUseCase = get(),
-            historyUseCase = get()
+            historyUseCase = get(),
+            addCryptoCurrencyToWatchListUseCase = get(),
+            deleteCryptoCurrencyFromWatchList = get(),
+            getCryptoCurrencyUseCase = get(),
+            getCurrentUserUseCase = get()
         )
     }
     viewModel { CategoryViewModel(getCategoriesUseCase = get()) }

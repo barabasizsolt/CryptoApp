@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.View
 import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.FragmentMainBinding
+import com.example.cryptoapp.feature.screen.main.cryptocurrency.cryptocurrencyList.CryptoCurrencyFragment
 import com.example.cryptoapp.feature.screen.main.news.NewsFragment
 import com.example.cryptoapp.feature.screen.main.user.ProfileFragment
+import com.example.cryptoapp.feature.screen.main.watchlist.WatchListFragment
 import com.example.cryptoapp.feature.shared.navigation.BaseFragment
 import com.example.cryptoapp.feature.shared.utils.consume
 import com.example.cryptoapp.feature.shared.utils.handleReplace
@@ -17,7 +19,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
             when (item.itemId) {
                 R.id.market -> consume {
                     childFragmentManager.handleReplace(
-                        tag = "currencies",
+                        tag = "market",
                         newInstance = MarketFragment.Companion::newInstance,
                         addToBackStack = true
                     )
@@ -26,6 +28,13 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
                     childFragmentManager.handleReplace(
                         tag = "news",
                         newInstance = NewsFragment.Companion::newInstance,
+                        addToBackStack = true
+                    )
+                }
+                R.id.watch_list -> consume {
+                    childFragmentManager.handleReplace(
+                        tag = "watch_list",
+                        newInstance = WatchListFragment.Companion::newInstance,
                         addToBackStack = true
                     )
                 }

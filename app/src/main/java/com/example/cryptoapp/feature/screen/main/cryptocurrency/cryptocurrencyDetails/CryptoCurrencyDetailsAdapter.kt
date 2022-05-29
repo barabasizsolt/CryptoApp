@@ -23,7 +23,6 @@ import com.google.android.flexbox.JustifyContent
 
 class CryptoCurrencyDetailsAdapter(
     private val onChipClicked: (UnitOfTimeType) -> Unit,
-    private val onDescriptionArrowClicked: (ImageView, TextView) -> Unit,
     private val onTryAgainButtonClicked: () -> Unit
 ) : ListAdapter<CryptoCurrencyDetailsListItem, RecyclerView.ViewHolder>(ListItemDiff()) {
     override fun getItemViewType(position: Int) = when (getItem(position)) {
@@ -50,8 +49,7 @@ class CryptoCurrencyDetailsAdapter(
             parent = parent
         )
         R.layout.item_cryptocurrency_details_coin_body -> BodyViewHolder.create(
-            parent = parent,
-            onDescriptionArrowClicked = onDescriptionArrowClicked
+            parent = parent
         )
         R.layout.item_cryptocurrency_details_error_state -> ErrorStateViewHolder.create(
             parent = parent,
@@ -171,21 +169,15 @@ class CryptoCurrencyDetailsAdapter(
 
     class BodyViewHolder private constructor(
         private val binding: ItemCryptocurrencyDetailsCoinBodyBinding,
-        private val onDescriptionArrowClicked: (ImageView, TextView) -> Unit
     ) : RecyclerView.ViewHolder(binding.root) {
-
-        init {
-            binding.descriptionDropDown.setOnClickListener { onDescriptionArrowClicked(it as ImageView, binding.cryptoDescriptionText) }
-        }
 
         fun bind(listItem: CryptoCurrencyDetailsListItem.CryptoCurrencyBody) {
             binding.uiModel = listItem
         }
 
         companion object {
-            fun create(parent: ViewGroup, onDescriptionArrowClicked: (ImageView, TextView) -> Unit) = BodyViewHolder(
-                binding = ItemCryptocurrencyDetailsCoinBodyBinding.inflate(LayoutInflater.from(parent.context), parent, false),
-                onDescriptionArrowClicked = onDescriptionArrowClicked
+            fun create(parent: ViewGroup) = BodyViewHolder(
+                binding = ItemCryptocurrencyDetailsCoinBodyBinding.inflate(LayoutInflater.from(parent.context), parent, false)
             )
         }
     }
