@@ -1,9 +1,9 @@
-package com.hackathon.auth.data
+package com.example.cryptoapp.firebase.data
 
+import com.example.cryptoapp.firebase.R
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseUser
-import com.hackathon.auth.R
 
 class AuthenticationRepository(private val source: AuthenticationSource, ) {
 

@@ -4,7 +4,7 @@ import android.app.Application
 import com.example.cryptoapp.data.createDataModules
 import com.example.cryptoapp.domain.domainModule
 import com.example.cryptoapp.feature.presentationModule
-import com.hackathon.auth.di.createAuthenticationModules
+import com.example.cryptoapp.firebase.di.createAuthenticationModules
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext.startKoin
 

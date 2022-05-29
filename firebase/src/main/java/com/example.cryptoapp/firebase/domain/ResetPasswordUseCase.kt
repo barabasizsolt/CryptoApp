@@ -1,6 +1,6 @@
-package com.hackathon.auth.domain
+package com.example.cryptoapp.firebase.domain
 
-import com.hackathon.auth.data.AuthenticationRepository
+import com.example.cryptoapp.firebase.data.AuthenticationRepository
 
 class ResetPasswordUseCase(private val repository: AuthenticationRepository) {
 

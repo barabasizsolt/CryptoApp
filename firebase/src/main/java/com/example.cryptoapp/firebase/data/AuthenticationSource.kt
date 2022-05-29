@@ -1,5 +1,6 @@
-package com.hackathon.auth.data
+package com.example.cryptoapp.firebase.data
 
+import com.example.cryptoapp.firebase.data.AuthenticationService
 import com.google.firebase.auth.FirebaseAuth
 
 class AuthenticationSource : AuthenticationService {

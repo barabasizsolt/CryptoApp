@@ -1,6 +1,6 @@
 package com.example.cryptoapp.feature.screen.main.user
 
-import com.hackathon.auth.data.UserAvatarType
+import com.example.cryptoapp.firebase.data.UserAvatarType
 import com.example.cryptoapp.feature.shared.utils.ListItem
 
 sealed class ProfileListItem : ListItem {

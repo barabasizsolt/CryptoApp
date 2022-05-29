@@ -3,7 +3,7 @@ package com.example.cryptoapp.feature.activity
 import androidx.lifecycle.ViewModel
 import com.example.cryptoapp.feature.shared.utils.eventFlow
 import com.example.cryptoapp.feature.shared.utils.pushEvent
-import com.hackathon.auth.domain.GetCurrentUserUseCase
+import com.example.cryptoapp.firebase.domain.GetCurrentUserUseCase
 import kotlinx.coroutines.flow.SharedFlow
 
 class MainActivityViewModel(private val getCurrentUserUseCase: GetCurrentUserUseCase) : ViewModel() {

@@ -1,4 +1,4 @@
-package com.hackathon.auth.data
+package com.example.cryptoapp.firebase.data
 
 import android.net.Uri
 

@@ -1,12 +1,12 @@
-package com.hackathon.auth.di
+package com.example.cryptoapp.firebase.di
 
-import com.hackathon.auth.data.AuthenticationRepository
-import com.hackathon.auth.data.AuthenticationSource
-import com.hackathon.auth.domain.GetCurrentUserUseCase
-import com.hackathon.auth.domain.LogOutUseCase
-import com.hackathon.auth.domain.LoginWithEmailAndPasswordUseCase
-import com.hackathon.auth.domain.RegisterWithEmailAndPasswordUseCase
-import com.hackathon.auth.domain.ResetPasswordUseCase
+import com.example.cryptoapp.firebase.data.AuthenticationRepository
+import com.example.cryptoapp.firebase.data.AuthenticationSource
+import com.example.cryptoapp.firebase.domain.GetCurrentUserUseCase
+import com.example.cryptoapp.firebase.domain.LogOutUseCase
+import com.example.cryptoapp.firebase.domain.LoginWithEmailAndPasswordUseCase
+import com.example.cryptoapp.firebase.domain.RegisterWithEmailAndPasswordUseCase
+import com.example.cryptoapp.firebase.domain.ResetPasswordUseCase
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
