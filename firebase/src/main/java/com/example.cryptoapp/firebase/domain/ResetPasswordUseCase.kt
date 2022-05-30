@@ -1,6 +1,6 @@
-package com.example.cryptoapp.firebase.domain.auth
+package com.example.cryptoapp.firebase.domain
 
-import com.example.cryptoapp.firebase.data.auth.AuthenticationRepository
+import com.example.cryptoapp.firebase.data.AuthenticationRepository
 
 class ResetPasswordUseCase(private val repository: AuthenticationRepository) {
 

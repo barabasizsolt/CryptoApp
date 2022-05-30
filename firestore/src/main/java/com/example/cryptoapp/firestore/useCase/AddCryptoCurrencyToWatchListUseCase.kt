@@ -1,6 +1,6 @@
-package com.example.cryptoapp.firestore.domain
+package com.example.cryptoapp.firestore.useCase
 
-import com.example.cryptoapp.firestore.data.FirestoreService
+import com.example.cryptoapp.firestore.service.FirestoreService
 
 class AddCryptoCurrencyToWatchListUseCase(private val service: FirestoreService) {
 

@@ -1,5 +1,6 @@
-package com.example.cryptoapp.firestore.data
+package com.example.cryptoapp.firestore.service
 
+import com.example.cryptoapp.firestore.service.model.CryptoAndUserId
 import kotlinx.coroutines.flow.Flow
 
 interface FirestoreService {
@@ -9,4 +10,6 @@ interface FirestoreService {
     fun addCryptoCurrencyToWatchList(id: String, userId: String)
 
     fun deleteCryptoCurrencyFromWatchList(id: String, userId: String)
+
+
 }

@@ -1,15 +1,15 @@
 package com.example.cryptoapp.firestore.di
 
-import com.example.cryptoapp.firestore.data.FirestoreService
-import com.example.cryptoapp.firestore.data.FirestoreServiceImpl
-import com.example.cryptoapp.firestore.domain.AddCryptoCurrencyToWatchListUseCase
-import com.example.cryptoapp.firestore.domain.DeleteCryptoCurrencyFromWatchList
-import com.example.cryptoapp.firestore.domain.GetAllCryptoCurrencyUseCase
-import com.example.cryptoapp.firestore.domain.GetCryptoCurrencyUseCase
+import com.example.cryptoapp.firestore.service.FirestoreService
+import com.example.cryptoapp.firestore.service.FirestoreServiceImpl
+import com.example.cryptoapp.firestore.useCase.AddCryptoCurrencyToWatchListUseCase
+import com.example.cryptoapp.firestore.useCase.DeleteCryptoCurrencyFromWatchList
+import com.example.cryptoapp.firestore.useCase.GetAllCryptoCurrencyUseCase
+import com.example.cryptoapp.firestore.useCase.GetCryptoCurrencyUseCase
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
-fun fireStoreModule(): List<Module> = listOf(dataModule(), domainModule())
+fun createFirestoreModule(): List<Module> = listOf(dataModule(), domainModule())
 
 private fun dataModule() = module {
     single<FirestoreService> { FirestoreServiceImpl() }

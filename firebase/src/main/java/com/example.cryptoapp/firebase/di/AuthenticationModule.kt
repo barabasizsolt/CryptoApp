@@ -1,12 +1,12 @@
 package com.example.cryptoapp.firebase.di
 
-import com.example.cryptoapp.firebase.data.auth.AuthenticationRepository
-import com.example.cryptoapp.firebase.data.auth.AuthenticationSource
-import com.example.cryptoapp.firebase.domain.auth.GetCurrentUserUseCase
-import com.example.cryptoapp.firebase.domain.auth.LogOutUseCase
-import com.example.cryptoapp.firebase.domain.auth.LoginWithEmailAndPasswordUseCase
-import com.example.cryptoapp.firebase.domain.auth.RegisterWithEmailAndPasswordUseCase
-import com.example.cryptoapp.firebase.domain.auth.ResetPasswordUseCase
+import com.example.cryptoapp.firebase.data.AuthenticationRepository
+import com.example.cryptoapp.firebase.data.AuthenticationSource
+import com.example.cryptoapp.firebase.domain.GetCurrentUserUseCase
+import com.example.cryptoapp.firebase.domain.LogOutUseCase
+import com.example.cryptoapp.firebase.domain.LoginWithEmailAndPasswordUseCase
+import com.example.cryptoapp.firebase.domain.RegisterWithEmailAndPasswordUseCase
+import com.example.cryptoapp.firebase.domain.ResetPasswordUseCase
 import org.koin.core.module.Module
 import org.koin.dsl.module
 

@@ -21,10 +21,10 @@ import com.example.cryptoapp.feature.shared.utils.getFormattedTime
 import com.example.cryptoapp.feature.shared.utils.ordinalOf
 import com.example.cryptoapp.feature.shared.utils.pushEvent
 import com.example.cryptoapp.feature.shared.utils.toChartDataSet
-import com.example.cryptoapp.firebase.domain.auth.GetCurrentUserUseCase
-import com.example.cryptoapp.firestore.domain.AddCryptoCurrencyToWatchListUseCase
-import com.example.cryptoapp.firestore.domain.DeleteCryptoCurrencyFromWatchList
-import com.example.cryptoapp.firestore.domain.GetCryptoCurrencyUseCase
+import com.example.cryptoapp.firebase.domain.GetCurrentUserUseCase
+import com.example.cryptoapp.firestore.useCase.AddCryptoCurrencyToWatchListUseCase
+import com.example.cryptoapp.firestore.useCase.DeleteCryptoCurrencyFromWatchList
+import com.example.cryptoapp.firestore.useCase.GetCryptoCurrencyUseCase
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,7 +32,6 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
-import com.google.firebase.firestore.DocumentSnapshot
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 

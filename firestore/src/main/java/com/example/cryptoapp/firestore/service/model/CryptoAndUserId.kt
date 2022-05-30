@@ -1,4 +1,4 @@
-package com.example.cryptoapp.firestore.data
+package com.example.cryptoapp.firestore.service.model
 
 data class CryptoAndUserId(
     val id: String,

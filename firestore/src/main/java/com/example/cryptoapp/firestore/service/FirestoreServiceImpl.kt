@@ -1,5 +1,6 @@
-package com.example.cryptoapp.firestore.data
+package com.example.cryptoapp.firestore.service
 
+import com.example.cryptoapp.firestore.service.model.CryptoAndUserId
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.ExperimentalCoroutinesApi

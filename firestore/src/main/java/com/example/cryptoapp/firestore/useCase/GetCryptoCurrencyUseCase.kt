@@ -1,7 +1,7 @@
-package com.example.cryptoapp.firestore.domain
+package com.example.cryptoapp.firestore.useCase
 
-import com.example.cryptoapp.firestore.data.CryptoAndUserId
-import com.example.cryptoapp.firestore.data.FirestoreService
+import com.example.cryptoapp.firestore.service.model.CryptoAndUserId
+import com.example.cryptoapp.firestore.service.FirestoreService
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map

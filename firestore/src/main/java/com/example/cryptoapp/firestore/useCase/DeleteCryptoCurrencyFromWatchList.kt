@@ -1,5 +1,5 @@
-package com.example.cryptoapp.firestore.domain
-import com.example.cryptoapp.firestore.data.FirestoreService
+package com.example.cryptoapp.firestore.useCase
+import com.example.cryptoapp.firestore.service.FirestoreService
 
 class DeleteCryptoCurrencyFromWatchList(private val service: FirestoreService) {
 

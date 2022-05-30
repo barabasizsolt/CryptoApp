@@ -1,7 +1,6 @@
 package com.example.cryptoapp.feature.shared.utils
 
 import android.graphics.Color
-import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -11,10 +10,10 @@ import coil.ImageLoader
 import coil.decode.SvgDecoder
 import coil.request.ImageRequest
 import com.example.cryptoapp.R
-import com.example.cryptoapp.firebase.data.auth.UserAvatarType
 import com.example.cryptoapp.feature.screen.main.cryptocurrency.cryptocurrencyDetails.helpers.CryptoXAxisFormatter
 import com.example.cryptoapp.feature.screen.main.cryptocurrency.cryptocurrencyDetails.helpers.CryptoYAxisFormatter
 import com.example.cryptoapp.feature.screen.main.cryptocurrency.cryptocurrencyDetails.helpers.UnitOfTimeType
+import com.example.cryptoapp.firebase.data.UserAvatarType
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.LegendEntry
@@ -23,7 +22,6 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import com.google.android.material.color.MaterialColors
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 @BindingAdapter("percentage")
 fun TextView.setPercentage(percentageStr: String) {
@@ -121,8 +119,3 @@ fun ImageView.loadAvatar(avatarType: UserAvatarType) = ImageLoader.Builder(conte
             .target(this)
             .build()
     )
-
-//@BindingAdapter("app:srcCompat")
-//fun FloatingActionButton.setIcon(isAddedToWatchList: Boolean) {
-//    if (isAddedToWatchList) this.setImageDrawable(Drawable(R.drawable.ic_delete))
-//}
