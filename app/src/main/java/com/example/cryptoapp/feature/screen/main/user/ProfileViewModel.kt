@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.cryptoapp.feature.shared.utils.eventFlow
 import com.example.cryptoapp.feature.shared.utils.formatUserRegistrationDate
 import com.example.cryptoapp.feature.shared.utils.pushEvent
-import com.example.cryptoapp.firebase.data.User
-import com.example.cryptoapp.firebase.domain.GetCurrentUserUseCase
+import com.example.cryptoapp.auth.service.model.User
+import com.example.cryptoapp.auth.useCase.GetCurrentUserUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow

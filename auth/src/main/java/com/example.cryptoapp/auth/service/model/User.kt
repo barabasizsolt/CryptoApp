@@ -1,4 +1,4 @@
-package com.example.cryptoapp.firebase.data
+package com.example.cryptoapp.auth.service.model
 
 import android.net.Uri
 

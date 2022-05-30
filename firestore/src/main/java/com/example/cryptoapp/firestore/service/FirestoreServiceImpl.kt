@@ -13,7 +13,7 @@ class FirestoreServiceImpl : FirestoreService {
     private val collection = FirebaseFirestore.getInstance().collection(COLLECTION_PATH)
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    private var _cryptoCurrencyIdsFlow: Flow<List<CryptoAndUserId>?> = callbackFlow {
+    private val _cryptoCurrencyIdsFlow: Flow<List<CryptoAndUserId>?> = callbackFlow {
         val subscription = collection.addSnapshotListener { snapshot, _ ->
             offer(snapshot?.documents?.map {
                 CryptoAndUserId(

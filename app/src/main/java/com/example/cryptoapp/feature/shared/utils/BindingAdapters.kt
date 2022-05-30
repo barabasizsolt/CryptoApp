@@ -13,7 +13,7 @@ import com.example.cryptoapp.R
 import com.example.cryptoapp.feature.screen.main.cryptocurrency.cryptocurrencyDetails.helpers.CryptoXAxisFormatter
 import com.example.cryptoapp.feature.screen.main.cryptocurrency.cryptocurrencyDetails.helpers.CryptoYAxisFormatter
 import com.example.cryptoapp.feature.screen.main.cryptocurrency.cryptocurrencyDetails.helpers.UnitOfTimeType
-import com.example.cryptoapp.firebase.data.UserAvatarType
+import com.example.cryptoapp.auth.service.model.UserAvatarType
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.LegendEntry

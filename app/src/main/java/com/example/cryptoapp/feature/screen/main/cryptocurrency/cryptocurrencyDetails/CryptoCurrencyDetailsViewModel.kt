@@ -21,7 +21,7 @@ import com.example.cryptoapp.feature.shared.utils.getFormattedTime
 import com.example.cryptoapp.feature.shared.utils.ordinalOf
 import com.example.cryptoapp.feature.shared.utils.pushEvent
 import com.example.cryptoapp.feature.shared.utils.toChartDataSet
-import com.example.cryptoapp.firebase.domain.GetCurrentUserUseCase
+import com.example.cryptoapp.auth.useCase.GetCurrentUserUseCase
 import com.example.cryptoapp.firestore.useCase.AddCryptoCurrencyToWatchListUseCase
 import com.example.cryptoapp.firestore.useCase.DeleteCryptoCurrencyFromWatchList
 import com.example.cryptoapp.firestore.useCase.GetCryptoCurrencyUseCase

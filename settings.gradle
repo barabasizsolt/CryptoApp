@@ -10,6 +10,6 @@ rootProject.name = "CryptoApp"
 include ':app'
 include ':data'
 include ':domain'
-include ':firebase'
+include ':auth'
 include ':wear'
 include ':firestore'

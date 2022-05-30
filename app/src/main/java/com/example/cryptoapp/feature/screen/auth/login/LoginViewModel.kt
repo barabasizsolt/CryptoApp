@@ -5,8 +5,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.cryptoapp.firebase.domain.LoginWithEmailAndPasswordUseCase
-import com.example.cryptoapp.firebase.domain.ResetPasswordUseCase
+import com.example.cryptoapp.auth.AuthResult
+import com.example.cryptoapp.auth.useCase.LoginWithEmailAndPasswordUseCase
+import com.example.cryptoapp.auth.useCase.ResetPasswordUseCase
 import com.example.cryptoapp.feature.shared.utils.eventFlow
 import com.example.cryptoapp.feature.shared.utils.pushEvent
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +15,9 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 class LoginViewModel(
     private val loginWithEmailAndPasswordUseCase: LoginWithEmailAndPasswordUseCase,
@@ -40,22 +43,30 @@ class LoginViewModel(
 
     fun loginWithEmailAndPassword() {
         _isLoading.value = true
-        val result = loginWithEmailAndPasswordUseCase(email = email.value, password = password.value)
-        result.addOnSuccessListener {
-            _event.pushEvent(Event.LoginUser())
-            _isLoading.value = false
-        }
-        result.addOnFailureListener {
-            _event.pushEvent(Event.ShowErrorMessage(message = "Login failed: ${it.message}"))
-            _isLoading.value = false
+        viewModelScope.launch {
+            loginWithEmailAndPasswordUseCase(email = email.value, password = password.value).onEach { result ->
+                _isLoading.value = false
+                when (result) {
+                    is AuthResult.Success -> _event.pushEvent(Event.LoginUser())
+                    is AuthResult.Failure -> _event.pushEvent(Event.ShowErrorMessage(message = "Login failed: ${result.error}"))
+                }
+            }.stateIn(scope = this)
         }
     }
 
     fun resetPassword() {
-        resetPasswordUseCase(email = resetPasswordEmail)
-        isOpen = false
-        resetPasswordEmail = ""
-        _event.pushEvent(Event.ShowAfterResetPasswordMessage(message = "An email has been sent to your email address containing a link to reset your password."))
+        _isLoading.value = true
+        viewModelScope.launch {
+            resetPasswordUseCase(email = resetPasswordEmail).onEach { result ->
+                _isLoading.value = false
+                isOpen = false
+                resetPasswordEmail = ""
+                when (result) {
+                    is AuthResult.Success -> _event.pushEvent(Event.ShowAfterResetPasswordMessage(message = "An email has been sent to your email address containing a link to reset your password."))
+                    is AuthResult.Failure -> _event.pushEvent(Event.ShowErrorMessage(message = "Login failed: ${result.error}"))
+                }
+            }.stateIn(scope = this)
+        }
     }
 
     fun onEmailChange(email: String) {

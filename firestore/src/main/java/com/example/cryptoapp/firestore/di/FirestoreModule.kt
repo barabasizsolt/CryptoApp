@@ -9,13 +9,13 @@ import com.example.cryptoapp.firestore.useCase.GetCryptoCurrencyUseCase
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
-fun createFirestoreModule(): List<Module> = listOf(dataModule(), domainModule())
+fun createFirestoreModule(): List<Module> = listOf(createServiceModule(), createUseCaseModule())
 
-private fun dataModule() = module {
+private fun createServiceModule() = module {
     single<FirestoreService> { FirestoreServiceImpl() }
 }
 
-private fun domainModule() = module {
+private fun createUseCaseModule() = module {
     factory { AddCryptoCurrencyToWatchListUseCase(service = get()) }
     factory { DeleteCryptoCurrencyFromWatchList(service = get()) }
     factory { GetCryptoCurrencyUseCase(service = get()) }

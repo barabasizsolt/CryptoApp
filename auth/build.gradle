@@ -31,10 +31,13 @@ android {
 
 dependencies {
 
-    //Koin
+    // Koin
     implementation "io.insert-koin:koin-android:3.1.5"
 
-    //Firebase
+    // Coroutine
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.2'
+
+    // Firebase
     implementation platform('com.google.firebase:firebase-bom:29.0.0')
     implementation 'com.google.firebase:firebase-auth:21.0.4'
 }

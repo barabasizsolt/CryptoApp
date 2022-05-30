@@ -2,7 +2,8 @@ package com.example.cryptoapp.feature.screen.auth.register
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.cryptoapp.firebase.domain.RegisterWithEmailAndPasswordUseCase
+import com.example.cryptoapp.auth.AuthResult
+import com.example.cryptoapp.auth.useCase.RegisterWithEmailAndPasswordUseCase
 import com.example.cryptoapp.feature.shared.utils.eventFlow
 import com.example.cryptoapp.feature.shared.utils.pushEvent
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -10,7 +11,9 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 class SignUpViewModel(private val registerWithEmailAndPasswordUseCase: RegisterWithEmailAndPasswordUseCase) : ViewModel() {
 
@@ -32,14 +35,15 @@ class SignUpViewModel(private val registerWithEmailAndPasswordUseCase: RegisterW
     fun registerWithEmailAndPassword() {
         if (validate()) {
             _isLoading.value = true
-            val result = registerWithEmailAndPasswordUseCase(email = email.value, password = password.value)
-            result.addOnSuccessListener {
-                _event.pushEvent(Event.RegisterUser())
-                _isLoading.value = false
-            }
-            result.addOnFailureListener {
-                _event.pushEvent(Event.ShowErrorMessage(message = "Registration failed: ${it.message}"))
-                _isLoading.value = false
+
+            viewModelScope.launch {
+                registerWithEmailAndPasswordUseCase(email = email.value, password = password.value).onEach { result ->
+                    _isLoading.value = false
+                    when (result) {
+                        is AuthResult.Success -> _event.pushEvent(Event.RegisterUser())
+                        is AuthResult.Failure -> _event.pushEvent(Event.ShowErrorMessage(message = "Registration failed: ${result.error}"))
+                    }
+                }.stateIn(scope = this)
             }
         }
     }
