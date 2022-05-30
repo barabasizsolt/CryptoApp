@@ -51,6 +51,7 @@ class LoginViewModel(
                     is AuthResult.Failure -> _event.pushEvent(Event.ShowErrorMessage(message = "Login failed: ${result.error}"))
                 }
             }.stateIn(scope = this)
+            loginWithEmailAndPasswordUseCase(email = email.value, password = password.value)
         }
     }
 
