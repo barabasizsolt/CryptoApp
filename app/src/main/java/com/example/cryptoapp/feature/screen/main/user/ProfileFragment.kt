@@ -10,7 +10,6 @@ import com.example.cryptoapp.databinding.FragmentProfileBinding
 import com.example.cryptoapp.feature.screen.main.MainFragment
 import com.example.cryptoapp.feature.shared.navigation.BaseFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -38,7 +37,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_p
         .setTitle(R.string.general_close_confirmation_title)
         .setMessage(R.string.general_sign_out_confirmation_message)
         .setPositiveButton(R.string.general_close_confirmation_positive) { _, _ ->
-            FirebaseAuth.getInstance().signOut()
+            viewModel::logOutUser
             navigator?.navigateToAuthentication()
         }
         .setNegativeButton(R.string.general_close_confirmation_negative, null)

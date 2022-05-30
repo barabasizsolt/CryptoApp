@@ -44,5 +44,5 @@ val presentationModule = module {
             getExchangeHistory = get()
         )
     }
-    viewModel { ProfileViewModel(getCurrentUserUseCase = get()) }
+    viewModel { ProfileViewModel(getCurrentUserUseCase = get(), logOutUseCase = get()) }
 }

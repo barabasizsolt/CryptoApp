@@ -7,13 +7,17 @@ import com.example.cryptoapp.feature.shared.utils.formatUserRegistrationDate
 import com.example.cryptoapp.feature.shared.utils.pushEvent
 import com.example.cryptoapp.auth.service.model.User
 import com.example.cryptoapp.auth.useCase.GetCurrentUserUseCase
+import com.example.cryptoapp.auth.useCase.LogOutUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
-class ProfileViewModel(getCurrentUserUseCase: GetCurrentUserUseCase) : ViewModel() {
+class ProfileViewModel(
+    private val getCurrentUserUseCase: GetCurrentUserUseCase,
+    private val logOutUseCase: LogOutUseCase
+) : ViewModel() {
 
     private val _isLoading = MutableStateFlow(false)
     val isLoading: StateFlow<Boolean> = _isLoading
@@ -50,6 +54,8 @@ class ProfileViewModel(getCurrentUserUseCase: GetCurrentUserUseCase) : ViewModel
             }
         }
     }
+
+    fun logOutUser() = logOutUseCase()
 
     private fun User.toUiModel() = ProfileListItem.User(
         userId = userId,
