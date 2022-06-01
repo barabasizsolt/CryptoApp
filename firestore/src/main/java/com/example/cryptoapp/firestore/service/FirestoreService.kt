@@ -1,15 +1,14 @@
 package com.example.cryptoapp.firestore.service
 
-import com.example.cryptoapp.firestore.service.model.CryptoAndUserId
 import kotlinx.coroutines.flow.Flow
 
 interface FirestoreService {
 
-    val cryptoCurrencyIdsFlow: Flow<List<CryptoAndUserId>?>
+    fun addCryptoCurrencyToWatchList(id: String)
 
-    fun addCryptoCurrencyToWatchList(id: String, userId: String)
+    fun deleteCryptoCurrencyFromWatchList(id: String)
 
-    fun deleteCryptoCurrencyFromWatchList(id: String, userId: String)
+    fun getCryptoCurrenciesInWatchList(): Flow<List<String>?>
 
-
+    fun isCryptoCurrencyAddedToWatchList(id: String): Flow<Boolean?>
 }

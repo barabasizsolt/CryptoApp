@@ -30,7 +30,7 @@ val presentationModule = module {
             historyUseCase = get(),
             addCryptoCurrencyToWatchListUseCase = get(),
             deleteCryptoCurrencyFromWatchList = get(),
-            getCryptoCurrencyUseCase = get(),
+            isCryptoCurrencyAddedToWatchList = get(),
             getCurrentUserUseCase = get()
         )
     }

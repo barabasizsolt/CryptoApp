@@ -24,7 +24,7 @@ import com.example.cryptoapp.feature.shared.utils.toChartDataSet
 import com.example.cryptoapp.auth.useCase.GetCurrentUserUseCase
 import com.example.cryptoapp.firestore.useCase.AddCryptoCurrencyToWatchListUseCase
 import com.example.cryptoapp.firestore.useCase.DeleteCryptoCurrencyFromWatchList
-import com.example.cryptoapp.firestore.useCase.GetCryptoCurrencyUseCase
+import com.example.cryptoapp.firestore.useCase.IsCryptoCurrencyAddedToWatchList
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -41,7 +41,7 @@ class CryptoCurrencyDetailsViewModel(
     private val historyUseCase: GetCryptoCurrencyHistoryUseCase,
     private val addCryptoCurrencyToWatchListUseCase: AddCryptoCurrencyToWatchListUseCase,
     private val deleteCryptoCurrencyFromWatchList: DeleteCryptoCurrencyFromWatchList,
-    private val getCryptoCurrencyUseCase: GetCryptoCurrencyUseCase,
+    private val isCryptoCurrencyAddedToWatchList: IsCryptoCurrencyAddedToWatchList,
     private val getCurrentUserUseCase: GetCurrentUserUseCase
 ) : ViewModel() {
 
@@ -120,10 +120,8 @@ class CryptoCurrencyDetailsViewModel(
 
     init {
         refreshData()
-        val userId = getCurrentUserUseCase()?.userId.orEmpty()
-        getCryptoCurrencyUseCase(id = uuid, userId = userId).onEach {
-            println("List: $it")
-            _isAddedToWatchList.value = it.isNotEmpty()
+        isCryptoCurrencyAddedToWatchList(id = uuid).onEach {
+            _isAddedToWatchList.value = it
         }.launchIn(scope = viewModelScope)
     }
 
@@ -269,9 +267,9 @@ class CryptoCurrencyDetailsViewModel(
 
     fun addOrRemoveFromWatchList() {
         if (isAddedToWatchList.value) {
-            deleteCryptoCurrencyFromWatchList(id = uuid, userId = getCurrentUserUseCase()?.userId.orEmpty())
+            deleteCryptoCurrencyFromWatchList(id = uuid)
         } else {
-            addCryptoCurrencyToWatchListUseCase(id = uuid, userId = getCurrentUserUseCase()?.userId.orEmpty())
+            addCryptoCurrencyToWatchListUseCase(id = uuid)
         }
     }
 
