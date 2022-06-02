@@ -26,7 +26,7 @@ class FirestoreServiceImpl(private val authService: AuthenticationService) : Fir
     @OptIn(ExperimentalCoroutinesApi::class)
     override fun getCryptoCurrenciesInWatchList(): Flow<List<String>?> = consumeQuery(
         query = collection.whereEqualTo(USER_ID, authService.getCurrentUser()?.userId),
-        snapshotToFlowConverter = { snapshot ->
+        queryConverter = { snapshot ->
             snapshot.documents.map { document -> document?.data?.get(ID).toString() }
         }
     )
@@ -36,7 +36,7 @@ class FirestoreServiceImpl(private val authService: AuthenticationService) : Fir
         query = collection
             .whereEqualTo(USER_ID, authService.getCurrentUser()?.userId)
             .whereEqualTo(ID, id),
-        snapshotToFlowConverter = { snapshot ->
+        queryConverter = { snapshot ->
             snapshot.documents.isNotEmpty()
         }
     )
