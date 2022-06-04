@@ -10,21 +10,20 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/crypto_currency_card_height"
-        android:layout_margin="@dimen/content_padding_half">
+        android:layout_height="@dimen/recycler_view_card_height"
+        android:layout_marginBottom="@dimen/content_padding"
+        app:cardCornerRadius="@dimen/small_shape_radius">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="@dimen/content_padding_half">
+            android:padding="@dimen/content_padding"
+            tools:ignore="RtlSymmetry">
 
             <ImageView
                 android:id="@+id/crypto_logo"
-                android:layout_width="@dimen/crypto_currency_image_view_size"
-                android:layout_height="@dimen/crypto_currency_image_view_size"
-                android:layout_marginStart="@dimen/crypto_currency_image_view_margin_start"
-                android:layout_marginBottom="@dimen/crypto_currency_image_view_margin_bottom"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_width="@dimen/recycler_view_card_logo_size"
+                android:layout_height="@dimen/recycler_view_card_logo_size"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:url="@{uiModel.cryptoCurrency.iconUrl}"
@@ -32,115 +31,126 @@
 
             <TextView
                 android:id="@+id/crypto_name"
+                style="@style/TextAppearance.CryptoApp.Caption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/crypto_currency_name_text_view_margin_start"
                 android:text="@{uiModel.cryptoCurrency.name}"
                 android:textAlignment="center"
-                style="@style/TextAppearance.CryptoApp.Caption"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/crypto_logo"
-                tools:text="crypto"/>
+                tools:text="crypto" />
 
             <TextView
                 android:id="@+id/crypto_symbol"
+                style="@style/TextAppearance.CryptoApp.Caption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/crypto_currency_symbol_text_view_margin_start"
-                android:layout_marginTop="@dimen/crypto_currency_symbol_text_view_margin_top"
                 android:text="@{uiModel.cryptoCurrency.symbol}"
                 android:textAlignment="center"
-                style="@style/TextAppearance.CryptoApp.Caption"
                 app:layout_constraintStart_toEndOf="@+id/crypto_logo"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Symbol" />
 
             <TextView
                 android:id="@+id/crypto_value"
+                style="@style/TextAppearance.CryptoApp.Headline5"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/content_padding"
+                android:layout_marginEnd="@dimen/content_padding"
+                android:ellipsize="end"
+                android:gravity="center"
                 android:text="@{uiModel.formattedPrice}"
-                style="@style/TextAppearance.CryptoApp.Headline5"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/market_cap"
                 app:layout_constraintStart_toEndOf="@id/crypto_symbol"
                 app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginStart="@dimen/content_padding"
-                android:layout_marginEnd="@dimen/content_padding"
-                android:gravity="center"
-                android:ellipsize="end"
                 tools:text="Value" />
 
             <TextView
                 android:id="@+id/percent_change"
+                style="@style/TextAppearance.CryptoApp.Caption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/percentage_text_view_margin_top"
-                android:layout_marginEnd="@dimen/percentage_text_view_margin_end"
-                style="@style/TextAppearance.CryptoApp.Caption"
+                app:layout_constraintBottom_toTopOf="@+id/volume"
                 app:layout_constraintEnd_toStartOf="@+id/percentage_change_text"
+                app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                android:paddingEnd="@dimen/small_padding"
+                app:layout_constraintVertical_chainStyle="packed"
                 app:percentage="@{uiModel.cryptoCurrency.change}"
                 tools:text="Percentage" />
 
             <TextView
                 android:id="@+id/volume"
+                style="@style/TextAppearance.CryptoApp.Caption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/volume_text_view_margin_end"
                 android:text="@{uiModel.formattedVolume}"
-                style="@style/TextAppearance.CryptoApp.Caption"
+                app:layout_constraintBottom_toTopOf="@+id/market_cap"
                 app:layout_constraintEnd_toStartOf="@+id/volume_change"
+                app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/percent_change"
-                tools:text="Volume"/>
+                android:paddingEnd="@dimen/small_padding"
+                app:layout_constraintVertical_chainStyle="packed"
+                tools:text="Volume" />
 
             <TextView
                 android:id="@+id/market_cap"
+                style="@style/TextAppearance.CryptoApp.Caption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/market_cap_text_view_margin_end"
                 android:text="@{uiModel.formattedMarketCap}"
-                style="@style/TextAppearance.CryptoApp.Caption"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/cap"
+                app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/volume"
-                tools:text="Market Cap"/>
+                android:paddingEnd="@dimen/small_padding"
+                app:layout_constraintVertical_chainStyle="packed"
+                tools:text="Market Caps" />
 
             <TextView
                 android:id="@+id/percentage_change_text"
-                android:layout_width="@dimen/percentage_text_text_view_width"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/percentage_text_text_view_margin_top"
-                android:text="@{uiModel.timePeriod}"
                 style="@style/TextAppearance.CryptoApp.Caption"
+                android:layout_width="@dimen/recycler_view_text_width"
+                android:layout_height="wrap_content"
+                android:text="@{uiModel.timePeriod}"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:textAlignment="viewStart"
+                app:layout_constraintBottom_toTopOf="@+id/volume_change"
+                app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="24h"/>
+                app:layout_constraintVertical_chainStyle="packed"
+                tools:text="24h" />
 
             <TextView
                 android:id="@+id/volume_change"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/volume_text_text_view_margin_end"
-                android:text="@string/market_volume"
                 style="@style/TextAppearance.CryptoApp.Caption"
+                android:layout_width="@dimen/recycler_view_text_width"
+                android:layout_height="wrap_content"
+                android:text="@string/market_volume"
+                android:textAlignment="viewStart"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/percentage_change_text" />
+                app:layout_constraintBottom_toTopOf="@+id/cap"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/percentage_change_text"
+                app:layout_constraintVertical_chainStyle="packed" />
 
             <TextView
                 android:id="@+id/cap"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/market_cap_text_text_view_margin_end"
-                android:text="@string/market_cap"
                 style="@style/TextAppearance.CryptoApp.Caption"
+                android:layout_width="@dimen/recycler_view_text_width"
+                android:layout_height="wrap_content"
+                android:text="@string/market_cap"
+                android:textAlignment="viewStart"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/volume_change" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/volume_change"
+                app:layout_constraintVertical_chainStyle="packed" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

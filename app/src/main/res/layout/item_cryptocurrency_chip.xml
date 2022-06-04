@@ -19,6 +19,6 @@
         android:clickable="@{!uiModel.checked}"
         tools:text="@string/chip_24hr"
         android:text="@{uiModel.chipTextId}"
-        app:chipCornerRadius="@dimen/crypto_details_chip_corner_radius" />
+        app:chipCornerRadius="@dimen/small_padding" />
 
 </layout>

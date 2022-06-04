@@ -15,7 +15,8 @@ sealed class CategoryListItem : ListItem {
         val name: String,
         val top3CoinLogos: List<String>,
         val volume: String,
-        val marketCap: String
+        val marketCap: String,
+        val marketCapChange: String
     ) : CategoryListItem() {
         override val id = "categories_$categoryId"
     }

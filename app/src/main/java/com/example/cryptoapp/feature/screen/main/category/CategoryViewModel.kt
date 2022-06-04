@@ -71,8 +71,9 @@ class CategoryViewModel(private val getCategoriesUseCase: GetCategoriesUseCase) 
         categoryId = id,
         name = name,
         top3CoinLogos = top3Coins,
-        volume = marketCapChange24h,
-        marketCap = marketCap.toString().convertToCompactPrice()
+        volume = volume24h.toString().convertToCompactPrice(),
+        marketCap = marketCap.toString().convertToCompactPrice(),
+        marketCapChange = marketCapChange24h
     )
 
     sealed class Event {

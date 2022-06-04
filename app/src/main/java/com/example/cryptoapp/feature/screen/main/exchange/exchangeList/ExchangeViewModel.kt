@@ -7,6 +7,7 @@ import com.example.cryptoapp.data.model.Result
 import com.example.cryptoapp.data.model.exchange.Exchange
 import com.example.cryptoapp.domain.useCase.exchange.GetExchangesUseCase
 import com.example.cryptoapp.feature.shared.utils.eventFlow
+import com.example.cryptoapp.feature.shared.utils.ordinalOf
 import com.example.cryptoapp.feature.shared.utils.pushEvent
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -74,7 +75,9 @@ class ExchangeViewModel(private val useCase: GetExchangesUseCase) : ViewModel() 
         name = name,
         logo = image,
         trustScore = trustScore.toString(),
-        volume = volume.toString()
+        volume = volume.toString(),
+        rank = rank,
+        yearEstablished = yearEstablished.toString()
     )
 
     sealed class Event {

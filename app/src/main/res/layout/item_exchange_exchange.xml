@@ -10,20 +10,21 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/exchange_item_height"
-        android:layout_margin="@dimen/content_padding_half">
+        android:layout_height="@dimen/recycler_view_card_height"
+        android:layout_marginBottom="@dimen/content_padding"
+        app:cardCornerRadius="@dimen/small_padding">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:padding="@dimen/content_padding">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/exchange_logo_holder"
-                android:layout_width="@dimen/exchange_image_view_size"
-                android:layout_height="@dimen/exchange_image_view_size"
-                app:cardCornerRadius="@dimen/exchange_image_view_size"
+                android:layout_width="@dimen/recycler_view_card_logo_size"
+                android:layout_height="@dimen/recycler_view_card_logo_size"
+                app:cardCornerRadius="@dimen/recycler_view_card_logo_size"
                 app:cardElevation="@dimen/zero_elevation"
-                android:layout_marginStart="@dimen/exchange_image_view_margin_start"
                 android:layout_gravity="center"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -31,8 +32,8 @@
 
                 <ImageView
                     android:id="@+id/exchange_logo"
-                    android:layout_width="@dimen/exchange_image_view_size"
-                    android:layout_height="@dimen/exchange_image_view_size"
+                    android:layout_width="@dimen/recycler_view_card_logo_size"
+                    android:layout_height="@dimen/recycler_view_card_logo_size"
                     app:url="@{uiModel.logo}"
                     android:scaleType="centerCrop"
                     tools:srcCompat="@tools:sample/avatars" />
@@ -41,54 +42,114 @@
 
             <TextView
                 android:id="@+id/exchange_name"
+                style="@style/TextAppearance.CryptoApp.Subtitle1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/exchange_name_text_view_margin_start"
-                android:layout_marginTop="@dimen/exchange_name_text_view_margin_top"
+                android:layout_marginStart="@dimen/content_padding"
                 tools:text="undefined"
                 android:text="@{uiModel.name}"
                 android:textAlignment="center"
-                style="@style/TextAppearance.CryptoApp.Subtitle1"
                 android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@+id/exchange_logo_holder"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintBottom_toTopOf="@+id/exchange_trust_score"
+                app:layout_constraintLeft_toRightOf="@id/exchange_logo_holder"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed" />
 
             <TextView
                 android:id="@+id/exchange_trust_score"
+                style="@style/TextAppearance.CryptoApp.Subtitle2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/exchange_trust_score_text_view_margin_start"
-                android:layout_marginTop="@dimen/exchange_trust_score_text_view_margin_start"
+                android:layout_marginStart="@dimen/content_padding"
                 tools:text="undefined"
                 android:text="@{uiModel.exchangeTrustScore}"
                 android:textAlignment="center"
-                style="@style/TextAppearance.CryptoApp.Subtitle2"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/exchange_logo_holder"
-                app:layout_constraintTop_toBottomOf="@+id/exchange_name" />
+                app:layout_constraintTop_toBottomOf="@+id/exchange_name"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+            <TextView
+                android:id="@+id/percent_change"
+                style="@style/TextAppearance.CryptoApp.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{uiModel.formattedRank}"
+                app:layout_constraintBottom_toTopOf="@+id/volume"
+                app:layout_constraintEnd_toStartOf="@+id/percentage_change_text"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:paddingEnd="@dimen/small_padding"
+                app:layout_constraintVertical_chainStyle="packed"
+                tools:text="#1" />
 
             <TextView
                 android:id="@+id/volume"
+                style="@style/TextAppearance.CryptoApp.Caption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/exchange_volume_text_view_margin_end"
-                tools:text="undefined"
                 android:text="@{uiModel.formattedVolume}"
-                style="@style/TextAppearance.CryptoApp.Subtitle1"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/market_cap"
                 app:layout_constraintEnd_toStartOf="@+id/volume_change"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/percent_change"
+                android:paddingEnd="@dimen/small_padding"
+                app:layout_constraintVertical_chainStyle="packed"
+                tools:text="Volume" />
+
+            <TextView
+                android:id="@+id/market_cap"
+                style="@style/TextAppearance.CryptoApp.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{uiModel.yearEstablished}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/year_established"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/volume"
+                android:paddingEnd="@dimen/small_padding"
+                app:layout_constraintVertical_chainStyle="packed"
+                tools:text="2017" />
+
+            <TextView
+                android:id="@+id/percentage_change_text"
+                style="@style/TextAppearance.CryptoApp.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/coin_rank"
+                android:textStyle="bold"
+                android:textAlignment="viewStart"
+                app:layout_constraintBottom_toTopOf="@+id/volume_change"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed" />
 
             <TextView
                 android:id="@+id/volume_change"
-                android:layout_width="wrap_content"
+                style="@style/TextAppearance.CryptoApp.Caption"
+                android:layout_width="@dimen/recycler_view_text_width"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/exchange_volume_change_text_view_margin_end"
-                android:text="@string/exchange_volume"
-                style="@style/TextAppearance.CryptoApp.Subtitle1"
+                android:text="@string/market_volume"
+                android:textAlignment="viewStart"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/year_established"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/percentage_change_text"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+            <TextView
+                android:id="@+id/year_established"
+                style="@style/TextAppearance.CryptoApp.Caption"
+                android:layout_width="@dimen/recycler_view_text_width"
+                android:layout_height="wrap_content"
+                android:text="@string/year_established"
+                android:textAlignment="viewStart"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/volume_change"
+                app:layout_constraintVertical_chainStyle="packed" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
