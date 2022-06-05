@@ -13,8 +13,6 @@
     <string name="update_password">Update Password</string>
     <string name="error">Field is required</string>
     <string name="password_error">Passwords doesn\'t match</string>
-    <string name="market_cap">Cap</string>
-    <string name="market_volume">Vol</string>
     <string name="crypto_default_currency">BTC/USD</string>
     <string name="chip_24hr">24 Hours</string>
     <string name="chip_7d">7 Days</string>
@@ -22,6 +20,9 @@
     <string name="chip_1m">1 Month</string>
     <string name="chip_1y">1 Year</string>
     <string name="chip_6y">6 Year</string>
+    <string name="daily_change">24H</string>
+    <string name="volume">Vol</string>
+    <string name="market_cap">Cap</string>
     <string name="coin_rank">Rank</string>
     <string name="coin_supply">Supply</string>
     <string name="coin_circulating">circulating</string>
@@ -31,7 +32,6 @@
     <string name="coin_description">Description</string>
     <string name="undefined">undefined</string>
     <string name="description_not_found">Description not found.</string>
-    <string name="exchange_volume">Vol</string>
     <string name="bottom_nav_currencies">Currencies</string>
     <string name="bottom_nav_exchanges">Exchanges</string>
     <string name="bottom_nav_watch_lists">Watch lists</string>
@@ -45,7 +45,6 @@
     <string name="something_went_wrong">Something went wrong</string>
     <string name="try_again">Try again</string>
     <string name="retry">Retry</string>
-    <string name="daily_change">24H</string>
     <string name="crypto_value_changes">Cryptocurrency value changes</string>
     <string name="no_data_found">No data found for chart</string>
     <string name="general_close_confirmation_title">Are you sure?</string>
@@ -61,7 +60,6 @@
     <string name="forgot_password">Forgot Password?</string>
     <string name="login">LOGIN</string>
     <string name="bottom_nav_market">Market</string>
-    <string name="volume">24h</string>
     <string name="crypto_currency">Cryptocurrency</string>
     <string name="categories">Categories</string>
     <string name="exchanges">Exchanges</string>
@@ -76,4 +74,6 @@
     <string name="detail">Detail</string>
     <string name="empty">empty</string>
     <string name="year_established">Est</string>
+    <string name="empty_watchlist">Your watchlist is empty</string>
+    <string name="add_to_watchlist">Add cryptocurrency</string>
 </resources>

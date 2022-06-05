@@ -10,6 +10,7 @@ import com.example.cryptoapp.feature.screen.main.exchange.exchangeDetail.Exchang
 import com.example.cryptoapp.feature.screen.main.exchange.exchangeList.ExchangeViewModel
 import com.example.cryptoapp.feature.screen.main.news.NewsViewModel
 import com.example.cryptoapp.feature.screen.main.user.ProfileViewModel
+import com.example.cryptoapp.feature.screen.main.watchlist.WatchListViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -45,4 +46,12 @@ val presentationModule = module {
         )
     }
     viewModel { ProfileViewModel(getCurrentUserUseCase = get(), logOutUseCase = get()) }
+    viewModel {
+        WatchListViewModel(
+            getCryptoCurrenciesForWatchList = get(),
+            getCryptoCurrenciesInWatchList = get(),
+            deleteCryptoCurrencyFromWatchList = get(),
+            addCryptoCurrencyToWatchList = get()
+        )
+    }
 }

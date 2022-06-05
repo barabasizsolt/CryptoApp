@@ -11,7 +11,10 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="@dimen/recycler_view_card_height"
-        android:layout_marginBottom="@dimen/content_padding"
+        android:layout_marginStart="@dimen/content_padding"
+        android:layout_marginEnd="@dimen/content_padding"
+        android:layout_marginTop="@dimen/small_padding"
+        android:layout_marginBottom="@dimen/small_padding"
         app:cardCornerRadius="@dimen/small_padding">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -129,7 +132,7 @@
                 style="@style/TextAppearance.CryptoApp.Caption"
                 android:layout_width="@dimen/recycler_view_text_width"
                 android:layout_height="wrap_content"
-                android:text="@string/market_volume"
+                android:text="@string/volume"
                 android:textAlignment="viewStart"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/year_established"

@@ -171,7 +171,7 @@ fun List<ChartHistory>.toChartDataSet(timePeriod: String) = LineDataSet(this.toC
     }
 
 inline fun <reified T : Fragment> FragmentManager.handleReplace(
-    tag: String = T::class.java.name,
+    tag: String? = T::class.java.name,
     addToBackStack: Boolean = false,
     @IdRes containerId: Int = R.id.fragment_container,
     crossinline newInstance: () -> T

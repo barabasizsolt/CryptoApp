@@ -41,15 +41,16 @@ class ExchangeDetailFragment : BaseFragment<FragmentExchangeDetailBinding>(R.lay
             setViewCompositionStrategy(strategy = ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 MdcTheme {
-                    ExchangeDetailScreen()
+                    ExchangeDetailScreen(viewModel = viewModel)
                 }
             }
         }
     }
 
     @Composable
-    private fun ExchangeDetailScreen() {
-        if(viewModel.exchangeDetails != null) ScreenContent() else LoadingIndicator(isRefreshing = viewModel.exchangeDetails == null)
+    private fun ExchangeDetailScreen(viewModel: ExchangeDetailViewModel) {
+        if(viewModel.exchangeDetails != null)
+            ScreenContent(viewModel = viewModel) else LoadingIndicator(isRefreshing = viewModel.exchangeDetails == null)
 
         when (val state = viewModel.screenState) {
             is ExchangeDetailViewModel.ScreenState.ShowFirstLoadingError ->
@@ -61,7 +62,8 @@ class ExchangeDetailFragment : BaseFragment<FragmentExchangeDetailBinding>(R.lay
     }
 
     @Composable
-    private fun ScreenContent() {
+    private fun ScreenContent(viewModel: ExchangeDetailViewModel) {
+
         val details = viewModel.exchangeDetails!!
 
         SwipeRefresh(

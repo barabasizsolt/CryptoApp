@@ -103,7 +103,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/crypto_details_coin_header_volume_text_margin_end"
-            android:text="@string/market_volume"
+            android:text="@string/volume"
             style="@style/TextAppearance.CryptoApp.Subtitle2"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"

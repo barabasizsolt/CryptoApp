@@ -13,34 +13,128 @@ import com.example.cryptoapp.feature.screen.main.MainFragment
 import com.example.cryptoapp.feature.screen.main.watchlist.catalog.CryptoCurrencyItem
 import com.example.cryptoapp.feature.shared.navigation.BaseFragment
 import com.google.android.material.composethemeadapter.MdcTheme
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.Card
+import androidx.compose.material.DismissDirection
+import androidx.compose.material.DismissValue
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.FractionalThreshold
+import androidx.compose.material.Icon
+import androidx.compose.material.ListItem
+import androidx.compose.material.SwipeToDismiss
+import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.rememberDismissState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.text.font.FontWeight
+import com.example.cryptoapp.data.model.cryptocurrency.CryptoCurrency
+import com.example.cryptoapp.feature.screen.main.exchange.exchangeDetail.ExchangeDetailViewModel
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
+import androidx.compose.foundation.lazy.items
+import com.example.cryptoapp.feature.screen.main.MarketFragment
+import com.example.cryptoapp.feature.screen.main.watchlist.catalog.WatchListPlaceHolder
+import com.example.cryptoapp.feature.shared.catalog.ErrorContent
+import com.example.cryptoapp.feature.shared.catalog.LoadingIndicator
+import com.example.cryptoapp.feature.shared.utils.convertToCompactPrice
+import com.example.cryptoapp.feature.shared.utils.createSnackBar
+import com.example.cryptoapp.feature.shared.utils.formatInput
+import com.example.cryptoapp.feature.shared.utils.handleReplace
 
 class WatchListFragment : BaseFragment<FragmentWatchListBinding>(R.layout.fragment_watch_list) {
-
+    private val viewModel: WatchListViewModel by viewModel()
+    
+    @OptIn(ExperimentalMaterialApi::class)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        //binding.setVariable(BR.viewModel, viewModel)
+        binding.setVariable(BR.viewModel, viewModel)
         (parentFragment as MainFragment).setAppBarTitle(title = view.context.getString(R.string.detail))
         binding.fragmentWatchList.apply {
             setViewCompositionStrategy(strategy = ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 MdcTheme {
-                    LazyColumn(
-                        verticalArrangement = Arrangement.spacedBy(space = 8.dp)
-                    ){
-                        items(count = 20) {
-                            CryptoCurrencyItem(
-                                iconUrl = "https://cdn.coinranking.com/bOabBYkcX/bitcoin_btc.svg",
-                                name = "Bitcoin",
-                                symbol = "BTC",
-                                price = "$29,624.18",
-                                change = "-2.36%"
-                            )
-                        }
-                    }
+                    WatchListScreen(viewModel = viewModel)
                 }
             }
         }
     }
 
+    @Composable
+    private fun WatchListScreen(viewModel: WatchListViewModel) {
+
+        val cryptoCurrencies = viewModel.cryptoCurrencies
+
+        if(cryptoCurrencies != null) {
+            if (cryptoCurrencies.isNotEmpty()) ScreenContent(viewModel = viewModel) else WatchListPlaceHolder(
+                onClick = {
+                    (parentFragment as MainFragment).navigateToCryptoCurrencies()
+                }
+            )
+        } else {
+            LoadingIndicator(isRefreshing = viewModel.screenState is WatchListViewModel.ScreenState.Loading)
+        }
+
+        when (val state = viewModel.screenState) {
+            is WatchListViewModel.ScreenState.ShowFirstLoadingError ->
+                ErrorContent(onClick = { viewModel.refreshData() })
+            is WatchListViewModel.ScreenState.ShowSnackBarError ->
+                binding.root.createSnackBar(message = state.message, snackBarAction = viewModel::refreshData)
+            else -> Unit
+        }
+    }
+
+    @Composable
+    private fun ScreenContent(viewModel: WatchListViewModel) {
+        
+        val cryptoCurrencies = viewModel.cryptoCurrencies!!
+        
+        SwipeRefresh(
+            state = rememberSwipeRefreshState(viewModel.screenState is WatchListViewModel.ScreenState.Loading),
+            onRefresh = viewModel::refreshData,
+        ) {
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(space = dimensionResource(id = R.dimen.content_padding)),
+                contentPadding = PaddingValues(
+                    vertical = dimensionResource(id = R.dimen.small_padding),
+                    horizontal = dimensionResource(id = R.dimen.content_padding)
+                )
+            ) {
+                items(cryptoCurrencies) { item ->
+                    CryptoCurrencyItem(
+                        iconUrl = item.iconUrl,
+                        name = item.name,
+                        symbol = item.symbol,
+                        price = item.price.convertToCompactPrice(),
+                        change = item.change,
+                        volume = item.volume.convertToCompactPrice(),
+                        marketCap = item.marketCap.formatInput()
+                    )
+                }
+            }
+        }
+    }
+    
     companion object {
         fun newInstance() = WatchListFragment()
     }

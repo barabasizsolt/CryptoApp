@@ -21,8 +21,6 @@
             android:layout_height="match_parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:paddingRight="@dimen/content_padding"
-            android:paddingLeft="@dimen/content_padding"
             tools:listitem="@layout/item_category_category" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

@@ -12,7 +12,11 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/event_item_margin">
+        android:layout_marginStart="@dimen/content_padding"
+        android:layout_marginEnd="@dimen/content_padding"
+        android:layout_marginTop="@dimen/small_padding"
+        android:layout_marginBottom="@dimen/small_padding"
+        app:cardCornerRadius="@dimen/small_padding" >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -20,8 +24,8 @@
 
             <ImageView
                 android:id="@+id/news_logo"
-                android:layout_width="@dimen/event_image_view_size"
-                android:layout_height="@dimen/event_image_view_size"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
                 android:layout_gravity="center_horizontal"
                 app:layout_constraintDimensionRatio="16:9"
                 android:importantForAccessibility="no"
@@ -37,8 +41,8 @@
                 android:id="@+id/news_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/event_text_view_margin"
-                android:layout_marginTop="@dimen/event_text_view_margin"
+                android:layout_marginStart="@dimen/content_padding"
+                android:layout_marginTop="@dimen/content_padding"
                 android:text="@{uiModel.title}"
                 android:textAlignment="textStart"
                 style="@style/TextAppearance.CryptoApp.Body1"
@@ -51,8 +55,8 @@
                 android:id="@+id/news_source"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/event_text_view_margin"
-                android:paddingBottom="@dimen/event_text_view_margin"
+                android:layout_marginStart="@dimen/content_padding"
+                android:paddingBottom="@dimen/content_padding"
                 android:text="@{uiModel.source}"
                 android:textAlignment="textStart"
                 style="@style/TextAppearance.CryptoApp.Caption"

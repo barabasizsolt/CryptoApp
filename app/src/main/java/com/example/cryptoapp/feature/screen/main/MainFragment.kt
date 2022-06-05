@@ -2,8 +2,10 @@ package com.example.cryptoapp.feature.screen.main
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.FragmentManager
 import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.FragmentMainBinding
+import com.example.cryptoapp.feature.activity.MainActivity
 import com.example.cryptoapp.feature.screen.main.cryptocurrency.cryptocurrencyList.CryptoCurrencyFragment
 import com.example.cryptoapp.feature.screen.main.news.NewsFragment
 import com.example.cryptoapp.feature.screen.main.user.ProfileFragment
@@ -60,6 +62,10 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
 
     fun setAppBarTitle(title: String) {
         binding.topBar.title = title
+    }
+
+    fun navigateToCryptoCurrencies() {
+        binding.bottomNavigationView.selectedItemId = R.id.market
     }
 
     override fun onBackPressed(): Boolean = when (currentFragment?.childFragmentManager?.backStackEntryCount ?: 0 <= 1) {

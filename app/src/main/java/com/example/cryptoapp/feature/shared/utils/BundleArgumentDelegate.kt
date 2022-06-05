@@ -12,4 +12,11 @@ sealed class BundleArgumentDelegate<T>(protected val key: kotlin.String, protect
 
         override fun setValue(thisRef: Bundle?, property: KProperty<*>, value: kotlin.String) = thisRef?.putString(key, value) ?: Unit
     }
+
+    class Boolean(key: kotlin.String, defaultValue: kotlin.Boolean = true) : BundleArgumentDelegate<kotlin.Boolean>(key, defaultValue) {
+
+        override fun getValue(thisRef: Bundle?, property: KProperty<*>) = thisRef?.getBoolean(key, defaultValue) ?: defaultValue
+
+        override fun setValue(thisRef: Bundle?, property: KProperty<*>, value: kotlin.Boolean) = thisRef?.putBoolean(key, value) ?: Unit
+    }
 }

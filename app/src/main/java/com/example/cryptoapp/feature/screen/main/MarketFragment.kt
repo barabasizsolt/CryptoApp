@@ -8,8 +8,10 @@ import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.FragmentMarketBinding
 import com.example.cryptoapp.feature.screen.main.category.CategoryFragment
 import com.example.cryptoapp.feature.screen.main.cryptocurrency.cryptocurrencyList.CryptoCurrencyFragment
+import com.example.cryptoapp.feature.screen.main.exchange.exchangeDetail.ExchangeDetailFragment
 import com.example.cryptoapp.feature.screen.main.exchange.exchangeList.ExchangeFragment
 import com.example.cryptoapp.feature.shared.navigation.BaseFragment
+import com.example.cryptoapp.feature.shared.utils.BundleArgumentDelegate
 import com.google.android.material.tabs.TabLayoutMediator
 
 class MarketFragment : BaseFragment<FragmentMarketBinding>(R.layout.fragment_market) {
