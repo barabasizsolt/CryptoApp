@@ -31,23 +31,20 @@ fun ResetPasswordDialog(
     modifier: Modifier = Modifier,
     onDismiss: () -> Unit,
     onAccess: () -> Unit,
-    isDismissed: Boolean,
     email: String,
     onEmailChange: (String) -> Unit
 ) = MdcTheme {
-    if (!isDismissed) {
-        AlertDialog(
-            onDismissRequest = onDismiss,
-            buttons = {
-                ResetPasswordCard(
-                    onAccess = onAccess,
-                    email = email,
-                    onEmailChange = onEmailChange
-                )
-            },
-            modifier = modifier
-        )
-    }
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        buttons = {
+            ResetPasswordCard(
+                onAccess = onAccess,
+                email = email,
+                onEmailChange = onEmailChange
+            )
+        },
+        modifier = modifier
+    )
 }
 
 @Composable

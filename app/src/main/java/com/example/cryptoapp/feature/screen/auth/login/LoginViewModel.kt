@@ -1,5 +1,6 @@
 package com.example.cryptoapp.feature.screen.auth.login
 
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -8,13 +9,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.cryptoapp.auth.AuthResult
 import com.example.cryptoapp.auth.useCase.LoginWithEmailAndPasswordUseCase
 import com.example.cryptoapp.auth.useCase.ResetPasswordUseCase
-import com.example.cryptoapp.feature.shared.utils.eventFlow
-import com.example.cryptoapp.feature.shared.utils.pushEvent
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -24,74 +18,95 @@ class LoginViewModel(
     private val resetPasswordUseCase: ResetPasswordUseCase
 ) : ViewModel() {
 
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading: StateFlow<Boolean> = _isLoading
-
-    val email = MutableStateFlow("")
-    val password = MutableStateFlow("")
-
-    val isLoginEnabled = combine(email, password) {
-        email, password ->
-        email.isNotEmpty() && password.isNotEmpty()
-    }.stateIn(viewModelScope, SharingStarted.Lazily, false)
-
-    private val _event = eventFlow<Event>()
-    val event: SharedFlow<Event> = _event
-
-    var isOpen by mutableStateOf(value = false)
+    var email by mutableStateOf(value = "")
+        private set
+    var password by mutableStateOf(value = "")
+        private set
     var resetPasswordEmail by mutableStateOf(value = "")
+        private set
+    var screenState by mutableStateOf<ScreenState>(value = ScreenState.Normal)
+        private set
+    var action by mutableStateOf<Action?>(value = null)
+        private set
+    val isLoginEnabled = derivedStateOf { email.isNotEmpty() && password.isNotEmpty() }
 
     fun loginWithEmailAndPassword() {
-        _isLoading.value = true
+        screenState = ScreenState.Loading
         viewModelScope.launch {
-            loginWithEmailAndPasswordUseCase(email = email.value, password = password.value).onEach { result ->
-                _isLoading.value = false
+            loginWithEmailAndPasswordUseCase(email = email, password = password).onEach { result ->
                 when (result) {
-                    is AuthResult.Success -> _event.pushEvent(Event.LoginUser())
-                    is AuthResult.Failure -> _event.pushEvent(Event.ShowErrorMessage(message = "Login failed: ${result.error}"))
+                    is AuthResult.Success -> {
+                        action = Action.NavigateToHome
+                        screenState = ScreenState.Normal
+                    }
+                    is AuthResult.Failure -> {
+                        screenState = ScreenState.Error(message = "Login failed: ${result.error}")
+                    }
                 }
             }.stateIn(scope = this)
-            loginWithEmailAndPasswordUseCase(email = email.value, password = password.value)
         }
     }
 
+    fun reset() {
+        email = ""
+        password = ""
+        screenState = ScreenState.Normal
+        action = null
+    }
+
     fun resetPassword() {
-        _isLoading.value = true
+        screenState = ScreenState.Loading
         viewModelScope.launch {
             resetPasswordUseCase(email = resetPasswordEmail).onEach { result ->
-                _isLoading.value = false
-                isOpen = false
+                screenState = ScreenState.Normal
                 resetPasswordEmail = ""
-                when (result) {
-                    is AuthResult.Success -> _event.pushEvent(Event.ShowAfterResetPasswordMessage(message = "An email has been sent to your email address containing a link to reset your password."))
-                    is AuthResult.Failure -> _event.pushEvent(Event.ShowErrorMessage(message = "Login failed: ${result.error}"))
+                screenState = when (result) {
+                    is AuthResult.Success -> ScreenState.Error(message = "An email has been sent to your email address containing a link to reset your password.")
+                    is AuthResult.Failure -> ScreenState.Error(message = "Reset password failed: ${result.error}")
                 }
             }.stateIn(scope = this)
         }
     }
 
     fun onEmailChange(email: String) {
+        this.email = email
+    }
+
+    fun onPasswordChange(password: String) {
+        this.password = password
+    }
+
+    fun onResetPasswordEmailChange(email: String) {
         resetPasswordEmail = email
     }
 
     fun onRegisterClicked() {
-        _event.pushEvent(Event.NavigateToRegister)
+        action = Action.NavigateToRegister
     }
 
     fun onResetPasswordClicked() {
-        _event.pushEvent(Event.ShowResetPasswordDialog)
+        screenState = ScreenState.ShowResetPasswordDialog
     }
 
-    sealed class Event {
+    fun onDismiss() {
+        screenState = ScreenState.Normal
+    }
 
-        data class LoginUser(val nothing: Any? = null) : Event()
+    sealed class ScreenState {
 
-        object NavigateToRegister : Event()
+        object Normal : ScreenState()
 
-        object ShowResetPasswordDialog : Event()
+        object Loading : ScreenState()
 
-        data class ShowAfterResetPasswordMessage(val message: String) : Event()
+        data class Error(val message: String) : ScreenState()
 
-        data class ShowErrorMessage(val message: String) : Event()
+        object ShowResetPasswordDialog : ScreenState()
+    }
+
+    sealed class Action {
+
+        object NavigateToHome : Action()
+
+        object NavigateToRegister : Action()
     }
 }

@@ -58,13 +58,14 @@
     <string name="general_sign_out_confirmation_message">Do you want to sing out?</string>
     <string name="sign_up">Sign Up</string>
     <string name="forgot_password">Forgot Password?</string>
-    <string name="login">LOGIN</string>
+    <string name="login">LOG IN</string>
     <string name="bottom_nav_market">Market</string>
     <string name="crypto_currency">Cryptocurrency</string>
     <string name="categories">Categories</string>
     <string name="exchanges">Exchanges</string>
     <string name="bottom_nav_home">Home</string>
     <string name="email">Email</string>
+    <string name="password">Password</string>
     <string name="exchange_volume_changes">Exchange volume changes</string>
     <string name="chip_max">Max</string>
     <string name="exchange">Exchange</string>
@@ -76,4 +77,6 @@
     <string name="year_established">Est</string>
     <string name="empty_watchlist">Your watchlist is empty</string>
     <string name="add_to_watchlist">Add cryptocurrency</string>
+    <string name="dont_have_account">Don\'t have an account?</string>
+    <string name="continue_with_google">Continue with Google</string>
 </resources>

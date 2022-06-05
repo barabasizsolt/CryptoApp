@@ -12,7 +12,7 @@ class MainActivityViewModel(private val getCurrentUserUseCase: GetCurrentUserUse
     val event: SharedFlow<Event> = _event
 
     fun getCurrentUser() {
-        when (getCurrentUserUseCase()) {
+        when (getCurrentUserUseCase().also { println("User: $it") }) {
             null -> _event.pushEvent(Event.NavigateToAuthentication())
             else -> _event.pushEvent(Event.NavigateToMain())
         }

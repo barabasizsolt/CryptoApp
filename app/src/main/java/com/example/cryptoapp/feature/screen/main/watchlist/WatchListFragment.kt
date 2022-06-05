@@ -1,14 +1,15 @@
 package com.example.cryptoapp.feature.screen.main.watchlist
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.unit.dp
 import com.example.cryptoapp.BR
 import com.example.cryptoapp.R
-import com.example.cryptoapp.databinding.FragmentWatchListBinding
 import com.example.cryptoapp.feature.screen.main.MainFragment
 import com.example.cryptoapp.feature.screen.main.watchlist.catalog.CryptoCurrencyItem
 import com.example.cryptoapp.feature.shared.navigation.BaseFragment
@@ -54,6 +55,9 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import androidx.compose.foundation.lazy.items
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalView
+import androidx.fragment.app.Fragment
 import com.example.cryptoapp.feature.screen.main.MarketFragment
 import com.example.cryptoapp.feature.screen.main.watchlist.catalog.WatchListPlaceHolder
 import com.example.cryptoapp.feature.shared.catalog.ErrorContent
@@ -61,17 +65,17 @@ import com.example.cryptoapp.feature.shared.catalog.LoadingIndicator
 import com.example.cryptoapp.feature.shared.utils.convertToCompactPrice
 import com.example.cryptoapp.feature.shared.utils.createSnackBar
 import com.example.cryptoapp.feature.shared.utils.formatInput
-import com.example.cryptoapp.feature.shared.utils.handleReplace
 
-class WatchListFragment : BaseFragment<FragmentWatchListBinding>(R.layout.fragment_watch_list) {
+class WatchListFragment : Fragment() {
     private val viewModel: WatchListViewModel by viewModel()
-    
-    @OptIn(ExperimentalMaterialApi::class)
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.setVariable(BR.viewModel, viewModel)
-        (parentFragment as MainFragment).setAppBarTitle(title = view.context.getString(R.string.detail))
-        binding.fragmentWatchList.apply {
-            setViewCompositionStrategy(strategy = ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        return ComposeView(context = requireContext()).apply {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 MdcTheme {
                     WatchListScreen(viewModel = viewModel)
@@ -86,11 +90,13 @@ class WatchListFragment : BaseFragment<FragmentWatchListBinding>(R.layout.fragme
         val cryptoCurrencies = viewModel.cryptoCurrencies
 
         if(cryptoCurrencies != null) {
-            if (cryptoCurrencies.isNotEmpty()) ScreenContent(viewModel = viewModel) else WatchListPlaceHolder(
-                onClick = {
-                    (parentFragment as MainFragment).navigateToCryptoCurrencies()
-                }
-            )
+            if (cryptoCurrencies.isNotEmpty()) {
+                ScreenContent(viewModel = viewModel)
+            } else {
+                WatchListPlaceHolder(
+                    onClick = { (parentFragment as MainFragment).navigateToCryptoCurrencies() }
+                )
+            }
         } else {
             LoadingIndicator(isRefreshing = viewModel.screenState is WatchListViewModel.ScreenState.Loading)
         }
@@ -99,7 +105,7 @@ class WatchListFragment : BaseFragment<FragmentWatchListBinding>(R.layout.fragme
             is WatchListViewModel.ScreenState.ShowFirstLoadingError ->
                 ErrorContent(onClick = { viewModel.refreshData() })
             is WatchListViewModel.ScreenState.ShowSnackBarError ->
-                binding.root.createSnackBar(message = state.message, snackBarAction = viewModel::refreshData)
+                LocalView.current.createSnackBar(message = state.message, snackBarAction = viewModel::refreshData)
             else -> Unit
         }
     }

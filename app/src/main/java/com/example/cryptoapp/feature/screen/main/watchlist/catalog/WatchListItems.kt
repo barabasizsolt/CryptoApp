@@ -3,6 +3,7 @@ package com.example.cryptoapp.feature.screen.main.watchlist.catalog
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import com.example.cryptoapp.R
 import androidx.compose.foundation.layout.Row
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonColors
@@ -48,35 +50,38 @@ fun WatchListPlaceHolder(
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
-    Card(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(all = dimensionResource(id = R.dimen.content_padding)),
-        shape = MaterialTheme.shapes.medium
-    ) {
-        Column(
+    Box(modifier = modifier) {
+        Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(all = dimensionResource(id = R.dimen.error_state_margin)),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+                .wrapContentHeight()
+                .padding(all = dimensionResource(id = R.dimen.content_padding))
+                .align(alignment = Alignment.TopCenter),
+            shape = MaterialTheme.shapes.medium
         ) {
-            Text(
-                text = stringResource(id = R.string.empty_watchlist),
-                style = MaterialTheme.typography.body1,
-                fontWeight = FontWeight.Bold
-            )
-            Spacer(modifier = Modifier.height(height = dimensionResource(id = R.dimen.screen_padding) * 2))
-            Button(
-                onClick = onClick,
-                colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary)
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(all = dimensionResource(id = R.dimen.error_state_margin) * 2),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = stringResource(id = R.string.add_to_watchlist).toUpperCase(locale = Locale.current),
-                    style = MaterialTheme.typography.button,
-                    color = Color.Black,
-                    modifier = Modifier.padding(all = dimensionResource(id = R.dimen.content_padding))
+                    text = stringResource(id = R.string.empty_watchlist),
+                    style = MaterialTheme.typography.body1,
+                    fontWeight = FontWeight.Bold
                 )
+                Spacer(modifier = Modifier.height(height = dimensionResource(id = R.dimen.screen_padding)))
+                Button(
+                    onClick = onClick,
+                    colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary)
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.add_to_watchlist).toUpperCase(locale = Locale.current),
+                        style = MaterialTheme.typography.button,
+                        color = Color.Black,
+                        modifier = Modifier.padding(all = dimensionResource(id = R.dimen.content_padding))
+                    )
+                }
             }
         }
     }

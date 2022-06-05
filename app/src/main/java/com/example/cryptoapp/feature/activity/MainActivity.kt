@@ -36,12 +36,10 @@ class MainActivity : AppCompatActivity(), Navigator {
     }
 
     override fun navigateToMain() = supportFragmentManager.handleReplace(
-        tag = "main",
         newInstance = MainFragment.Companion::newInstance
     )
 
     override fun navigateToAuthentication() = supportFragmentManager.handleReplace(
-        tag = "auth",
         newInstance = AuthenticationFragment.Companion::newInstance
     )
 

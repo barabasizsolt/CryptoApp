@@ -1,18 +1,20 @@
 package com.example.cryptoapp.feature.screen.main.exchange.exchangeDetail
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.dimensionResource
-import com.example.cryptoapp.BR
+import androidx.fragment.app.Fragment
 import com.example.cryptoapp.R
-import com.example.cryptoapp.databinding.FragmentExchangeDetailBinding
-import com.example.cryptoapp.feature.screen.main.MainFragment
 import com.example.cryptoapp.feature.screen.main.exchange.exchangeDetail.catalog.ExchangeDetailBody
 import com.example.cryptoapp.feature.screen.main.exchange.exchangeDetail.catalog.ExchangeDetailCardHolder
 import com.example.cryptoapp.feature.screen.main.exchange.exchangeDetail.catalog.ExchangeDetailChart
@@ -21,7 +23,6 @@ import com.example.cryptoapp.feature.screen.main.exchange.exchangeDetail.catalog
 import com.example.cryptoapp.feature.screen.main.exchange.exchangeDetail.catalog.ExchangeDetailItem
 import com.example.cryptoapp.feature.shared.catalog.ErrorContent
 import com.example.cryptoapp.feature.shared.catalog.LoadingIndicator
-import com.example.cryptoapp.feature.shared.navigation.BaseFragment
 import com.example.cryptoapp.feature.shared.utils.BundleArgumentDelegate
 import com.example.cryptoapp.feature.shared.utils.createSnackBar
 import com.google.accompanist.swiperefresh.SwipeRefresh
@@ -30,15 +31,16 @@ import com.google.android.material.composethemeadapter.MdcTheme
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-class ExchangeDetailFragment : BaseFragment<FragmentExchangeDetailBinding>(R.layout.fragment_exchange_detail) {
+class ExchangeDetailFragment : Fragment() {
     private val viewModel: ExchangeDetailViewModel by viewModel { parametersOf(arguments?.exchangeId) }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.setVariable(BR.viewModel, viewModel)
-        (parentFragment as MainFragment).setAppBarTitle(title = view.context.getString(R.string.detail))
-        binding.fragmentExchangeDetail.apply {
-            // Dispose of the Composition when the view's LifecycleOwner is destroyed
-            setViewCompositionStrategy(strategy = ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        return ComposeView(context = requireContext()).apply {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 MdcTheme {
                     ExchangeDetailScreen(viewModel = viewModel)
@@ -46,6 +48,7 @@ class ExchangeDetailFragment : BaseFragment<FragmentExchangeDetailBinding>(R.lay
             }
         }
     }
+
 
     @Composable
     private fun ExchangeDetailScreen(viewModel: ExchangeDetailViewModel) {
@@ -56,7 +59,7 @@ class ExchangeDetailFragment : BaseFragment<FragmentExchangeDetailBinding>(R.lay
             is ExchangeDetailViewModel.ScreenState.ShowFirstLoadingError ->
                 ErrorContent(onClick = { viewModel.refreshData() })
             is ExchangeDetailViewModel.ScreenState.ShowSnackBarError ->
-                binding.root.createSnackBar(message = state.message, snackBarAction = viewModel::refreshData)
+                LocalView.current.createSnackBar(message = state.message, snackBarAction = viewModel::refreshData)
             else -> Unit
         }
     }

@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
 
 class AuthenticationServiceImpl : AuthenticationService {
 
-    private val firebaseAuth = FirebaseAuth.getInstance()
+    override val firebaseAuth = FirebaseAuth.getInstance()
 
     @OptIn(ExperimentalCoroutinesApi::class)
     override fun loginWithEmailAndPassword(email: String, password: String): Flow<AuthResult> = consumeTask(
@@ -33,8 +33,8 @@ class AuthenticationServiceImpl : AuthenticationService {
 
     override fun getCurrentUser(): User? = firebaseAuth.currentUser?.toModel()
 
-    private fun FirebaseUser.toModel() = when {
-        email == null || metadata?.creationTimestamp == null -> null
+    private fun FirebaseUser?.toModel() = when {
+        this == null || email == null || metadata?.creationTimestamp == null -> null
         else -> User(
             userId = uid,
             avatarType = if (photoUrl == null) UserAvatarType.IntType(id = R.drawable.ic_avatar) else UserAvatarType.UriType(uri = photoUrl!!),
