@@ -57,18 +57,25 @@ class LoginViewModel(
         }
     }
 
-    fun loginWithGoogleAccount(intent: Intent) {
+    fun getIntentForGoogleLogin(intent: Intent) {
+        screenState = ScreenState.Loading
         viewModelScope.launch {
             loginWithGoogleAccountUseCase(intent = intent).onEach { result ->
+                println("Here: $result")
                 when (result) {
-                    is AuthResult.Success -> action = Action.NavigateToHome
-                    is AuthResult.Failure -> println("Error: ${result.error}")
+                    is AuthResult.Success -> {
+                        action = Action.NavigateToHome
+                        screenState = ScreenState.Normal
+                    }
+                    is AuthResult.Failure -> {
+                        screenState = ScreenState.Error(message = "Google Login failed: ${result.error}")
+                    }
                 }
             }.stateIn(scope = this)
         }
     }
 
-    fun loginWithGoogleAccount(context: Context): Intent = getIntentForGoogleAccountLogin(context = context)
+    fun getIntentForGoogleLogin(): Intent = getIntentForGoogleAccountLogin()
 
     fun reset() {
         email = ""

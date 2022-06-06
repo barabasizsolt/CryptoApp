@@ -2,6 +2,7 @@ package com.example.cryptoapp.feature.screen.main.user
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.cryptoapp.auth.AuthResult
 import com.example.cryptoapp.feature.shared.utils.eventFlow
 import com.example.cryptoapp.feature.shared.utils.formatUserRegistrationDate
 import com.example.cryptoapp.feature.shared.utils.pushEvent
@@ -12,6 +13,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class ProfileViewModel(
@@ -55,7 +58,20 @@ class ProfileViewModel(
         }
     }
 
-    fun logOutUser() = logOutUseCase()
+    fun logOutUser() {
+        _isLoading.value = true
+        viewModelScope.launch {
+            logOutUseCase().onEach { result ->
+                _isLoading.value = false
+                when (result) {
+                    is AuthResult.Success ->
+                        _event.pushEvent(event = Event.SignOut)
+                    is AuthResult.Failure ->
+                        _event.pushEvent(event = Event.ShowErrorMessage(message = result.error))
+                }
+            }.stateIn(scope = this)
+        }
+    }
 
     private fun User.toUiModel() = ProfileListItem.User(
         userId = userId,
@@ -66,9 +82,7 @@ class ProfileViewModel(
 
     sealed class Event {
 
-        object OnChangePasswordClicked : Event()
-
-        object OnSignOutClicked : Event()
+        object SignOut : Event()
 
         data class ShowErrorMessage(val message: String) : Event()
     }

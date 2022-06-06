@@ -15,7 +15,7 @@
         android:theme="@style/CryptoCurrencySplashScreenTheme">
         <activity
             android:name=".feature.activity.MainActivity"
-            android:launchMode="singleTop"
+            android:launchMode="singleInstance"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

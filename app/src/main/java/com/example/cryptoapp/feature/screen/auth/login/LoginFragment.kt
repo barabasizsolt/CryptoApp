@@ -6,18 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.dimensionResource
@@ -34,8 +31,6 @@ import com.example.cryptoapp.feature.screen.auth.login.catalog.GoogleSingUpButto
 import com.example.cryptoapp.feature.screen.auth.login.catalog.LoginScreenLogo
 import com.example.cryptoapp.feature.screen.auth.login.catalog.SignUpButton
 import com.example.cryptoapp.feature.screen.auth.register.SignUpFragment
-import com.example.cryptoapp.feature.screen.main.watchlist.WatchListViewModel
-import com.example.cryptoapp.feature.shared.catalog.LoadingIndicator
 import com.example.cryptoapp.feature.shared.utils.ResetPasswordDialog
 import com.example.cryptoapp.feature.shared.utils.createSnackBar
 import com.example.cryptoapp.feature.shared.utils.handleReplace
@@ -79,8 +74,7 @@ class LoginFragment : Fragment() {
         }
 
         when(viewModel.action) {
-            is LoginViewModel.Action.NavigateToHome ->
-                (activity as MainActivity).navigateToMain()
+            is LoginViewModel.Action.NavigateToHome -> (requireActivity() as MainActivity).navigateToMain()
             is LoginViewModel.Action.NavigateToRegister -> parentFragment?.childFragmentManager?.handleReplace(
                 addToBackStack = true,
                 newInstance = SignUpFragment.Companion::newInstance
@@ -104,16 +98,15 @@ class LoginFragment : Fragment() {
                         .padding(
                             top = 150.dp,
                             bottom = dimensionResource(id = R.dimen.screen_padding)
-                        )
+                        ),
+                    isLoading = viewModel.screenState is LoginViewModel.ScreenState.Loading
                 )
             }
             item {
-                val context = LocalContext.current
                 GoogleSingUpButton(
                     text = stringResource(id = R.string.continue_with_google),
                     onClick = {
-                        val intent = viewModel.loginWithGoogleAccount(context = context)
-                        println("Intent: ${intent.action}")
+                        val intent = viewModel.getIntentForGoogleLogin()
                         loginWithGoogleAccountLauncher.launch(intent)
                     }
                 )
@@ -155,28 +148,9 @@ class LoginFragment : Fragment() {
     private val loginWithGoogleAccountLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         val data = result.data
         if (result.resultCode == Activity.RESULT_OK && data != null) {
-            viewModel.loginWithGoogleAccount(intent = data)
-        } else {
-            println("Launch error: ${result} - ${result.data}")
+            viewModel.getIntentForGoogleLogin(intent = data)
         }
     }
-
-//    private fun listenToEvent(action: LoginViewModel.Action) = when (action) {
-//        is LoginViewModel.Action.LoginUser -> navigator?.navigateToMain()
-//        is LoginViewModel.Action.NavigateToRegister -> parentFragment?.childFragmentManager?.handleReplace(
-//            addToBackStack = true,
-//            newInstance = SignUpFragment.Companion::newInstance
-//        )
-//        is LoginViewModel.Action.ShowResetPasswordDialog -> showResetPasswordDialog()
-//        is LoginViewModel.Action.ShowAfterResetPasswordMessage -> binding.root.createSnackBar(message = action.message)
-//        is LoginViewModel.Action.ShowErrorMessage -> binding.root.createSnackBar(message = action.message)
-//    }
-
-//    private fun showResetPasswordDialog() {
-//        viewModel.isOpen = true
-//        binding.resetPasswordDialog.setContent {
-//        }
-//    }
 
     companion object {
         fun newInstance() = LoginFragment()

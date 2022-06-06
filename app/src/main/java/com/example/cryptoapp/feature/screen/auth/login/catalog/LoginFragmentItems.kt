@@ -7,18 +7,15 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.ButtonColors
-import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
@@ -38,13 +35,25 @@ import androidx.compose.ui.unit.dp
 import com.example.cryptoapp.R
 
 @Composable
-fun LoginScreenLogo(modifier: Modifier = Modifier) {
-    Icon(
-        painter = painterResource(id = R.drawable.ic_bitcoin), 
-        contentDescription = null,
-        tint = MaterialTheme.colors.primary,
-        modifier = modifier.size(size = 150.dp)
-    )
+fun LoginScreenLogo(
+    modifier: Modifier = Modifier,
+    isLoading: Boolean
+) {
+    Box(modifier = modifier.size(size = 150.dp)) {
+        if (isLoading){
+            CircularProgressIndicator(
+                color = MaterialTheme.colors.primary,
+                modifier = Modifier.align(alignment = Alignment.Center)
+            )
+        } else {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_bitcoin),
+                contentDescription = null,
+                tint = MaterialTheme.colors.primary,
+                modifier = Modifier.fillMaxSize()
+            )
+        }
+    }
 }
 
 @Composable
@@ -104,7 +113,7 @@ fun GoogleSingUpButton(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 8.dp, horizontal = 20.dp),
+                    .padding(vertical = dimensionResource(id = R.dimen.content_padding), horizontal = dimensionResource(id = R.dimen.screen_padding)),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {

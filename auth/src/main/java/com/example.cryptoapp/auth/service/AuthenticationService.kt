@@ -1,5 +1,6 @@
 package com.example.cryptoapp.auth.service
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import com.example.cryptoapp.auth.AuthResult
@@ -9,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface AuthenticationService {
 
-    val firebaseAuth: FirebaseAuth
+    fun initialize(context: Context)
 
     fun loginWithEmailAndPassword(email: String, password: String): Flow<AuthResult>
 
@@ -17,9 +18,9 @@ interface AuthenticationService {
 
     fun loginWithGoogleAccount(intent: Intent): Flow<AuthResult>
 
-    fun getIntentForGoogleAccountLogin(context: Context): Intent
+    fun getIntentForGoogleAccountLogin(): Intent
 
-    fun logOut()
+    fun logOut(): Flow<AuthResult>
 
     fun resetPassword(email: String): Flow<AuthResult>
 

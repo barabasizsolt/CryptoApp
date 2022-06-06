@@ -9,6 +9,7 @@ import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.FragmentProfileBinding
 import com.example.cryptoapp.feature.screen.main.MainFragment
 import com.example.cryptoapp.feature.shared.navigation.BaseFragment
+import com.example.cryptoapp.feature.shared.utils.createSnackBar
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -31,6 +32,12 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_p
             it.layoutManager = LinearLayoutManager(requireContext())
         }
         viewModel.listItem.onEach(profileAdapter::submitList).launchIn(viewLifecycleOwner.lifecycleScope)
+        viewModel.event.onEach(::listenToEvents).launchIn(viewLifecycleOwner.lifecycleScope)
+    }
+
+    private fun listenToEvents(event: ProfileViewModel.Event) = when (event) {
+        is ProfileViewModel.Event.ShowErrorMessage -> binding.root.createSnackBar(event.message)
+        is ProfileViewModel.Event.SignOut -> navigator?.navigateToAuthentication()
     }
 
     private fun signOutAfterConfirmation() = MaterialAlertDialogBuilder(requireContext())
@@ -38,7 +45,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(R.layout.fragment_p
         .setMessage(R.string.general_sign_out_confirmation_message)
         .setPositiveButton(R.string.general_close_confirmation_positive) { _, _ ->
             viewModel.logOutUser()
-            navigator?.navigateToAuthentication()
         }
         .setNegativeButton(R.string.general_close_confirmation_negative, null)
         .show()

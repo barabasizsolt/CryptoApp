@@ -95,16 +95,12 @@ fun AuthButton(
         modifier = modifier.fillMaxWidth(),
         enabled = enabled
     ) {
-        if (isLoading) {
-            CircularProgressIndicator(color = Color.Black)
-        } else {
-            Text(
-                text = text.toUpperCase(locale = Locale.current),
-                style = MaterialTheme.typography.button,
-                color = Color.Black,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(all = dimensionResource(id = R.dimen.content_padding))
-            )
-        }
+        Text(
+            text = text.toUpperCase(locale = Locale.current),
+            style = MaterialTheme.typography.button,
+            color = Color.Black,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(all = dimensionResource(id = R.dimen.content_padding))
+        )
     }
 }
