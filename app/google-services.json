@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "147156823490-llt76vdbp0840et026cg6qbc5k2odkjk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.cryptoapp",
+            "certificate_hash": "a1bab9bbbc1bb6a568aee7c07ff7c04a76c1608d"
+          }
+        },
+        {
           "client_id": "147156823490-9670iuhk2r64dnoh9nn52o7jf2ifeakf.apps.googleusercontent.com",
           "client_type": 3
         }

@@ -6,13 +6,15 @@ import com.example.cryptoapp.feature.shared.utils.pushEvent
 import com.example.cryptoapp.auth.useCase.GetCurrentUserUseCase
 import kotlinx.coroutines.flow.SharedFlow
 
-class MainActivityViewModel(private val getCurrentUserUseCase: GetCurrentUserUseCase) : ViewModel() {
+class MainActivityViewModel(
+    private val getCurrentUserUseCase: GetCurrentUserUseCase
+) : ViewModel() {
 
     private val _event = eventFlow<Event>()
     val event: SharedFlow<Event> = _event
 
     fun getCurrentUser() {
-        when (getCurrentUserUseCase().also { println("User: $it") }) {
+        when (getCurrentUserUseCase()) {
             null -> _event.pushEvent(Event.NavigateToAuthentication())
             else -> _event.pushEvent(Event.NavigateToMain())
         }

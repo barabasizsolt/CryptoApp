@@ -15,11 +15,15 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val presentationModule = module {
-    viewModel { MainActivityViewModel(getCurrentUserUseCase = get()) }
+    viewModel {
+        MainActivityViewModel(getCurrentUserUseCase = get())
+    }
     viewModel {
         LoginViewModel(
-            loginWithEmailAndPasswordUseCase = get(),
-            resetPasswordUseCase = get()
+            loginWithEmailAndPassword = get(),
+            getIntentForGoogleAccountLogin = get(),
+            resetPasswordUseCase = get(),
+            loginWithGoogleAccountUseCase = get()
         )
     }
     viewModel { SignUpViewModel(registerWithEmailAndPasswordUseCase = get()) }

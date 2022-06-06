@@ -1,20 +1,30 @@
 package com.example.cryptoapp.feature.screen.auth.login
 
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cryptoapp.auth.AuthResult
+import com.example.cryptoapp.auth.useCase.GetIntentForGoogleAccountLoginUseCase
 import com.example.cryptoapp.auth.useCase.LoginWithEmailAndPasswordUseCase
+import com.example.cryptoapp.auth.useCase.LoginWithGoogleAccountUseCase
 import com.example.cryptoapp.auth.useCase.ResetPasswordUseCase
+import com.example.cryptoapp.feature.activity.MainActivityViewModel
+import com.example.cryptoapp.feature.shared.utils.pushEvent
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
-    private val loginWithEmailAndPasswordUseCase: LoginWithEmailAndPasswordUseCase,
+    private val loginWithEmailAndPassword: LoginWithEmailAndPasswordUseCase,
+    private val getIntentForGoogleAccountLogin: GetIntentForGoogleAccountLoginUseCase,
+    private val loginWithGoogleAccountUseCase: LoginWithGoogleAccountUseCase,
     private val resetPasswordUseCase: ResetPasswordUseCase
 ) : ViewModel() {
 
@@ -33,7 +43,7 @@ class LoginViewModel(
     fun loginWithEmailAndPassword() {
         screenState = ScreenState.Loading
         viewModelScope.launch {
-            loginWithEmailAndPasswordUseCase(email = email, password = password).onEach { result ->
+            loginWithEmailAndPassword(email = email, password = password).onEach { result ->
                 when (result) {
                     is AuthResult.Success -> {
                         action = Action.NavigateToHome
@@ -46,6 +56,19 @@ class LoginViewModel(
             }.stateIn(scope = this)
         }
     }
+
+    fun loginWithGoogleAccount(intent: Intent) {
+        viewModelScope.launch {
+            loginWithGoogleAccountUseCase(intent = intent).onEach { result ->
+                when (result) {
+                    is AuthResult.Success -> action = Action.NavigateToHome
+                    is AuthResult.Failure -> println("Error: ${result.error}")
+                }
+            }.stateIn(scope = this)
+        }
+    }
+
+    fun loginWithGoogleAccount(context: Context): Intent = getIntentForGoogleAccountLogin(context = context)
 
     fun reset() {
         email = ""

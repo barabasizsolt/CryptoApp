@@ -1,9 +1,11 @@
 package com.example.cryptoapp.feature.screen.auth.login
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.dimensionResource
@@ -105,9 +108,14 @@ class LoginFragment : Fragment() {
                 )
             }
             item {
+                val context = LocalContext.current
                 GoogleSingUpButton(
                     text = stringResource(id = R.string.continue_with_google),
-                    onClick = {}
+                    onClick = {
+                        val intent = viewModel.loginWithGoogleAccount(context = context)
+                        println("Intent: ${intent.action}")
+                        loginWithGoogleAccountLauncher.launch(intent)
+                    }
                 )
             }
             item {
@@ -143,7 +151,16 @@ class LoginFragment : Fragment() {
             item { SignUpButton(onClick = { viewModel.onRegisterClicked() }) }
         }
     }
-    
+
+    private val loginWithGoogleAccountLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        val data = result.data
+        if (result.resultCode == Activity.RESULT_OK && data != null) {
+            viewModel.loginWithGoogleAccount(intent = data)
+        } else {
+            println("Launch error: ${result} - ${result.data}")
+        }
+    }
+
 //    private fun listenToEvent(action: LoginViewModel.Action) = when (action) {
 //        is LoginViewModel.Action.LoginUser -> navigator?.navigateToMain()
 //        is LoginViewModel.Action.NavigateToRegister -> parentFragment?.childFragmentManager?.handleReplace(

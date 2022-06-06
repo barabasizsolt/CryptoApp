@@ -22,3 +22,18 @@ fun <T>consumeTask(task: Task<T>): Flow<AuthResult> = callbackFlow {
     awaitClose { }
 }
 
+sealed class AuthWithResult<T> {
+
+    data class Success<T>(val data: T) : AuthWithResult<T>()
+
+    data class Failure<T>(val error: String) : AuthWithResult<T>()
+}
+
+@OptIn(ExperimentalCoroutinesApi::class)
+fun <P, T>consumeTaskWithResult(task: Task<T>, taskConverter: (T) -> P): Flow<AuthWithResult<P>> =  callbackFlow {
+    task
+        .addOnSuccessListener { result -> offer(element = AuthWithResult.Success(data = taskConverter(result))) }
+        .addOnFailureListener { error -> offer(element = AuthWithResult.Failure(error = error.message.orEmpty()))  }
+    awaitClose { }
+}
+
