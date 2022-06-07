@@ -40,7 +40,8 @@
     <string name="chip_time_period">Time period</string>
     <string name="chip_tags">Tags</string>
     <string name="user_email">Email</string>
-    <string name="user_registration_date">Registration date</string>
+    <string name="registration_date">Registration date</string>
+    <string name="last_sign_in_date">Last sign in date</string>
     <string name="user_update_password">Update password</string>
     <string name="something_went_wrong">Something went wrong</string>
     <string name="try_again">Try again</string>
@@ -81,4 +82,10 @@
     <string name="continue_with_google">Continue with Google</string>
     <string name="already_have_an_account">Already have an account?</string>
     <string name="sign_in">Sign In</string>
+    <string name="user_name">User name</string>
+    <string name="enter_user_name">Enter your name</string>
+    <string name="phone_number">Phone number</string>
+    <string name="enter_phone_number">Enter your phone number</string>
+    <string name="anonymous_account">Anonymous account</string>
+    <string name="update_profile">Update Profile</string>
 </resources>

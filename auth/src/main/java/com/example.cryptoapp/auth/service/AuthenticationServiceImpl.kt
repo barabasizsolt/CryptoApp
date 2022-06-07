@@ -1,15 +1,13 @@
 package com.example.cryptoapp.auth.service
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import com.example.cryptoapp.auth.AuthResult
 import com.example.cryptoapp.auth.AuthWithResult
-import com.example.cryptoapp.auth.R
 import com.example.cryptoapp.auth.consumeTask
 import com.example.cryptoapp.auth.consumeTaskWithResult
 import com.example.cryptoapp.auth.service.model.User
-import com.example.cryptoapp.auth.service.model.UserAvatarType
+import com.example.cryptoapp.auth.service.model.formatUserTimeStamp
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -20,6 +18,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.transform
+import java.util.*
 
 class AuthenticationServiceImpl : AuthenticationService {
     private lateinit var firebaseAuth: FirebaseAuth
@@ -75,12 +74,16 @@ class AuthenticationServiceImpl : AuthenticationService {
     override fun getCurrentUser(): User? = firebaseAuth.currentUser?.toModel()
 
     private fun FirebaseUser?.toModel() = when {
-        this == null || email == null || metadata?.creationTimestamp == null -> null
+        this == null -> null
         else -> User(
             userId = uid,
-            avatarType = if (photoUrl == null) UserAvatarType.IntType(id = R.drawable.ic_avatar) else UserAvatarType.UriType(uri = photoUrl!!),
-            email = email!!,
-            registrationTimeStamp = metadata!!.creationTimestamp
+            photoUrl = photoUrl,
+            email = email.orEmpty(),
+            userName = displayName.orEmpty(),
+            phoneNumber = phoneNumber.orEmpty(),
+            registrationDate = metadata?.creationTimestamp?.formatUserTimeStamp().orEmpty(),
+            lastSignInDate = metadata?.lastSignInTimestamp?.formatUserTimeStamp().orEmpty(),
+            isAnonymous = isAnonymous.toString().replaceFirstChar { if (it.isLowerCase()) it.titlecase(locale = Locale.getDefault()) else it.toString() }
         )
     }
 

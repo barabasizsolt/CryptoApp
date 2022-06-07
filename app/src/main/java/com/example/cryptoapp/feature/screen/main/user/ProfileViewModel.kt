@@ -1,89 +1,80 @@
 package com.example.cryptoapp.feature.screen.main.user
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cryptoapp.auth.AuthResult
-import com.example.cryptoapp.feature.shared.utils.eventFlow
-import com.example.cryptoapp.feature.shared.utils.formatUserRegistrationDate
-import com.example.cryptoapp.feature.shared.utils.pushEvent
 import com.example.cryptoapp.auth.service.model.User
 import com.example.cryptoapp.auth.useCase.GetCurrentUserUseCase
 import com.example.cryptoapp.auth.useCase.LogOutUseCase
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlin.reflect.full.memberProperties
 
 class ProfileViewModel(
     private val getCurrentUserUseCase: GetCurrentUserUseCase,
     private val logOutUseCase: LogOutUseCase
 ) : ViewModel() {
 
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading: StateFlow<Boolean> = _isLoading
-
-    private val user = MutableStateFlow<User?>(null)
-
-    private val _event = eventFlow<Event>()
-    val event: SharedFlow<Event> = _event
-
-    private val shouldShowError = MutableStateFlow(false)
-
-    val listItem = combine(user, shouldShowError) { user, shouldShowError ->
-        when {
-            shouldShowError -> listOf(ProfileListItem.ErrorState())
-            user == null -> emptyList()
-            else -> listOf(user.toUiModel())
-        }
-    }
+    var screenState by mutableStateOf<ScreenState>(value = ScreenState.Normal)
+        private set
+    var action by mutableStateOf<Action?>(value = null)
+        private set
+    var user by mutableStateOf<User?>(value = null)
+        private set
 
     init {
+        screenState = ScreenState.Loading
         viewModelScope.launch {
-            _isLoading.value = true
-            shouldShowError.value = false
             when (val result = getCurrentUserUseCase()) {
-                null -> {
-                    shouldShowError.value = true
-                    _event.pushEvent(event = Event.ShowErrorMessage(message = "Unable to get the user's data."))
-                    _isLoading.value = false
-                }
+                null -> screenState = ScreenState.Error(message = "Unable to get the user's data.")
                 else -> {
-                    user.value = result
-                    _isLoading.value = false
+                    screenState = ScreenState.Normal
+                    user = result
                 }
             }
         }
     }
 
+    fun onNameChange(name: String) {
+        user = user?.copy(userName = name)
+    }
+
+    fun onPhoneNumberChange(phoneNumber: String) {
+        user = user?.copy(phoneNumber = phoneNumber)
+    }
+
     fun logOutUser() {
-        _isLoading.value = true
+        screenState = ScreenState.Loading
         viewModelScope.launch {
             logOutUseCase().onEach { result ->
-                _isLoading.value = false
                 when (result) {
-                    is AuthResult.Success ->
-                        _event.pushEvent(event = Event.SignOut)
-                    is AuthResult.Failure ->
-                        _event.pushEvent(event = Event.ShowErrorMessage(message = result.error))
+                    is AuthResult.Success -> {
+                        screenState = ScreenState.Normal
+                        action = Action.NavigateToSignIn
+                    }
+                    is AuthResult.Failure -> screenState = ScreenState.Error(message = "Unable to get the user's data.")
                 }
             }.stateIn(scope = this)
         }
     }
 
-    private fun User.toUiModel() = ProfileListItem.User(
-        userId = userId,
-        avatarType = avatarType,
-        email = email,
-        registrationDate = registrationTimeStamp.formatUserRegistrationDate()
-    )
+    sealed class ScreenState {
 
-    sealed class Event {
+        object Normal : ScreenState()
 
-        object SignOut : Event()
+        object Loading : ScreenState()
 
-        data class ShowErrorMessage(val message: String) : Event()
+        data class Error(val message: String) : ScreenState()
+    }
+
+    sealed class Action {
+
+        object NavigateToResetPassword : Action()
+
+        object NavigateToSignIn : Action()
     }
 }

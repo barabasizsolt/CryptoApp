@@ -13,7 +13,6 @@ import com.example.cryptoapp.R
 import com.example.cryptoapp.feature.screen.main.cryptocurrency.cryptocurrencyDetails.helpers.CryptoXAxisFormatter
 import com.example.cryptoapp.feature.screen.main.cryptocurrency.cryptocurrencyDetails.helpers.CryptoYAxisFormatter
 import com.example.cryptoapp.feature.screen.main.cryptocurrency.cryptocurrencyDetails.helpers.UnitOfTimeType
-import com.example.cryptoapp.auth.service.model.UserAvatarType
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.LegendEntry
@@ -103,19 +102,3 @@ fun LineChart.initializeCryptoCurrencyDetailChart(
 fun View.isVisible(isVisible: Boolean) {
     if (isVisible) this.visibility = View.VISIBLE else this.visibility = View.GONE
 }
-
-@BindingAdapter("loadAvatar")
-fun ImageView.loadAvatar(avatarType: UserAvatarType) = ImageLoader.Builder(context)
-    .componentRegistry { add(SvgDecoder(context)) }
-    .build()
-    .enqueue(
-        ImageRequest.Builder(context)
-            .data(
-                when (avatarType) {
-                    is UserAvatarType.IntType -> avatarType.id
-                    is UserAvatarType.UriType -> avatarType.uri
-                }
-            )
-            .target(this)
-            .build()
-    )

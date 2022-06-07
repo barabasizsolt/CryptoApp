@@ -1,17 +1,18 @@
 package com.example.cryptoapp.auth.service.model
 
+import android.icu.text.SimpleDateFormat
 import android.net.Uri
+import java.util.*
 
 data class User(
     val userId: String,
-    val avatarType: UserAvatarType,
+    val photoUrl: Uri?,
     val email: String,
-    val registrationTimeStamp: Long
+    val registrationDate: String,
+    val lastSignInDate: String,
+    val userName: String,
+    val phoneNumber: String,
+    val isAnonymous: String,
 )
 
-sealed class UserAvatarType {
-
-    data class UriType(val uri: Uri) : UserAvatarType()
-
-    data class IntType(val id: Int) : UserAvatarType()
-}
+fun Long.formatUserTimeStamp(): String = SimpleDateFormat("MMM dd, yyy", Locale.getDefault()).format(this)

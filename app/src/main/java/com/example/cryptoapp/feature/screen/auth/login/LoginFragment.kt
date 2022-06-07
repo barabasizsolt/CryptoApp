@@ -25,11 +25,11 @@ import com.example.cryptoapp.R
 import com.example.cryptoapp.feature.activity.MainActivity
 import com.example.cryptoapp.feature.screen.auth.catalog.AuthButton
 import com.example.cryptoapp.feature.screen.auth.catalog.EmailInput
+import com.example.cryptoapp.feature.screen.auth.catalog.ForgotPasswordButton
+import com.example.cryptoapp.feature.screen.auth.catalog.GoogleSingUpButton
 import com.example.cryptoapp.feature.screen.auth.catalog.PasswordInput
-import com.example.cryptoapp.feature.screen.auth.login.catalog.ForgotPasswordButton
-import com.example.cryptoapp.feature.screen.auth.login.catalog.GoogleSingUpButton
-import com.example.cryptoapp.feature.screen.auth.login.catalog.LoginScreenLogo
-import com.example.cryptoapp.feature.screen.auth.login.catalog.SecondaryAuthButton
+import com.example.cryptoapp.feature.screen.auth.catalog.ScreenLogo
+import com.example.cryptoapp.feature.screen.auth.catalog.SecondaryAuthButton
 import com.example.cryptoapp.feature.screen.auth.register.SignUpFragment
 import com.example.cryptoapp.feature.shared.utils.ResetPasswordDialog
 import com.example.cryptoapp.feature.shared.utils.createSnackBar
@@ -93,7 +93,7 @@ class LoginFragment : Fragment() {
                 .fillMaxSize()
         ) {
             item {
-                LoginScreenLogo(
+                ScreenLogo(
                     modifier = Modifier
                         .padding(
                             top = 150.dp,

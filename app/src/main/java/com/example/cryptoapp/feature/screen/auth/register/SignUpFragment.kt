@@ -17,7 +17,6 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import com.example.cryptoapp.R
@@ -25,11 +24,9 @@ import com.example.cryptoapp.feature.activity.MainActivity
 import com.example.cryptoapp.feature.screen.auth.catalog.AuthButton
 import com.example.cryptoapp.feature.screen.auth.catalog.EmailInput
 import com.example.cryptoapp.feature.screen.auth.catalog.PasswordInput
-import com.example.cryptoapp.feature.screen.auth.login.LoginFragment
-import com.example.cryptoapp.feature.screen.auth.login.catalog.LoginScreenLogo
-import com.example.cryptoapp.feature.screen.auth.login.catalog.SecondaryAuthButton
+import com.example.cryptoapp.feature.screen.auth.catalog.ScreenLogo
+import com.example.cryptoapp.feature.screen.auth.catalog.SecondaryAuthButton
 import com.example.cryptoapp.feature.shared.utils.createSnackBar
-import com.example.cryptoapp.feature.shared.utils.handleReplace
 import com.google.android.material.composethemeadapter.MdcTheme
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -82,7 +79,7 @@ class SignUpFragment : Fragment() {
                 .fillMaxSize()
         ) {
             item {
-                LoginScreenLogo(
+                ScreenLogo(
                     modifier = Modifier
                         .padding(
                             top = 150.dp,
