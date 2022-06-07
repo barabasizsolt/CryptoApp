@@ -13,7 +13,8 @@ class AuthenticationFragment : BaseFragment<FragmentAuthenticationBinding>(R.lay
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         if (savedInstanceState == null && currentFragment == null) {
             childFragmentManager.handleReplace(
-                newInstance = LoginFragment.Companion::newInstance
+                newInstance = LoginFragment.Companion::newInstance,
+                tag = null
             )
         }
     }

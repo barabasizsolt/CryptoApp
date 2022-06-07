@@ -29,7 +29,7 @@ import com.example.cryptoapp.feature.screen.auth.catalog.PasswordInput
 import com.example.cryptoapp.feature.screen.auth.login.catalog.ForgotPasswordButton
 import com.example.cryptoapp.feature.screen.auth.login.catalog.GoogleSingUpButton
 import com.example.cryptoapp.feature.screen.auth.login.catalog.LoginScreenLogo
-import com.example.cryptoapp.feature.screen.auth.login.catalog.SignUpButton
+import com.example.cryptoapp.feature.screen.auth.login.catalog.SecondaryAuthButton
 import com.example.cryptoapp.feature.screen.auth.register.SignUpFragment
 import com.example.cryptoapp.feature.shared.utils.ResetPasswordDialog
 import com.example.cryptoapp.feature.shared.utils.createSnackBar
@@ -141,7 +141,13 @@ class LoginFragment : Fragment() {
                     onClick = { viewModel.onResetPasswordClicked() }
                 )
             }
-            item { SignUpButton(onClick = { viewModel.onRegisterClicked() }) }
+            item {
+                SecondaryAuthButton(
+                    question = stringResource(id = R.string.dont_have_account),
+                    text = stringResource(id = R.string.sign_up),
+                    onClick = { viewModel.onRegisterClicked() }
+                )
+            }
         }
     }
 

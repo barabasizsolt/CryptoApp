@@ -1,30 +1,130 @@
 package com.example.cryptoapp.feature.screen.auth.register
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
-import androidx.lifecycle.lifecycleScope
-import com.example.cryptoapp.BR
+import android.view.ViewGroup
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.unit.dp
+import androidx.fragment.app.Fragment
 import com.example.cryptoapp.R
-import com.example.cryptoapp.databinding.FragmentSignUpBinding
-import com.example.cryptoapp.feature.shared.navigation.BaseFragment
+import com.example.cryptoapp.feature.activity.MainActivity
+import com.example.cryptoapp.feature.screen.auth.catalog.AuthButton
+import com.example.cryptoapp.feature.screen.auth.catalog.EmailInput
+import com.example.cryptoapp.feature.screen.auth.catalog.PasswordInput
+import com.example.cryptoapp.feature.screen.auth.login.LoginFragment
+import com.example.cryptoapp.feature.screen.auth.login.catalog.LoginScreenLogo
+import com.example.cryptoapp.feature.screen.auth.login.catalog.SecondaryAuthButton
 import com.example.cryptoapp.feature.shared.utils.createSnackBar
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import com.example.cryptoapp.feature.shared.utils.handleReplace
+import com.google.android.material.composethemeadapter.MdcTheme
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-// TODO[mid] refactor the xml
-class SignUpFragment : BaseFragment<FragmentSignUpBinding>(R.layout.fragment_sign_up) {
+class SignUpFragment : Fragment() {
 
     private val viewModel by viewModel<SignUpViewModel>()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.setVariable(BR.viewModel, viewModel)
-        viewModel.event.onEach(::listenToEvent).launchIn(viewLifecycleOwner.lifecycleScope)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        return ComposeView(context = requireContext()).apply {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setContent {
+                MdcTheme {
+                    SignUScreen(viewModel = viewModel)
+                }
+            }
+        }
     }
 
-    private fun listenToEvent(event: SignUpViewModel.Event) = when (event) {
-        is SignUpViewModel.Event.ShowErrorMessage -> binding.root.createSnackBar(message = event.message)
-        is SignUpViewModel.Event.RegisterUser -> navigator?.navigateToMain()
+    @Composable
+    private fun SignUScreen(viewModel: SignUpViewModel) {
+
+        SignUpScreenContent(viewModel = viewModel)
+
+        when(val state = viewModel.screenState) {
+            is SignUpViewModel.ScreenState.Error ->
+                LocalView.current.createSnackBar(message = state.message)
+            else -> Unit
+        }
+
+        when(viewModel.action) {
+            is SignUpViewModel.Action.NavigateToHome -> (requireActivity() as MainActivity).navigateToMain()
+            is SignUpViewModel.Action.NavigateToLogin -> viewModel.reset().also {
+                parentFragment?.childFragmentManager?.popBackStack()
+            }
+            else -> Unit
+        }
+    }
+
+    @Composable
+    private fun SignUpScreenContent(viewModel: SignUpViewModel) {
+        LazyColumn(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            contentPadding = PaddingValues(horizontal = dimensionResource(id = R.dimen.screen_padding)),
+            modifier = Modifier
+                .imePadding()
+                .fillMaxSize()
+        ) {
+            item {
+                LoginScreenLogo(
+                    modifier = Modifier
+                        .padding(
+                            top = 150.dp,
+                            bottom = dimensionResource(id = R.dimen.screen_padding)
+                        ),
+                    isLoading = viewModel.screenState is SignUpViewModel.ScreenState.Loading
+                )
+            }
+            item {
+                EmailInput(
+                    email = viewModel.email,
+                    onEmailChange = viewModel::onEmailChange,
+                    modifier = Modifier.padding(bottom = dimensionResource(id = R.dimen.screen_padding))
+                )
+            }
+            item {
+                PasswordInput(
+                    password = viewModel.password,
+                    onPasswordChange = viewModel::onPasswordChange,
+                    keyboardActions = {
+                        viewModel.registerWithEmailAndPassword()
+                    },
+                    modifier = Modifier.padding(bottom = dimensionResource(id = R.dimen.screen_padding) + dimensionResource(id = R.dimen.content_padding))
+                )
+            }
+            item {
+                AuthButton(
+                    text = stringResource(id = R.string.sign_up),
+                    enabled = viewModel.isRegisterEnabled.value,
+                    isLoading = viewModel.screenState is SignUpViewModel.ScreenState.Loading,
+                    onClick = { viewModel.registerWithEmailAndPassword() },
+                    modifier = Modifier.padding(bottom = dimensionResource(id = R.dimen.screen_padding))
+                )
+            }
+            item {
+                SecondaryAuthButton(
+                    question = stringResource(id = R.string.already_have_an_account),
+                    text = stringResource(id = R.string.sign_in),
+                    onClick = { viewModel.onSingInClicked() }
+                )
+            }
+        }
     }
 
     companion object {

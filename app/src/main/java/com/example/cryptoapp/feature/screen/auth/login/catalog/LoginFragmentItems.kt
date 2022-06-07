@@ -71,8 +71,10 @@ fun ForgotPasswordButton(
 }
 
 @Composable
-fun SignUpButton(
+fun SecondaryAuthButton(
     modifier: Modifier = Modifier,
+    question: String,
+    text: String,
     onClick: () -> Unit
 ) {
     Row(
@@ -81,12 +83,12 @@ fun SignUpButton(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = stringResource(id = R.string.dont_have_account),
+            text = question,
             style = MaterialTheme.typography.body1
         )
         TextButton(onClick = onClick) {
             Text(
-                text = stringResource(id = R.string.sign_up),
+                text = text,
                 style = MaterialTheme.typography.body1,
                 color = MaterialTheme.colors.primary
             )

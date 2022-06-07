@@ -79,4 +79,6 @@
     <string name="add_to_watchlist">Add cryptocurrency</string>
     <string name="dont_have_account">Don\'t have an account?</string>
     <string name="continue_with_google">Continue with Google</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="sign_in">Sign In</string>
 </resources>

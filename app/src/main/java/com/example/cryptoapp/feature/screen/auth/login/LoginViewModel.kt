@@ -61,7 +61,6 @@ class LoginViewModel(
         screenState = ScreenState.Loading
         viewModelScope.launch {
             loginWithGoogleAccountUseCase(intent = intent).onEach { result ->
-                println("Here: $result")
                 when (result) {
                     is AuthResult.Success -> {
                         action = Action.NavigateToHome
@@ -78,9 +77,6 @@ class LoginViewModel(
     fun getIntentForGoogleLogin(): Intent = getIntentForGoogleAccountLogin()
 
     fun reset() {
-        email = ""
-        password = ""
-        screenState = ScreenState.Normal
         action = null
     }
 
@@ -111,6 +107,7 @@ class LoginViewModel(
     }
 
     fun onRegisterClicked() {
+        screenState = ScreenState.Normal
         action = Action.NavigateToRegister
     }
 

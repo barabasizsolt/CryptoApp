@@ -55,7 +55,7 @@ fun PasswordInput(
     modifier: Modifier = Modifier,
     password: String,
     onPasswordChange: (String) -> Unit,
-    keyboardActions: () -> Unit
+    keyboardActions: (() -> Unit) = { }
 ) {
     var passwordVisible by rememberSaveable { mutableStateOf(false) }
 
