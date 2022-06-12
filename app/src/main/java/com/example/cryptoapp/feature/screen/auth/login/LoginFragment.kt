@@ -23,7 +23,6 @@ import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import com.example.cryptoapp.R
 import com.example.cryptoapp.feature.activity.MainActivity
-import com.example.cryptoapp.feature.screen.auth.catalog.AuthButton
 import com.example.cryptoapp.feature.screen.auth.catalog.EmailInput
 import com.example.cryptoapp.feature.screen.auth.catalog.ForgotPasswordButton
 import com.example.cryptoapp.feature.screen.auth.catalog.GoogleSingUpButton
@@ -31,6 +30,7 @@ import com.example.cryptoapp.feature.screen.auth.catalog.PasswordInput
 import com.example.cryptoapp.feature.screen.auth.catalog.ScreenLogo
 import com.example.cryptoapp.feature.screen.auth.catalog.SecondaryAuthButton
 import com.example.cryptoapp.feature.screen.auth.register.SignUpFragment
+import com.example.cryptoapp.feature.shared.catalog.CryptoAppButton
 import com.example.cryptoapp.feature.shared.utils.ResetPasswordDialog
 import com.example.cryptoapp.feature.shared.utils.createSnackBar
 import com.example.cryptoapp.feature.shared.utils.handleReplace
@@ -129,7 +129,7 @@ class LoginFragment : Fragment() {
                 )
             }
             item {
-                AuthButton(
+                CryptoAppButton(
                     text = stringResource(id = R.string.login),
                     enabled = viewModel.isLoginEnabled.value,
                     isLoading = viewModel.screenState is LoginViewModel.ScreenState.Loading,

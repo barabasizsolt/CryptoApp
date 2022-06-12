@@ -49,7 +49,13 @@ val presentationModule = module {
             getExchangeHistory = get()
         )
     }
-    viewModel { ProfileViewModel(getCurrentUserUseCase = get(), logOutUseCase = get()) }
+    viewModel {
+        ProfileViewModel(
+            getCurrentUserUseCase = get(),
+            logOutUseCase = get(),
+            updateUserUseCase = get()
+        )
+    }
     viewModel {
         WatchListViewModel(
             getCryptoCurrenciesForWatchList = get(),

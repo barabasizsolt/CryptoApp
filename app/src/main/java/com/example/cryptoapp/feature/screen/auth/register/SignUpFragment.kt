@@ -21,11 +21,11 @@ import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import com.example.cryptoapp.R
 import com.example.cryptoapp.feature.activity.MainActivity
-import com.example.cryptoapp.feature.screen.auth.catalog.AuthButton
 import com.example.cryptoapp.feature.screen.auth.catalog.EmailInput
 import com.example.cryptoapp.feature.screen.auth.catalog.PasswordInput
 import com.example.cryptoapp.feature.screen.auth.catalog.ScreenLogo
 import com.example.cryptoapp.feature.screen.auth.catalog.SecondaryAuthButton
+import com.example.cryptoapp.feature.shared.catalog.CryptoAppButton
 import com.example.cryptoapp.feature.shared.utils.createSnackBar
 import com.google.android.material.composethemeadapter.MdcTheme
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -106,7 +106,7 @@ class SignUpFragment : Fragment() {
                 )
             }
             item {
-                AuthButton(
+                CryptoAppButton(
                     text = stringResource(id = R.string.sign_up),
                     enabled = viewModel.isRegisterEnabled.value,
                     isLoading = viewModel.screenState is SignUpViewModel.ScreenState.Loading,

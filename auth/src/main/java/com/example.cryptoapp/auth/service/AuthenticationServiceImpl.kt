@@ -2,6 +2,7 @@ package com.example.cryptoapp.auth.service
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import com.example.cryptoapp.auth.AuthResult
 import com.example.cryptoapp.auth.AuthWithResult
 import com.example.cryptoapp.auth.consumeTask
@@ -14,15 +15,19 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.ktx.userProfileChangeRequest
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.transform
 import java.util.*
 
+
 class AuthenticationServiceImpl : AuthenticationService {
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var googleAuth: GoogleSignInClient
+    private lateinit var store: FirebaseStorage
 
     override fun initialize(context: Context) {
 
@@ -33,6 +38,7 @@ class AuthenticationServiceImpl : AuthenticationService {
 
         googleAuth = GoogleSignIn.getClient(context, request)
         firebaseAuth = FirebaseAuth.getInstance()
+        store = FirebaseStorage.getInstance()
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -73,11 +79,21 @@ class AuthenticationServiceImpl : AuthenticationService {
 
     override fun getCurrentUser(): User? = firebaseAuth.currentUser?.toModel()
 
-    private fun FirebaseUser?.toModel() = when {
+    @OptIn(ExperimentalCoroutinesApi::class)
+    override fun updateUser(userName: String, photo: Uri?): Flow<AuthResult> = consumeTask(
+        task = firebaseAuth.currentUser!!.updateProfile(
+            userProfileChangeRequest {
+                displayName = userName
+                photoUri = photo
+            }
+        )
+    )
+
+    private fun FirebaseUser?.toModel(): User? = when {
         this == null -> null
         else -> User(
             userId = uid,
-            photoUrl = photoUrl,
+            photo = photoUrl,
             email = email.orEmpty(),
             userName = displayName.orEmpty(),
             phoneNumber = phoneNumber.orEmpty(),

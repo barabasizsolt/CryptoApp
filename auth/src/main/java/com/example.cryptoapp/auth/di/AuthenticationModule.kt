@@ -9,6 +9,7 @@ import com.example.cryptoapp.auth.useCase.LoginWithEmailAndPasswordUseCase
 import com.example.cryptoapp.auth.useCase.LoginWithGoogleAccountUseCase
 import com.example.cryptoapp.auth.useCase.RegisterWithEmailAndPasswordUseCase
 import com.example.cryptoapp.auth.useCase.ResetPasswordUseCase
+import com.example.cryptoapp.auth.useCase.UpdateUserUseCase
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
@@ -26,5 +27,6 @@ private fun createUseCaseModule() = module {
     factory { GetCurrentUserUseCase(service = get()) }
     factory { GetIntentForGoogleAccountLoginUseCase(service = get()) }
     factory { LoginWithGoogleAccountUseCase(service = get()) }
+    factory { UpdateUserUseCase(service = get()) }
 }
 

@@ -1,11 +1,11 @@
 package com.example.cryptoapp.auth.service
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import com.example.cryptoapp.auth.AuthResult
+import com.example.cryptoapp.auth.AuthWithResult
 import com.example.cryptoapp.auth.service.model.User
-import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.Flow
 
 interface AuthenticationService {
@@ -25,4 +25,6 @@ interface AuthenticationService {
     fun resetPassword(email: String): Flow<AuthResult>
 
     fun getCurrentUser(): User?
+
+    fun updateUser(userName: String, photo: Uri?): Flow<AuthResult>
 }

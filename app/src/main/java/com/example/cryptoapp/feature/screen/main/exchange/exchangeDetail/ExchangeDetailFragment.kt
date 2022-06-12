@@ -52,8 +52,8 @@ class ExchangeDetailFragment : Fragment() {
 
     @Composable
     private fun ExchangeDetailScreen(viewModel: ExchangeDetailViewModel) {
-        if(viewModel.exchangeDetails != null)
-            ScreenContent(viewModel = viewModel) else LoadingIndicator(isRefreshing = viewModel.exchangeDetails == null)
+        if (viewModel.exchangeDetails != null)
+            ScreenContent(viewModel = viewModel) else LoadingIndicator(isRefreshing = true)
 
         when (val state = viewModel.screenState) {
             is ExchangeDetailViewModel.ScreenState.ShowFirstLoadingError ->

@@ -6,7 +6,7 @@ import java.util.*
 
 data class User(
     val userId: String,
-    val photoUrl: Uri?,
+    val photo: Uri?,
     val email: String,
     val registrationDate: String,
     val lastSignInDate: String,
