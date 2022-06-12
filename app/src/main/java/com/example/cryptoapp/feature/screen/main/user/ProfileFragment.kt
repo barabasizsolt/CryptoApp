@@ -113,7 +113,11 @@ class ProfileFragment : Fragment() {
                     modifier = Modifier
                         .height(height = 210.dp)
                         .offset(y = 10.dp),
-                    onCancelClicked = {},
+                    onCancelClicked = {
+                       coroutineScope.launch {
+                           bottomSheetScaffoldState.bottomSheetState.collapse()
+                       }
+                    },
                     onTakePhotoClicked = {
                         openGalleryLauncher.launch(Intent(MediaStore.ACTION_IMAGE_CAPTURE))
                     },

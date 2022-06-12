@@ -59,6 +59,10 @@ class WatchListViewModel(
         }
     }
 
+    fun deleteCryptoCurrency(uid: String) {
+        deleteCryptoCurrencyFromWatchList(id = uid)
+    }
+
     sealed class ScreenState {
 
         object Loading: ScreenState()

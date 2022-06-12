@@ -55,14 +55,17 @@ import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.MaterialTheme
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalView
 import androidx.fragment.app.Fragment
 import com.example.cryptoapp.feature.screen.main.MarketFragment
+import com.example.cryptoapp.feature.screen.main.watchlist.catalog.DeleteItem
 import com.example.cryptoapp.feature.screen.main.watchlist.catalog.WatchListPlaceHolder
 import com.example.cryptoapp.feature.shared.catalog.ErrorContent
 import com.example.cryptoapp.feature.shared.catalog.LoadingIndicator
 import com.example.cryptoapp.feature.shared.utils.convertToCompactPrice
+import com.example.cryptoapp.feature.shared.utils.convertToPrice
 import com.example.cryptoapp.feature.shared.utils.createSnackBar
 import com.example.cryptoapp.feature.shared.utils.formatInput
 
@@ -110,32 +113,53 @@ class WatchListFragment : Fragment() {
         }
     }
 
+    @OptIn(ExperimentalMaterialApi::class)
     @Composable
     private fun ScreenContent(viewModel: WatchListViewModel) {
-        
-        val cryptoCurrencies = viewModel.cryptoCurrencies!!
-        
-        SwipeRefresh(
-            state = rememberSwipeRefreshState(viewModel.screenState is WatchListViewModel.ScreenState.Loading),
-            onRefresh = viewModel::refreshData,
-        ) {
-            LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(space = dimensionResource(id = R.dimen.content_padding)),
-                contentPadding = PaddingValues(
-                    vertical = dimensionResource(id = R.dimen.small_padding),
-                    horizontal = dimensionResource(id = R.dimen.content_padding)
-                )
+        viewModel.cryptoCurrencies?.let { cryptoCurrencies ->
+            SwipeRefresh(
+                state = rememberSwipeRefreshState(viewModel.screenState is WatchListViewModel.ScreenState.Loading),
+                onRefresh = viewModel::refreshData,
             ) {
-                items(cryptoCurrencies) { item ->
-                    CryptoCurrencyItem(
-                        iconUrl = item.iconUrl,
-                        name = item.name,
-                        symbol = item.symbol,
-                        price = item.price.convertToCompactPrice(),
-                        change = item.change,
-                        volume = item.volume.convertToCompactPrice(),
-                        marketCap = item.marketCap.formatInput()
-                    )
+                LazyColumn(
+                    verticalArrangement = Arrangement.spacedBy(space = dimensionResource(id = R.dimen.content_padding)),
+                    contentPadding = PaddingValues(all = dimensionResource(id = R.dimen.content_padding))
+                ) {
+                    items(
+                        items = cryptoCurrencies,
+                        key = { it.uuid }
+                    ) { item ->
+
+                        val dismissState = rememberDismissState(
+                            confirmStateChange = { dismissValue ->
+                                if (dismissValue == DismissValue.DismissedToStart) { viewModel.deleteCryptoCurrency(uid = item.uuid) }
+                                true
+                            }
+                        )
+
+                        SwipeToDismiss(
+                            state = dismissState,
+                            background = {
+                                val color = when (dismissState.dismissDirection){
+                                    DismissDirection.EndToStart -> MaterialTheme.colors.primary
+                                    else -> Color.Transparent
+                                }
+                                DeleteItem(color = color)
+                            },
+                            dismissContent = {
+                                CryptoCurrencyItem(
+                                    iconUrl = item.iconUrl,
+                                    name = item.name,
+                                    symbol = item.symbol,
+                                    price = item.price.convertToPrice(),
+                                    change = item.change,
+                                    volume = item.volume.convertToCompactPrice(),
+                                    marketCap = item.marketCap.formatInput()
+                                )
+                            },
+                            directions = setOf(element = DismissDirection.EndToStart)
+                        )
+                    }
                 }
             }
         }

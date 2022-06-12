@@ -130,14 +130,17 @@ fun BottomSheetContent(
     Column(
         modifier = modifier.fillMaxWidth()
     ) {
-        BottomSheetHeader(modifier = Modifier.padding(all = dimensionResource(id = R.dimen.screen_padding)))
+        BottomSheetHeader(modifier = Modifier.padding(all = dimensionResource(id = R.dimen.screen_padding)), onClick = onCancelClicked)
         BottomSheetItem(text = "Take a photo", showDivider = true, onClick = onTakePhotoClicked)
         BottomSheetItem(text = "Open gallery", onClick = onOpenGalleryClicked)
     }
 }
 
 @Composable
-private fun BottomSheetHeader(modifier: Modifier = Modifier) {
+private fun BottomSheetHeader(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
     Row(
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
@@ -147,7 +150,8 @@ private fun BottomSheetHeader(modifier: Modifier = Modifier) {
         Text(
             text = stringResource(id = R.string.cancel),
             style = MaterialTheme.typography.body2,
-            color = MaterialTheme.colors.primary
+            color = MaterialTheme.colors.primary,
+            modifier = Modifier.clickable { onClick() }
         )
     }
 }

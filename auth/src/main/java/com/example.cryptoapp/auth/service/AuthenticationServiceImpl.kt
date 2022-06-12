@@ -16,7 +16,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.userProfileChangeRequest
-import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
@@ -27,7 +26,6 @@ import java.util.*
 class AuthenticationServiceImpl : AuthenticationService {
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var googleAuth: GoogleSignInClient
-    private lateinit var store: FirebaseStorage
 
     override fun initialize(context: Context) {
 
@@ -38,7 +36,6 @@ class AuthenticationServiceImpl : AuthenticationService {
 
         googleAuth = GoogleSignIn.getClient(context, request)
         firebaseAuth = FirebaseAuth.getInstance()
-        store = FirebaseStorage.getInstance()
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
