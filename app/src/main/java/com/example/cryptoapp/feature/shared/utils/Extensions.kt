@@ -1,15 +1,10 @@
 package com.example.cryptoapp.feature.shared.utils
 
-import android.icu.text.SimpleDateFormat
 import android.icu.util.CurrencyAmount
-import android.net.Uri
 import android.view.View
-import android.widget.ImageView
 import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import coil.load
-import coil.transform.CircleCropTransformation
 import com.example.cryptoapp.R
 import com.example.cryptoapp.data.shared.ChartHistory
 import com.example.cryptoapp.feature.screen.main.cryptocurrency.Constant.timePeriods
@@ -25,23 +20,8 @@ import java.time.Instant
 import java.time.LocalDateTime
 import java.time.Month
 import java.time.ZoneId
-import java.util.Locale
 import kotlin.collections.ArrayList
 import kotlin.math.roundToInt
-
-fun ImageView.loadImage(image: Uri, placeholder: Int) = load(image) {
-    placeholder(placeholder)
-    transformations(CircleCropTransformation())
-}
-
-fun ImageView.loadImage(image: String, placeholder: Int) = load(image) {
-    placeholder(placeholder)
-    transformations(CircleCropTransformation())
-}
-
-fun ImageView.loadImage(image: Int) = load(image) {
-    transformations(CircleCropTransformation())
-}
 
 fun Long.getTime(): LocalDateTime =
     Instant.ofEpochSecond(this).atZone(ZoneId.systemDefault()).toLocalDateTime()

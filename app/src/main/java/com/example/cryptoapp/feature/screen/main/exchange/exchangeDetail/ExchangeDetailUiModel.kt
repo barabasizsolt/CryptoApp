@@ -28,20 +28,21 @@ sealed class ExchangeDetailUiModel {
 
 data class GeneralDetailItem(
     val title: String,
-    val value: String
+    val value: String,
+    val clickable: Boolean
 )
 
 fun ExchangeDetail.toUiModel() = ExchangeDetailUiModel.ExchangeDetail(
     name = name,
     image = image,
     generalDetails = buildList {
-        add(GeneralDetailItem(title = "Year established", value = yearEstablished.toString().getExchangeItemValue()))
-        add(GeneralDetailItem(title = "Country", value = country))
-        add(GeneralDetailItem(title = "Homepage", value = url.getExchangeItemValue()))
-        add(GeneralDetailItem(title = "Facebook", value = facebookURL.getExchangeItemValue()))
-        add(GeneralDetailItem(title = "Reddit", value = redditURL.getExchangeItemValue()))
-        add(GeneralDetailItem(title = "Other URL", value = otherURL1.getExchangeItemValue()))
-        add(GeneralDetailItem(title = "Other URL", value = otherURL2.getExchangeItemValue()))
+        add(GeneralDetailItem(title = "Year established", value = yearEstablished.toString().getExchangeItemValue(), clickable = false))
+        add(GeneralDetailItem(title = "Country", value = country, clickable = false))
+        add(GeneralDetailItem(title = "Homepage", value = url.getExchangeItemValue(), clickable = url.isNotEmpty()))
+        add(GeneralDetailItem(title = "Facebook", value = facebookURL.getExchangeItemValue(), clickable = facebookURL.isNotEmpty()))
+        add(GeneralDetailItem(title = "Reddit", value = redditURL.getExchangeItemValue(), clickable = redditURL.isNotEmpty()))
+        add(GeneralDetailItem(title = "Other URL", value = otherURL1.getExchangeItemValue(), clickable = otherURL1.isNotEmpty()))
+        add(GeneralDetailItem(title = "Other URL", value = otherURL2.getExchangeItemValue(), clickable = otherURL2.isNotEmpty()))
     },
     centralized = if (centralized) "Centralized" else "Decentralized",
     trustScore = "10/$trustScore",

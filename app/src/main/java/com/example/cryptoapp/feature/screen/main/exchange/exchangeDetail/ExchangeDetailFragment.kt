@@ -1,5 +1,7 @@
 package com.example.cryptoapp.feature.screen.main.exchange.exchangeDetail
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -96,7 +98,11 @@ class ExchangeDetailFragment : Fragment() {
                     )
                 }
                 items(details.generalDetails) { generalDetail ->
-                    ExchangeDetailItem(title = generalDetail.title, text = generalDetail.value)
+                    ExchangeDetailItem(
+                        title = generalDetail.title,
+                        text = generalDetail.value,
+                        onClick = { if (generalDetail.clickable) startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(generalDetail.value))) }
+                    )
                 }
             }
         }

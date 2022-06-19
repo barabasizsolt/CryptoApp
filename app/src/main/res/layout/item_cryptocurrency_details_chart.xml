@@ -12,8 +12,8 @@
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/line_chart"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/crypto_details_chart_height"
-        android:layout_marginBottom="@dimen/crypto_details_chart_margin_Bottom"
+        android:layout_height="@dimen/chart_height"
+        android:layout_marginBottom="@dimen/content_padding"
         app:data="@{uiModel.data}"
         app:formatter="@{uiModel.unitOfTimeType}"/>
 

@@ -14,7 +14,7 @@
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/top_bar"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/app_bar_height"
+                android:layout_height="wrap_content"
                 app:title="@string/app_name"
                 app:menu="@menu/top_app_bar"
                 app:titleTextAppearance="@style/AppBarText"

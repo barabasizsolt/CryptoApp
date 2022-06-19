@@ -38,7 +38,6 @@ import com.example.cryptoapp.feature.shared.catalog.LoadingIndicator
 import com.example.cryptoapp.feature.shared.utils.convertToCompactPrice
 import com.example.cryptoapp.feature.shared.utils.convertToPrice
 import com.example.cryptoapp.feature.shared.utils.createSnackBar
-import com.example.cryptoapp.feature.shared.utils.formatInput
 import com.example.cryptoapp.feature.shared.utils.handleReplace
 
 class WatchListFragment : Fragment() {

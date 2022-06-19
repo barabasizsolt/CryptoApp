@@ -1,14 +1,11 @@
-package com.example.cryptoapp.feature.shared.utils
+package com.example.cryptoapp.feature.shared.catalog
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.AlertDialog
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
@@ -17,12 +14,9 @@ import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.intl.Locale
-import androidx.compose.ui.text.toUpperCase
 import com.example.cryptoapp.R
 import com.google.android.material.composethemeadapter.MdcTheme
 
@@ -91,21 +85,11 @@ private fun ResetPasswordCard(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Button(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(height = dimensionResource(id = R.dimen.button_height)),
-                    onClick = onAccess,
-                    content = {
-                        Text(text = stringResource(id = R.string.reset_password).toUpperCase(locale = Locale.current))
-                    },
+                CryptoAppButton(
+                    text = stringResource(id = R.string.reset_password),
                     enabled = email.isNotEmpty(),
-                    colors = ButtonDefaults.buttonColors(
-                        contentColor = Color.Black,
-                        backgroundColor = MaterialTheme.colors.primary,
-                        disabledBackgroundColor = if (isSystemInDarkTheme()) Color.DarkGray else Color.LightGray,
-                        disabledContentColor = MaterialTheme.colors.surface
-                    )
+                    isLoading = false,
+                    onClick = onAccess
                 )
             }
         }

@@ -2,11 +2,8 @@ package com.example.cryptoapp.feature.screen.main
 
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.FragmentManager
 import com.example.cryptoapp.R
 import com.example.cryptoapp.databinding.FragmentMainBinding
-import com.example.cryptoapp.feature.activity.MainActivity
-import com.example.cryptoapp.feature.screen.main.cryptocurrency.cryptocurrencyList.CryptoCurrencyFragment
 import com.example.cryptoapp.feature.screen.main.news.NewsFragment
 import com.example.cryptoapp.feature.screen.main.user.ProfileFragment
 import com.example.cryptoapp.feature.screen.main.watchlist.WatchListFragment

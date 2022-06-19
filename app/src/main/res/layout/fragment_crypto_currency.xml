@@ -18,8 +18,8 @@
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/chip_group"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/chip_group_height"
-            app:chipSpacingHorizontal="@dimen/chip_group_horizontal_spacing"
+            android:layout_height="wrap_content"
+            app:chipSpacingHorizontal="@dimen/screen_padding"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:checked="true"
                 android:text="@string/chip_tags"
-                app:chipCornerRadius="@dimen/chip_group_corner_radius"
+                app:chipCornerRadius="@dimen/small_padding"
                 android:onClick="@{() -> viewModel.onTagChipClicked()}"/>
 
             <com.google.android.material.chip.Chip
@@ -42,7 +42,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/chip_time_period"
-                app:chipCornerRadius="@dimen/chip_group_corner_radius"
+                app:chipCornerRadius="@dimen/small_padding"
                 android:onClick="@{() -> viewModel.onTimePeriodChipClicked()}"/>
 
             <com.google.android.material.chip.Chip
@@ -51,7 +51,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/chip_sort_by"
-                app:chipCornerRadius="@dimen/chip_group_corner_radius"
+                app:chipCornerRadius="@dimen/small_padding"
                 android:onClick="@{() -> viewModel.onSortingChipClicked()}"/>
 
         </com.google.android.material.chip.ChipGroup>
@@ -62,7 +62,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@+id/chip_group"
             app:refreshing="@{viewModel.isRefreshing}"
-            android:paddingBottom="@dimen/crypto_recycler_view_padding_bottom">
+            >
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerview"

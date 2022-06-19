@@ -31,7 +31,7 @@ import com.example.cryptoapp.feature.screen.auth.catalog.ScreenLogo
 import com.example.cryptoapp.feature.screen.auth.catalog.SecondaryAuthButton
 import com.example.cryptoapp.feature.screen.auth.register.SignUpFragment
 import com.example.cryptoapp.feature.shared.catalog.CryptoAppButton
-import com.example.cryptoapp.feature.shared.utils.ResetPasswordDialog
+import com.example.cryptoapp.feature.shared.catalog.ResetPasswordDialog
 import com.example.cryptoapp.feature.shared.utils.createSnackBar
 import com.example.cryptoapp.feature.shared.utils.handleReplace
 import com.google.android.material.composethemeadapter.MdcTheme

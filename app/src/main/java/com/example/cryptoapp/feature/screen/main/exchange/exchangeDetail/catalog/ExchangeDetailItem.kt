@@ -3,6 +3,7 @@ package com.example.cryptoapp.feature.screen.main.exchange.exchangeDetail.catalo
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -67,7 +68,7 @@ fun ExchangeDetailHeader(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(all = dimensionResource(id = R.dimen.content_padding))
-                .offset(x = dimensionResource(id = R.dimen.exchange_header_offset)),
+                .offset(x = 24.dp),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -75,17 +76,12 @@ fun ExchangeDetailHeader(
                 painter = rememberImagePainter(data = url),
                 contentDescription = null,
                 modifier = Modifier
-                    .size(size = dimensionResource(id = R.dimen.exchange_header_img_size))
-                    .clip(shape = CircleShape)
-                    .border(
-                        width = 1.dp,
-                        color = MaterialTheme.colors.onSurface,
-                        shape = CircleShape
-                    ),
+                    .size(size = dimensionResource(id = R.dimen.recycler_view_card_logo_size))
+                    .clip(shape = CircleShape),
                 contentScale = ContentScale.Crop
             )
-            Spacer(modifier = Modifier.width(width = dimensionResource(id = R.dimen.content_padding_half)))
-            Box(modifier = Modifier.height(height = dimensionResource(id = R.dimen.exchange_header_img_size))) {
+            Spacer(modifier = Modifier.width(width = dimensionResource(id = R.dimen.small_padding)))
+            Box(modifier = Modifier.height(height = dimensionResource(id = R.dimen.recycler_view_card_logo_size))) {
                 Text(
                     text = title,
                     style = MaterialTheme.typography.h6,
@@ -217,13 +213,13 @@ fun ExchangeDetailCardHolder(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(all = dimensionResource(id = R.dimen.content_padding_half)),
+                .padding(all = dimensionResource(id = R.dimen.small_padding)),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = horizontalArrangement
         ) {
             repeat(times = items.size, action = { index ->
                 ExchangeDetailCard(
-                    modifier = Modifier.padding(all = dimensionResource(id = R.dimen.content_padding_half)),
+                    modifier = Modifier.padding(all = dimensionResource(id = R.dimen.small_padding)),
                     text = items[index]
                 )
             })
@@ -262,13 +258,13 @@ fun ExchangeDetailChipGroup(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(all = dimensionResource(id = R.dimen.content_padding_half)),
+                .padding(all = dimensionResource(id = R.dimen.small_padding)),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             repeat(times = items.size, action = { index ->
                 ExchangeDetailChip(
-                    modifier = Modifier.padding(all = dimensionResource(id = R.dimen.content_padding_half)),
+                    modifier = Modifier.padding(all = dimensionResource(id = R.dimen.small_padding)),
                     text = items[index],
                     isSelected = index == isSelected,
                     onClick = {
@@ -314,11 +310,11 @@ private fun CardHolder(
     content: @Composable ColumnScope.() -> Unit,
 ) {
     Card(
-        elevation = 0.dp,
         backgroundColor = backgroundColor,
         contentColor = contentColor,
         modifier = modifier.wrapContentSize(),
-        onClick = onClick
+        elevation = if (isSystemInDarkTheme()) dimensionResource(id = R.dimen.dark_mode_card_elevation) else dimensionResource(id = R.dimen.zero_elevation),
+        onClick = onClick,
     ) {
         Column(
             modifier = Modifier
@@ -356,7 +352,7 @@ fun ExchangeDetailBody(
                     overflow = TextOverflow.Ellipsis,
                     fontWeight = FontWeight.Bold
                 )
-                Spacer(modifier = Modifier.height(height = dimensionResource(id = R.dimen.content_padding_half)))
+                Spacer(modifier = Modifier.height(height = dimensionResource(id = R.dimen.small_padding)))
                 Text(
                     text = "VOL/BTC/24H - AVG - ${System.currentTimeMillis().getFormattedHour()}",
                     style = MaterialTheme.typography.caption,
@@ -386,9 +382,9 @@ fun ExchangeDetailItem(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(all = dimensionResource(id = R.dimen.content_padding))
-                .clickable { onClick() },
-            horizontalArrangement = Arrangement.SpaceBetween,
+                .clickable { onClick() }
+                .padding(all = dimensionResource(id = R.dimen.double_content_padding)),
+            horizontalArrangement = Arrangement.spacedBy(space = dimensionResource(id = R.dimen.content_padding)),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
