@@ -60,7 +60,7 @@ class ProfileViewModel(
 
     fun updateProfileAvatar(uri: Uri?) {
         user = user?.copy(photo = uri)
-        //updateUser()
+        updateUser()
     }
 
     fun updateUser() {

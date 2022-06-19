@@ -1,5 +1,6 @@
 package com.example.cryptoapp.feature.screen.main.exchange.exchangeDetail.catalog
 
+import android.widget.TextView
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -48,13 +49,18 @@ import coil.compose.rememberImagePainter
 import com.example.cryptoapp.R
 import com.example.cryptoapp.feature.screen.main.cryptocurrency.cryptocurrencyDetails.helpers.UnitOfTimeType
 import com.example.cryptoapp.feature.screen.main.exchange.exchangeDetail.ExchangeDetailUiModel
+import com.example.cryptoapp.feature.shared.utils.convertToPrice
 import com.example.cryptoapp.feature.shared.utils.getFormattedHour
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.LegendEntry
+import com.github.mikephil.charting.components.MarkerView
 import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
+import com.github.mikephil.charting.utils.MPPointF
 import com.google.android.material.color.MaterialColors
 
 @Composable
@@ -133,8 +139,20 @@ private fun ExchangeDetailLineChart(
     AndroidView(
         factory = { context ->
             LineChart(context).apply {
+                marker = object : MarkerView(context, R.layout.chart_marker_view) {
+
+                    private var txtViewData: TextView = findViewById(R.id.marker_view)
+
+                    override fun refreshContent(entry: Entry?, highlight: Highlight?) {
+                        val value = entry?.y?.toDouble() ?: 0.0
+                        txtViewData.text = value.toString().convertToPrice()
+                        super.refreshContent(entry, highlight)
+                    }
+
+                    override fun getOffset(): MPPointF = MPPointF(-(width / 2f), -height.toFloat())
+                }
                 extraBottomOffset = 5f
-                setTouchEnabled(false)
+                setTouchEnabled(true)
                 isDragEnabled = true
                 setScaleEnabled(true)
                 setPinchZoom(false)
@@ -169,9 +187,13 @@ private fun ExchangeDetailLineChart(
         },
         update = { lineChart ->
             history.dataSet.apply {
-                color = textColor
+                color = chartFillColor
                 highLightColor = chartFillColor
                 fillColor = chartFillColor
+                setDrawHighlightIndicators(true)
+                highlightLineWidth = 1.5f
+                enableDashedHighlightLine(10f, 6f, 10f)
+                highLightColor = android.graphics.Color.BLACK
             }
             lineChart.apply {
                 xAxis.valueFormatter = ExchangeXAxisFormatter(unitOfTimeType = unitOfTimeType)

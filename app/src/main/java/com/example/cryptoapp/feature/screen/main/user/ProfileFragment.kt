@@ -3,6 +3,7 @@ package com.example.cryptoapp.feature.screen.main.user
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
@@ -57,6 +58,7 @@ import com.google.android.material.composethemeadapter.MdcTheme
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.io.ByteArrayOutputStream
 
 
 class ProfileFragment : Fragment() {
@@ -83,7 +85,6 @@ class ProfileFragment : Fragment() {
     private fun ProfileScreen(viewModel: ProfileViewModel) {
 
         if (viewModel.user != null) ProfileScreenContent(viewModel = viewModel) else LoadingIndicator(isRefreshing = true)
-
 
         when (val state = viewModel.screenState) {
             is ProfileViewModel.ScreenState.Loading -> LoadingIndicator(isRefreshing = true)
@@ -119,7 +120,7 @@ class ProfileFragment : Fragment() {
                        }
                     },
                     onTakePhotoClicked = {
-                        openGalleryLauncher.launch(Intent(MediaStore.ACTION_IMAGE_CAPTURE))
+                        openCameraLauncher.launch(Intent(MediaStore.ACTION_IMAGE_CAPTURE))
                     },
                     onOpenGalleryClicked = {
                         openGalleryLauncher.launch(
@@ -253,8 +254,9 @@ class ProfileFragment : Fragment() {
     private val openGalleryLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         val data = result.data
         if (result.resultCode == RESULT_OK && data != null) {
-            println("PH: ${data.data}")
-            viewModel.updateProfileAvatar(uri = data.data)
+            val bitmap = MediaStore.Images.Media.getBitmap(requireContext().contentResolver, data.data)
+            val uri = Uri.parse(MediaStore.Images.Media.insertImage(requireContext().contentResolver, bitmap, null, null))
+            viewModel.updateProfileAvatar(uri = uri)
         }
     }
 
@@ -262,7 +264,9 @@ class ProfileFragment : Fragment() {
         val data = result.data
         if (result.resultCode == RESULT_OK && data != null) {
             val bitmap = data.extras?.get("data") as Bitmap
-            //viewModel.updateProfileAvatar(uri = data.data)
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, ByteArrayOutputStream())
+            val uri = Uri.parse(MediaStore.Images.Media.insertImage(requireContext().contentResolver, bitmap, null, null))
+            viewModel.updateProfileAvatar(uri = uri)
         }
     }
 

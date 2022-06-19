@@ -2,6 +2,7 @@ package com.example.cryptoapp.firestore.service
 
 import com.example.cryptoapp.auth.service.AuthenticationService
 import com.example.cryptoapp.firestore.consumeQuery
+import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -9,7 +10,11 @@ import kotlinx.coroutines.flow.Flow
 
 class FirestoreServiceImpl(private val authService: AuthenticationService) : FirestoreService {
 
-    private val collection = FirebaseFirestore.getInstance().collection(COLLECTION_PATH)
+    private lateinit var collection: CollectionReference
+
+    override fun initialize() {
+        collection = FirebaseFirestore.getInstance().collection(COLLECTION_PATH)
+    }
 
     override fun addCryptoCurrencyToWatchList(id: String) {
         collection

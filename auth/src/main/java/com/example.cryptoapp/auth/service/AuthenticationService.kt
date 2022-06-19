@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import com.example.cryptoapp.auth.AuthResult
-import com.example.cryptoapp.auth.AuthWithResult
 import com.example.cryptoapp.auth.service.model.User
 import kotlinx.coroutines.flow.Flow
 

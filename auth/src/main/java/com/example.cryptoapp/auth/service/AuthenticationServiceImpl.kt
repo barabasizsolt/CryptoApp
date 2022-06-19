@@ -22,7 +22,6 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.transform
 import java.util.*
 
-
 class AuthenticationServiceImpl : AuthenticationService {
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var googleAuth: GoogleSignInClient

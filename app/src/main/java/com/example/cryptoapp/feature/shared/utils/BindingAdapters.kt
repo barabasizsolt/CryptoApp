@@ -1,5 +1,8 @@
 package com.example.cryptoapp.feature.shared.utils
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.graphics.Canvas
 import android.graphics.Color
 import android.view.View
 import android.widget.ImageView
@@ -14,13 +17,19 @@ import com.example.cryptoapp.feature.screen.main.cryptocurrency.cryptocurrencyDe
 import com.example.cryptoapp.feature.screen.main.cryptocurrency.cryptocurrencyDetails.helpers.CryptoYAxisFormatter
 import com.example.cryptoapp.feature.screen.main.cryptocurrency.cryptocurrencyDetails.helpers.UnitOfTimeType
 import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.components.IMarker
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.LegendEntry
+import com.github.mikephil.charting.components.MarkerView
 import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
+import com.github.mikephil.charting.utils.MPPointF
 import com.google.android.material.color.MaterialColors
+
 
 @BindingAdapter("percentage")
 fun TextView.setPercentage(percentageStr: String) {
@@ -55,8 +64,21 @@ fun LineChart.initializeCryptoCurrencyDetailChart(
     dataSet: LineDataSet,
     unitOfTimeType: UnitOfTimeType
 ) = this.let {
+    marker = object : MarkerView(context, R.layout.chart_marker_view) {
+
+        private var txtViewData: TextView = findViewById(R.id.marker_view)
+
+        override fun refreshContent(entry: Entry?, highlight: Highlight?) {
+            val value = entry?.y?.toDouble() ?: 0.0
+            txtViewData.text = value.toString().convertToPrice()
+            super.refreshContent(entry, highlight)
+        }
+
+        override fun getOffset(): MPPointF = MPPointF(-(width / 2f), -height.toFloat())
+    }
+
     extraBottomOffset = 5f
-    setTouchEnabled(false)
+    setTouchEnabled(true)
     isDragEnabled = true
     setScaleEnabled(true)
     setPinchZoom(false)
@@ -89,16 +111,14 @@ fun LineChart.initializeCryptoCurrencyDetailChart(
     axisRight.isEnabled = false
     setBackgroundColor(MaterialColors.getColor(context, R.attr.colorSurface, Color.WHITE))
     dataSet.let {
-        it.color = MaterialColors.getColor(context, R.attr.colorOnSurface, Color.WHITE)
-        it.highLightColor = MaterialColors.getColor(context, R.attr.colorOnChart, Color.WHITE)
+        it.color = MaterialColors.getColor(context, R.attr.colorOnChart, Color.WHITE)
         it.fillColor = MaterialColors.getColor(context, R.attr.colorOnChart, Color.WHITE)
+        it.setDrawHighlightIndicators(true)
+        it.highlightLineWidth = 1.5f
+        it.enableDashedHighlightLine(10f, 6f, 10f)
+        it.highLightColor = Color.BLACK
     }
     data = LineData(arrayListOf<ILineDataSet>(dataSet))
     notifyDataSetChanged()
     invalidate()
-}
-
-@BindingAdapter("isVisible")
-fun View.isVisible(isVisible: Boolean) {
-    if (isVisible) this.visibility = View.VISIBLE else this.visibility = View.GONE
 }

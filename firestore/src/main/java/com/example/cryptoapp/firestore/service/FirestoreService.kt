@@ -4,6 +4,8 @@ import kotlinx.coroutines.flow.Flow
 
 interface FirestoreService {
 
+    fun initialize()
+
     fun addCryptoCurrencyToWatchList(id: String)
 
     fun deleteCryptoCurrencyFromWatchList(id: String)
