@@ -5,7 +5,7 @@ buildscript {
         detekt_version = '1.19.0'
         ktlint_version = '10.2.0'
         kotlinter_version = '3.7.0'
-        koin_version = "3.1.4"
+        koin_version = "3.1.5"
         retrofit_version = "2.9.0"
         coil_version = "1.4.0"
     }

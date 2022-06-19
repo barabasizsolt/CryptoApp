@@ -1,13 +1,10 @@
 package com.example.cryptoapp.feature.screen.auth.login
 
-import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cryptoapp.auth.AuthResult
@@ -15,8 +12,6 @@ import com.example.cryptoapp.auth.useCase.GetIntentForGoogleAccountLoginUseCase
 import com.example.cryptoapp.auth.useCase.LoginWithEmailAndPasswordUseCase
 import com.example.cryptoapp.auth.useCase.LoginWithGoogleAccountUseCase
 import com.example.cryptoapp.auth.useCase.ResetPasswordUseCase
-import com.example.cryptoapp.feature.activity.MainActivityViewModel
-import com.example.cryptoapp.feature.shared.utils.pushEvent
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -57,7 +52,7 @@ class LoginViewModel(
         }
     }
 
-    fun getIntentForGoogleLogin(intent: Intent) {
+    fun loginWithGoogle(intent: Intent) {
         screenState = ScreenState.Loading
         viewModelScope.launch {
             loginWithGoogleAccountUseCase(intent = intent).onEach { result ->

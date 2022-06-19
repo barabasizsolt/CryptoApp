@@ -81,7 +81,8 @@ dependencies {
     implementation(project(':firestore'))
 
     //Koin
-    implementation "io.insert-koin:koin-android:3.1.5"
+    implementation "io.insert-koin:koin-android:$koin_version"
+    implementation "io.insert-koin:koin-androidx-compose:$koin_version"
 
     //Coil
     implementation "io.coil-kt:coil:$coil_version"

@@ -154,7 +154,7 @@ class LoginFragment : Fragment() {
     private val loginWithGoogleAccountLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         val data = result.data
         if (result.resultCode == Activity.RESULT_OK && data != null) {
-            viewModel.getIntentForGoogleLogin(intent = data)
+            viewModel.loginWithGoogle(intent = data)
         }
     }
 

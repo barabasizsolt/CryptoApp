@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -16,11 +17,26 @@ android {
     }
 
     buildTypes {
-        release {
+        debug {
             minifyEnabled false
+            shrinkResources false
+            zipAlignEnabled false
+
+            buildConfigField("String", "COINRANKING_URL", "\"https://api.coinranking.com/v2/\"")
+            buildConfigField("String", "COINGEKKO_URL", "\"https://api.coingecko.com/api/v3/\"")
+        }
+        release {
+            minifyEnabled true
+            shrinkResources true
+            zipAlignEnabled true
+
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            buildConfigField("String", "COINRANKING_URL", "\"https://api.coinranking.com/v2/\"")
+            buildConfigField("String", "COINGEKKO_URL", "\"https://api.coingecko.com/api/v3/\"")
         }
     }
+
     buildFeatures {
         viewBinding true
         compose true
@@ -39,6 +55,12 @@ dependencies {
 
     implementation(project(":data"))
     implementation(project(":domain"))
+    implementation(project(':auth'))
+    implementation(project(':firestore'))
+
+    //Koin
+    implementation "io.insert-koin:koin-android:$koin_version"
+    implementation "io.insert-koin:koin-androidx-compose:$koin_version"
 
     //Coil
     implementation "io.coil-kt:coil:$coil_version"

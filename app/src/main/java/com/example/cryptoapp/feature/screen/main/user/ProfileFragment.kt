@@ -175,7 +175,7 @@ class ProfileFragment : Fragment() {
                         }
                         item {
                             Header(
-                                text = "General account details",
+                                text = stringResource(id = R.string.profile_info),
                                 modifier = Modifier
                                     .offset(y = 10.dp)
                                     .fillMaxWidth()
@@ -208,7 +208,7 @@ class ProfileFragment : Fragment() {
                         }
                         item {
                             Header(
-                                text = "Other account details",
+                                text = stringResource(id = R.string.account_info),
                                 modifier = Modifier
                                     .offset(y = 10.dp)
                                     .fillMaxWidth()

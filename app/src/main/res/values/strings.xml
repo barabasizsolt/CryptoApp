@@ -93,4 +93,6 @@
     <string name="total_change">Accumulated volume change:</string>
     <string name="total_volume">Accumulated volume:</string>
     <string name="total_market_cap">Accumulated market cap:</string>
+    <string name="profile_info">Profile information</string>
+    <string name="account_info">Account information</string>
 </resources>
