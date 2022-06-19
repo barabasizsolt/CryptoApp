@@ -76,6 +76,11 @@ class MainFragment : BaseFragment<FragmentMainBinding>(R.layout.fragment_main) {
                 getString(R.string.profile_back_stack_tag).containsTopBackStackName() -> childFragmentManager.popBackStackImmediate()
                 else -> false
             }
+            binding.bottomNavigationView.selectedItemId == R.id.watch_list -> when {
+                getString(R.string.crypto_details_back_stack_tag).containsTopBackStackName() -> childFragmentManager.popBackStackImmediate()
+                getString(R.string.profile_back_stack_tag).containsTopBackStackName() -> childFragmentManager.popBackStackImmediate()
+                else -> consume { binding.bottomNavigationView.selectedItemId = R.id.market }
+            }
             getString(R.string.profile_back_stack_tag).containsTopBackStackName() -> childFragmentManager.popBackStackImmediate()
             else -> consume { binding.bottomNavigationView.selectedItemId = R.id.market }
         }

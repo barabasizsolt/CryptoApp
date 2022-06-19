@@ -88,4 +88,9 @@
     <string name="enter_phone_number">Enter your phone number</string>
     <string name="anonymous_account">Anonymous account</string>
     <string name="update_profile">Update Profile</string>
+    <string name="watch_list">Watch List</string>
+    <string name="total_coin">Total coins:</string>
+    <string name="total_change">Accumulated volume change:</string>
+    <string name="total_volume">Accumulated volume:</string>
+    <string name="total_market_cap">Accumulated market cap:</string>
 </resources>

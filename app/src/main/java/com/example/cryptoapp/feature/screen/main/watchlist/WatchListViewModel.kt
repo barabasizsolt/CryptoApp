@@ -9,7 +9,6 @@ import com.example.cryptoapp.data.model.RefreshType
 import com.example.cryptoapp.data.model.Result
 import com.example.cryptoapp.data.model.cryptocurrency.CryptoCurrency
 import com.example.cryptoapp.domain.useCase.cryptocurrency.GetCryptoCurrenciesForWatchListUseCase
-import com.example.cryptoapp.firestore.useCase.AddCryptoCurrencyToWatchListUseCase
 import com.example.cryptoapp.firestore.useCase.DeleteCryptoCurrencyFromWatchList
 import com.example.cryptoapp.firestore.useCase.GetCryptoCurrenciesInWatchListUseCase
 import kotlinx.coroutines.flow.onEach
@@ -19,11 +18,14 @@ import kotlinx.coroutines.launch
 class WatchListViewModel(
     private val getCryptoCurrenciesForWatchList: GetCryptoCurrenciesForWatchListUseCase,
     private val getCryptoCurrenciesInWatchList: GetCryptoCurrenciesInWatchListUseCase,
-    private val addCryptoCurrencyToWatchList: AddCryptoCurrencyToWatchListUseCase,
     private val deleteCryptoCurrencyFromWatchList: DeleteCryptoCurrencyFromWatchList
 ) : ViewModel() {
 
-    var cryptoCurrencies by mutableStateOf<List<CryptoCurrency>?>(value = null)
+    var cryptoCurrencies by mutableStateOf<List<CryptoCurrency>>(value = emptyList())
+        private set
+    var action by mutableStateOf<Action?>(value = null)
+        private set
+    var watchListSummary by mutableStateOf<WatchListSummaryUiModel?>(value = null)
         private set
     var screenState by mutableStateOf<ScreenState>(value = ScreenState.Loading)
 
@@ -43,8 +45,8 @@ class WatchListViewModel(
                         )
                     ) {
                         is Result.Success -> {
-                            println("UUids: ${result.data.map { it.name }}")
                             cryptoCurrencies = result.data
+                            watchListSummary = result.data.toWatchListSummaryUiModel()
                             screenState = ScreenState.Normal
                         }
                         is Result.Failure -> {
@@ -63,6 +65,14 @@ class WatchListViewModel(
         deleteCryptoCurrencyFromWatchList(id = uid)
     }
 
+    fun onItemClicked(id: String) {
+        action = Action.OnItemClicked(id = id)
+    }
+
+    fun reset() {
+        action = null
+    }
+
     sealed class ScreenState {
 
         object Loading: ScreenState()
@@ -72,5 +82,10 @@ class WatchListViewModel(
         data class ShowSnackBarError(val message: String) : ScreenState()
 
         object ShowFirstLoadingError : ScreenState()
+    }
+
+    sealed class Action {
+
+        data class OnItemClicked(val id: String) : Action()
     }
 }

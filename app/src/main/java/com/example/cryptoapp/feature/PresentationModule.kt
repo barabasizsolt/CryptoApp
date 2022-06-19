@@ -60,8 +60,7 @@ val presentationModule = module {
         WatchListViewModel(
             getCryptoCurrenciesForWatchList = get(),
             getCryptoCurrenciesInWatchList = get(),
-            deleteCryptoCurrencyFromWatchList = get(),
-            addCryptoCurrencyToWatchList = get()
+            deleteCryptoCurrencyFromWatchList = get()
         )
     }
 }
