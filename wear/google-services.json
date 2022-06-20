@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:147156823490:android:9d7aa89f8993fa90abfa5b",
         "android_client_info": {
-          "package_name": "com.example.cryptoapp.wear"
+          "package_name": "com.example.cryptoapp"
         }
       },
       "oauth_client": [
@@ -17,7 +17,7 @@
           "client_id": "147156823490-llt76vdbp0840et026cg6qbc5k2odkjk.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.cryptoapp.wear",
+            "package_name": "com.example.cryptoapp",
             "certificate_hash": "a1bab9bbbc1bb6a568aee7c07ff7c04a76c1608d"
           }
         },
@@ -25,8 +25,45 @@
           "client_id": "147156823490-vtmeatn2gsk8s85t60qcmksjleupjgr4.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.cryptoapp.wear",
+            "package_name": "com.example.cryptoapp",
             "certificate_hash": "8d728492c7719ab4c920ee918171ba15a77f8764"
+          }
+        },
+        {
+          "client_id": "147156823490-9670iuhk2r64dnoh9nn52o7jf2ifeakf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAa4Z0buQ-83184Pp2XRHIzZMCdHdJrelo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "147156823490-9670iuhk2r64dnoh9nn52o7jf2ifeakf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:147156823490:android:cea4fa2d0e319f87abfa5b",
+        "android_client_info": {
+          "package_name": "com.example.cryptoapp.wear"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "147156823490-92vmanltfb3ft1i5srial7ke6n62ojmh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.cryptoapp.wear",
+            "certificate_hash": "a1bab9bbbc1bb6a568aee7c07ff7c04a76c1608d"
           }
         },
         {

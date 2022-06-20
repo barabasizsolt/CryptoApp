@@ -2,6 +2,8 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'com.google.gms.google-services'
+    id 'kotlin-android'
+    id 'kotlin-android-extensions'
 }
 
 android {
@@ -72,13 +74,13 @@ dependencies {
     implementation "androidx.compose.ui:ui-tooling-preview:1.1.1"
 
     // Compose for Wear OS
-    implementation "androidx.wear.compose:compose-material:1.0.0-beta02"
+    def wear_version = "1.0.0-rc01"
+    implementation "androidx.wear.compose:compose-material:$wear_version"
+    implementation "androidx.wear.compose:compose-foundation:$wear_version"
+    implementation "androidx.wear.compose:compose-navigation:$wear_version"
 
-    // Foundation
-    implementation "androidx.wear.compose:compose-foundation:1.0.0-beta02"
-
-    implementation "androidx.appcompat:appcompat:1.4.1"
-    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation "androidx.appcompat:appcompat:1.4.2"
+    implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'com.google.android.gms:play-services-wearable:17.1.0'
     implementation 'androidx.percentlayout:percentlayout:1.0.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'

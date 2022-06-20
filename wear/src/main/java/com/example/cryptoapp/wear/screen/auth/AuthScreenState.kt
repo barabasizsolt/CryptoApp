@@ -15,6 +15,7 @@ import com.example.cryptoapp.auth.useCase.GetIntentForGoogleAccountLoginUseCase
 import com.example.cryptoapp.auth.useCase.LoginWithEmailAndPasswordUseCase
 import com.example.cryptoapp.auth.useCase.LoginWithGoogleAccountUseCase
 import com.example.cryptoapp.auth.useCase.ResetPasswordUseCase
+import com.example.cryptoapp.wear.common.Event
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
@@ -25,33 +26,29 @@ import org.koin.androidx.compose.get
 fun rememberAuthScreenState(
     stateScope: CoroutineScope = rememberCoroutineScope(),
     getIntentForGoogleAccountLogin: GetIntentForGoogleAccountLoginUseCase = get(),
-    loginWithGoogleAccountUseCase: LoginWithGoogleAccountUseCase = get(),
-    resetPasswordUseCase: ResetPasswordUseCase = get()
+    loginWithGoogleAccountUseCase: LoginWithGoogleAccountUseCase = get()
 ): AuthScreenState = rememberSaveable(
     saver = AuthScreenState.getSaver(
         stateScope = stateScope,
         getIntentForGoogleAccountLogin = getIntentForGoogleAccountLogin,
-        loginWithGoogleAccountUseCase = loginWithGoogleAccountUseCase,
-        resetPasswordUseCase = resetPasswordUseCase
+        loginWithGoogleAccountUseCase = loginWithGoogleAccountUseCase
     )
 ) {
     AuthScreenState(
         stateScope = stateScope,
         getIntentForGoogleAccountLogin = getIntentForGoogleAccountLogin,
-        loginWithGoogleAccountUseCase = loginWithGoogleAccountUseCase,
-        resetPasswordUseCase = resetPasswordUseCase
+        loginWithGoogleAccountUseCase = loginWithGoogleAccountUseCase
     )
 }
 
 class AuthScreenState(
     private val stateScope: CoroutineScope,
     private val getIntentForGoogleAccountLogin: GetIntentForGoogleAccountLoginUseCase,
-    private val loginWithGoogleAccountUseCase: LoginWithGoogleAccountUseCase,
-    private val resetPasswordUseCase: ResetPasswordUseCase
+    private val loginWithGoogleAccountUseCase: LoginWithGoogleAccountUseCase
 ) {
     var screenState by mutableStateOf<ScreenState>(value = ScreenState.Normal)
         private set
-    var action by mutableStateOf<Action?>(value = null)
+    var action by mutableStateOf<Event<Action>?>(value = null)
         private set
 
     fun loginWithGoogle(intent: Intent) {
@@ -60,10 +57,11 @@ class AuthScreenState(
             loginWithGoogleAccountUseCase(intent = intent).onEach { result ->
                 when (result) {
                     is AuthResult.Success -> {
-                        action = Action.NavigateToHome
+                        action = Event(Action.NavigateToHome)
                         screenState = ScreenState.Normal
                     }
                     is AuthResult.Failure -> {
+                        println("Error: ${result.error}")
                         screenState = ScreenState.Error(message = "Google Login failed: ${result.error}")
                     }
                 }
@@ -74,19 +72,13 @@ class AuthScreenState(
     fun getIntentForGoogleLogin(): Intent = getIntentForGoogleAccountLogin()
 
     sealed class ScreenState {
-
         object Normal : ScreenState()
-
         object Loading : ScreenState()
-
         data class Error(val message: String) : ScreenState()
     }
 
     sealed class Action {
-
         object NavigateToHome : Action()
-
-        object NavigateToRegister : Action()
     }
 
     companion object {
@@ -94,16 +86,14 @@ class AuthScreenState(
         fun getSaver(
             stateScope: CoroutineScope,
             getIntentForGoogleAccountLogin: GetIntentForGoogleAccountLoginUseCase,
-            loginWithGoogleAccountUseCase: LoginWithGoogleAccountUseCase,
-            resetPasswordUseCase: ResetPasswordUseCase
+            loginWithGoogleAccountUseCase: LoginWithGoogleAccountUseCase
         ): Saver<AuthScreenState, *> = mapSaver(
             save = { mapOf() },
             restore = {
                 AuthScreenState(
                     stateScope = stateScope,
                     getIntentForGoogleAccountLogin = getIntentForGoogleAccountLogin,
-                    loginWithGoogleAccountUseCase = loginWithGoogleAccountUseCase,
-                    resetPasswordUseCase = resetPasswordUseCase
+                    loginWithGoogleAccountUseCase = loginWithGoogleAccountUseCase
                 )
             }
         )

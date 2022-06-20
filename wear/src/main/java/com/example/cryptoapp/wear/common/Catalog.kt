@@ -1,4 +1,4 @@
-package com.example.cryptoapp.wear.screen.catalog
+package com.example.cryptoapp.wear.common
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
