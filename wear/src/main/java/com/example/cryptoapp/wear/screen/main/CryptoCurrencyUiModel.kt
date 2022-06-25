@@ -1,4 +1,4 @@
-package com.example.cryptoapp.wear.screen.cryptocurrency
+package com.example.cryptoapp.wear.screen.main
 
 import android.os.Parcelable
 import com.example.cryptoapp.data.model.cryptocurrency.CryptoCurrency

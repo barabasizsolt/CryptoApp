@@ -9,7 +9,7 @@ import com.example.cryptoapp.data.model.RefreshType
 import com.example.cryptoapp.data.model.Result
 import com.example.cryptoapp.data.model.cryptocurrency.CryptoCurrency
 import com.example.cryptoapp.domain.useCase.cryptocurrency.GetCryptoCurrenciesForWatchListUseCase
-import com.example.cryptoapp.firestore.useCase.DeleteCryptoCurrencyFromWatchList
+import com.example.cryptoapp.firestore.useCase.DeleteCryptoCurrencyFromWatchListUseCase
 import com.example.cryptoapp.firestore.useCase.GetCryptoCurrenciesInWatchListUseCase
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 class WatchListViewModel(
     private val getCryptoCurrenciesForWatchList: GetCryptoCurrenciesForWatchListUseCase,
     private val getCryptoCurrenciesInWatchList: GetCryptoCurrenciesInWatchListUseCase,
-    private val deleteCryptoCurrencyFromWatchList: DeleteCryptoCurrencyFromWatchList
+    private val deleteCryptoCurrencyFromWatchList: DeleteCryptoCurrencyFromWatchListUseCase
 ) : ViewModel() {
 
     var cryptoCurrencies by mutableStateOf<List<CryptoCurrency>>(value = emptyList())

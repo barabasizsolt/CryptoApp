@@ -23,7 +23,7 @@ import com.example.cryptoapp.feature.shared.utils.pushEvent
 import com.example.cryptoapp.feature.shared.utils.toChartDataSet
 import com.example.cryptoapp.auth.useCase.GetCurrentUserUseCase
 import com.example.cryptoapp.firestore.useCase.AddCryptoCurrencyToWatchListUseCase
-import com.example.cryptoapp.firestore.useCase.DeleteCryptoCurrencyFromWatchList
+import com.example.cryptoapp.firestore.useCase.DeleteCryptoCurrencyFromWatchListUseCase
 import com.example.cryptoapp.firestore.useCase.IsCryptoCurrencyAddedToWatchList
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -40,7 +40,7 @@ class CryptoCurrencyDetailsViewModel(
     private val detailsUseCase: GetCryptoCurrencyDetailsUseCase,
     private val historyUseCase: GetCryptoCurrencyHistoryUseCase,
     private val addCryptoCurrencyToWatchListUseCase: AddCryptoCurrencyToWatchListUseCase,
-    private val deleteCryptoCurrencyFromWatchList: DeleteCryptoCurrencyFromWatchList,
+    private val deleteCryptoCurrencyFromWatchList: DeleteCryptoCurrencyFromWatchListUseCase,
     private val isCryptoCurrencyAddedToWatchList: IsCryptoCurrencyAddedToWatchList,
     private val getCurrentUserUseCase: GetCurrentUserUseCase
 ) : ViewModel() {

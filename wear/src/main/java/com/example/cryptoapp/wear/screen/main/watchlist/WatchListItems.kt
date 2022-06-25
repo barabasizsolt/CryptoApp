@@ -1,15 +1,13 @@
-package com.example.cryptoapp.wear.screen.cryptocurrency.watchlist
+package com.example.cryptoapp.wear.screen.main.watchlist
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -18,14 +16,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.dimensionResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.LayoutDirection
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.wear.compose.material.AppCard
 import androidx.wear.compose.material.Chip
 import androidx.wear.compose.material.ChipDefaults
 import androidx.wear.compose.material.MaterialTheme
@@ -33,9 +26,17 @@ import androidx.wear.compose.material.Text
 import androidx.wear.compose.material.TitleCard
 import coil.compose.rememberImagePainter
 import coil.decode.SvgDecoder
-import com.example.cryptoapp.wear.R
 import com.example.cryptoapp.wear.common.getFormattedHour
 import com.example.cryptoapp.wear.common.isSvg
+import java.time.format.TextStyle
+
+@Composable
+fun WatchListPlaceHolder(
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
+
+}
 
 @Composable
 fun WatchListSummary(
@@ -57,6 +58,7 @@ fun WatchListSummary(
                     text = "ACC/USD - AVG - ${System.currentTimeMillis().getFormattedHour()}",
                     style = MaterialTheme.typography.caption3
                 )
+
             }
 
         },
@@ -90,20 +92,32 @@ fun WatchListSummary(
     }
 }
 
+enum class WatchListItemSize {
+    NORMAL, LARGE
+}
+
 @Composable
-private fun WatchListItem(
+fun WatchListItem(
     modifier: Modifier = Modifier,
     title: String,
     value: String,
-    valueColor: Color = MaterialTheme.colors.onSurface
+    valueColor: Color = MaterialTheme.colors.onSurface,
+    watchListItemSize: WatchListItemSize = WatchListItemSize.LARGE,
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(text = title, style = MaterialTheme.typography.caption2)
-        Text(text = value, style = MaterialTheme.typography.caption2, fontWeight = FontWeight.Normal, color = valueColor)
+        Text(
+            text = title,
+            style = if (watchListItemSize == WatchListItemSize.LARGE) MaterialTheme.typography.caption2 else MaterialTheme.typography.caption3
+        )
+        Text(
+            text = value,
+            style = if (watchListItemSize == WatchListItemSize.LARGE) MaterialTheme.typography.caption2 else MaterialTheme.typography.caption3,
+            color = valueColor
+        )
     }
 }
 
@@ -114,7 +128,8 @@ fun CryptoCurrencyItem(
     name: String,
     symbol: String,
     price: String,
-    change: String
+    change: String,
+    onClick: () -> Unit
 ) {
     Chip(
         label = {
@@ -134,7 +149,7 @@ fun CryptoCurrencyItem(
                     text = if (change.toDouble() < 0.00) "$change%" else "+$change%",
                     color = if (change.toDouble() < 0.00) Color.Red else Color.Green,
                     style = MaterialTheme.typography.caption3,
-                    modifier = Modifier.offset(y = (-10).dp)
+                    modifier = Modifier.offset(y = (-12).dp)
                 )
             }
         },
@@ -151,7 +166,7 @@ fun CryptoCurrencyItem(
                 contentScale = ContentScale.Fit
             )
         },
-        onClick = {  },
+        onClick = onClick,
         colors = ChipDefaults.chipColors(
             backgroundColor = MaterialTheme.colors.surface,
             contentColor = MaterialTheme.colors.onSurface

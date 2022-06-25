@@ -1,4 +1,4 @@
-package com.example.cryptoapp.wear.screen.cryptocurrency.watchlist
+package com.example.cryptoapp.wear.screen.main.watchlist
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -8,14 +8,15 @@ import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.mapSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import com.example.cryptoapp.auth.AuthResult
+import com.example.cryptoapp.auth.useCase.LogOutUseCase
 import com.example.cryptoapp.data.model.RefreshType
 import com.example.cryptoapp.data.model.Result
 import com.example.cryptoapp.domain.useCase.cryptocurrency.GetCryptoCurrenciesForWatchListUseCase
-import com.example.cryptoapp.firestore.useCase.DeleteCryptoCurrencyFromWatchList
 import com.example.cryptoapp.firestore.useCase.GetCryptoCurrenciesInWatchListUseCase
 import com.example.cryptoapp.wear.common.Event
-import com.example.cryptoapp.wear.screen.cryptocurrency.CryptoCurrencyUiModel
-import com.example.cryptoapp.wear.screen.cryptocurrency.toUiModel
+import com.example.cryptoapp.wear.screen.main.CryptoCurrencyUiModel
+import com.example.cryptoapp.wear.screen.main.toUiModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
@@ -26,18 +27,21 @@ import org.koin.androidx.compose.get
 fun rememberWatchListScreenState(
     stateScope: CoroutineScope = rememberCoroutineScope(),
     getCryptoCurrenciesForWatchList: GetCryptoCurrenciesForWatchListUseCase = get(),
-    getCryptoCurrenciesInWatchList: GetCryptoCurrenciesInWatchListUseCase = get()
+    getCryptoCurrenciesInWatchList: GetCryptoCurrenciesInWatchListUseCase = get(),
+    logOut: LogOutUseCase = get()
 ) : WatchListScreenState = rememberSaveable(
     saver = WatchListScreenState.getSaver(
         stateScope = stateScope,
         getCryptoCurrenciesInWatchList = getCryptoCurrenciesInWatchList,
         getCryptoCurrenciesForWatchList = getCryptoCurrenciesForWatchList,
+        logOut = logOut
     )
 ) {
     WatchListScreenState(
         stateScope = stateScope,
         getCryptoCurrenciesInWatchList = getCryptoCurrenciesInWatchList,
         getCryptoCurrenciesForWatchList = getCryptoCurrenciesForWatchList,
+        logOut = logOut
     )
 }
 
@@ -45,6 +49,7 @@ class WatchListScreenState(
     private val stateScope: CoroutineScope,
     private val getCryptoCurrenciesForWatchList: GetCryptoCurrenciesForWatchListUseCase,
     private val getCryptoCurrenciesInWatchList: GetCryptoCurrenciesInWatchListUseCase,
+    private val logOut: LogOutUseCase
 ) {
 
     var cryptoCurrencies by mutableStateOf<List<CryptoCurrencyUiModel>>(value = emptyList())
@@ -91,8 +96,16 @@ class WatchListScreenState(
         action = Event(Action.OnItemClicked(id = id))
     }
 
-    fun onProfileClicked() {
-        action = Event(Action.OnProfileClicked)
+    fun onSignOutClicked() {
+        screenState = ScreenState.Loading
+        stateScope.launch {
+            logOut().onEach { result ->
+                when (result) {
+                    is AuthResult.Failure ->  screenState = ScreenState.Error(message = result.error)
+                    is AuthResult.Success -> action = Event(Action.OnSignOutClicked)
+                }
+            }.stateIn(scope = this)
+        }
     }
 
     sealed class ScreenState {
@@ -103,7 +116,7 @@ class WatchListScreenState(
 
     sealed class Action {
         data class OnItemClicked(val id: String) : Action()
-        object OnProfileClicked : Action()
+        object OnSignOutClicked : Action()
     }
 
     companion object {
@@ -114,7 +127,8 @@ class WatchListScreenState(
         fun getSaver(
             stateScope: CoroutineScope,
             getCryptoCurrenciesForWatchList: GetCryptoCurrenciesForWatchListUseCase,
-            getCryptoCurrenciesInWatchList: GetCryptoCurrenciesInWatchListUseCase
+            getCryptoCurrenciesInWatchList: GetCryptoCurrenciesInWatchListUseCase,
+            logOut: LogOutUseCase
         ): Saver<WatchListScreenState, *> = mapSaver(
             save = {
                 mapOf(CURRENCIES_KEY to it.cryptoCurrencies)
@@ -123,7 +137,8 @@ class WatchListScreenState(
                 WatchListScreenState(
                     stateScope = stateScope,
                     getCryptoCurrenciesInWatchList = getCryptoCurrenciesInWatchList,
-                    getCryptoCurrenciesForWatchList = getCryptoCurrenciesForWatchList
+                    getCryptoCurrenciesForWatchList = getCryptoCurrenciesForWatchList,
+                    logOut = logOut
                 ).apply {
                     cryptoCurrencies = it[CURRENCIES_KEY] as List<CryptoCurrencyUiModel>
                     watchListSummary = it[WATCHLIST_KEY] as WatchListSummaryUiModel?

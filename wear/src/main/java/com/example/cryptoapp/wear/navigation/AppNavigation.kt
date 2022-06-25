@@ -12,12 +12,12 @@ import com.example.cryptoapp.auth.useCase.GetCurrentUserUseCase
 import com.example.cryptoapp.wear.screen.auth.AuthScreen
 import com.example.cryptoapp.wear.screen.auth.AuthScreenState
 import com.example.cryptoapp.wear.screen.auth.rememberAuthScreenState
-import com.example.cryptoapp.wear.screen.cryptocurrency.watchlist.WatchListScreen
-import com.example.cryptoapp.wear.screen.cryptocurrency.watchlist.WatchListScreenState
-import com.example.cryptoapp.wear.screen.cryptocurrency.watchlist.rememberWatchListScreenState
-import com.example.cryptoapp.wear.screen.profile.ProfileScreen
-import com.example.cryptoapp.wear.screen.profile.ProfileScreenState
-import com.example.cryptoapp.wear.screen.profile.rememberProfileScreenState
+import com.example.cryptoapp.wear.screen.main.watchlist.WatchListScreen
+import com.example.cryptoapp.wear.screen.main.watchlist.WatchListScreenState
+import com.example.cryptoapp.wear.screen.main.watchlist.rememberWatchListScreenState
+import com.example.cryptoapp.wear.screen.main.watchlistDetail.WatchListDetailScreen
+import com.example.cryptoapp.wear.screen.main.watchlistDetail.WatchListDetailScreenState
+import com.example.cryptoapp.wear.screen.main.watchlistDetail.rememberWatchListDetailScreenState
 import org.koin.androidx.compose.inject
 
 @Composable
@@ -33,7 +33,6 @@ fun AppNavigation() {
 
         composable(route = Route.SPLASH) {
             val getCurrentUser: GetCurrentUserUseCase by inject()
-            println("User: ${getCurrentUser()}")
             if (getCurrentUser() == null) navController.navigateToAuth() else navController.navigateToWatchList()
         }
 
@@ -48,20 +47,20 @@ fun AppNavigation() {
 
         composable(route = Route.WATCHLIST) {
             WatchListScreen(watchListScreenState = rememberWatchListScreenState().apply {
-                when (action?.consume()) {
-                    is WatchListScreenState.Action.OnItemClicked -> {
-                        //TODO: somehow open the fcking app
-                    }
-                    is WatchListScreenState.Action.OnProfileClicked -> navController.navigateToProfile()
+                when (val action = action?.consume()) {
+                    is WatchListScreenState.Action.OnItemClicked -> navController.navigateToWatchListDetail(id = action.id)
+                    is WatchListScreenState.Action.OnSignOutClicked -> navController.navigateToAuth()
                     else -> Unit
                 }
             })
         }
 
-        composable(route = Route.PROFILE) {
-            ProfileScreen(screenState = rememberProfileScreenState().apply {
+        composable(route = Route.WATCHLIST_DETAIL) { navBackStackEntry ->
+            val id = navBackStackEntry.arguments?.getString("id") as String
+
+            WatchListDetailScreen(screenState = rememberWatchListDetailScreenState(id = id).apply {
                 when (action?.consume()) {
-                    is ProfileScreenState.Action.SignOut -> navController.navigateToAuth()
+                    is WatchListDetailScreenState.Action.NavigateUp -> navController.navigateUp()
                     else -> Unit
                 }
             })
@@ -77,6 +76,6 @@ fun NavHostController.navigateToWatchList() {
     navigate(route = Route.WATCHLIST)
 }
 
-fun NavHostController.navigateToProfile() {
-    navigate(route = Route.PROFILE)
+fun NavHostController.navigateToWatchListDetail(id: String) {
+    navigate(route = "Watchlist/${id}")
 }
