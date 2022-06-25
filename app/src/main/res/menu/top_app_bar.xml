@@ -6,10 +6,4 @@
         android:icon="@drawable/ic_profile"
         app:showAsAction="ifRoom"
         android:title="" />
-
-    <item
-        android:id="@+id/search"
-        android:icon="@drawable/ic_search"
-        app:showAsAction="ifRoom"
-        android:title="" />
 </menu>

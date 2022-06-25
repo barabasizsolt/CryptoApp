@@ -26,21 +26,18 @@ import org.koin.androidx.compose.get
 fun rememberWatchListScreenState(
     stateScope: CoroutineScope = rememberCoroutineScope(),
     getCryptoCurrenciesForWatchList: GetCryptoCurrenciesForWatchListUseCase = get(),
-    getCryptoCurrenciesInWatchList: GetCryptoCurrenciesInWatchListUseCase = get(),
-    deleteCryptoCurrencyFromWatchList: DeleteCryptoCurrencyFromWatchList = get()
+    getCryptoCurrenciesInWatchList: GetCryptoCurrenciesInWatchListUseCase = get()
 ) : WatchListScreenState = rememberSaveable(
     saver = WatchListScreenState.getSaver(
         stateScope = stateScope,
         getCryptoCurrenciesInWatchList = getCryptoCurrenciesInWatchList,
         getCryptoCurrenciesForWatchList = getCryptoCurrenciesForWatchList,
-        deleteCryptoCurrencyFromWatchList = deleteCryptoCurrencyFromWatchList
     )
 ) {
     WatchListScreenState(
         stateScope = stateScope,
         getCryptoCurrenciesInWatchList = getCryptoCurrenciesInWatchList,
         getCryptoCurrenciesForWatchList = getCryptoCurrenciesForWatchList,
-        deleteCryptoCurrencyFromWatchList = deleteCryptoCurrencyFromWatchList
     )
 }
 
@@ -48,7 +45,6 @@ class WatchListScreenState(
     private val stateScope: CoroutineScope,
     private val getCryptoCurrenciesForWatchList: GetCryptoCurrenciesForWatchListUseCase,
     private val getCryptoCurrenciesInWatchList: GetCryptoCurrenciesInWatchListUseCase,
-    private val deleteCryptoCurrencyFromWatchList: DeleteCryptoCurrencyFromWatchList
 ) {
 
     var cryptoCurrencies by mutableStateOf<List<CryptoCurrencyUiModel>>(value = emptyList())
@@ -91,12 +87,12 @@ class WatchListScreenState(
         }
     }
 
-    fun deleteCryptoCurrency(uid: String) {
-        deleteCryptoCurrencyFromWatchList(id = uid)
-    }
-
     fun onItemClicked(id: String) {
         action = Event(Action.OnItemClicked(id = id))
+    }
+
+    fun onProfileClicked() {
+        action = Event(Action.OnProfileClicked)
     }
 
     sealed class ScreenState {
@@ -107,6 +103,7 @@ class WatchListScreenState(
 
     sealed class Action {
         data class OnItemClicked(val id: String) : Action()
+        object OnProfileClicked : Action()
     }
 
     companion object {
@@ -117,8 +114,7 @@ class WatchListScreenState(
         fun getSaver(
             stateScope: CoroutineScope,
             getCryptoCurrenciesForWatchList: GetCryptoCurrenciesForWatchListUseCase,
-            getCryptoCurrenciesInWatchList: GetCryptoCurrenciesInWatchListUseCase,
-            deleteCryptoCurrencyFromWatchList: DeleteCryptoCurrencyFromWatchList
+            getCryptoCurrenciesInWatchList: GetCryptoCurrenciesInWatchListUseCase
         ): Saver<WatchListScreenState, *> = mapSaver(
             save = {
                 mapOf(CURRENCIES_KEY to it.cryptoCurrencies)
@@ -127,11 +123,10 @@ class WatchListScreenState(
                 WatchListScreenState(
                     stateScope = stateScope,
                     getCryptoCurrenciesInWatchList = getCryptoCurrenciesInWatchList,
-                    getCryptoCurrenciesForWatchList = getCryptoCurrenciesForWatchList,
-                    deleteCryptoCurrencyFromWatchList = deleteCryptoCurrencyFromWatchList
+                    getCryptoCurrenciesForWatchList = getCryptoCurrenciesForWatchList
                 ).apply {
                     cryptoCurrencies = it[CURRENCIES_KEY] as List<CryptoCurrencyUiModel>
-                    watchListSummary = it[WATCHLIST_KEY] as WatchListSummaryUiModel
+                    watchListSummary = it[WATCHLIST_KEY] as WatchListSummaryUiModel?
                 }
             }
         )

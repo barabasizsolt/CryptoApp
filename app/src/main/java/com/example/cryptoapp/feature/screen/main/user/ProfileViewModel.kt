@@ -39,7 +39,6 @@ class ProfileViewModel(
                 null -> screenState = ScreenState.ShowSnackBar(message = "Unable to get the user's data.")
                 else -> {
                     user = result
-                    println("URL: $user")
                     screenState = ScreenState.Normal
                 }
             }
@@ -81,7 +80,7 @@ class ProfileViewModel(
             logOutUseCase().onEach { result ->
                 when (result) {
                     is AuthResult.Success -> action = Action.NavigateToSignIn
-                    is AuthResult.Failure -> screenState = ScreenState.ShowSnackBar(message = "Unable to get the user's data.")
+                    is AuthResult.Failure -> screenState = ScreenState.ShowSnackBar(message = "Unable to log out.")
                 }
             }.stateIn(scope = this)
         }

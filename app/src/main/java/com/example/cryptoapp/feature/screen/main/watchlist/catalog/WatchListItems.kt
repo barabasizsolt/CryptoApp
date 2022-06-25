@@ -150,7 +150,7 @@ fun WatchListSummary(
                         fontWeight = FontWeight.Bold
                     )
                     Text(
-                        text = "VOL/BTC/24H - AVG - ${System.currentTimeMillis().getFormattedHour()}",
+                        text = "PRICE/USD/24H - AVG - ${System.currentTimeMillis().getFormattedHour()}",
                         style = MaterialTheme.typography.body2,
                         color = MaterialTheme.colors.onSurface,
                         overflow = TextOverflow.Ellipsis
