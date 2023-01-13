@@ -13,7 +13,7 @@ import com.example.cryptoapp.auth.useCase.LogOutUseCase
 import com.example.cryptoapp.data.model.RefreshType
 import com.example.cryptoapp.data.model.Result
 import com.example.cryptoapp.domain.useCase.cryptocurrency.GetCryptoCurrenciesForWatchListUseCase
-import com.example.cryptoapp.firestore.useCase.GetCryptoCurrenciesInWatchListUseCase
+import com.example.cryptoapp.storage.useCase.GetCryptoCurrenciesInWatchListUseCase
 import com.example.cryptoapp.wear.common.Event
 import com.example.cryptoapp.wear.screen.main.CryptoCurrencyUiModel
 import com.example.cryptoapp.wear.screen.main.toUiModel

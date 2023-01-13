@@ -1,5 +1,5 @@
-package com.example.cryptoapp.firestore.useCase
-import com.example.cryptoapp.firestore.service.FirestoreService
+package com.example.cryptoapp.storage.useCase
+import com.example.cryptoapp.storage.service.FirestoreService
 
 class DeleteCryptoCurrencyFromWatchListUseCase(private val service: FirestoreService) {
 

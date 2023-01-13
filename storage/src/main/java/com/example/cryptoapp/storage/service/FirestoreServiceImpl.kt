@@ -1,11 +1,10 @@
-package com.example.cryptoapp.firestore.service
+package com.example.cryptoapp.storage.service
 
 import com.example.cryptoapp.auth.service.AuthenticationService
-import com.example.cryptoapp.firestore.consumeQuery
+import com.example.cryptoapp.storage.consumeQuery
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 
 class FirestoreServiceImpl(private val authService: AuthenticationService) : FirestoreService {

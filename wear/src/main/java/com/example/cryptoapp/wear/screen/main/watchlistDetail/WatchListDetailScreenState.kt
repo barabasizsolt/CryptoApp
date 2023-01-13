@@ -10,7 +10,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import com.example.cryptoapp.data.model.Result
 import com.example.cryptoapp.domain.useCase.cryptocurrency.GetCryptoCurrencyDetailsUseCase
-import com.example.cryptoapp.firestore.useCase.DeleteCryptoCurrencyFromWatchListUseCase
+import com.example.cryptoapp.storage.useCase.DeleteCryptoCurrencyFromWatchListUseCase
 import com.example.cryptoapp.wear.common.Event
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch

@@ -5,8 +5,8 @@ import com.example.cryptoapp.auth.di.createAuthenticationModules
 import com.example.cryptoapp.auth.service.AuthenticationService
 import com.example.cryptoapp.data.createDataModules
 import com.example.cryptoapp.domain.domainModule
-import com.example.cryptoapp.firestore.di.createFirestoreModule
-import com.example.cryptoapp.firestore.service.FirestoreService
+import com.example.cryptoapp.storage.di.createFirestoreModule
+import com.example.cryptoapp.storage.service.FirestoreService
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin

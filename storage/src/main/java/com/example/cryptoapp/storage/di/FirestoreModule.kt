@@ -1,11 +1,11 @@
-package com.example.cryptoapp.firestore.di
+package com.example.cryptoapp.storage.di
 
-import com.example.cryptoapp.firestore.service.FirestoreService
-import com.example.cryptoapp.firestore.service.FirestoreServiceImpl
-import com.example.cryptoapp.firestore.useCase.AddCryptoCurrencyToWatchListUseCase
-import com.example.cryptoapp.firestore.useCase.DeleteCryptoCurrencyFromWatchListUseCase
-import com.example.cryptoapp.firestore.useCase.GetCryptoCurrenciesInWatchListUseCase
-import com.example.cryptoapp.firestore.useCase.IsCryptoCurrencyAddedToWatchList
+import com.example.cryptoapp.storage.service.FirestoreService
+import com.example.cryptoapp.storage.service.FirestoreServiceImpl
+import com.example.cryptoapp.storage.useCase.AddCryptoCurrencyToWatchListUseCase
+import com.example.cryptoapp.storage.useCase.DeleteCryptoCurrencyFromWatchListUseCase
+import com.example.cryptoapp.storage.useCase.GetCryptoCurrenciesInWatchListUseCase
+import com.example.cryptoapp.storage.useCase.IsCryptoCurrencyAddedToWatchList
 import org.koin.core.module.Module
 import org.koin.dsl.module
 

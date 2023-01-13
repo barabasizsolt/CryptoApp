@@ -1,4 +1,4 @@
-package com.example.cryptoapp.firestore.service
+package com.example.cryptoapp.storage.service
 
 import kotlinx.coroutines.flow.Flow
 

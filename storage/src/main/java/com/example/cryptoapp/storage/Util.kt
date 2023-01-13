@@ -1,4 +1,4 @@
-package com.example.cryptoapp.firestore
+package com.example.cryptoapp.storage
 
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot

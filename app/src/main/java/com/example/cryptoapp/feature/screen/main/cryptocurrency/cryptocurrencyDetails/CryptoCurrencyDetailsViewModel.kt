@@ -22,9 +22,9 @@ import com.example.cryptoapp.feature.shared.utils.ordinalOf
 import com.example.cryptoapp.feature.shared.utils.pushEvent
 import com.example.cryptoapp.feature.shared.utils.toChartDataSet
 import com.example.cryptoapp.auth.useCase.GetCurrentUserUseCase
-import com.example.cryptoapp.firestore.useCase.AddCryptoCurrencyToWatchListUseCase
-import com.example.cryptoapp.firestore.useCase.DeleteCryptoCurrencyFromWatchListUseCase
-import com.example.cryptoapp.firestore.useCase.IsCryptoCurrencyAddedToWatchList
+import com.example.cryptoapp.storage.useCase.AddCryptoCurrencyToWatchListUseCase
+import com.example.cryptoapp.storage.useCase.DeleteCryptoCurrencyFromWatchListUseCase
+import com.example.cryptoapp.storage.useCase.IsCryptoCurrencyAddedToWatchList
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.MutableStateFlow

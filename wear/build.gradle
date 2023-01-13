@@ -58,7 +58,7 @@ dependencies {
     implementation(project(":data"))
     implementation(project(":domain"))
     implementation(project(':auth'))
-    implementation(project(':firestore'))
+    implementation implementation(project(':storage',))
 
     //Koin
     implementation "io.insert-koin:koin-android:$koin_version"
