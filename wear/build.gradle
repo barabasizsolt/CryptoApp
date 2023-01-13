@@ -60,11 +60,11 @@ dependencies {
     implementation(project(':auth'))
     implementation implementation(project(':storage'))
 
-    //Koin
+    // Koin
     implementation "io.insert-koin:koin-android:$koin_version"
     implementation "io.insert-koin:koin-androidx-compose:$koin_version"
 
-    //Coil
+    // Coil
     implementation "io.coil-kt:coil:$coil_version"
     implementation "io.coil-kt:coil-svg:$coil_version"
     implementation "io.coil-kt:coil-compose:$coil_version"

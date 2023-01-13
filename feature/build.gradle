@@ -44,22 +44,22 @@ android {
 
 dependencies {
 
-    //TODO[high]: resolve to not depend on the data layer
+    // TODO[high]: resolve to not depend on the data layer
     implementation(project(":data"))
     implementation(project(":domain"))
     implementation(project(":auth"))
     implementation(project(":storage"))
 
-    //Koin
+    // Koin
     implementation "io.insert-koin:koin-android:$koin_version"
     implementation "io.insert-koin:koin-androidx-compose:$koin_version"
 
-    //Coil
+    // Coil
     implementation "io.coil-kt:coil:$coil_version"
     implementation "io.coil-kt:coil-svg:$coil_version"
     implementation "io.coil-kt:coil-compose:$coil_version"
 
-    //Architectural
+    // Architectural
     def lifecycle_version = "2.4.1"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1"
     implementation "org.jetbrains.kotlin:kotlin-reflect"
@@ -67,26 +67,26 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
 
     /*-------------------UI Layer dependencies-----------------*/
-    //Card view
+    // Card view
     implementation 'androidx.cardview:cardview:1.0.0'
-    //Recyclerview
+    // Recyclerview
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
-    //Swipe Refresh
+    // Swipe Refresh
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
-    //Material design
+    // Material design
     implementation 'com.google.android.material:material:1.6.0-alpha01'
-    //Splash screen
+    // Splash screen
     implementation 'androidx.core:core-splashscreen:1.0.0-beta02'
-    //Constraint Layout
+    // Constraint Layout
     implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
-    //Flexbox Layout
+    // Flexbox Layout
     implementation 'com.google.android.flexbox:flexbox:3.0.0'
-    //DrawerLayout
+    // DrawerLayout
     implementation 'androidx.drawerlayout:drawerlayout:1.1.1'
-    //MPAndroidChart
+    // MPAndroidChart
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
-    //Compose
+    // Compose
     def android_activity_version = "1.4.0"
     def compose_version = "1.1.1"
 
