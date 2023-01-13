@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.barabasizsolt.feature.screen.main.category.CategoryViewModel" />
+            type="com.example.cryptoapp.feature.screen.main.category.CategoryViewModel" />
     </data>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout

@@ -1,0 +1,10 @@
+<resources>
+
+    <!-- Application theme. -->
+    <style name="CryptoApp" parent="CryptoAppBase">
+        <item name="colorSurface">@color/gray</item>
+        <item name="colorOnSurface">@color/white</item>
+        <item name="colorChart">@color/black</item>
+    </style>
+
+</resources>

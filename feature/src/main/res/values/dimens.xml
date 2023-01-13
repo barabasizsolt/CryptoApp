@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Paddings-->
+    <dimen name="small_padding">4dp</dimen>
+    <dimen name="content_padding">8dp</dimen>
+    <dimen name="double_content_padding">16dp</dimen>
+    <dimen name="screen_padding">20dp</dimen>
+
+    <!-- Shapes-->
+    <dimen name="small_shape_radius">4dp</dimen>
+    <dimen name="medium_shape_radius">8dp</dimen>
+    <dimen name="large_shape_radius">16dp</dimen>
+
+    <!-- Recycler View Card-->
+    <dimen name="small_recycler_view_card_logo_size">36dp</dimen>
+    <dimen name="recycler_view_card_logo_size">48dp</dimen>
+    <dimen name="recycler_view_card_height">80dp</dimen>
+    <dimen name="recycler_view_text_width">30dp</dimen>
+
+    <!-- Others-->
+    <dimen name="error_state_margin">32dp</dimen>
+    <dimen name="zero_elevation">0dp</dimen>
+    <dimen name="chart_height">300dp</dimen>
+    <dimen name="dark_mode_card_elevation">24dp</dimen>
+    <dimen name="chart_error_state_margin">40dp</dimen>
+    <dimen name="indicator_padding">80dp</dimen>
+
+</resources>

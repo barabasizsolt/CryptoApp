@@ -4,9 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
-            type="com.barabasizsolt.feature.screen.main.category.CategoryViewModel" />
+            type="com.barabasizsolt.feature.screen.main.news.NewsViewModel" />
+
     </data>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -18,10 +20,9 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@layout/item_category_category" />
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/item_news_news" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 </layout>

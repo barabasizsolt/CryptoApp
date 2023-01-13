@@ -1,58 +1,27 @@
 plugins {
-    id 'com.android.application'
-    id 'kotlin-android'
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
-    id 'com.google.gms.google-services'
-    id 'io.gitlab.arturbosch.detekt'
-    id "org.jlleitschuh.gradle.ktlint"
-    id "org.jmailen.kotlinter"
-} // TODO [medium] do we need [id 'com.google.gms.google-services'] plugin?
+}
 
 android {
-    compileSdk 31
+    namespace 'com.barabasizsolt.feature'
+    compileSdk 32
 
     defaultConfig {
-        applicationId "com.example.cryptoapp"
         minSdk 29
-        targetSdk 31
-        versionCode 1
-        versionName "1.0"
+        targetSdk 32
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    signingConfigs {
-        internal {
-            keyAlias "androiddebugkey"
-            keyPassword "android"
-            storeFile file("internal.keystore")
-            storePassword "android"
-        }
+        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
-        debug {
-            minifyEnabled false
-            shrinkResources false
-            zipAlignEnabled false
-            signingConfig signingConfigs.internal
-
-            buildConfigField("String", "COINRANKING_URL", "\"https://api.coinranking.com/v2/\"")
-            buildConfigField("String", "COINGEKKO_URL", "\"https://api.coingecko.com/api/v3/\"")
-        }
         release {
-            minifyEnabled true
-            shrinkResources true
-            zipAlignEnabled true
-
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.internal
-
-            buildConfigField("String", "COINRANKING_URL", "\"https://api.coinranking.com/v2/\"")
-            buildConfigField("String", "COINGEKKO_URL", "\"https://api.coingecko.com/api/v3/\"")
         }
     }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -71,24 +40,24 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion '1.2.0-beta02'
     }
-
 }
 
 dependencies {
-//    implementation(project(":data"))
-//    implementation(project(":domain"))
-//    implementation(project(':auth'))
-//    implementation implementation(project(':storage'))
-    implementation implementation(project(':feature'))
+
+    //TODO[high]: resolve to not depend on the data layer
+    implementation(project(":data"))
+    implementation(project(":domain"))
+    implementation(project(":auth"))
+    implementation(project(":storage"))
 
     //Koin
     implementation "io.insert-koin:koin-android:$koin_version"
     implementation "io.insert-koin:koin-androidx-compose:$koin_version"
 
-//    //Coil
-//    implementation "io.coil-kt:coil:$coil_version"
-//    implementation "io.coil-kt:coil-svg:$coil_version"
-//    implementation "io.coil-kt:coil-compose:1.4.0"
+    //Coil
+    implementation "io.coil-kt:coil:$coil_version"
+    implementation "io.coil-kt:coil-svg:$coil_version"
+    implementation "io.coil-kt:coil-compose:1.4.0"
 
     //Architectural
     def lifecycle_version = "2.4.1"

@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="uiModel"
+            type="com.barabasizsolt.feature.screen.main.category.CategoryListItem.Category" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/recycler_view_card_height"
+        android:layout_marginStart="@dimen/content_padding"
+        android:layout_marginEnd="@dimen/content_padding"
+        android:layout_marginTop="@dimen/small_padding"
+        android:layout_marginBottom="@dimen/small_padding"
+        android:layout_margin="@dimen/small_padding">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="@dimen/content_padding">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/coin_holder_1"
+                android:layout_width="@dimen/small_recycler_view_card_logo_size"
+                android:layout_height="@dimen/small_recycler_view_card_logo_size"
+                app:cardCornerRadius="@dimen/small_recycler_view_card_logo_size"
+                app:cardElevation="@dimen/zero_elevation"
+                android:layout_gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/coin_1"
+                    app:url="@{uiModel.top3CoinLogos[0]}"
+                    tools:srcCompat="@tools:sample/avatars"
+                    android:layout_width="@dimen/small_recycler_view_card_logo_size"
+                    android:layout_height="@dimen/small_recycler_view_card_logo_size" />
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/coin_holder_2"
+                android:layout_width="@dimen/small_recycler_view_card_logo_size"
+                android:layout_height="@dimen/small_recycler_view_card_logo_size"
+                app:cardCornerRadius="@dimen/small_recycler_view_card_logo_size"
+                app:cardElevation="@dimen/zero_elevation"
+                android:layout_gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/coin_holder_1"
+                android:layout_marginStart="@dimen/small_padding"
+                app:layout_constraintTop_toTopOf="parent" >
+
+                <ImageView
+                    android:id="@+id/coin_2"
+                    app:url="@{uiModel.top3CoinLogos[1]}"
+                    tools:srcCompat="@tools:sample/avatars"
+                    android:layout_width="@dimen/small_recycler_view_card_logo_size"
+                    android:layout_height="@dimen/small_recycler_view_card_logo_size" />
+
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/coin_holder_3"
+                android:layout_width="@dimen/small_recycler_view_card_logo_size"
+                android:layout_height="@dimen/small_recycler_view_card_logo_size"
+                app:cardCornerRadius="@dimen/small_recycler_view_card_logo_size"
+                app:cardElevation="@dimen/zero_elevation"
+                android:layout_gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/coin_holder_2"
+                android:layout_marginStart="@dimen/small_padding"
+                app:layout_constraintTop_toTopOf="parent" >
+
+                <ImageView
+                    android:id="@+id/coin_3"
+                    app:url="@{uiModel.top3CoinLogos[2]}"
+                    tools:srcCompat="@tools:sample/avatars"
+                    android:layout_width="@dimen/small_recycler_view_card_logo_size"
+                    android:layout_height="@dimen/small_recycler_view_card_logo_size" />
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/category_name"
+                android:text="@{uiModel.name}"
+                android:layout_weight="1"
+                android:layout_width="@dimen/zero_elevation"
+                android:layout_height="match_parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/coin_holder_3"
+                app:layout_constraintEnd_toStartOf="@id/volume"
+                android:layout_marginStart="@dimen/content_padding"
+                android:layout_marginEnd="@dimen/content_padding"
+                style="@style/TextAppearance.CryptoApp.Caption"
+                android:textStyle="bold"
+                android:gravity="center"
+                tools:text="Centralized Exchnage Token (CEX)"
+                android:maxLines="3"
+                android:ellipsize="end" />
+
+            <TextView
+                android:id="@+id/percent_change"
+                style="@style/TextAppearance.CryptoApp.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@+id/volume"
+                app:layout_constraintEnd_toStartOf="@+id/percentage_change_text"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:paddingEnd="@dimen/small_padding"
+                app:layout_constraintVertical_chainStyle="packed"
+                app:percentage="@{uiModel.marketCapChange}"
+                tools:text="Percentage" />
+
+            <TextView
+                android:id="@+id/volume"
+                style="@style/TextAppearance.CryptoApp.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{uiModel.volume}"
+                app:layout_constraintBottom_toTopOf="@+id/market_cap"
+                app:layout_constraintEnd_toStartOf="@+id/volume_change"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/percent_change"
+                android:paddingEnd="@dimen/small_padding"
+                app:layout_constraintVertical_chainStyle="packed"
+                tools:text="Volume" />
+
+            <TextView
+                android:id="@+id/market_cap"
+                style="@style/TextAppearance.CryptoApp.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{uiModel.marketCap}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/cap"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/volume"
+                android:paddingEnd="@dimen/small_padding"
+                app:layout_constraintVertical_chainStyle="packed"
+                tools:text="Market Caps" />
+
+            <TextView
+                android:id="@+id/percentage_change_text"
+                style="@style/TextAppearance.CryptoApp.Caption"
+                android:layout_width="@dimen/recycler_view_text_width"
+                android:layout_height="wrap_content"
+                android:text="@string/daily_change"
+                android:textStyle="bold"
+                android:textAlignment="viewStart"
+                app:layout_constraintBottom_toTopOf="@+id/volume_change"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+            <TextView
+                android:id="@+id/volume_change"
+                style="@style/TextAppearance.CryptoApp.Caption"
+                android:layout_width="@dimen/recycler_view_text_width"
+                android:layout_height="wrap_content"
+                android:text="@string/volume"
+                android:textAlignment="viewStart"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/cap"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/percentage_change_text"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+            <TextView
+                android:id="@+id/cap"
+                style="@style/TextAppearance.CryptoApp.Caption"
+                android:layout_width="@dimen/recycler_view_text_width"
+                android:layout_height="wrap_content"
+                android:text="@string/market_cap"
+                android:textAlignment="viewStart"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/volume_change"
+                app:layout_constraintVertical_chainStyle="packed" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>

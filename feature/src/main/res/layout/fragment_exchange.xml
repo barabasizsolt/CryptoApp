@@ -4,9 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
-            type="com.barabasizsolt.feature.screen.main.category.CategoryViewModel" />
+            type="com.barabasizsolt.feature.screen.main.exchange.exchangeList.ExchangeViewModel" />
+
     </data>
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -21,7 +23,8 @@
             android:layout_height="match_parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@layout/item_category_category" />
+            tools:listitem="@layout/item_exchange_exchange" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 </layout>
