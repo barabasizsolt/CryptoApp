@@ -1,16 +1,16 @@
 package com.barabasizsolt.feature
 
-import com.example.cryptoapp.feature.activity.MainActivityViewModel
-import com.example.cryptoapp.feature.screen.auth.login.LoginViewModel
-import com.example.cryptoapp.feature.screen.auth.register.SignUpViewModel
-import com.example.cryptoapp.feature.screen.main.category.CategoryViewModel
-import com.example.cryptoapp.feature.screen.main.cryptocurrency.cryptocurrencyDetails.CryptoCurrencyDetailsViewModel
-import com.example.cryptoapp.feature.screen.main.cryptocurrency.cryptocurrencyList.CryptoCurrencyViewModel
-import com.example.cryptoapp.feature.screen.main.exchange.exchangeDetail.ExchangeDetailViewModel
-import com.example.cryptoapp.feature.screen.main.exchange.exchangeList.ExchangeViewModel
-import com.example.cryptoapp.feature.screen.main.news.NewsViewModel
-import com.example.cryptoapp.feature.screen.main.user.ProfileViewModel
-import com.example.cryptoapp.feature.screen.main.watchlist.WatchListViewModel
+import com.barabasizsolt.feature.activity.MainActivityViewModel
+import com.barabasizsolt.feature.screen.auth.login.LoginViewModel
+import com.barabasizsolt.feature.screen.auth.register.SignUpViewModel
+import com.barabasizsolt.feature.screen.main.category.CategoryViewModel
+import com.barabasizsolt.feature.screen.main.cryptocurrency.cryptocurrencyDetails.CryptoCurrencyDetailsViewModel
+import com.barabasizsolt.feature.screen.main.cryptocurrency.cryptocurrencyList.CryptoCurrencyViewModel
+import com.barabasizsolt.feature.screen.main.exchange.exchangeDetail.ExchangeDetailViewModel
+import com.barabasizsolt.feature.screen.main.exchange.exchangeList.ExchangeViewModel
+import com.barabasizsolt.feature.screen.main.news.NewsViewModel
+import com.barabasizsolt.feature.screen.main.user.ProfileViewModel
+import com.barabasizsolt.feature.screen.main.watchlist.WatchListViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 

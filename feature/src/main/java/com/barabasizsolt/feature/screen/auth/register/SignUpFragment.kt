@@ -19,14 +19,14 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
-import com.example.cryptoapp.R
-import com.example.cryptoapp.feature.activity.MainActivity
-import com.example.cryptoapp.feature.screen.auth.catalog.EmailInput
-import com.example.cryptoapp.feature.screen.auth.catalog.PasswordInput
-import com.example.cryptoapp.feature.screen.auth.catalog.ScreenLogo
-import com.example.cryptoapp.feature.screen.auth.catalog.SecondaryAuthButton
-import com.example.cryptoapp.feature.shared.catalog.CryptoAppButton
-import com.example.cryptoapp.feature.shared.utils.createSnackBar
+import com.barabasizsolt.feature.R
+import com.barabasizsolt.feature.activity.MainActivity
+import com.barabasizsolt.feature.screen.auth.catalog.EmailInput
+import com.barabasizsolt.feature.screen.auth.catalog.PasswordInput
+import com.barabasizsolt.feature.screen.auth.catalog.ScreenLogo
+import com.barabasizsolt.feature.screen.auth.catalog.SecondaryAuthButton
+import com.barabasizsolt.feature.shared.catalog.CryptoAppButton
+import com.barabasizsolt.feature.shared.utils.createSnackBar
 import com.google.android.material.composethemeadapter.MdcTheme
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

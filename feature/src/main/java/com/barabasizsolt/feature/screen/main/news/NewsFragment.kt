@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.barabasizsolt.feature.BR
 import com.barabasizsolt.feature.R
 import com.barabasizsolt.feature.databinding.FragmentNewsBinding
 import com.barabasizsolt.feature.screen.main.MainFragment

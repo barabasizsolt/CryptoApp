@@ -7,9 +7,6 @@ import android.view.ViewGroup
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.ui.platform.ViewCompositionStrategy
-import com.example.cryptoapp.R
-import com.example.cryptoapp.feature.screen.main.MainFragment
-import com.example.cryptoapp.feature.screen.main.watchlist.catalog.CryptoCurrencyItem
 import com.google.android.material.composethemeadapter.MdcTheme
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.items
@@ -29,16 +26,19 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.fragment.app.Fragment
-import com.example.cryptoapp.feature.screen.main.cryptocurrency.cryptocurrencyDetails.CryptoCurrencyDetailsFragment
-import com.example.cryptoapp.feature.screen.main.watchlist.catalog.DeleteItem
-import com.example.cryptoapp.feature.screen.main.watchlist.catalog.WatchListPlaceHolder
-import com.example.cryptoapp.feature.screen.main.watchlist.catalog.WatchListSummary
-import com.example.cryptoapp.feature.shared.catalog.ErrorContent
-import com.example.cryptoapp.feature.shared.catalog.LoadingIndicator
-import com.example.cryptoapp.feature.shared.utils.convertToCompactPrice
-import com.example.cryptoapp.feature.shared.utils.convertToPrice
-import com.example.cryptoapp.feature.shared.utils.createSnackBar
-import com.example.cryptoapp.feature.shared.utils.handleReplace
+import com.barabasizsolt.feature.R
+import com.barabasizsolt.feature.screen.main.MainFragment
+import com.barabasizsolt.feature.screen.main.cryptocurrency.cryptocurrencyDetails.CryptoCurrencyDetailsFragment
+import com.barabasizsolt.feature.screen.main.watchlist.catalog.CryptoCurrencyItem
+import com.barabasizsolt.feature.screen.main.watchlist.catalog.DeleteItem
+import com.barabasizsolt.feature.screen.main.watchlist.catalog.WatchListPlaceHolder
+import com.barabasizsolt.feature.screen.main.watchlist.catalog.WatchListSummary
+import com.barabasizsolt.feature.shared.catalog.ErrorContent
+import com.barabasizsolt.feature.shared.catalog.LoadingIndicator
+import com.barabasizsolt.feature.shared.utils.convertToCompactPrice
+import com.barabasizsolt.feature.shared.utils.convertToPrice
+import com.barabasizsolt.feature.shared.utils.createSnackBar
+import com.barabasizsolt.feature.shared.utils.handleReplace
 
 class WatchListFragment : Fragment() {
     private val viewModel: WatchListViewModel by viewModel()

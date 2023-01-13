@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
+import com.barabasizsolt.feature.BR
 
 class CryptoCurrencyDetailsFragment : BaseFragment<FragmentCryptoCurrencyDetailsBinding>(R.layout.fragment_crypto_currency_details) {
     private val viewModel: CryptoCurrencyDetailsViewModel by viewModel { parametersOf(arguments?.cryptoCurrencyId) }

@@ -17,6 +17,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import com.barabasizsolt.feature.BR
 
 class CryptoCurrencyFragment : BaseFragment<FragmentCryptoCurrencyBinding>(R.layout.fragment_crypto_currency) {
 

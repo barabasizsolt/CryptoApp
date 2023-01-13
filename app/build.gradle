@@ -75,69 +75,13 @@ android {
 }
 
 dependencies {
-//    implementation(project(":data"))
-//    implementation(project(":domain"))
-//    implementation(project(':auth'))
-//    implementation implementation(project(':storage'))
+    implementation(project(":data"))
+    implementation(project(":domain"))
+    implementation(project(':auth'))
+    implementation implementation(project(':storage'))
     implementation implementation(project(':feature'))
 
     //Koin
     implementation "io.insert-koin:koin-android:$koin_version"
     implementation "io.insert-koin:koin-androidx-compose:$koin_version"
-
-//    //Coil
-//    implementation "io.coil-kt:coil:$coil_version"
-//    implementation "io.coil-kt:coil-svg:$coil_version"
-//    implementation "io.coil-kt:coil-compose:1.4.0"
-
-    //Architectural
-    def lifecycle_version = "2.4.1"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1"
-    implementation "org.jetbrains.kotlin:kotlin-reflect"
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
-
-    /*-------------------UI Layer dependencies-----------------*/
-    //Card view
-    implementation 'androidx.cardview:cardview:1.0.0'
-    //Recyclerview
-    implementation 'androidx.recyclerview:recyclerview:1.2.1'
-    //Swipe Refresh
-    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
-    //Material design
-    implementation 'com.google.android.material:material:1.6.0-alpha01'
-    //Splash screen
-    implementation 'androidx.core:core-splashscreen:1.0.0-beta02'
-    //Constraint Layout
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
-    //Flexbox Layout
-    implementation 'com.google.android.flexbox:flexbox:3.0.0'
-    //DrawerLayout
-    implementation 'androidx.drawerlayout:drawerlayout:1.1.1'
-    //MPAndroidChart
-    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
-
-    //Compose
-    def android_activity_version = "1.4.0"
-    def compose_version = "1.1.1"
-
-    // Integration with activities
-    implementation "androidx.activity:activity-compose:$android_activity_version"
-    // Compose Material Design
-    implementation "androidx.compose.material:material:$compose_version"
-    // Animations
-    implementation "androidx.compose.animation:animation:$compose_version"
-    // Tooling support (Previews, etc.)
-    implementation "androidx.compose.ui:ui-tooling:$compose_version"
-    // Integration with ViewModels
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1'
-    // Compose Swipe Refresh
-    implementation "com.google.accompanist:accompanist-swiperefresh:0.24.6-alpha"
-    // MDC Adapter
-    implementation "com.google.android.material:compose-theme-adapter:1.1.9"
-
-    /*-------------------Android Core dependencies-----------------*/
-    implementation 'androidx.core:core-ktx:1.7.0'
-    implementation 'androidx.appcompat:appcompat:1.4.1'
-    implementation "androidx.activity:activity-ktx:$android_activity_version"
 }

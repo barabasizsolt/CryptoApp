@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.barabasizsolt.feature.BR
 import com.barabasizsolt.feature.R
 import com.barabasizsolt.feature.databinding.FragmentCategoryBinding
 import com.barabasizsolt.feature.shared.navigation.BaseFragment

@@ -13,6 +13,7 @@ import com.barabasizsolt.feature.shared.utils.handleReplace
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import com.barabasizsolt.feature.BR
 
 class ExchangeFragment : BaseFragment<FragmentExchangeBinding>(R.layout.fragment_exchange) {
 

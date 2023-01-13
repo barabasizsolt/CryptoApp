@@ -1,8 +1,9 @@
 package com.barabasizsolt.feature.screen.main.watchlist
 
+import com.barabasizsolt.feature.shared.utils.convertToCompactPrice
+import com.barabasizsolt.feature.shared.utils.formatInput
 import com.example.cryptoapp.data.model.cryptocurrency.CryptoCurrency
-import com.example.cryptoapp.feature.shared.utils.convertToCompactPrice
-import com.example.cryptoapp.feature.shared.utils.formatInput
+
 
 data class WatchListSummaryUiModel(
     val totalPrice: String,

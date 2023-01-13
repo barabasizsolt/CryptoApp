@@ -1,9 +1,9 @@
 package com.example.cryptoapp
 
 import android.app.Application
+import com.barabasizsolt.feature.presentationModule
 import com.example.cryptoapp.data.createDataModules
 import com.example.cryptoapp.domain.domainModule
-import com.example.cryptoapp.feature.presentationModule
 import com.example.cryptoapp.auth.di.createAuthenticationModules
 import com.example.cryptoapp.auth.service.AuthenticationService
 import com.example.cryptoapp.storage.di.createFirestoreModule

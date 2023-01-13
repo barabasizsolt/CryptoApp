@@ -60,7 +60,6 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.ByteArrayOutputStream
 
-
 class ProfileFragment : Fragment() {
 
     private val viewModel by viewModel<ProfileViewModel>()

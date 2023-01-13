@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <attr name="colorSurface" format="color"/>
-    <attr name="colorOnSurface" format="color"/>
-    <attr name="colorOnChart" format="color"/>
-    <attr name="colorChart" format="color"/>
-</resources>

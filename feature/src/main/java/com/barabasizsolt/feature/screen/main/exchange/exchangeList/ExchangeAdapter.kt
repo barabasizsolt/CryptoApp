@@ -8,6 +8,7 @@ import com.barabasizsolt.feature.R
 import com.barabasizsolt.feature.databinding.ItemExchangeErrorStateBinding
 import com.barabasizsolt.feature.databinding.ItemExchangeExchangeBinding
 import com.barabasizsolt.feature.databinding.ItemExchangeLoadMoreBinding
+import com.barabasizsolt.feature.databinding.LayoutErrorStateBinding
 import com.barabasizsolt.feature.shared.utils.ListItemDiff
 
 class ExchangeAdapter(

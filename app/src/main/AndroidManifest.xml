@@ -17,7 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/CryptoCurrencySplashScreenTheme">
         <activity
-            android:name=".feature.activity.MainActivity"
+            android:name="com.barabasizsolt.feature.activity.MainActivity"
             android:launchMode="singleInstance"
             android:exported="true">
             <intent-filter>
