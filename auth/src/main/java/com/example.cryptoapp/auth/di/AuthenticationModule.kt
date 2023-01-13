@@ -1,30 +1,32 @@
-package com.hackathon.auth.di
+package com.example.cryptoapp.auth.di
 
-import com.hackathon.auth.data.AuthenticationRepository
-import com.hackathon.auth.data.AuthenticationSource
-import com.hackathon.auth.domain.GetCurrentUserUseCase
-import com.hackathon.auth.domain.LogOutUseCase
-import com.hackathon.auth.domain.LoginWithEmailAndPasswordUseCase
-import com.hackathon.auth.domain.RegisterWithEmailAndPasswordUseCase
-import com.hackathon.auth.domain.ResetPasswordUseCase
+import com.example.cryptoapp.auth.service.AuthenticationServiceImpl
+import com.example.cryptoapp.auth.service.AuthenticationService
+import com.example.cryptoapp.auth.useCase.GetCurrentUserUseCase
+import com.example.cryptoapp.auth.useCase.GetIntentForGoogleAccountLoginUseCase
+import com.example.cryptoapp.auth.useCase.LogOutUseCase
+import com.example.cryptoapp.auth.useCase.LoginWithEmailAndPasswordUseCase
+import com.example.cryptoapp.auth.useCase.LoginWithGoogleAccountUseCase
+import com.example.cryptoapp.auth.useCase.RegisterWithEmailAndPasswordUseCase
+import com.example.cryptoapp.auth.useCase.ResetPasswordUseCase
+import com.example.cryptoapp.auth.useCase.UpdateUserUseCase
 import org.koin.core.module.Module
 import org.koin.dsl.module
 
-fun createAuthenticationModules(): List<Module> = listOf(
-    createAuthenticationDataModule(),
-    createAuthenticationDomainModule()
-)
+fun createAuthenticationModules(): List<Module> = listOf(createServiceModule(), createUseCaseModule())
 
-private fun createAuthenticationDataModule() = module {
-    single { AuthenticationSource() }
-    single { AuthenticationRepository(source = get()) }
+private fun createServiceModule() = module {
+    single<AuthenticationService>{ AuthenticationServiceImpl() }
 }
 
-private fun createAuthenticationDomainModule() = module {
-    factory { LoginWithEmailAndPasswordUseCase(repository = get()) }
-    factory { LogOutUseCase(repository = get()) }
-    factory { RegisterWithEmailAndPasswordUseCase(repository = get()) }
-    factory { ResetPasswordUseCase(repository = get()) }
-    factory { GetCurrentUserUseCase(repository = get()) }
+private fun createUseCaseModule() = module {
+    factory { LoginWithEmailAndPasswordUseCase(service = get()) }
+    factory { LogOutUseCase(service = get()) }
+    factory { RegisterWithEmailAndPasswordUseCase(service = get()) }
+    factory { ResetPasswordUseCase(service = get()) }
+    factory { GetCurrentUserUseCase(service = get()) }
+    factory { GetIntentForGoogleAccountLoginUseCase(service = get()) }
+    factory { LoginWithGoogleAccountUseCase(service = get()) }
+    factory { UpdateUserUseCase(service = get()) }
 }
 

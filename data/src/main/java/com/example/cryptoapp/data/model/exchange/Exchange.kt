@@ -10,4 +10,5 @@ data class Exchange(
     val image: String,
     val trustScore: Double,
     val volume: Double,
+    val rank: Long
 )

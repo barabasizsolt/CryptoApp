@@ -4,6 +4,9 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
+    <uses-feature android:name="android.hardware.camera" android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -14,7 +17,8 @@
         android:supportsRtl="true"
         android:theme="@style/CryptoCurrencySplashScreenTheme">
         <activity
-            android:name=".feature.activity.MainActivity"
+            android:name="com.barabasizsolt.feature.activity.MainActivity"
+            android:launchMode="singleInstance"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

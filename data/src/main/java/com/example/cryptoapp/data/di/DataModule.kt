@@ -6,6 +6,7 @@ import com.example.cryptoapp.data.repository.news.NewsRepository
 import com.example.cryptoapp.data.repository.cryptocurrency.CryptoCurrencyDetailsRepository
 import com.example.cryptoapp.data.repository.cryptocurrency.CryptoCurrencyHistoryRepository
 import com.example.cryptoapp.data.repository.cryptocurrency.CryptoCurrencyRepository
+import com.example.cryptoapp.data.repository.cryptocurrency.CryptoCurrencyWatchListRepository
 import com.example.cryptoapp.data.repository.exchange.ExchangeDetailRepository
 import com.example.cryptoapp.data.repository.exchange.ExchangeHistoryRepository
 import com.example.cryptoapp.data.retrofitInstance.CoinGekkoRetrofitInstance
@@ -25,6 +26,7 @@ fun createDataModules(coinRankingUrl: String, coinGekkoUrl: String): List<Module
 
 private fun createRepositories() = module {
     single { CryptoCurrencyRepository(source = get()) }
+    single { CryptoCurrencyWatchListRepository(source = get()) }
     single { CryptoCurrencyDetailsRepository(source = get()) }
     single { CryptoCurrencyHistoryRepository(source = get()) }
     single { CategoryRepository(source = get()) }

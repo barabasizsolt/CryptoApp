@@ -1,6 +1,7 @@
 package com.example.cryptoapp.domain
 
 import com.example.cryptoapp.domain.useCase.category.GetCategoriesUseCase
+import com.example.cryptoapp.domain.useCase.cryptocurrency.GetCryptoCurrenciesForWatchListUseCase
 import com.example.cryptoapp.domain.useCase.cryptocurrency.GetCryptoCurrenciesUseCase
 import com.example.cryptoapp.domain.useCase.cryptocurrency.GetCryptoCurrencyDetailsUseCase
 import com.example.cryptoapp.domain.useCase.cryptocurrency.GetCryptoCurrencyHistoryUseCase
@@ -12,6 +13,7 @@ import org.koin.dsl.module
 
 val domainModule = module {
     factory { GetCryptoCurrenciesUseCase(repository = get()) }
+    factory { GetCryptoCurrenciesForWatchListUseCase(repository = get()) }
     factory { GetCryptoCurrencyDetailsUseCase(repository = get()) }
     factory { GetCryptoCurrencyHistoryUseCase(repository = get()) }
     factory { GetNewsUseCase(repository = get()) }

@@ -20,6 +20,13 @@ interface CryptoCurrencyService {
         @Query("timePeriod") timePeriod: String,
     ): Response<AllCryptoCurrenciesResponse>
 
+    @GET("coins")
+    suspend fun getCryptoCurrenciesForWatchList(
+        @Header("x-access-token") key: String = "coinrankingd228a6852a6d7ca4c14c25076fdb42f54138843c128f440c",
+        @Query("offset") offset: Int,
+        @Query("uuids[]") uuids: List<String>
+    ): Response<AllCryptoCurrenciesResponse>
+
     @GET("coin/{uuid}")
     suspend fun getCryptoCurrencyDetails(
         @Header("x-access-token") key: String = "coinrankingd228a6852a6d7ca4c14c25076fdb42f54138843c128f440c",

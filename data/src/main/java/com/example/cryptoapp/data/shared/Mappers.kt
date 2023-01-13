@@ -102,14 +102,15 @@ fun CategoryResponse.toModel() = when {
 // Exchange Mappers
 fun ExchangeResponse.toModel() = when {
     id == null ||
-        name == null ||
-        yearEstablished == null ||
-        country == null ||
-        description == null ||
-        url == null ||
-        image == null ||
-        trustScore == null ||
-        tradeVolume24HBtc == null -> null
+            name == null ||
+            yearEstablished == null ||
+            country == null ||
+            description == null ||
+            url == null ||
+            image == null ||
+            trustScore == null ||
+            tradeVolume24HBtc == null ||
+            trustScoreRank == null -> null
     else -> Exchange(
         id = id,
         name = name,
@@ -119,7 +120,8 @@ fun ExchangeResponse.toModel() = when {
         url = url,
         image = image,
         trustScore = trustScore,
-        volume = tradeVolume24HBtc
+        volume = tradeVolume24HBtc,
+        rank = trustScoreRank
     )
 }
 
