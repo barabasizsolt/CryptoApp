@@ -16,7 +16,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.userProfileChangeRequest
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.transform
@@ -37,12 +36,10 @@ class AuthenticationServiceImpl : AuthenticationService {
         firebaseAuth = FirebaseAuth.getInstance()
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     override fun loginWithEmailAndPassword(email: String, password: String): Flow<AuthResult> = consumeTask(
         task = firebaseAuth.signInWithEmailAndPassword(email, password)
     )
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     override fun registerWithEmailAndPassWord(email: String, password: String): Flow<AuthResult> = consumeTask(
         task = firebaseAuth.createUserWithEmailAndPassword(email, password)
     )
@@ -51,7 +48,6 @@ class AuthenticationServiceImpl : AuthenticationService {
         return googleAuth.signInIntent
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     override fun loginWithGoogleAccount(intent: Intent): Flow<AuthResult> = consumeTaskWithResult(
         task = GoogleSignIn.getSignedInAccountFromIntent(intent),
         taskConverter = { account -> GoogleAuthProvider.getCredential(account.idToken, null) }
@@ -68,14 +64,12 @@ class AuthenticationServiceImpl : AuthenticationService {
         task = googleAuth.signOut()
     ).also { firebaseAuth.signOut() }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     override fun resetPassword(email: String): Flow<AuthResult> = consumeTask(
         task = firebaseAuth.sendPasswordResetEmail(email)
     )
 
     override fun getCurrentUser(): User? = firebaseAuth.currentUser?.toModel()
 
-    @OptIn(ExperimentalCoroutinesApi::class)
     override fun updateUser(userName: String, photo: Uri?): Flow<AuthResult> = consumeTask(
         task = firebaseAuth.currentUser!!.updateProfile(
             userProfileChangeRequest {
