@@ -14,7 +14,7 @@ dependencies {
     implementation "io.insert-koin:koin-core:$koin_version"
 
     //Serialization
-    implementation 'com.google.code.gson:gson:2.8.9'
+    implementation "com.google.code.gson:gson:$gson_version"
 
     //Networking
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
